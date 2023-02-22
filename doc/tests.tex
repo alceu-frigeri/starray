@@ -25,22 +25,24 @@
     \bool_set_true:N \__starray_parser_root_bool
     \bool_set_true:N \__starray_parser_no_idx_bool
 
+%%%these ones !
     \tl_clear:N \l__starray_parsed_ref_tl
-    \bool_set_true:N \__starray_parser_no_idx_ending_bool
-
-
+    \bool_set_false:N \__starray_parser_no_idx_ending_bool
+    \tl_set:Nn \l__starray_parser_aux_tl {_}
 
     \__starray_ref_parse:w #1 .\q_nil\q_stop \par
 
-    \tl_set:Nx \l__starray_tmpb_tl {\__starray_get_root:w #1 .\q_nil\q_stop}
+parsed:\l__starray_parsed_ref_tl\par
+\bool_to_str:N \l__starray_tmpa_bool\par
+%    \tl_set:Nx \l__starray_tmpb_tl {\__starray_get_root:w #1 .\q_nil\q_stop}
+%
+%    \bool_to_str:N \l__starray_tmpa_bool \l__starray_tmpa_tl \par
+%    <root:  \l__starray_tmpb_tl ~~
 
-    \bool_to_str:N \l__starray_tmpa_bool \l__starray_tmpa_tl \par
-    <root:  \l__starray_tmpb_tl ~~
-
-    \starray_if_valid:nTF {l__starray_ \l__starray_tmpb_tl _prop}
-      {~valid>}
-      {~invalid>}
-      \par
+%    \starray_if_valid:nTF {l__starray_ \l__starray_tmpb_tl _prop}
+%      {~valid>}
+%      {~invalid>}
+%      \par
 
   }
 
@@ -57,8 +59,10 @@
         +++
         \par
         \starray_add_term:n {#1}
+        \starray_add_term:n {#1.SS}
 %        \starray_add_prop:nnn {#1.SS}{YY}{YY-default}
         \starray_add_term:n {#1}
+        \starray_add_term:n {#1.SS}
 
         \prop_show:c {l__starray_#1_prop}
         \prop_show:c {l__starray_#1_def_prop}
@@ -69,6 +73,14 @@
         \prop_show:c {l__starray_#1_A.SS_base_prop}
         \prop_show:c {l__starray_#1_B_prop}
         \prop_show:c {l__starray_#1_B.SS_base_prop}
+
+        \seq_show:c   {l__starray_so_def_st_seq}
+        \seq_show:c   {l__starray_so.SS_def_st_seq}
+
+        \seq_show:c   {l__starray_so_seq}
+        \prop_show:c  {l__starray_so_hash_prop}
+ %       \seq_show:c {l__starray_so_A_seq}
+ %       \seq_show:c {l__starray_so_A.SS_seq}
     }
 
 
@@ -80,12 +92,13 @@
 
 =+=+=+=+\par
 
-\parse{so}
-\parse{so.SS[2]}
-\parse{so[1].SS.B.C[3].D.E[abc].X..Y}
+%\parse{so}\par
+----------\par
+\parse{so.SS}
+%\parse{so[1].SS.B.C[3].D.E[abc].X..Y}
 
 
-\parse{A[1]}
+%\parse{A[1]}
 
 
 
