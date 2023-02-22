@@ -1,0 +1,420 @@
+\RequirePackage{ expl3}
+\ProvidesExplPackage
+    {starray}
+    {2023/03/01}
+    {0.0.1}
+    {A Chemical Database}
+
+%%%%
+%%%%garbage/tests
+%%%%
+%%%%
+
+
+\seq_new:N \l_path_seq
+\seq_new:N \l_pathb_seq
+\tl_new:N \l_tl
+\tl_new:N \l_b_tl
+
+
+
+
+
+%%%%
+%%%% end of :: garbage/tests
+%%%%
+%%%%
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%
+%%%%
+%%%%  New package
+%%%%
+%%%%%%%%%%%%%%%%%%%
+
+%
+% \l__starray_cnt integer, array counter/size
+% \l__starray_iter integer, array iterator (current set)
+%
+%
+%
+%
+\prg_new_conditional:Npnn \starray_if_free:n #1 {p, T, F, TF}
+  {
+    \prop_if_exist:cTF {#1}
+      { \prg_return_false: }
+      { \prg_return_true: }
+  }
+
+
+
+\prg_new_conditional:Npnn \starray_if_valid:n #1 {p, T, F, TF}
+  {
+    \prop_if_exist:cTF {#1}
+      {
+        \bool_if:cTF { \prop_item:cn {#1} {is_starray} }
+          { \prg_return_true: }
+          { \prg_return_false: }
+      }
+      { \prg_return_false: }
+  }
+
+\prg_generate_conditional_variant:Nnn \starray_if_valid:n {x} {p, T, F, TF}
+
+
+\prg_new_conditional:Npnn \starray_if_locked:n #1 {p, T, F, TF}
+  {
+    \prop_if_exist:cTF {#1}
+      {
+        \bool_if:cTF { \prop_item:cn {#1} {is_locked} }
+          { \prg_return_true: }
+          { \prg_return_false: }
+      }
+      { \prg_return_false: }
+  }
+
+
+
+\cs_new:Npn \__starray_base_new:n #1
+  {
+    \starray_if_free:nTF {#1 _base_prop}
+    {
+      \prop_new:c { #1 _base_prop }
+
+      \prop_set_from_keyval:cn
+        { #1 _base_prop }
+        {
+          self_prefix = #1 ,
+          def         = #1 _def_prop ,
+          is_starray  = #1 _base_is_starray_bool ,
+          cnt         = #1 _cnt_int ,
+          iter        = #1 _iter_int ,
+          seq         = #1 _seq ,
+          hash        = #1 _hash_prop
+        }
+
+      \bool_new:c
+        { \prop_item:cn {#1 _base_prop} {is_starray} }
+      \bool_set_true:c
+        { \prop_item:cn {#1 _base_prop} {is_starray} }
+
+      \int_new:c
+        { \prop_item:cn {#1 _base_prop} {cnt} }
+      \int_zero:c
+        { \prop_item:cn {#1 _base_prop} {cnt} }
+
+      \int_new:c
+        { \prop_item:cn {#1 _base_prop} {iter} }
+      \int_zero:c
+        { \prop_item:cn {#1 _base_prop} {iter} }
+
+      \seq_new:c
+        { \prop_item:cn {#1 _base_prop} {seq} }
+
+      \prop_new:c
+        { \prop_item:cn {#1 _base_prop} {hash} }
+    }
+    { err:#1 _base ~~ already ~~ defined! }
+  }
+
+\cs_generate_variant:Nn \__starray_base_new:n { x }
+
+\cs_new:Npn \__starray_sub_base_new:nn #1#2
+{ \__starray_base_new:x {#1.#2} }
+
+
+%\cs_new:Npn \__starray_new_def:n #1
+%{
+%    \prop_new:c {#1}
+%    \prop_put:cnn {#1}
+%}
+
+\cs_new:Npn \__starray_new:n #1
+  {
+    \starray_if_free:nTF {#1 _prop}
+      {
+        \prop_new:c
+          { #1 _prop }
+
+        \prop_set_from_keyval:cn
+          { #1 _prop }
+          {
+            def        = #1 _def_prop ,
+            is_starray = #1 _is_starray_bool ,
+            is_locked  = #1 _is_locked_bool
+          }
+
+        \prop_new:c
+          { \prop_item:cn {#1 _prop} {def} }
+
+        \prop_set_from_keyval:cn
+          { #1 _def_prop }
+          {
+            ..st_seq    = #1 _def_st_seq       ,   %%sequence of sub-starrays
+            ..keys_seq    = #1 _def_keys_seq       %%sequence of keys
+          }
+
+        \seq_new:c
+          { \prop_item:cn { #1 _def_prop } { ..keys_seq } }
+
+        \seq_new:c
+          { \prop_item:cn { #1 _def_prop } { ..st_seq } }
+
+        \bool_new:c
+          { \prop_item:cn {#1 _prop} {is_starray} }
+        \bool_set_true:c
+          { \prop_item:cn {#1 _prop} {is_starray} }
+
+        \bool_new:c
+          { \prop_item:cn {#1 _prop} {is_locked} }
+        \bool_set_false:c
+          { \prop_item:cn {#1 _prop} {is_locked} }
+
+        \__starray_base_new:x {#1} % TODO: might be incomplete !!!
+      }
+      { err:#1~~ already~~ defined! }
+  }
+
+\cs_new:Npn \starray_new:n #1
+  {
+    \__starray_new:n { l__starray_ #1 }
+  }
+
+
+%%%%%%%%%%%%
+%%%%
+%%%% get root reference (first term) assuming called as
+%%%%    <st-ref> . \q_nil \q_stop
+%%%% so that even if {ref} (no dot, no idx) it will return 'the root ref'
+%%%%
+%%%% e.g.: \tl_set:Nx \l__tmpb_tl {\__starray_get_root:w \l__tl . \q_nil \q_stop}
+%%%%
+%%%%%%%%%%%%
+\cs_new:Npn \__starray_get_root:w #1 . #2 \q_stop { #1 }
+
+
+
+%adding property #2 (#3 being it's initial/default value)
+%
+\cs_new:Npn \__starray_add_prop:nnn #1#2#3
+  {
+    \starray_if_valid:nTF {#1 _prop}
+      { \prop_put:cnn {#1 _def_prop} {#2} {#3} }
+      { err: #1 ~ not~a~valid~~starray! }
+  }
+
+
+
+
+\cs_new:Npn \starray_add_prop:nnn #1#2#3
+  {
+    \tl_set:Nx \l__starray_tmpb_tl { \__starray_get_root:w #1 .\q_nil\q_stop }
+
+    \starray_if_locked:nTF { l__starray_ \l__starray_tmpb_tl _prop}
+      { err: ~can't  ~add ~ property ~<#2>~ to ~ <#1> }
+      { \__starray_add_prop:nnn {l__starray_ #1} {#2} {#3} }
+  }
+
+%adding struct array #2 to a starray
+%
+\cs_new:Npn \__starray_add_struct:nn #1#2
+  {
+    \starray_if_valid:nTF {#1 _prop}
+      {
+        \prop_put:cnn
+          { \prop_item:cn {#1 _prop} {def} }
+          { . #2} {#1 . #2 _prop}
+
+        \seq_put_right:cn
+          { \prop_item:cn {\prop_item:cn {#1 _prop} {def}} {..st_seq} }
+          {#2}
+
+        \__starray_new:n { #1 . #2}
+      }
+      { err: #1 ~ not~a~valid~~starray! }
+  }
+
+
+
+\cs_new:Npn \starray_add_struct:nn #1#2
+  {
+    \tl_set:Nx \l__starray_tmpb_tl {\__starray_get_root:w #1 .\q_nil\q_stop}
+
+    \starray_if_locked:nTF { l__starray_ \l__starray_tmpb_tl _prop}
+      { err: ~can't  ~add ~ property ~<#2>~ to ~ <#1> }
+      { \__starray_add_struct:nn {l__starray_ #1} {#2} }
+  }
+
+
+
+\cs_new:Npn \__starray_add_term:n #1
+  {
+    \starray_if_valid:nTF {#1 _base_prop}
+      {
+  %        \bool_set_true:c {
+  %            \prop_item:cn {#1 _prop} {is_locked}
+  %        }
+
+        \int_incr:c
+          {  \prop_item:cn {#1 _base_prop} {cnt} }
+
+        \int_set_eq:cc
+          { \prop_item:cn {#1 _base_prop} {iter} }
+          { \prop_item:cn {#1 _base_prop} {cnt} }
+
+        \seq_put_right:cx
+          { \prop_item:cn {#1 _base_prop} {seq} }
+          { #1 _ \int_to_Alph:n { \int_use:c { \prop_item:cn {#1 _base_prop} {cnt} } } _prop }
+
+        \prop_new:c
+          { #1 _ \int_to_Alph:n { \int_use:c { \prop_item:cn {#1 _base_prop} {cnt} } } _prop }
+
+        \prop_set_eq:cc
+          { #1 _ \int_to_Alph:n { \int_use:c { \prop_item:cn {#1 _base_prop} {cnt} } } _prop }
+          { \prop_item:cn {#1 _base_prop} {def} }
+      % TODO: map over 'all sub-starrays parts of #1_def_prop (those starting with a dot, ..st_seq)
+        \seq_map_tokens:cn
+          { \prop_item:cn { \prop_item:cn {#1 _base_prop} {def}} {..st_seq}  }
+          { \__starray_sub_base_new:nn
+              { #1 _ \int_to_Alph:n { \int_use:c { \prop_item:cn {#1 _base_prop} {cnt} } } }
+          }
+      }
+      { err:#1~~ not~ a~ valid~ starray! }
+  }
+
+
+
+\cs_new:Npn \starray_add_term:n #1 % TODO: wrong, to be done...
+  {
+    \bool_set_true:c
+      { \prop_item:cn {l__starray_ #1 _prop} {is_locked} }
+
+    \__starray_add_term:n {l__starray_#1}
+  }
+
+
+%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%
+%%%%
+%%%% starray ref/address parser using quarks
+%%%% could be done with seq_split and regex but
+%%%% would have been even more cumbersome (and non-expandable)
+%%%%
+%%%% <starray_ref> := <array_ref> [ . <starray_ref> ]
+%%%% <array_ref>   := <array_name> [ <term_ref> ]
+%%%% <term_ref>    := \[ <number/hash> \]
+%%%%
+%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%
+
+\tl_new:N \l__starray_parsed_term_tl
+\tl_new:N \l__starray_parsed_idx_tl
+
+\tl_new:N \l__starray_parsed_root_tl
+\tl_new:N \l__starray_parsed_root_idx_tl
+
+\bool_new:N \l__starray_parsed_root_only_bool
+
+\bool_new:N \__starray_parser_root_bool
+\bool_new:N \__starray_parser_no_idx_bool
+\bool_new:N \__starray_parser_no_idx_ending_bool
+
+
+
+\tl_new:N \l__starray_tmpa_tl
+\bool_new:N \l__starray_tmpa_bool
+
+
+\prg_new_conditional:Npnn \__starray_term_parse_end:w  #1 ] #2 \q_stop { TF}
+  {
+    \quark_if_nil:nTF {#2}
+      { \prg_return_false: } %% syntax ERR
+      {
+        \tl_set:Nn \l__starray_parsed_idx_tl {#1}
+        \prg_return_true:
+      }
+  }
+
+
+\prg_new_conditional:Npnn \__starray_term_parse_aux:w  #1 [ \q_nil \q_stop { TF}
+  {
+    \__starray_term_parse_end:wTF  #1 ] \q_nil\q_stop
+      {\prg_return_true:}
+      {\prg_return_false:}
+  }
+
+
+\prg_new_conditional:Npnn \__starray_term_parse_begin:w #1 [ #2 \q_stop { TF}
+  {
+    \tl_set:Nn \l__starray_parsed_term_tl {#1}
+
+    \quark_if_nil:nTF {#2}
+      {               % no 'term' ref, just array_name (current/iter term)
+        oh~well~.
+        \tl_clear:N \l__starray_parsed_idx_tl
+        \prg_return_true:
+      }
+      {
+        \__starray_term_parse_aux:wTF #2 \q_stop
+          {\prg_return_true:}
+          {\prg_return_false:}
+      }
+  }
+
+\tl_new:N \l__starray_parsed_ref_tl
+
+\cs_new:Npn \__starray_ref_parse:w #1 . #2 \q_stop {
+  \__starray_term_parse_begin:wTF #1 [ \q_nil \q_stop
+    {                                    % syntax ok so far.
+                                         % TODO: verify instance validity hash/index
+                                         % vars: \l__starray_parsed_term_tl
+                                         %       \l__starray_parsed_idx_tl
+      \quark_if_nil:nTF {#2}
+        {       % TODO: this is the last one
+                % Implies: ...<term>[idx] -> _term_HASH_instance_prop MUST EXIST (IF property set/get) OR
+                % Implies: ...<term> -> _term_HASH_base_prop MUST EXIST (IF adding term) NO IDX ending
+          \tl_put_right:Nx \l__starray_parsed_ref_tl { _ \l__starray_parsed_term_tl }
+          \bool_if:NTF \__starray_parser_no_idx_ending_bool
+            {                                             % assuming it is to add a term...
+
+              \tl_if_empty:NTF \l__starray_parsed_idx_tl
+                {
+                  % TODO: test if there is ..._term_base_prop
+                  \starray_if_valid:nTF {l__starray \l__starray_parsed_ref_tl _base_prop}
+                    {.bingo.}  % bingo, valid one
+                    {
+                      invalid: {l__starray \l__starray_parsed_ref_tl _base_prop} \par
+                      \bool_set_false:N \l__starray_tmpa_bool
+                    }
+                }
+                {
+                  this'invalid: {l__starray \l__starray_parsed_ref_tl _base_prop} \par
+                  \bool_set_false:N \l__starray_tmpa_bool
+                } % err !
+            }
+            {    % TODO: assuming it is to set/get a property
+                 % same as below (implicit idx (iter))
+
+            }
+%          <root:\l__starray_parsed_root_tl - \tl_use:N \l__starray_parsed_root_idx_tl >
+        }                                 % parser's end
+        {                       % TODO: there is more to be looked at
+                                % Implies: <term>[idx] -> _term_HASH_instance_prop MUST EXIST
+                                % first: <term> _base_prop must be valid
+                                % second: <term> _base_prop => 'idx' -> 'real index' (like 1->A)
+                                % then: <term>_<real index> _ instance must be valid/exist
+                                % also: \l__starray_parsed_ref_tl <== _<term>_<real index>
+                                %
+          \__starray_ref_parse:w #2 \q_stop
+        } % recurse next term
+    }
+    {                                    % syntax/ref err.
+      \bool_set_false:N \l__starray_tmpa_bool
+    }
+}
+
+\tl_new:N \l__starray_tmpb_tl
+

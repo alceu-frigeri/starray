@@ -1,0 +1,93 @@
+\documentclass{article}
+\RequirePackage[T1]{fontenc}
+\RequirePackage[utf8]{inputenc}
+\RequirePackage{starray}
+%\RequirePackage{lt3rawobjects}
+%\RequirePackage{l3keys}
+\ExplSyntaxOn
+
+
+\NewDocumentCommand{\parse}{m}
+  {
+    \tl_clear:N \l__starray_parsed_ref_tl
+
+
+
+    \tl_clear:N \l__starray_tmpa_tl
+    \bool_set_true:N \l__starray_tmpa_bool
+
+    % auxiliary \tl for parser
+    \tl_clear:N \l__starray_parsed_term_tl
+    \tl_clear:N \l__starray_parsed_root_tl
+    \tl_clear:N \l__starray_parsed_root_idx_tl
+
+    % flag/switches for parser
+    \bool_set_true:N \__starray_parser_root_bool
+    \bool_set_true:N \__starray_parser_no_idx_bool
+
+    \tl_clear:N \l__starray_parsed_ref_tl
+    \bool_set_true:N \__starray_parser_no_idx_ending_bool
+
+
+
+    \__starray_ref_parse:w #1 .\q_nil\q_stop \par
+
+    \tl_set:Nx \l__starray_tmpb_tl {\__starray_get_root:w #1 .\q_nil\q_stop}
+
+    \bool_to_str:N \l__starray_tmpa_bool \l__starray_tmpa_tl \par
+    <root:  \l__starray_tmpb_tl ~~
+
+    \starray_if_valid:nTF {l__starray_ \l__starray_tmpb_tl _prop}
+      {~valid>}
+      {~invalid>}
+      \par
+
+  }
+
+
+\NewDocumentCommand{\test}{m}
+    {
+        ===+++\par
+        \starray_new:n {#1}
+        \starray_add_prop:nnn {#1}{X}{X-default}
+        \starray_add_prop:nnn {#1}{Y}{Y-default}
+        \starray_add_struct:nn {#1}{SS}
+        \starray_add_prop:nnn {#1.SS}{Z}{Z-default}
+        \par
+        +++
+        \par
+        \starray_add_term:n {#1}
+%        \starray_add_prop:nnn {#1.SS}{YY}{YY-default}
+        \starray_add_term:n {#1}
+
+        \prop_show:c {l__starray_#1_prop}
+        \prop_show:c {l__starray_#1_def_prop}
+        \prop_show:c {l__starray_#1.SS_prop}
+        \prop_show:c {l__starray_#1.SS_def_prop}
+        \prop_show:c {l__starray_#1_base_prop}
+        \prop_show:c {l__starray_#1_A_prop}
+        \prop_show:c {l__starray_#1_A.SS_base_prop}
+        \prop_show:c {l__starray_#1_B_prop}
+        \prop_show:c {l__starray_#1_B.SS_base_prop}
+    }
+
+
+\ExplSyntaxOff
+
+\begin{document}
+
+\test{so}
+
+=+=+=+=+\par
+
+\parse{so}
+\parse{so.SS[2]}
+\parse{so[1].SS.B.C[3].D.E[abc].X..Y}
+
+
+\parse{A[1]}
+
+
+
+
+\end{document}
