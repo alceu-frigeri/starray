@@ -9,31 +9,38 @@
 
 \NewDocumentCommand{\parse}{m}
   {
-    \tl_clear:N \l__starray_parsed_ref_tl
+%    \tl_clear:N \l__starray_parsed_ref_tl
 
 
 
-    \tl_clear:N \l__starray_tmpa_tl
-    \bool_set_true:N \l__starray_tmpa_bool
+ %   \tl_clear:N \l__starray_tmpa_tl
+  %  \bool_set_true:N \l__starray_tmpa_bool
 
     % auxiliary \tl for parser
-    \tl_clear:N \l__starray_parsed_term_tl
-    \tl_clear:N \l__starray_parsed_root_tl
-    \tl_clear:N \l__starray_parsed_root_idx_tl
+%    \tl_clear:N \l__starray_parsed_term_tl
+ %   \tl_clear:N \l__starray_parsed_root_tl
+  %  \tl_clear:N \l__starray_parsed_root_idx_tl
 
     % flag/switches for parser
-    \bool_set_true:N \__starray_parser_root_bool
-    \bool_set_true:N \__starray_parser_no_idx_bool
+%    \bool_set_true:N \__starray_parser_root_bool
+ %   \bool_set_true:N \__starray_parser_no_idx_bool
 
 %%%these ones !
-    \tl_clear:N \l__starray_parsed_ref_tl
-    \bool_set_false:N \__starray_parser_no_idx_ending_bool
-    \tl_set:Nn \l__starray_parser_aux_tl {_}
+%    \tl_clear:N \l__starray_parsed_ref_tl
+ %   \bool_set_false:N \__starray_parser_no_idx_ending_bool
+  %  \tl_set:Nn \l__starray_parser_aux_tl {_}
 
-    \__starray_ref_parse:w #1 .\q_nil\q_stop \par
+      \__starray_parser:nnTF {\c_true_bool}{#1}
+        {true ~it~ was}
+        {false ~it~ was}
+
+
+%    \__starray_ref_parse:w #1 .\q_nil\q_stop \par
 
 parsed:\l__starray_parsed_ref_tl\par
-\bool_to_str:N \l__starray_tmpa_bool\par
+
+
+%\bool_to_str:N \l__starray_tmpa_bool\par
 %    \tl_set:Nx \l__starray_tmpb_tl {\__starray_get_root:w #1 .\q_nil\q_stop}
 %
 %    \bool_to_str:N \l__starray_tmpa_bool \l__starray_tmpa_tl \par
@@ -64,21 +71,36 @@ parsed:\l__starray_parsed_ref_tl\par
         \starray_add_term:n {#1}
         \starray_add_term:n {#1.SS}
 
-        \prop_show:c {l__starray_#1_prop}
-        \prop_show:c {l__starray_#1_def_prop}
-        \prop_show:c {l__starray_#1.SS_prop}
-        \prop_show:c {l__starray_#1.SS_def_prop}
-        \prop_show:c {l__starray_#1_base_prop}
-        \prop_show:c {l__starray_#1_A_prop}
-        \prop_show:c {l__starray_#1_A.SS_base_prop}
-        \prop_show:c {l__starray_#1_B_prop}
-        \prop_show:c {l__starray_#1_B.SS_base_prop}
 
-        \seq_show:c   {l__starray_so_def_st_seq}
-        \seq_show:c   {l__starray_so.SS_def_st_seq}
 
-        \seq_show:c   {l__starray_so_seq}
-        \prop_show:c  {l__starray_so_hash_prop}
+%\__starray_parser:nnn {\c_true_bool}{}{}
+
+%        \prop_show:c {l__starray_#1_prop}
+%        \prop_show:c {l__starray_#1_def_prop}
+%        \prop_show:c {l__starray_#1.SS_prop}
+%        \prop_show:c {l__starray_#1.SS_def_prop}
+
+%        \prop_show:c {l__starray_#1_base_prop}
+%        \seq_show:c  {l__starray_so_seq}
+%        \prop_show:c {l__starray_so_hash_prop}
+%        \prop_show:c {l__starray_#1_A_prop}
+
+%        \prop_show:c {l__starray_#1_A.SS_base_prop}
+%        \seq_show:c  {l__starray_so_A.SS_seq}
+%        \prop_show:c {l__starray_so_A.SS_hash_prop}
+%
+%        \prop_show:c {l__starray_#1_A.SS_A_prop}
+%
+%        \prop_show:c {l__starray_#1_B_prop}
+%        \prop_show:c {l__starray_#1_B.SS_base_prop}
+%        \seq_show:c  {l__starray_so_B.SS_seq}
+%        \prop_show:c {l__starray_so_B.SS_hash_prop}
+%        \prop_show:c {l__starray_#1_B.SS_A_prop}
+%        \prop_show:c {l__starray_so_B.SS_hash_prop}
+
+%        \seq_show:c   {l__starray_so_def_st_seq}
+%        \seq_show:c   {l__starray_so.SS_def_st_seq}
+
  %       \seq_show:c {l__starray_so_A_seq}
  %       \seq_show:c {l__starray_so_A.SS_seq}
     }

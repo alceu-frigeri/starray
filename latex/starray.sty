@@ -11,10 +11,10 @@
 %%%%
 
 
-\seq_new:N \l_path_seq
-\seq_new:N \l_pathb_seq
-\tl_new:N \l_tl
-\tl_new:N \l_b_tl
+%\seq_new:N \l_path_seq
+%\seq_new:N \l_pathb_seq
+%\tl_new:N \l_tl
+%\tl_new:N \l_b_tl
 
 
 
@@ -47,6 +47,8 @@
 \cs_generate_variant:Nn \tl_put_right:Nn {Ne}
 \cs_generate_variant:Nn \tl_set:Nn {Ne}
 \cs_generate_variant:Nn \seq_put_right:Nn {ce}
+
+\cs_generate_variant:Nn \int_to_Alph:n {e}
 
 \cs_generate_variant:Nn \prop_put:Nnn {cee}
 
@@ -263,7 +265,7 @@
 
 
 
-\cs_new:Npn \__starray_add_term:n #1
+\cs_new:Npn \__starray_add_term:nn #1#2
   {
     \starray_if_valid:nTF {#1 _base_prop}
       {
@@ -280,31 +282,44 @@
 
         \seq_put_right:ce
           { \prop_item:cn {#1 _base_prop} {seq} }
-          { #1 _ \int_to_Alph:n { \int_use:c { \prop_item:cn {#1 _base_prop} {cnt} } } _prop }
+          { #1 _ \int_to_Alph:e { \int_use:c { \prop_item:cn {#1 _base_prop} {cnt} } } _prop }
 
         \prop_put:cee
           { \prop_item:cn {#1 _base_prop} {full_hash} }
           { \int_use:c { \prop_item:cn {#1 _base_prop} {cnt} } }
-          { #1 _ \int_to_Alph:n { \int_use:c { \prop_item:cn {#1 _base_prop} {cnt} } } _prop }
+          { #1 _ \int_to_Alph:e { \int_use:c { \prop_item:cn {#1 _base_prop} {cnt} } } _prop }
 
         \prop_put:cee
           { \prop_item:cn {#1 _base_prop} {idx_hash} }
           { \int_use:c { \prop_item:cn {#1 _base_prop} {cnt} } }
-          { \int_to_Alph:n { \int_use:c { \prop_item:cn {#1 _base_prop} {cnt} } }  }
+          { \int_to_Alph:e { \int_use:c { \prop_item:cn {#1 _base_prop} {cnt} } }  }
 
         \prop_new:c
-          { #1 _ \int_to_Alph:n { \int_use:c { \prop_item:cn {#1 _base_prop} {cnt} } } _prop }
+          { #1 _ \int_to_Alph:e { \int_use:c { \prop_item:cn {#1 _base_prop} {cnt} } } _prop }
+
+
+%<<#1==#2>>
+%\prop_show:c
+%{ #1 _ \int_to_Alph:e { \int_use:c { \prop_item:cn {#1 _base_prop} {cnt} } } _prop }
+%
+%\prop_show:c  { \prop_item:cn {#2 _base_prop} {def} }
 
         \prop_set_eq:cc
-          { #1 _ \int_to_Alph:n { \int_use:c { \prop_item:cn {#1 _base_prop} {cnt} } } _prop }
-          { \prop_item:cn {#1 _base_prop} {def} }
+          { #1 _ \int_to_Alph:e { \int_use:c { \prop_item:cn {#1 _base_prop} {cnt} } } _prop }
+          { \prop_item:cn {#2 _prop} {def} }
 
 
-      % TODO: map over 'all sub-starrays parts of #1_def_prop (those starting with a dot, ..st_seq)
+%\prop_show:c
+%{ #1 _ \int_to_Alph:e { \int_use:c { \prop_item:cn {#1 _base_prop} {cnt} } } _prop }
+%
+%\prop_show:c  { \prop_item:cn {#2 _base_prop} {def} }
+
+
+      % TODO: map over 'all sub-starrays parts of #2_def_prop (those starting with a dot, ..st_seq)
         \seq_map_tokens:cn
-          { \prop_item:cn { \prop_item:cn {#1 _base_prop} {def}} {..st_seq}  }
+          { \prop_item:cn { \prop_item:cn {#2 _prop} {def}} {..st_seq}  }
           { \__starray_sub_base_new:nn
-              { #1 _ \int_to_Alph:n { \int_use:c { \prop_item:cn {#1 _base_prop} {cnt} } } }
+              { #1 _ \int_to_Alph:e { \int_use:c { \prop_item:cn {#1 _base_prop} {cnt} } } }
           }
       }
       { err:#1~~ not~ a~ valid~ starray! }
@@ -312,14 +327,26 @@
 
 
 
-\cs_new:Npn \starray_add_term:n #1 % TODO: wrong, to be done...
+\cs_new:Npn \starray_add_term:n #1
   {
     \tl_set:Ne \l__starray_tmpb_tl { \__starray_get_root:w #1 .\q_nil\q_stop }
 
-    \bool_set_true:c
-      { \prop_item:cn {l__starray_ \l__starray_tmpb_tl _prop} {is_locked} }
+    \starray_if_valid:nTF {l__starray_ \l__starray_tmpb_tl _prop}
+      {
+        \bool_set_true:c
+          { \prop_item:cn {l__starray_ \l__starray_tmpb_tl _prop} {is_locked} }
 
-    \__starray_add_term:n {l__starray_#1}
+        \__starray_parser:nnTF {\c_true_bool}{#1}
+          {
+            \__starray_add_term:nn
+              {l__starray \l__starray_parsed_ref_tl }
+              {l__starray \l__starray_parsed_def_ref_tl }
+          }
+          {false ~it~ was}
+      }
+      {
+       invalid~root
+      }
   }
 
 
@@ -340,20 +367,19 @@
 \tl_new:N \l__starray_parsed_term_tl
 \tl_new:N \l__starray_parsed_idx_tl
 
-\tl_new:N \l__starray_parsed_root_tl
-\tl_new:N \l__starray_parsed_root_idx_tl
-
-\bool_new:N \l__starray_parsed_root_only_bool
-
-\bool_new:N \__starray_parser_root_bool
-\bool_new:N \__starray_parser_no_idx_bool
 \bool_new:N \__starray_parser_no_idx_ending_bool
 
+\bool_new:N \__starray_parser_no_idx_bool % TODO: to be used (adding prop/struct)
+%\bool_new:N \l__starray_parser_OK_bool
+
+\tl_new:N \l__starray_parsed_ref_tl
+\tl_new:N \l__starray_parsed_def_ref_tl
+\tl_new:N \l__starray_parser_aux_tl %% when constructing parser ref, 1st underscore _ then dot .
 
 
-\tl_new:N \l__starray_tmpa_tl
+%\tl_new:N \l__starray_tmpa_tl
 \tl_new:N \l__starray_tmpb_tl
-\bool_new:N \l__starray_tmpa_bool
+\bool_new:N \l__starray_parser_OK_bool
 
 
 \prg_new_conditional:Npnn \__starray_term_parse_end:w  #1 ] #2 \q_stop { TF}
@@ -411,8 +437,6 @@
 \prg_generate_conditional_variant:Nnn \__starray_if_valid_idx:nn {ee} {p, T, F, TF}
 
 
-\tl_new:N \l__starray_parsed_ref_tl
-\tl_new:N \l__starray_parser_aux_tl
 
 \cs_new:Npn \__starray_ref_parse:w #1 . #2 \q_stop {
   \__starray_term_parse_begin:wTF #1 [ \q_nil \q_stop
@@ -421,25 +445,25 @@
                                          % vars: \l__starray_parsed_term_tl
                                          %       \l__starray_parsed_idx_tl
       \tl_put_right:Ne \l__starray_parsed_ref_tl { \l__starray_parser_aux_tl \l__starray_parsed_term_tl }
+      \tl_put_right:Ne \l__starray_parsed_def_ref_tl { \l__starray_parser_aux_tl \l__starray_parsed_term_tl }
       \tl_set:Nn \l__starray_parser_aux_tl {.}
 
       \starray_if_valid:eTF {l__starray \l__starray_parsed_ref_tl _base_prop}
         {
-           %%
           \quark_if_nil:nTF {#2}
           {       % TODO: this is the last one
             \bool_if:NTF \__starray_parser_no_idx_ending_bool
             {                                             % assuming it is to add a term...
               \tl_if_empty:NTF \l__starray_parsed_idx_tl
               { }       % done. correct
-              {  <<1>>\bool_set_false:N \l__starray_tmpa_bool } % err !
+              {  <<1>>\bool_set_false:N \l__starray_parser_OK_bool } % err !
             }
             {    % TODO: assuming it is to set/get a property
               \__starray_if_valid_idx:eeTF
                 {\int_use:c {\prop_item:cn {l__starray \l__starray_parsed_ref_tl _base_prop} {iter}}}
                 {\l__starray_parsed_idx_tl}
                 {  }      % done, finish, ok
-                {<<2>>\bool_set_false:N \l__starray_tmpa_bool}
+                {<<2>>\bool_set_false:N \l__starray_parser_OK_bool}
             }
           }
           {                       % TODO: there is more to be looked at
@@ -447,13 +471,35 @@
               {\int_use:c {\prop_item:cn {l__starray \l__starray_parsed_ref_tl _base_prop} {iter}}}
               {\l__starray_parsed_idx_tl}
               { \__starray_ref_parse:w #2 \q_stop }      % recurse next term
-              {<<3>>\bool_set_false:N \l__starray_tmpa_bool}
+              {<<3>>\bool_set_false:N \l__starray_parser_OK_bool}
           }
         }
-        { <<4:l__starray \l__starray_parsed_ref_tl _base_prop>>\bool_set_false:N \l__starray_tmpa_bool } % invalid/ref err.
+        { <<4:l__starray \l__starray_parsed_ref_tl _base_prop>>\bool_set_false:N \l__starray_parser_OK_bool } % invalid/ref err.
     }
-    { <<5>>\bool_set_false:N \l__starray_tmpa_bool } % syntax/ref err.
+    { <<5>>\bool_set_false:N \l__starray_parser_OK_bool } % syntax/ref err.
 }
+
+
+\prg_new_conditional:Npnn \__starray_parser:nn #1#2 {p, T, F, TF}
+  {
+    \bool_set_eq:NN \__starray_parser_no_idx_ending_bool #1
+    \bool_set_true:N \l__starray_parser_OK_bool
+
+    \tl_clear:N \l__starray_parsed_ref_tl
+    \tl_clear:N \l__starray_parsed_def_ref_tl
+    \tl_set:Nn \l__starray_parser_aux_tl {_}
+
+    \__starray_ref_parse:w #2 .\q_nil\q_stop
+
+  \bool_if:NTF \l__starray_parser_OK_bool
+    {
+      \prg_return_true:
+    }
+    {
+      \prg_return_false:
+    }
+  }
+
 
 %\tl_new:N \l__starray_tmpb_tl
 
