@@ -9,46 +9,15 @@
 
 \NewDocumentCommand{\parse}{m}
   {
-%    \tl_clear:N \l__starray_parsed_ref_tl
-
-
-
- %   \tl_clear:N \l__starray_tmpa_tl
-  %  \bool_set_true:N \l__starray_tmpa_bool
-
-    % auxiliary \tl for parser
-%    \tl_clear:N \l__starray_parsed_term_tl
- %   \tl_clear:N \l__starray_parsed_root_tl
-  %  \tl_clear:N \l__starray_parsed_root_idx_tl
-
-    % flag/switches for parser
-%    \bool_set_true:N \__starray_parser_root_bool
- %   \bool_set_true:N \__starray_parser_no_idx_bool
-
-%%%these ones !
-%    \tl_clear:N \l__starray_parsed_ref_tl
- %   \bool_set_false:N \__starray_parser_no_idx_ending_bool
-  %  \tl_set:Nn \l__starray_parser_aux_tl {_}
 
       \__starray_parser:nnTF {\c_true_bool}{#1}
         {true ~it~ was}
         {false ~it~ was}
 
 
-%    \__starray_ref_parse:w #1 .\q_nil\q_stop \par
-
 parsed:\l__starray_parsed_ref_tl\par
 
 
-%\bool_to_str:N \l__starray_tmpa_bool\par
-%    \tl_set:Nx \l__starray_tmpb_tl {\__starray_get_root:w #1 .\q_nil\q_stop}
-%
-%    \bool_to_str:N \l__starray_tmpa_bool \l__starray_tmpa_tl \par
-%    <root:  \l__starray_tmpb_tl ~~
-
-%    \starray_if_valid:nTF {l__starray_ \l__starray_tmpb_tl _prop}
-%      {~valid>}
-%      {~invalid>}
 %      \par
 
   }
@@ -60,51 +29,156 @@ parsed:\l__starray_parsed_ref_tl\par
         \starray_new:n {#1}
         \starray_add_prop:nnn {#1}{X}{X-default}
         \starray_add_prop:nnn {#1}{Y}{Y-default}
-        \starray_add_struct:nn {#1}{SS}
-        \starray_add_prop:nnn {#1.SS}{Z}{Z-default}
-        \par
-        +++
-        \par
-        \starray_add_term:n {#1}
-        \starray_add_term:n {#1.SS}
-%        \starray_add_prop:nnn {#1.SS}{YY}{YY-default}
-        \starray_add_term:n {#1}
-        \starray_add_term:n {#1.SS}
 
+                  \starray_add_struct:nn {#1}{SS}
+                  \starray_add_prop:nnn {#1.SS}{Z}{Z-default}
+          %\par
+          %\bool_if:nTF { {\prop_item:cn {l__starray_so_prop}{is_starray} } &&  {\prop_item:cn {l__starray_so_prop}{is_locked}}  }
+          %{that's~true}
+          %{that's~false}
 
+%                  \par
+%                  +++
+%                  \par
+                  \starray_add_term:n {#1}
+                  \starray_add_term:n {#1.SS}
+           %       \starray_add_prop:nnn {#1.SS}{YY}{YY-default}
+                  \starray_add_term:n {#1}
+                  \starray_add_term:n {#1.SS}
 
-%\__starray_parser:nnn {\c_true_bool}{}{}
+%          \__starray_get_prop:nn {#1[1]}{X}
 
-%        \prop_show:c {l__starray_#1_prop}
-%        \prop_show:c {l__starray_#1_def_prop}
-%        \prop_show:c {l__starray_#1.SS_prop}
-%        \prop_show:c {l__starray_#1.SS_def_prop}
+%          \int_new:c {l_starray_x_int}
+%          \prop_new:c {l_starray_x_prop}
+%          \prop_put:cnn {l_starray_x_prop}{cnt}{\l_starray_x_int}
+%          %\int_incr:N \l_starray_x_int
+%          \int_incr:N {\l_starray_x_int}
+%          \int_incr:N {\prop_item:cn {l_starray_x_prop} {cnt}}
+%          \bool_new:c {l_starray_xx_bool}
 
-%        \prop_show:c {l__starray_#1_base_prop}
-%        \seq_show:c  {l__starray_so_seq}
-%        \prop_show:c {l__starray_so_hash_prop}
-%        \prop_show:c {l__starray_#1_A_prop}
+%          \prop_put:cnn {l_starray_x_prop}{flag}{l_starray_xx_bool}
 
-%        \prop_show:c {l__starray_#1_A.SS_base_prop}
-%        \seq_show:c  {l__starray_so_A.SS_seq}
-%        \prop_show:c {l__starray_so_A.SS_hash_prop}
+%          \bool_set:Nn \l_starray_xx_bool{\c_true_bool}
+%          \bool_set:cn {\prop_item:cn {l_starray_x_prop}{flag}}{\c_false_bool}
 %
-%        \prop_show:c {l__starray_#1_A.SS_A_prop}
-%
-%        \prop_show:c {l__starray_#1_B_prop}
-%        \prop_show:c {l__starray_#1_B.SS_base_prop}
-%        \seq_show:c  {l__starray_so_B.SS_seq}
-%        \prop_show:c {l__starray_so_B.SS_hash_prop}
-%        \prop_show:c {l__starray_#1_B.SS_A_prop}
-%        \prop_show:c {l__starray_so_B.SS_hash_prop}
+%          bool:\bool_to_str:N \l_starray_xx_bool \par
+%          %bool:\bool_to_str:n {\prop_item:cn {l_starray_x_prop}{flag}}
 
-%        \seq_show:c   {l__starray_so_def_st_seq}
-%        \seq_show:c   {l__starray_so.SS_def_st_seq}
 
- %       \seq_show:c {l__starray_so_A_seq}
- %       \seq_show:c {l__starray_so_A.SS_seq}
+%          ----\par
+%          val:\int_to_arabic:n {\prop_item:cn {l_starray_x_prop} {cnt}}
+%          \par
+%          val:\int_to_arabic:n {\l_starray_x_int}
+
+%          \par
+          %\bool_if:nTF {\bool_if_p:c {\prop_item:cn {l__starray_so_prop}{is_starray} } && \bool_if_p:c {\prop_item:cn {l__starray_so_prop}{is_locked}}  }
+          %  {that's~true}
+          %  {that's~false}
+
+                  \prop_show:c {l__starray_#1_prop}
+%                  \prop_show:c {l__starray_#1_def_prop}
+                  \prop_show:c {l__starray_#1.SS_prop}
+%                  \prop_show:c {l__starray_#1.SS_def_prop}
+
+                  \prop_show:c {l__starray_#1_base_prop}
+          %        \seq_show:c  {l__starray_so_seq}
+          %        \prop_show:c {l__starray_so_hash_prop}
+%                  \prop_show:c {l__starray_#1_A_prop}
+
+                  \prop_show:c {l__starray_#1_A.SS_base_prop}
+          %        \seq_show:c  {l__starray_so_A.SS_seq}
+          %        \prop_show:c {l__starray_so_A.SS_hash_prop}
+          %
+                  \prop_show:c {l__starray_#1_A.SS_A_prop}
+          %
+                  \prop_show:c {l__starray_#1_B_prop}
+                  \prop_show:c {l__starray_#1_B.SS_base_prop}
+          %        \seq_show:c  {l__starray_so_B.SS_seq}
+          %        \prop_show:c {l__starray_so_B.SS_hash_prop}
+%                  \prop_show:c {l__starray_#1_B.SS_A_prop}
+          %        \prop_show:c {l__starray_so_B.SS_hash_prop}
+
+          %        \seq_show:c   {l__starray_so_def_st_seq}
+          %        \seq_show:c   {l__starray_so.SS_def_st_seq}
+
+           %       \seq_show:c {l__starray_so_A_seq}
+           %       \seq_show:c {l__starray_so_A.SS_seq}
+
+           \int_new:c {__cnt_int}
+           \prop_new:c {__anotherone}
+           \prop_put:cnn {__anotherone}{cnt}{\use:c {__cnt_int}}
+           \int_incr:N {\prop_item:cn {__anotherone}{cnt}}
+           ..\int_to_arabic:n {\prop_item:cn {__anotherone}{cnt}}
+           ..\int_use:N \prop_item:cn {__anotherone}{cnt}
     }
 
+\NewDocumentCommand{\Xwhat}{m}
+  {
+    \prop_new:c {__tmpa_hack_prop}
+
+    \seq_new:c {__hack_seq}
+
+    \prop_new:c {__hackA_prop}
+    \prop_put:cnn {__hackA_prop}{A}{hackA_ a-val}
+    \prop_put:cnn {__hackA_prop}{B}{hackA_ b-val}
+    \prop_put:cnn {__hackA_prop}{C}{hackA_ c-val}
+    \prop_put:cnV {__tmpa_hack_prop}{hackA} \__hackA_prop
+
+    \seq_put_right:cV {__hack_seq} \__hackA_prop
+
+    \prop_clear:N \__hackA_prop
+    \prop_put:cnn {__hackA_prop}{A}{hackA_ aa-val}
+    \prop_put:cnn {__hackA_prop}{B}{hackA_ ab-val}
+    \prop_put:cnn {__hackA_prop}{C}{hackA_ ac-val}
+    \prop_put:cnV {__tmpa_hack_prop}{hackaA} \__hackA_prop
+
+    \seq_put_right:cV {__hack_seq} \__hackA_prop
+
+    \seq_put_right:cV {__hack_seq} \__tmpa_hack_prop
+
+
+    \prop_clear:N \__hackA_prop
+
+
+
+    \par so~far~so~good\par
+    \prop_get:cnN {__tmpa_hack_prop}{hackaA} \__hackA_prop  %% !! the tl receives a copy !
+    \prop_item:cn {__hackA_prop}{A}
+    \prop_put:cnn {__hackA_prop}{A}{new_ aa-val}
+    \prop_put:cnV {__tmpa_hack_prop}{hackaA} \__hackA_prop %% this is needed to update the parent prop.
+    \par
+    \prop_get:cnN {__tmpa_hack_prop}{hackA} \__hackA_prop
+    \prop_item:cn {__hackA_prop}{A}
+    \par
+    \prop_get:cnN {__tmpa_hack_prop}{hackaA} \__hackA_prop
+    \prop_item:cn {__hackA_prop}{A}
+    \par
+%    \seq_item:cn {__hack_seq}{1}
+%    \par
+%    \seq_get_left:cN {__hack_seq} \__seq_hack_prop
+    \tl_set:Nx \__seq_hack_prop {\seq_item:cn {__hack_seq}{1}}
+    \par ---
+    \prop_item:cn {__seq_hack_prop}{A}
+    \prop_show:c {__seq_hack_prop}
+    \tl_show:c{__seq_hack_prop}
+
+    \seq_show:c {__hack_seq}
+
+    \tl_show:c {__hack_seq}
+
+\par bools\par
+\bool_new:c {__test_bool}
+\bool_set_true:c {__test_bool}
+
+\prop_put:cnn {__seq_hack_prop}{A}{\c_false_bool}
+
+\bool_if:nTF {\prop_item:cn{__seq_hack_prop}{A}}{is~true}{is~false}
+
+%\tl_show:c {__test_bool}
+
+
+
+  }
 
 \ExplSyntaxOff
 
@@ -115,14 +189,14 @@ parsed:\l__starray_parsed_ref_tl\par
 =+=+=+=+\par
 
 %\parse{so}\par
-----------\par
-\parse{so.SS}
+%----------\par
+
+%\parse{so.SS}
+
 %\parse{so[1].SS.B.C[3].D.E[abc].X..Y}
-
-
 %\parse{A[1]}
 
-
+%\Xwhat{x}
 
 
 \end{document}
