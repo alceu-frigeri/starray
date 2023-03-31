@@ -1,12 +1,15 @@
 \documentclass{article}
 \RequirePackage[T1]{fontenc}
 \RequirePackage[utf8]{inputenc}
-\RequirePackage{starray}
+\RequirePackage[msg-err=default]{starray}
 %\RequirePackage{lt3rawobjects}
 %\RequirePackage{l3keys}
 \ExplSyntaxOn
 
 %\msg_redirect_module:nnn { starray / syntax } { warning } { error }
+
+
+
 
 \NewDocumentCommand{\test}{m}
     {
@@ -24,77 +27,159 @@
                   \starray_add_prop:nnn {#1.TT.ZX}{ZXa}{TT-ZXa-default}
                   \starray_add_prop:nnn {#1.TT.ZX}{Zxb}{TT-ZXb-default}
 
-                  \starray_add_term:n {#1}
-                  \starray_add_term:n {#1}
-                  \starray_add_term:n {#1[1].SS}
+                  \starray_new_term:nn {#1}{hah}
+                  \starray_new_term:nn {#1}{}
+                  \starray_new_term:nn {#1[1].SS}{}
            %       \starray_add_prop:nnn {#1.SS}{YY}{YY-default}
-                  \starray_add_term:n {#1.SS}
-                  \starray_add_term:n {#1[1].SS}
+                  \starray_new_term:nn {#1.SS}{}
+                  \starray_new_term:nn {#1[1].SS}{}
+%                  \starray_term_new:nn
 
-                  \starray_add_term:n {#1.TT}
-                  \starray_add_term:n {#1.TT}
-                  \starray_add_term:n {#1.TT.ZX}
-                  \starray_add_term:n {#1.TT.ZX}
-                  \par XXX \par
-        \starray_new:n {#1}
-                  \starray_add_prop:nnn {#1x.TT}{Z}{TT-Z-default}
-        YYY \par
-                  \starray_add_term:n {#1[5].Tx}
-ZZZ
+                  \starray_new_term:nn {#1.TTz}{}
+                  \starray_new_term:nn {#1.TT}{}
+                  \starray_new_term:nn {#1.TT.ZX}{}
+                  \starray_new_term:nn {#1.TT.ZX}{}
 
+%        \starray_new:n {#1}
+%                  \starray_add_prop:nnn {#1x.TT}{Z}{TT-Z-default}
 
-            \__starray_get_prop:nn {so[1].SS[1]}{Z}\par
+%                  \starray_new_term:nn {#1[5].Tx}{}
+
+            <<\starray_get_prop:nn {so[hah]}{X}>>\par
+
+\seq_new:c {my_seq}
+\seq_put_left:cn {my_seq}{first term}
+\seq_put_left:cn {my_seq}{second term}
+\seq_put_left:cn {my_seq}{third term}
+\seq_put_left:cn {my_seq}{fourth term}
+\seq_show:c {my_seq}
+
+\starray_set_prop:nnV {#1[1]}{X}{\my_seq}
+\seq_new:c {other_seq}
+\starray_get_prop:nnN {#1[1]}{X}\other_seq
+\seq_show:c {other_seq}
+
+%            \starray_get_prop:nn {so[1].SS[1]}{Z}\par
 %     \group_begin:
-            \__starray_set_prop:nnn {so[1].SS[1]}{Z}{newZ}
+            \starray_set_prop:nnn {so[1].SS[1]}{Z}{newZ}
 %      \group_end:
 
-            \__starray_get_prop:nn {so[1].SS[1]}{Z}
+            \starray_set_prop:nnn {so[1]}{X}{new1X}
+            \starray_set_prop:nnn {so[2]}{X}{new2X}
 
-           \__starray_get_prop:nn {so.SS}{Z}
 
             \starray_set_iter:nn {so}{1}
 
-           \__starray_get_prop:nn {so.SS}{Z}
 
-            \starray_set_iter:nn {so}{2}
+           \starray_get_prop:nn {so}{X}\par
 
-           \__starray_get_prop:nn {so.SS}{Z}
+            \starray_next_iter:n {so}
+
+           \starray_get_prop:nn {so}{X}
+\par
+
+
+  \tl_set:Nn \l_tmpa_tl {
+    first = --first-- ,
+    last = --last-- ,
+    name = --full-name-- ,
+    article = o(a) ,
+    narticle = (a) ,
+    Article = O(A) ,
+    Narticle = (A) ,
+  }
+
+  \tl_set:Nn \l_tmpb_tl {
+    institution = --inst-- ,
+    titleinfo = --info-- ,
+    email = --- ,
+    phone = --- ,
+  }
+
+  \starray_new:n {student}
+
+
+
+  \starray_add_from_keyval:ne {student}
+              {
+                \l_tmpa_tl
+                Nproc = --- ,
+                ID = --- ,
+                email = --- ,
+                advisor . struct = {
+                  \l_tmpa_tl
+                  \l_tmpb_tl
+                } ,
+                reviewers . struct = {
+                  \l_tmpa_tl
+                  \l_tmpb_tl
+                }
+              }
+
+  \starray_add_from_keyval:ne{student.reviewers}
+    {
+      \tl_use:N \l_tmpa_tl
+      institution = --inst-- ,
+      titleinfo = --info-- ,
+      email = --- ,
+      phone = --- ,
+    }
+
+  \starray_add_from_keyval:nn {student.advisor}
+    {
+      first = --first-- ,
+      last = --last-- ,
+      name = --full-name-- ,
+      article = o(a) ,
+      narticle = (a) ,
+      Article = O(A) ,
+      Narticle = (A) ,
+      institution = --inst-- ,
+      titleinfo = --info-- ,
+      email = --- ,
+      phone = --- ,
+    }
+
+
+\starray_new_term:nn {student}{}
+\starray_new_term:nn {student.advisor}{}
+\starray_new_term:nn {student.advisor}{}
+\starray_new_term:nn {student.reviewers}{}
+
+
+\starray_set_from_keyval:nn
+  {student}
+  {
+    first = first~name ,
+    last = last~name ,
+    advisor[2] = {
+      first = advisor~first~name ,
+      last  = advisor~last~name ,
+    } ,
+    reviewers = {
+      first = reviewer~first~name ,
+      last  = reviewer~last~name ,
+    } ,
+    advisor[1] = {
+      first = advisor~first~name ,
+      last  = advisor~last~name ,
+    } ,
+    email
+  }
 
 %            \__starray_set_iter:nn {so.SS}{1}
 %            \__starray_get_prop:nn {so.SS}{Z}
 
+
+
 %          \__starray_get_prop:nn {#1[1]}{X}
 
+\starray_show_def:n {#1}
+\starray_show_terms:n {#1}
+\starray_show_def:n {student}
+\starray_show_terms:n {student}
 
-                  \prop_show:c {l__starray_#1_prop}
-%                  \prop_show:c {l__starray_#1_def_prop}
-                  \prop_show:c {l__starray_#1.SS_prop}
-%                  \prop_show:c {l__starray_#1.SS_def_prop}
-
-                  \prop_show:c {l__starray_#1_base_prop}
-          %        \seq_show:c  {l__starray_so_seq}
-          %        \prop_show:c {l__starray_so_hash_prop}
-                  \prop_show:c {l__starray_#1_A_prop}
-
-                  \prop_show:c {l__starray_#1_A.SS_base_prop}
-          %        \seq_show:c  {l__starray_so_A.SS_seq}
-          %        \prop_show:c {l__starray_so_A.SS_hash_prop}
-          %
-                  \prop_show:c {l__starray_#1_A.SS_A_prop}
-                  \prop_show:c {l__starray_#1_A.SS_B_prop}
-          %
-                  \prop_show:c {l__starray_#1_B_prop}
-                  \prop_show:c {l__starray_#1_B.SS_base_prop}
-          %        \seq_show:c  {l__starray_so_B.SS_seq}
-          %        \prop_show:c {l__starray_so_B.SS_hash_prop}
-                  \prop_show:c {l__starray_#1_B.SS_A_prop}
-          %        \prop_show:c {l__starray_so_B.SS_hash_prop}
-
-          %        \seq_show:c   {l__starray_so_def_st_seq}
-          %        \seq_show:c   {l__starray_so.SS_def_st_seq}
-
-           %       \seq_show:c {l__starray_so_A_seq}
-           %       \seq_show:c {l__starray_so_A.SS_seq}
+\prop_show:c {l__starray_student_A.advisor_base_prop}
 
     }
 
