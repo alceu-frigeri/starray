@@ -1,194 +1,228 @@
-\documentclass{article}
+\documentclass[dctools,english]{ufrgscca}
 \RequirePackage[T1]{fontenc}
 \RequirePackage[utf8]{inputenc}
+\RequirePackage[a4paper,margin=5cm,right=2cm,marginparwidth=4.5cm,asymmetric,top=2.5cm,bottom=1.5cm]{geometry}
 \RequirePackage[msg-err=default]{starray}
+\usepackage{democodetools}
+
 %\RequirePackage{lt3rawobjects}
 %\RequirePackage{l3keys}
 \ExplSyntaxOn
 
 %\msg_redirect_module:nnn { starray / syntax } { warning } { error }
 
-
-
-
-\NewDocumentCommand{\test}{m}
-    {
-        \starray_new:n {#1}
-        \starray_add_prop:nnn {#1}{X}{X-default}
-        \starray_add_prop:nnn {#1}{Y}{Y-default}
-
-                  \starray_add_struct:nn {#1}{SS}
-                  \starray_add_prop:nnn {#1.SS}{Z}{Z-default}
-                  \starray_add_prop:nnn {#1.SS}{Zx}{Zx-default}
-                  \starray_add_struct:nn {#1}{TT}
-                  \starray_add_prop:nnn {#1.TT}{Z}{TT-Z-default}
-                  \starray_add_prop:nnn {#1.TT}{Zx}{TT-Zx-default}
-                  \starray_add_struct:nn {#1.TT}{ZX}
-                  \starray_add_prop:nnn {#1.TT.ZX}{ZXa}{TT-ZXa-default}
-                  \starray_add_prop:nnn {#1.TT.ZX}{Zxb}{TT-ZXb-default}
-
-                  \starray_new_term:nn {#1}{hah}
-                  \starray_new_term:nn {#1}{}
-                  \starray_new_term:nn {#1[1].SS}{}
-           %       \starray_add_prop:nnn {#1.SS}{YY}{YY-default}
-                  \starray_new_term:nn {#1.SS}{}
-                  \starray_new_term:nn {#1[1].SS}{}
-%                  \starray_term_new:nn
-
-                  \starray_new_term:nn {#1.TTz}{}
-                  \starray_new_term:nn {#1.TT}{}
-                  \starray_new_term:nn {#1.TT.ZX}{}
-                  \starray_new_term:nn {#1.TT.ZX}{}
-
-%        \starray_new:n {#1}
-%                  \starray_add_prop:nnn {#1x.TT}{Z}{TT-Z-default}
-
-%                  \starray_new_term:nn {#1[5].Tx}{}
-
-            <<\starray_get_prop:nn {so[hah]}{X}>>\par
-
-\seq_new:c {my_seq}
-\seq_put_left:cn {my_seq}{first term}
-\seq_put_left:cn {my_seq}{second term}
-\seq_put_left:cn {my_seq}{third term}
-\seq_put_left:cn {my_seq}{fourth term}
-\seq_show:c {my_seq}
-
-\starray_set_prop:nnV {#1[1]}{X}{\my_seq}
-\seq_new:c {other_seq}
-\starray_get_prop:nnN {#1[1]}{X}\other_seq
-\seq_show:c {other_seq}
-
-%            \starray_get_prop:nn {so[1].SS[1]}{Z}\par
-%     \group_begin:
-            \starray_set_prop:nnn {so[1].SS[1]}{Z}{newZ}
-%      \group_end:
-
-            \starray_set_prop:nnn {so[1]}{X}{new1X}
-            \starray_set_prop:nnn {so[2]}{X}{new2X}
-
-
-            \starray_set_iter:nn {so}{1}
-
-
-           \starray_get_prop:nn {so}{X}\par
-
-            \starray_next_iter:n {so}
-
-           \starray_get_prop:nn {so}{X}
-\par
-
-
-  \tl_set:Nn \l_tmpa_tl {
-    first = --first-- ,
-    last = --last-- ,
-    name = --full-name-- ,
-    article = o(a) ,
-    narticle = (a) ,
-    Article = O(A) ,
-    Narticle = (A) ,
-  }
-
-  \tl_set:Nn \l_tmpb_tl {
-    institution = --inst-- ,
-    titleinfo = --info-- ,
-    email = --- ,
-    phone = --- ,
-  }
-
-  \starray_new:n {student}
-
-
-
-  \starray_add_from_keyval:ne {student}
-              {
-                \l_tmpa_tl
-                Nproc = --- ,
-                ID = --- ,
-                email = --- ,
-                advisor . struct = {
-                  \l_tmpa_tl
-                  \l_tmpb_tl
-                } ,
-                reviewers . struct = {
-                  \l_tmpa_tl
-                  \l_tmpb_tl
-                }
-              }
-
-  \starray_add_from_keyval:ne{student.reviewers}
-    {
-      \tl_use:N \l_tmpa_tl
-      institution = --inst-- ,
-      titleinfo = --info-- ,
-      email = --- ,
-      phone = --- ,
-    }
-
-  \starray_add_from_keyval:nn {student.advisor}
-    {
-      first = --first-- ,
-      last = --last-- ,
-      name = --full-name-- ,
-      article = o(a) ,
-      narticle = (a) ,
-      Article = O(A) ,
-      Narticle = (A) ,
-      institution = --inst-- ,
-      titleinfo = --info-- ,
-      email = --- ,
-      phone = --- ,
-    }
-
-
-\starray_new_term:nn {student}{}
-\starray_new_term:nn {student.advisor}{}
-\starray_new_term:nn {student.advisor}{}
-\starray_new_term:nn {student.reviewers}{}
-
-
-\starray_set_from_keyval:nn
-  {student}
-  {
-    first = first~name ,
-    last = last~name ,
-    advisor[2] = {
-      first = advisor~first~name ,
-      last  = advisor~last~name ,
-    } ,
-    reviewers = {
-      first = reviewer~first~name ,
-      last  = reviewer~last~name ,
-    } ,
-    advisor[1] = {
-      first = advisor~first~name ,
-      last  = advisor~last~name ,
-    } ,
-    email
-  }
-
-%            \__starray_set_iter:nn {so.SS}{1}
-%            \__starray_get_prop:nn {so.SS}{Z}
-
-
-
-%          \__starray_get_prop:nn {#1[1]}{X}
-
-\starray_show_def:n {#1}
-\starray_show_terms:n {#1}
-\starray_show_def:n {student}
-\starray_show_terms:n {student}
-
-\prop_show:c {l__starray_student_A.advisor_base_prop}
-
-    }
-
-
 \ExplSyntaxOff
 
 \begin{document}
+\ExplSyntaxOn
 
-\test{so}
+\starray_new:n {STtest}
+\starray_def_prop:nnn {STtest}{X}{X-default}
+\starray_def_prop:nnn {STtest}{Y}{Y-default}
+
+\starray_def_struct:nn {STtest}{SS}
+\starray_def_prop:nnn {STtest.SS}{Z}{Z-default}
+\starray_def_prop:nnn {STtest.SS}{Zx}{Zx-default}
+\starray_def_struct:nn {STtest}{TT}
+\starray_def_prop:nnn {STtest.TT}{Z}{TT-Z-default}
+\starray_def_prop:nnn {STtest.TT}{Zx}{TT-Zx-default}
+\starray_def_struct:nn {STtest.TT}{ZX}
+\starray_def_prop:nnn {STtest.TT.ZX}{ZXa}{TT-ZXa-default}
+\starray_def_prop:nnn {STtest.TT.ZX}{Zxb}{TT-ZXb-default}
+
+\starray_def_struct:nn {STtest.SS}{ZsX}
+\starray_def_prop:nnn {STtest.SS.ZsX}{ZsXa}{TT-ZsXa-default}
+\starray_def_prop:nnn {STtest.SS.ZsX}{Zsxb}{TT-ZsXb-default}
 
 
+
+\starray_new_term:nn {STtest}{hah}
+\starray_new_term:nn {STtest}{}
+\starray_new_term:nn {STtest[1].SS}{}
+
+%adding a def property after one being instantiated.
+\starray_def_prop:nnn {STtest.SS}{YY}{YY-default}
+
+
+xxzz\par
+
+\starray_show_def:n {STtest}
+\starray_show_terms:n {STtest}
+
+%adding a def structure after one being instantiated! loop !
+\starray_def_struct:nn {STtest.SS}{TTy}
+\starray_def_prop:nnn {STtest.SS.TTy}{TTyZsXa}{TTyTT-ZsXa-default}
+\starray_def_prop:nnn {STtest.SS.TTy}{TTyZsxb}{TTyTT-ZsXb-default}
+\starray_fix_terms:n {STtest}
+%\starray_def_prop:nnn {STtest.SS.TTy}{Z}{TTy-Z-default}
+
+
+bcd\par
+\starray_fix_terms:n {STtest}
+
+\starray_show_def:n {STtest}
+\starray_show_terms:n {STtest}
+
+
+        \starray_new_term:nn {STtest.SS}{}
+        \starray_new_term:nn {STtest[1].SS}{}
+        %                  \starray_term_new:nn
+
+        % TTz isn't part of it... (error testing)
+        %\starray_new_term:nn {STtest.TTz}{}
+
+        \starray_new_term:nn {STtest.TT}{}
+        \starray_new_term:nn {STtest.TT.ZX}{}
+        \starray_new_term:nn {STtest.TT.ZX}{}
+
+        %        \starray_new:n {STtest}
+        %                  \starray_def_prop:nnn {STtestx.TT}{Z}{TT-Z-default}
+
+        %                  \starray_new_term:nn {STtest[5].Tx}{}
+
+        <<\starray_get_prop:nn {STtest[hah]}{X}>>\par
+
+        % creating a seq and 'inserting' it as a property.
+        \seq_new:c {my_seq}
+        \seq_put_left:cn {my_seq}{first term}
+        \seq_put_left:cn {my_seq}{second term}
+        \seq_put_left:cn {my_seq}{third term}
+        \seq_put_left:cn {my_seq}{fourth term}
+        \seq_show:c {my_seq}
+
+        \starray_set_prop:nnV {STtest[1]}{X}{\my_seq}
+        \seq_new:c {other_seq}
+        \starray_get_prop:nnN {STtest[1]}{X}\other_seq
+        \seq_show:c {other_seq}
+
+
+
+        %            \starray_get_prop:nn {STtest[1].SS[1]}{Z}\par
+        %     \group_begin:
+        \starray_set_prop:nnn {STtest[1].SS[1]}{Z}{newZ}
+        %      \group_end:
+
+        \starray_set_prop:nnn {STtest[1]}{X}{new1X}
+        \starray_set_prop:nnn {STtest[2]}{X}{new2X}
+
+
+        \starray_set_iter:nn {STtest}{1}
+
+
+        \starray_get_prop:nn {STtest}{X}\par
+
+        \starray_next_iter:n {STtest}
+
+        \starray_get_prop:nn {STtest}{X}
+        \par
+        \starray_reset_iter:n {STtest}
+
+        \starray_get_prop:nn {STtest}{X}
+        \par
+
+
+        \tl_set:Nn \l_tmpa_tl {
+          first = --first-- ,
+          last = --last-- ,
+          name = --full-name-- ,
+          article = o(a) ,
+          narticle = (a) ,
+          Article = O(A) ,
+          Narticle = (A) ,
+        }
+
+        \tl_set:Nn \l_tmpb_tl {
+          institution = --inst-- ,
+          titleinfo = --info-- ,
+          email = --- ,
+          phone = --- ,
+        }
+
+        \starray_new:n {student}
+
+
+
+        \starray_def_from_keyval:ne {student}
+        {
+          \l_tmpa_tl
+          Nproc = --- ,
+          ID = --- ,
+          email = --- ,
+          advisor . struct = {
+            \l_tmpa_tl
+            \l_tmpb_tl
+          } ,
+          reviewers . struct = {
+            \l_tmpa_tl
+            \l_tmpb_tl
+          }
+        }
+
+        \starray_def_from_keyval:ne{student.reviewers}
+        {
+          \tl_use:N \l_tmpa_tl
+          institution = --inst-- ,
+          titleinfo = --info-- ,
+          email = --- ,
+          phone = --- ,
+        }
+
+        \starray_def_from_keyval:nn {student.advisor}
+        {
+          first = --first-- ,
+          last = --last-- ,
+          name = --full-name-- ,
+          article = o(a) ,
+          narticle = (a) ,
+          Article = O(A) ,
+          Narticle = (A) ,
+          institution = --inst-- ,
+          titleinfo = --info-- ,
+          email = --- ,
+          phone = --- ,
+          somedata . struct = {
+            fieldA = field-A ,
+            fieldB = field-B ,
+            fieldC = field-C ,
+          }
+        }
+
+
+        \starray_new_term:nn {student}{}
+        \starray_new_term:nn {student.advisor}{}
+        %\starray_new_term:nn {student.advisor.somedata}{}
+        \starray_new_term:nn {student.advisor}{}
+        %\starray_new_term:nn {student.advisor.somedata}{}
+        %\starray_new_term:nn {student.advisor.somedata}{}
+        \starray_new_term:nn {student.reviewers}{}
+
+
+        \starray_set_from_keyval:nn
+        {student}
+        {
+          first = first~name ,
+          last = last~name ,
+          advisor[2] = {
+            first = advisor~first~name ,
+            last  = advisor~last~name ,
+          } ,
+          reviewers = {
+            first = reviewer~first~name ,
+            last  = reviewer~last~name ,
+          } ,
+          advisor[1] = {
+            first = advisor~first~name ,
+            last  = advisor~last~name ,
+          } ,
+          email
+        }
+
+%        \starray_show_def:n {STtest}
+%        \starray_show_terms:n {STtest}
+        \starray_show_def:n {student}
+        \starray_show_terms:n {student}
+
+        \starray_set_iter:nn {student[1].advisor.somedata}{1}
+
+\ExplSyntaxOff
 \end{document}
