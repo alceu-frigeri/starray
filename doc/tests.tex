@@ -1,12 +1,12 @@
-\documentclass[dctools,english]{ufrgscca}
+% !TEX program = pdflatex
+% !TEX ext =  --interaction=nonstopmode --enable-etex --enable-write18
+% !BIB program = none
+
+\documentclass{article}
 \RequirePackage[T1]{fontenc}
 \RequirePackage[utf8]{inputenc}
-\RequirePackage[a4paper,margin=5cm,right=2cm,marginparwidth=4.5cm,asymmetric,top=2.5cm,bottom=1.5cm]{geometry}
 \RequirePackage[msg-err=default]{starray}
-\usepackage{democodetools}
 
-%\RequirePackage{lt3rawobjects}
-%\RequirePackage{l3keys}
 \ExplSyntaxOn
 
 %\msg_redirect_module:nnn { starray / syntax } { warning } { error }
@@ -14,25 +14,31 @@
 \ExplSyntaxOff
 
 \begin{document}
+
 \ExplSyntaxOn
 
+aaa \iow_newline: > BB \use:nnn { ~ } { ~ } { ~ }
+\par
+%%%
+%%% Testing the creation of a starray with sub-structures, one definition at a time
+%%%
 \starray_new:n {STtest}
 \starray_def_prop:nnn {STtest}{X}{X-default}
 \starray_def_prop:nnn {STtest}{Y}{Y-default}
 
 \starray_def_struct:nn {STtest}{SS}
-\starray_def_prop:nnn {STtest.SS}{Z}{Z-default}
-\starray_def_prop:nnn {STtest.SS}{Zx}{Zx-default}
+\starray_def_prop:nnn {STtest.SS}{Z}{SS~Z-default}
+\starray_def_prop:nnn {STtest.SS}{Zx}{SS~Zx-default}
 \starray_def_struct:nn {STtest}{TT}
-\starray_def_prop:nnn {STtest.TT}{Z}{TT-Z-default}
-\starray_def_prop:nnn {STtest.TT}{Zx}{TT-Zx-default}
+\starray_def_prop:nnn {STtest.TT}{Z}{TT~Z-default}
+\starray_def_prop:nnn {STtest.TT}{Zx}{TT~Zx-default}
 \starray_def_struct:nn {STtest.TT}{ZX}
-\starray_def_prop:nnn {STtest.TT.ZX}{ZXa}{TT-ZXa-default}
-\starray_def_prop:nnn {STtest.TT.ZX}{Zxb}{TT-ZXb-default}
+\starray_def_prop:nnn {STtest.TT.ZX}{ZXa}{TT~Zx~ZXa-default}
+\starray_def_prop:nnn {STtest.TT.ZX}{Zxb}{TT~Zx~ZXb-default}
 
 \starray_def_struct:nn {STtest.SS}{ZsX}
-\starray_def_prop:nnn {STtest.SS.ZsX}{ZsXa}{TT-ZsXa-default}
-\starray_def_prop:nnn {STtest.SS.ZsX}{Zsxb}{TT-ZsXb-default}
+\starray_def_prop:nnn {STtest.SS.ZsX}{ZsXa}{SS~ZsX~ZsXa-default}
+\starray_def_prop:nnn {STtest.SS.ZsX}{Zsxb}{SS~ZsX~ZsXb-default}
 
 
 
@@ -44,43 +50,42 @@
 \starray_def_prop:nnn {STtest.SS}{YY}{YY-default}
 
 
-xxzz\par
 
-\starray_show_def:n {STtest}
-\starray_show_terms:n {STtest}
+%\starray_show_def:n {STtest}
+%\starray_show_terms:n {STtest}
 
-%adding a def structure after one being instantiated! loop !
+%adding a def structure after one being instantiated! possible loop ! (if not fixed)
 \starray_def_struct:nn {STtest.SS}{TTy}
 \starray_def_prop:nnn {STtest.SS.TTy}{TTyZsXa}{TTyTT-ZsXa-default}
 \starray_def_prop:nnn {STtest.SS.TTy}{TTyZsxb}{TTyTT-ZsXb-default}
-\starray_fix_terms:n {STtest}
-%\starray_def_prop:nnn {STtest.SS.TTy}{Z}{TTy-Z-default}
 
-
-bcd\par
+%to fix already instantiated terms.
 \starray_fix_terms:n {STtest}
 
-\starray_show_def:n {STtest}
-\starray_show_terms:n {STtest}
+
+\starray_def_prop:nnn {STtest.SS.TTy}{Z}{TTy-Z-default}
+
+
+\starray_fix_terms:n {STtest}
+
+This~is~STtest~definition:\starray_show_def_in_text:n {STtest}
+
+
+\par These~are~STtest~terms:\starray_show_terms_in_text:n {STtest}
 
 
         \starray_new_term:nn {STtest.SS}{}
         \starray_new_term:nn {STtest[1].SS}{}
-        %                  \starray_term_new:nn
 
         % TTz isn't part of it... (error testing)
-        %\starray_new_term:nn {STtest.TTz}{}
+        \starray_new_term:nn {STtest.TTz}{}
 
         \starray_new_term:nn {STtest.TT}{}
         \starray_new_term:nn {STtest.TT.ZX}{}
         \starray_new_term:nn {STtest.TT.ZX}{}
 
-        %        \starray_new:n {STtest}
-        %                  \starray_def_prop:nnn {STtestx.TT}{Z}{TT-Z-default}
 
-        %                  \starray_new_term:nn {STtest[5].Tx}{}
-
-        <<\starray_get_prop:nn {STtest[hah]}{X}>>\par
+        \par This~is~'X'~property~from STtest[hah]'hah'~term:\starray_get_prop:nn {STtest[hah]}{X}\par
 
         % creating a seq and 'inserting' it as a property.
         \seq_new:c {my_seq}
@@ -88,12 +93,12 @@ bcd\par
         \seq_put_left:cn {my_seq}{second term}
         \seq_put_left:cn {my_seq}{third term}
         \seq_put_left:cn {my_seq}{fourth term}
-        \seq_show:c {my_seq}
+        %\seq_show:c {my_seq}
 
         \starray_set_prop:nnV {STtest[1]}{X}{\my_seq}
         \seq_new:c {other_seq}
         \starray_get_prop:nnN {STtest[1]}{X}\other_seq
-        \seq_show:c {other_seq}
+        %\seq_show:c {other_seq}
 
 
 
@@ -121,6 +126,30 @@ bcd\par
         \par
 
 
+        \starray_get_prop:nnNTF {STtest[1].SS[1]}{Z}\l_tmpb_tl
+          {ST1.SS1.Z~it's~there~and~it's~value~is:\l_tmpb_tl}
+          {ST1.SS1.Z~it~isn't~there}
+\par
+        \starray_get_prop:nnNTF {STtest[1].SS[1]}{ZX}\l_tmpb_tl
+          {ST1.SS1.ZX~it's~there~and~it's~value~is:\l_tmpb_tl}
+          {ST1.SS1.ZX~it~isn't~there}
+\par
+        \starray_get_prop:nnNTF {STtest[1].SS[2]}{Z}\l_tmpb_tl
+          {ST1.SS2.Z~it's~there~and~it's~value~is:\l_tmpb_tl}
+          {ST1.SS2.Z~it~isn't~there}
+\par
+        \starray_get_prop:nnNTF {STtest[1].SS[3]}{Z}\l_tmpb_tl
+          {ST1.SS3.Z~it's~there~and~it's~value~is:\l_tmpb_tl}
+          {ST1.SS3.Z~it~isn't~there}
+\par
+
+\tl_set:Nn \tl_test \int_use:N
+
+\int_new:N \my_int
+\starray_get_cnt:nN {STtest} \my_int
+Nterms:\starray_get_cnt:n {STtest}.. \int_use:N \my_int\par
+
+xx:\tl_test \my_int \par
         \tl_set:Nn \l_tmpa_tl {
           first = --first-- ,
           last = --last-- ,
@@ -190,14 +219,16 @@ bcd\par
 
         \starray_new_term:nn {student}{}
         \starray_new_term:nn {student.advisor}{}
-        %\starray_new_term:nn {student.advisor.somedata}{}
+        \starray_new_term:nn {student.advisor.somedata}{}
         \starray_new_term:nn {student.advisor}{}
-        %\starray_new_term:nn {student.advisor.somedata}{}
-        %\starray_new_term:nn {student.advisor.somedata}{}
+        \starray_new_term:nn {student.advisor.somedata}{}
+        \starray_new_term:nn {student.advisor.somedata}{}
         \starray_new_term:nn {student.reviewers}{}
 
 
-        \starray_set_from_keyval:nn
+\par AAAAAAAAAAAAAAAAAAAAAAAA \par BBBBBBBBBBBBBBBBB \par CCCCCCCCCCCCCCCCCC \par
+
+        \starray_set_from_keyval:nnTF
         {student}
         {
           first = first~name ,
@@ -216,13 +247,26 @@ bcd\par
           } ,
           email
         }
+        {\par it~worked!\par}
+        {\par oh~well\par}
 
-%        \starray_show_def:n {STtest}
-%        \starray_show_terms:n {STtest}
+        \starray_show_def_in_text:n {STtest}
+        \starray_show_terms_in_text:n {STtest}
         \starray_show_def:n {student}
+        \par
         \starray_show_terms:n {student}
+        \starray_show_def_in_text:n {STtest}
+        \starray_show_terms_in_text:n {STtest}
+        \starray_show_def:n {STtest}
+        \starray_show_terms:n {STtest}
 
         \starray_set_iter:nn {student[1].advisor.somedata}{1}
+
+\seq_new:N \test_seq
+\seq_set_from_clist:Nn \test_seq {AA,BB,CC,DD,EE,FF}
+\int_new:N \testint
+\int_set:Nn \testint {2}
+\test_recur:nn  {\testint} {\test_seq}{}
 
 \ExplSyntaxOff
 \end{document}
