@@ -7,22 +7,100 @@
 \RequirePackage[utf8]{inputenc}
 \RequirePackage[msg-err=default]{starray}
 
-\ExplSyntaxOn
-
-%\msg_redirect_module:nnn { starray / syntax } { warning } { error }
-
-\ExplSyntaxOff
 
 \begin{document}
 
 \ExplSyntaxOn
 
-aaa \iow_newline: > BB \use:nnn { ~ } { ~ } { ~ }
+\bool_new:N \l_sttests_showerrs_bool
+\bool_set_true:N \l_sttests_showerrs_bool
+
+\bool_new:N \l_starray_test_errs_bool
+\bool_new:N \l_starray_test_parser_errs_bool
+\bool_new:N \l_starray_test_ref_errs_bool
+\bool_new:N \l_starray_test_fixterms_bool
+\bool_new:N \l_starray_test_D_bool
+
+\cs_new:Npn \sttests_fail: {\par{\color_select:n{red}~failed~}\par}
+\cs_new:Npn \sttests_fail:n #1 {\par{\color_select:n{red}~failed:~#1}\par}
+\cs_new:Npn \sttests_pass: {\par{\color_select:n{blue}~passed~}\par}
+\cs_new:Npn \sttests_pass:n #1 {\par{\color_select:n{blue}~passed:~#1}\par}
+\cs_new:Npn \sttests_remark:n #1 {\par\ \,{\color_select:n{green}\use:nnnn{~}{~}{~}{~}~Note:~#1}\par}
+\cs_new:Npn \sttests_work_in:n #1 {\par\,\use:nn{~}{~}---{\color_select:n{magenta}~#1~}---\par}
+\cs_new:Npn \sttests_par: {\par\ \par}
+
+
+%To~be~tested:
+%
+%**\starray_new:n     
+%**\starray_new:nTF
+%**\starray_def_prop:nnn
+%**\starray_def_prop:nnnTF
+%**\starray_fix_terms:n
+%**\starray_def_struct:nn
+%**\starray_def_struct:nnTF
+%\starray_def_from_keyval:nn
+%\starray_def_from_keyval:nnTF
+%**\starray_new_term:nn
+%**\starray_new_term:nnTF
+%**\starray_set_iter:nn
+%**\starray_set_iter:nnTF
+%**\starray_reset_iter:n
+%**\starray_reset_iter:nTF
+%**\starray_next_iter:n
+%**\starray_next_iter:nTF
+%**\starray_get_prop:nn
+%**\starray_get_prop:nnN
+%**\starray_get_prop:nnNTF
+%**\starray_if_in:nnTF
+%**\starray_get_cnt:n
+%**\starray_get_cnt:nN
+%**\starray_get_cnt:nNTF
+%**\starray_get_iter:n
+%**\starray_get_iter:nN
+%**\starray_get_iter:nNTF
+%**\starray_set_prop:nnn
+%**\starray_set_prop:nnnTF
+%**\starray_gset_prop:nnn
+%**\starray_gset_prop:nnnTF
+%\starray_set_from_keyval:nn
+%\starray_set_from_keyval:nnTF
+%\starray_gset_from_keyval:nn
+%\starray_gset_from_keyval:nnTF
+%**\starray_term_syntax:nTF
+%**\starray_show_def:n
+%**\starray_show_def_in_text:n
+%**\starray_show_terms:n
+%**\starray_show_terms_in_text:n
+
+
+
+
+
+
 \par
+
 %%%
 %%% Testing the creation of a starray with sub-structures, one definition at a time
 %%%
+\par
+{\sc Testing~starray}
+\sttests_par:
+
+\sttests_work_in:n {properties/sub-structures,~one~definition~at~a~time}
+
 \starray_new:n {STtest}
+
+\starray_new:nTF {STtest}
+  {STtest~\sttests_fail:n{dup~not~detected}}
+  {STtest~\sttests_pass:n{dup~detected}}
+\sttests_par:
+
+\starray_new:nTF {STtestX}
+  {STtestX~\sttests_pass:n{new~done!}}
+  {STtestX~~\sttests_fail:n{new~failed!}}
+\sttests_par:
+
 \starray_def_prop:nnn {STtest}{X}{X-default}
 \starray_def_prop:nnn {STtest}{Y}{Y-default}
 
@@ -32,7 +110,12 @@ aaa \iow_newline: > BB \use:nnn { ~ } { ~ } { ~ }
 \starray_def_struct:nn {STtest}{TT}
 \starray_def_prop:nnn {STtest.TT}{Z}{TT~Z-default}
 \starray_def_prop:nnn {STtest.TT}{Zx}{TT~Zx-default}
-\starray_def_struct:nn {STtest.TT}{ZX}
+
+\starray_def_struct:nnTF {STtest.TT}{ZX}
+  {adding~struct~ZX~to~STtest.TT~\sttests_pass:n{defined~correctly!}}
+  {adding~struct~ZX~to~STtest.TT.ZX~\sttests_fail:n{it~should't~be~a~ERROR!}}
+\sttests_par:
+  
 \starray_def_prop:nnn {STtest.TT.ZX}{ZXa}{TT~Zx~ZXa-default}
 \starray_def_prop:nnn {STtest.TT.ZX}{Zxb}{TT~Zx~ZXb-default}
 
@@ -40,116 +123,354 @@ aaa \iow_newline: > BB \use:nnn { ~ } { ~ } { ~ }
 \starray_def_prop:nnn {STtest.SS.ZsX}{ZsXa}{SS~ZsX~ZsXa-default}
 \starray_def_prop:nnn {STtest.SS.ZsX}{Zsxb}{SS~ZsX~ZsXb-default}
 
-
+\starray_def_prop:nnnTF {STtest.TT}{Zy}{TT~Zy-default}
+  {STtest.TT~Zy=TT~Zy-default~\sttests_pass:}
+  {STtest.TT~Zy=TT~Zy-default~\sttests_fail:}
+\sttests_par:
+\starray_def_prop:nnnTF {STtest.TTT}{Zx}{TTT~Zx-default}
+  {STtest.TTT~Zy (err)=TT~Zy-default~~\sttests_fail:n{err~not~detected}}
+  {STtest.TTT~Zy (err)=TT~Zy-default~\sttests_pass:n{err~detected}}
+\sttests_par:
 
 \starray_new_term:nn {STtest}{hah}
 \starray_new_term:nn {STtest}{}
 \starray_new_term:nn {STtest[1].SS}{}
 
+\sttests_work_in:n {Extending~def~structure~of~an~already~instantiated~starray}
+\sttests_remark:n {it~will~loop~if~not~fixed!}
+
 %adding a def property after one being instantiated.
 \starray_def_prop:nnn {STtest.SS}{YY}{YY-default}
 
 
-
+% if called 'now' those macros will result in a TeX loop...
 %\starray_show_def:n {STtest}
 %\starray_show_terms:n {STtest}
+
 
 %adding a def structure after one being instantiated! possible loop ! (if not fixed)
 \starray_def_struct:nn {STtest.SS}{TTy}
 \starray_def_prop:nnn {STtest.SS.TTy}{TTyZsXa}{TTyTT-ZsXa-default}
 \starray_def_prop:nnn {STtest.SS.TTy}{TTyZsxb}{TTyTT-ZsXb-default}
 
+\sttests_work_in:n {Fixing ~it}
+
 %to fix already instantiated terms.
 \starray_fix_terms:n {STtest}
 
-
 \starray_def_prop:nnn {STtest.SS.TTy}{Z}{TTy-Z-default}
-
 
 \starray_fix_terms:n {STtest}
 
-This~is~STtest~definition:\starray_show_def_in_text:n {STtest}
+\bool_if:NTF \l_sttests_showerrs_bool
+  {
+    \sttests_remark:n{STtest~def~\tl_to_str:n {\show}~shall~appear~in~logs~(if~fixed)}
+    \starray_show_def:n {STtest}
+    
+    \sttests_remark:n{STtest~terms~\tl_to_str:n {\show}~shall~appear~in~logs~(if~fixed)}
+    \starray_show_terms:n {STtest}
+  }
+  {
+    \sttests_remark:n{STtest~def~(if~fixed)}
+    \starray_show_def_in_text:n {STtest}
+    
+    \sttests_remark:n{STtest~terms~(if~fixed)}
+    \starray_show_terms_in_text:n {STtest}
+  }
+\sttests_par:
 
-
-\par These~are~STtest~terms:\starray_show_terms_in_text:n {STtest}
-
+\bool_if:NTF \l_sttests_showerrs_bool
+  {
+    \sttests_remark:n {STtest.SSX~(err/warning)~shall~be~in~logs:}
+    \starray_new_term:nn {STtest.SSX}{}
+  }
+  {
+    \starray_new_term:nnTF {STtest.SSX}{}
+      {STtest.SSX~new~term~\sttests_fail:n{err~not~detected}}
+      {STtest.SSX~new~term~\sttests_pass:n{err~detected}}
+  }
+\sttests_par:
 
         \starray_new_term:nn {STtest.SS}{}
         \starray_new_term:nn {STtest[1].SS}{}
-
-        % TTz isn't part of it... (error testing)
-        \starray_new_term:nn {STtest.TTz}{}
 
         \starray_new_term:nn {STtest.TT}{}
         \starray_new_term:nn {STtest.TT.ZX}{}
         \starray_new_term:nn {STtest.TT.ZX}{}
 
+\sttests_par:
 
-        \par This~is~'X'~property~from STtest[hah]'hah'~term:\starray_get_prop:nn {STtest[hah]}{X}\par
+\sttests_work_in:n {testing~term_syntax~function}
+STtest.TT.ZXx~(err)~
+\starray_term_syntax:nTF {STtest.TT.ZXx}
+  {\sttests_fail:n{err~not~detected}}
+  {\sttests_pass:n{err~detected}}
 
+\sttests_par:
+
+STtest.TT.ZX~(correct)~
+\starray_term_syntax:nTF {STtest.TT.ZX}
+  {\sttests_pass:}
+  {\sttests_fail:}
+
+\sttests_par:
+
+  
+\sttests_work_in:n {testing~get_prop~functions}
+\sttests_remark:n {This~is~(default)~'X'~property~from STtest[hah]~term:~}\starray_get_prop:nn {STtest[hah]}{X}
+\sttests_par:
+
+
+\sttests_remark:n {Same~with~a~token-list~ variable}
+\starray_get_prop:nnN {STtest[hah]}{X}\l_tmpa_tl
+\l_tmpa_tl
+
+\sttests_par:
+
+\sttests_remark:n {Same~with~'branching'}
+\starray_get_prop:nnNTF {STtest[hah]}{X}\l_tmpa_tl
+  {X:\l_tmpa_tl~\sttests_pass:n{X~found~correctly}}
+  {X:\l_tmpa_tl~\sttests_fail:n{X~not~found}}
+
+\sttests_par:
+
+\starray_get_prop:nnNTF {STtest[hah]}{Xt}\l_tmpa_tl
+  {Xt:\l_tmpa_tl~\sttests_fail:n{Xt~don't~exist}}
+  {Xt:\l_tmpa_tl~\sttests_pass:n{Xt~don't~exist}}
+
+\sttests_par:
+
+\sttests_remark:n {(same)~testing~\tl_to_str:n{\...if_in:}}
+\starray_if_in:nnTF {STtest[hah]}{X}
+  {\sttests_pass:n{X~exists}}
+  {\sttests_fail:n{X~don't~exits}}
+\starray_if_in:nnTF {STtest[hah]}{Xty}
+  {\sttests_fail:n{Xty~exists}}
+  {\sttests_pass:n{Xty~don't~exit}}
+
+
+\sttests_par:
+
+\sttests_work_in:n {Testing~iter~functions}
+Current~STtest~iter: 
+\sttests_remark:n {direct~access:\starray_get_iter:n{STtest}}
+\sttests_remark:n {using~a~tmp~var: \starray_get_iter:nN{STtest} \l_tmpa_int \int_use:N \l_tmpa_int}
+
+\sttests_remark:n {reseting~iter} \starray_reset_iter:n{STtest}
+iter: \starray_get_iter:n{STtest}
+
+\sttests_remark:n {next~iter} \starray_next_iter:n{STtest}
+iter: \starray_get_iter:n{STtest}
+
+\sttests_remark:n {next~iter} \starray_next_iter:n{STtest}
+iter: \starray_get_iter:n{STtest}
+
+\sttests_remark:n {set~iter->5} \starray_set_iter:nn{STtest}{5}
+iter: \starray_get_iter:n{STtest}
+
+\sttests_remark:n {set~iter->0} \starray_set_iter:nn{STtest}{0}
+iter: \starray_get_iter:n{STtest}
+
+\sttests_par:
+
+\sttests_work_in:n {Testing~iter~functions~with~branching}
+Current~STtest~iter: 
+\starray_get_iter:nNTF {STtest} \l_tmpa_int 
+  {\sttests_pass:n {got:~\int_use:N \l_tmpa_int}}
+  {\sttests_fail:n {get_iter failed}}
+
+iter~from~STtestY~(err): 
+\starray_get_iter:nNTF {STtestY} \l_tmpa_int 
+  {\sttests_fail:n {got:~\int_use:N \l_tmpa_int}}
+  {\sttests_pass:n {syntax~err~OK}}
+
+\sttests_remark:n {reseting~iter} 
+\starray_reset_iter:nTF{STtest}
+  {\sttests_pass:}
+  {\sttests_fail:}
+iter: \starray_get_iter:n{STtest}
+
+\sttests_remark:n {next~iter} 
+\starray_next_iter:nTF{STtest}
+  {\sttests_pass:}
+  {\sttests_fail:}
+iter: \starray_get_iter:n{STtest}
+
+\sttests_remark:n {next~iter} 
+\starray_next_iter:nTF{STtest}
+  {\sttests_fail:}
+  {\sttests_pass:n {'saturated'}~}
+iter: \starray_get_iter:n{STtest}
+
+\sttests_remark:n {set~iter->5} 
+\starray_set_iter:nnTF {STtest}{5}
+  {\sttests_fail:}
+  {\sttests_pass:n {'over'}}
+iter: \starray_get_iter:n{STtest}
+
+\sttests_remark:n {set~iter->0} 
+\starray_set_iter:nnTF {STtest}{0}
+  {\sttests_fail:}
+  {\sttests_pass:n {'under'}}
+iter: \starray_get_iter:n{STtest}
+
+\sttests_remark:n {set~iter->2} 
+\starray_set_iter:nnTF {STtest}{2}
+  {\sttests_pass:}
+  {\sttests_fail:n {'wrong'}}
+iter: \starray_get_iter:n{STtest}
+
+\sttests_par:
+
+\sttests_work_in:n {Testing~cnt~functions}
+Current~STtest~cnt: 
+\sttests_remark:n {direct~access:\starray_get_cnt:n{STtest}}
+\sttests_remark:n {using~a~tmp~var: \starray_get_cnt:nN{STtest} \l_tmpa_int \int_use:N \l_tmpa_int}
+
+\sttests_work_in:n {Testing~cnt~function~with~branching}
+Current~STtest~cnt: 
+\starray_get_cnt:nNTF {STtest} \l_tmpa_int 
+  {\sttests_pass:n {got:~\int_use:N \l_tmpa_int}}
+  {\sttests_fail:n {get_cnt failed}}
+
+Current~STtestX~cnt: 
+\starray_get_cnt:nNTF {STtestX} \l_tmpa_int 
+  {\sttests_pass:n {got:~\int_use:N \l_tmpa_int}}
+  {\sttests_fail:n {get_cnt failed}}
+
+Current~STtestY~cnt: 
+\starray_get_cnt:nNTF {STtestY} \l_tmpa_int 
+  {\sttests_fail:n {got:~\int_use:N \l_tmpa_int}}
+  {\sttests_pass:n {non~existant}}
+
+\sttests_par:
+
+\sttests_work_in:n {Testing~_if_in ~function}
+\starray_if_in:nnTF {STtest}{X}
+  {\sttests_pass:n {X ~found}}
+  {\sttests_fail:n {X ~not~found}}
+\starray_if_in:nnTF {STtest}{G}
+  {\sttests_fail:n {G ~found}}
+  {\sttests_pass:n {G ~not~found}}
+
+\sttests_work_in:n {Testing~_term_syntax ~function}
+STtest[2].TT~is:
+\starray_term_syntax:nTF {STtest[2].TT}
+  {\sttests_pass:n {~correct}}
+  {\sttests_fail:n {~should~be~correct}}
+STtest[1].TT~is:
+\starray_term_syntax:nTF {STtest[1].TT}
+  {\sttests_fail:n {~shouldn't~be}}
+  {\sttests_pass:n {~wasn't~instantiated}}
+STtest[1].GG~is:
+\starray_term_syntax:nTF {STtest[1].GG}
+  {\sttests_fail:n {~shouldn't~be~correct}}
+  {\sttests_pass:n {~not~correct}}
+
+
+\sttests_par:
+
+\sttests_work_in:n {Testing~(g)set_prop ~functions}
+STtest[2].TT.Z~current~value:~\starray_get_prop:nn {STtest[2].TT}{Z}\par
+\starray_set_prop:nnn {STtest[2].TT}{Z}{newZ~value}
+STtest[2].TT.Z~new~value:~\starray_get_prop:nn {STtest[2].TT}{Z}\par
+
+\sttests_par:
+
+\sttests_work_in:n {Testing~(g)set_prop ~inside~a~group}
+\group_begin:
+  \starray_set_prop:nnn {STtest[2].TT}{Z}{newZ~inside~group}
+  STtest[2].TT.Z~inside:~\starray_get_prop:nn {STtest[2].TT}{Z}\par
+\group_end:
+  STtest[2].TT.Z~ouside:~\starray_get_prop:nn {STtest[2].TT}{Z}\par
+
+\group_begin:
+  \starray_gset_prop:nnn {STtest[2].TT}{Z}{newZ~gset~inside~group}
+  STtest[2].TT.Z~inside~gset:~\starray_get_prop:nn {STtest[2].TT}{Z}\par
+\group_end:
+  STtest[2].TT.Z~ouside:~\starray_get_prop:nn {STtest[2].TT}{Z}\par
+
+\sttests_par:
+
+\sttests_work_in:n {Testing~(g)set_prop ~functions}
+STtest[2].TT.Z~current~value:~\starray_get_prop:nn {STtest[2].TT}{Z}\par
+\starray_set_prop:nnn {STtest[2].TT}{Z}{newZ~value}
+STtest[2].TT.Z~new~value:~\starray_get_prop:nn {STtest[2].TT}{Z}\par
+
+
+\sttests_par:
+\sttests_work_in:n {Testing~(g)set_prop ~inside~a~group}
+\group_begin:
+  \starray_set_prop:nnn {STtest[2].TT}{Z}{newZ~inside~group}
+  STtest[2].TT.Z~inside:~\starray_get_prop:nn {STtest[2].TT}{Z}\par
+\group_end:
+  STtest[2].TT.Z~ouside:~\starray_get_prop:nn {STtest[2].TT}{Z}\par
+
+\group_begin:
+  \starray_gset_prop:nnn {STtest[2].TT}{Z}{newZ~gset~inside~group}
+  STtest[2].TT.Z~inside~gset:~\starray_get_prop:nn {STtest[2].TT}{Z}\par
+\group_end:
+  STtest[2].TT.Z~ouside:~\starray_get_prop:nn {STtest[2].TT}{Z}\par
+
+\sttests_par:
+
+\sttests_work_in:n {Testing~(g)set_prop ~functions~with ~branching}
+STtest[2].TT.Z~current~value:~\starray_get_prop:nn {STtest[2].TT}{Z}\par
+
+\starray_set_prop:nnnTF {STtest[2].TT}{Z}{newZZZZ~value}
+  {\sttests_pass:n {new~value:~\starray_get_prop:nn {STtest[2].TT}{Z}}}
+  {\sttests_fail:n {??~value:~\starray_get_prop:nn {STtest[2].TT}{Z}}}
+
+\sttests_par:
+\sttests_work_in:n {Testing~(g)set_prop ~inside~a~group}
+\group_begin:
+  \starray_set_prop:nnnTF {STtest[2].TT}{Z}{newZ~inside~group}
+    {\sttests_pass:n {new~value:~\starray_get_prop:nn {STtest[2].TT}{Z}}}
+    {\sttests_fail:n {??~value:~\starray_get_prop:nn {STtest[2].TT}{Z}}}
+\group_end:
+  STtest[2].TT.Z~ouside:~\starray_get_prop:nn {STtest[2].TT}{Z}\par
+
+\group_begin:
+  \starray_gset_prop:nnnTF {STtest[2].TT}{Z}{newZ~gset~inside~group}
+    {\sttests_pass:n {new~value:~\starray_get_prop:nn {STtest[2].TT}{Z}}}
+    {\sttests_fail:n {??~value:~\starray_get_prop:nn {STtest[2].TT}{Z}}}
+\group_end:
+  STtest[2].TT.Z~ouside:~\starray_get_prop:nn {STtest[2].TT}{Z}\par
+
+setting: STtest[1].TT~(err,~not~instantiated)\par
+  \starray_set_prop:nnnTF {STtest[1].TT}{Z}{newZ~inside~group}
+    {\sttests_fail:n {!!~value:~\starray_get_prop:nn {STtest[1].TT}{Z}}}
+    {\sttests_pass:n {correct, ~no~instance}}
+
+
+\sttests_par:
+
+\sttests_work_in:n {set_prop:nnV~inserting~a~sequence~as~a~property}
         % creating a seq and 'inserting' it as a property.
         \seq_new:c {my_seq}
         \seq_put_left:cn {my_seq}{first term}
         \seq_put_left:cn {my_seq}{second term}
         \seq_put_left:cn {my_seq}{third term}
         \seq_put_left:cn {my_seq}{fourth term}
-        %\seq_show:c {my_seq}
-
         \starray_set_prop:nnV {STtest[1]}{X}{\my_seq}
         \seq_new:c {other_seq}
         \starray_get_prop:nnN {STtest[1]}{X}\other_seq
-        %\seq_show:c {other_seq}
+
+\bool_if:NTF \l_sttests_showerrs_bool
+  {
+    \sttests_remark:n {the~2~(equal)~sequences~shall~be~in~log~\tl_to_str:n{(\show)}}
+   \seq_show:c {my_seq}
+
+   \seq_show:c {other_seq}
+  }
+  {
+  }
 
 
+\sttests_par:
 
-        %            \starray_get_prop:nn {STtest[1].SS[1]}{Z}\par
-        %     \group_begin:
-        \starray_set_prop:nnn {STtest[1].SS[1]}{Z}{newZ}
-        %      \group_end:
+\sttests_work_in:n {defining/setting~from~keyval}
 
-        \starray_set_prop:nnn {STtest[1]}{X}{new1X}
-        \starray_set_prop:nnn {STtest[2]}{X}{new2X}
-
-
-        \starray_set_iter:nn {STtest}{1}
-
-
-        \starray_get_prop:nn {STtest}{X}\par
-
-        \starray_next_iter:n {STtest}
-
-        \starray_get_prop:nn {STtest}{X}
-        \par
-        \starray_reset_iter:n {STtest}
-
-        \starray_get_prop:nn {STtest}{X}
-        \par
-
-
-        \starray_get_prop:nnNTF {STtest[1].SS[1]}{Z}\l_tmpb_tl
-          {ST1.SS1.Z~it's~there~and~it's~value~is:\l_tmpb_tl}
-          {ST1.SS1.Z~it~isn't~there}
-\par
-        \starray_get_prop:nnNTF {STtest[1].SS[1]}{ZX}\l_tmpb_tl
-          {ST1.SS1.ZX~it's~there~and~it's~value~is:\l_tmpb_tl}
-          {ST1.SS1.ZX~it~isn't~there}
-\par
-        \starray_get_prop:nnNTF {STtest[1].SS[2]}{Z}\l_tmpb_tl
-          {ST1.SS2.Z~it's~there~and~it's~value~is:\l_tmpb_tl}
-          {ST1.SS2.Z~it~isn't~there}
-\par
-        \starray_get_prop:nnNTF {STtest[1].SS[3]}{Z}\l_tmpb_tl
-          {ST1.SS3.Z~it's~there~and~it's~value~is:\l_tmpb_tl}
-          {ST1.SS3.Z~it~isn't~there}
-\par
-
-\tl_set:Nn \tl_test \int_use:N
-
-\int_new:N \my_int
-\starray_get_cnt:nN {STtest} \my_int
-Nterms:\starray_get_cnt:n {STtest}.. \int_use:N \my_int\par
-
-xx:\tl_test \my_int \par
         \tl_set:Nn \l_tmpa_tl {
           first = --first-- ,
           last = --last-- ,
@@ -168,8 +489,6 @@ xx:\tl_test \my_int \par
         }
 
         \starray_new:n {student}
-
-
 
         \starray_def_from_keyval:ne {student}
         {
@@ -213,7 +532,12 @@ xx:\tl_test \my_int \par
             fieldA = field-A ,
             fieldB = field-B ,
             fieldC = field-C ,
-          }
+          } ,
+          somedata . struct = {
+            fieldA = field-Ax ,
+            fieldD = field-D ,
+          } ,
+          
         }
 
 
@@ -226,9 +550,9 @@ xx:\tl_test \my_int \par
         \starray_new_term:nn {student.reviewers}{}
 
 
-\par AAAAAAAAAAAAAAAAAAAAAAAA \par BBBBBBBBBBBBBBBBB \par CCCCCCCCCCCCCCCCCC \par
+\sttests_work_in:n {setting~from~keyval~with~branching}
 
-        \starray_set_from_keyval:nnTF
+      \starray_set_from_keyval:nnTF
         {student}
         {
           first = first~name ,
@@ -247,26 +571,12 @@ xx:\tl_test \my_int \par
           } ,
           email
         }
-        {\par it~worked!\par}
-        {\par oh~well\par}
+        {\sttests_pass:n {correct}}
+        {\sttests_fail:n {!!!}}
 
-        \starray_show_def_in_text:n {STtest}
-        \starray_show_terms_in_text:n {STtest}
-        \starray_show_def:n {student}
-        \par
-        \starray_show_terms:n {student}
-        \starray_show_def_in_text:n {STtest}
-        \starray_show_terms_in_text:n {STtest}
-        \starray_show_def:n {STtest}
-        \starray_show_terms:n {STtest}
+\starray_show_def_in_text:n {student}
+\starray_show_terms_in_text:n {student}
 
-        \starray_set_iter:nn {student[1].advisor.somedata}{1}
-
-\seq_new:N \test_seq
-\seq_set_from_clist:Nn \test_seq {AA,BB,CC,DD,EE,FF}
-\int_new:N \testint
-\int_set:Nn \testint {2}
-\test_recur:nn  {\testint} {\test_seq}{}
 
 \ExplSyntaxOff
 \end{document}
