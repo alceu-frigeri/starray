@@ -1,13 +1,37 @@
 % !TEX program = pdflatex
 % !TEX ext =  --interaction=nonstopmode --enable-etex --enable-write18
 % !BIB program = none
-
+%%%==============================================================================
+%% Copyright 2023 by Alceu Frigeri
+%%
+%% This work may be distributed and/or modified under the conditions of
+%%
+%% * The [LaTeX Project Public License](http://www.latex-project.org/lppl.txt),
+%%   version 1.3c (or later), and/or
+%% * The [GNU Affero General Public License](https://www.gnu.org/licenses/agpl-3.0.html),
+%%   version 3 (or later)
+%%
+%% This work has the LPPL maintenance status *maintained*.
+%%
+%% The Current Maintainer of this work is Alceu Frigeri
+%%
+%% This is version 1.0 (2023/05/11)
+%%
+%% The list of files that compose this work can be found in the README.md file at
+%% https://ctan.org/pkg/starray
+%%
+%%%==============================================================================
 \documentclass{article}
+\RequirePackage[verbose,a4paper,includemp,marginparwidth=3.5cm,top=2.5cm,bottom=1.5cm,asymmetric]{geometry}
 \RequirePackage[T1]{fontenc}
 \RequirePackage[utf8]{inputenc}
 \RequirePackage[msg-err=default]{starray}
+\ExplSyntaxOn
 
+%\use:c {@reversemargintrue}
+\ExplSyntaxOff
 
+%\RequirePackage{showframe}
 \begin{document}
 
 \ExplSyntaxOn
@@ -15,11 +39,11 @@
 \bool_new:N \l_sttests_showerrs_bool
 \bool_set_true:N \l_sttests_showerrs_bool
 
-\bool_new:N \l_starray_test_errs_bool
-\bool_new:N \l_starray_test_parser_errs_bool
-\bool_new:N \l_starray_test_ref_errs_bool
-\bool_new:N \l_starray_test_fixterms_bool
-\bool_new:N \l_starray_test_D_bool
+\bool_new:N \l__starray_test_errs_bool
+\bool_new:N \l__starray_test_parser_errs_bool
+\bool_new:N \l__starray_test_ref_errs_bool
+\bool_new:N \l__starray_test_fixterms_bool
+\bool_new:N \l__starray_test_D_bool
 
 \cs_new:Npn \sttests_fail: {\par{\color_select:n{red}~failed~}\par}
 \cs_new:Npn \sttests_fail:n #1 {\par{\color_select:n{red}~failed:~#1}\par}
@@ -73,17 +97,10 @@
 %**\starray_show_terms:n
 %**\starray_show_terms_in_text:n
 
-
-
-
-
-
-\par
-
 %%%
 %%% Testing the creation of a starray with sub-structures, one definition at a time
 %%%
-\par
+\par\noindent
 {\sc Testing~starray}
 \sttests_par:
 

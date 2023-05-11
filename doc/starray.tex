@@ -1,0 +1,566 @@
+%%%==============================================================================
+%% Copyright 2023 by Alceu Frigeri
+%%
+%% This work may be distributed and/or modified under the conditions of
+%%
+%% * The [LaTeX Project Public License](http://www.latex-project.org/lppl.txt),
+%%   version 1.3c (or later), and/or
+%% * The [GNU Affero General Public License](https://www.gnu.org/licenses/agpl-3.0.html),
+%%   version 3 (or later)
+%%
+%% This work has the LPPL maintenance status *maintained*.
+%%
+%% The Current Maintainer of this work is Alceu Frigeri
+%%
+%% This is version 1.0 (2023/05/11)
+%%
+%% The list of files that compose this work can be found in the README.md file at
+%% https://ctan.org/pkg/starray
+%%
+%%%==============================================================================
+% !TEX program = pdflatex
+% !TEX ext =  --interaction=nonstopmode --enable-etex
+% !BIB program = none
+\documentclass[10pt]{article}
+\RequirePackage[verbose,a4paper,marginparwidth=27.5mm,top=2.5cm,bottom=1.5cm,hmargin={40mm,20mm},marginparsep=2.5mm,columnsep=10mm,asymmetric]{geometry}
+%\RequirePackage[verbose,a4paper,marginparwidth=27.5mm,top=2.5cm,bottom=1.5cm,hmargin={45mm,25mm},marginparsep=2.5mm,columnsep=10mm,asymmetric]{geometry}
+\usepackage{codedescribe}
+\usepackage{codelisting}
+\usepackage{starray}
+\RequirePackage[inline]{enumitem}
+\SetEnumitemKey{miditemsep}{parsep=0ex,itemsep=0.4ex}
+
+
+\begin{document}
+\tstitle{
+  author={Alceu Frigeri\footnote{\tsverb{https://github.com/alceu-frigeri/starray}}},
+  date={2023/05/11},
+  title={The starray Package\break Version \PkgInfo{starray}{version}}
+  }
+  
+\begin{typesetabstract}
+
+This package implements vector like 'structures', like in 'C' and other programming languages. 
+It's based on \tsobj[pkg]{expl3} and aimed at 'package writers', and not end users. The provided 'functions' are similar the ones provided for property (or sequence, or token) lists. For most of the provided functions there is a companion 'branching version'.
+
+\end{typesetabstract}
+
+\tableofcontents
+
+\section{Introduction}
+The main idea is to have an array like syntax when setting/recovering structured information, e.g. \tsmacro{\starray_get_prop:nn} {student[2].work[3].reviewer[4] , name} where ''student'' is the starray root, ''work'' is a sub-structure (an array in itself), ''reviewer'' is a sub-structure of ''work'' and so on, \tsobj[marg]{name} being a property of ''reviewer''. Moreover one can iterate over the structure, for instance \tsmacro{\starray_get_prop:nn}{student.work.reviewer,name} is also a possible reference in which one is using ''student's'', ''work's'' and ''reviewer's'' iterators.
+
+Internally, a \tsobj[pkg]{starray} is stored as a collection of property lists. Each \tsobj[pkg]{starray} can contain a list of property pairs (key/value as in any \tsobj[pkg]{expl3} property lists) and a list of sub-structures. Each sub-structure, at it's turn, can also contain a list of property pairs and a list of sub-structures. 
+
+The construction/definition of a \tsobj[pkg]{starray} can be done piecewise (a property/sub-structure a time) or with a keyval interface or both, either way, one has to first ''create a root starray'' (\tsmacro{\starray_new:n}{}), define it's elements (properties and sub-structures), then instantiate them ''as needed''. An instance of a \tsobj[pkg]{starray} (or one of it's sub-structures) is referred, in this text, as a ''term''.
+
+Finally, almost all defined functions have a branching version, as per \tsobj[pkg]{expl3}: \tsobj[code]{_p,T,F,TF}. For simplicity, in the text bellow only the \underline{\textsl{TF}} variant is described, as in \tsobj[code]{\starray_new:nTF}, keep in mind that all 4 variants do exist, e.g. \tsobj[code]{\starray_new_p:n,\starray_new:nT,\starray_new_p:nF,\starray_new_p:nTF}. As usual, the \tsobj[code]{_p} version denotes, is the predicate one (which can be used in boolena expressions).
+
+\begin{tsremark}[N.B.:]
+ Could it be implemented with a single property list? It sure could, but at a cost: 
+\begin{enumerate*}   \item complexity;    \item access time.   \end{enumerate*}
+The current implementation, albeit also complex, tries to reach a balance between inherent structure complexity, number of used/defined auxiliary property lists and access time.
+\end{tsremark}
+
+\section{Class Options}\label{pack:options}
+The package options (\tsobj[key]{key}\,=\tsobj[value]{value}) are:
+\begin{describelist}{option}
+\describe{prefix}{(default: \tsobj[value]{\detokenize{l__starray_}} ). Set the \tsobj[key]{prefix} used when declaring the property lists associated with any \tsobj[pkg]{starray}.}
+
+\describe{msg-err}{ 
+By default, the \tsobj[pkg]{starray} package only generates ''warnings'', with \tsobj[option]{msg-err} one can choose which cases will generate ''package error'' messages. There are 3 message classes: 1. \tsobj[value]{strict} relates to \tsmacro{\starray_new:n}{} cases (\tsobj[pkg]{starray} creation); 2. \tsobj[value]{syntax} relates to ''term syntax'' errors (student.work.reviewer in the above examples); finally 3. \tsobj[value]{reference} relates to cases whereas the syntax is correct but referring to non-existent terms/properties. }
+
+\begin{describelist*}{value}
+\describe{none}{ (default) no package message will raise an error.}
+\describe{strict}{ will raise an error on \tsobj[value]{strict} case alone.}
+\describe{syntax}{ will raise an error on \tsobj[value]{strict} and \tsobj[value]{syntax} cases.}
+\describe{reference}{ will raise an error on \tsobj[value]{strict}, \tsobj[value]{syntax} and \tsobj[value]{reference} cases.}
+\describe{all}{ will raise an error on all cases.}
+\end{describelist*}
+
+\describe{msg-suppress}{ ditto, to suppress classes of messages:}
+\begin{describelist*}{value}
+\describe{none}{ (default) no package message will be suppressed.}
+\describe{reference}{ only \tsobj[value]{reference} level messages will be suppressed.}
+\describe{syntax}{ \tsobj[value]{reference} and \tsobj[value]{syntax} level messages will be suppressed.}
+\describe{strict}{ \tsobj[value]{reference}, \tsobj[value]{syntax} and \tsobj[value]{strict} level messages will be suppressed.}
+\describe{all}{ all messages will be suppressed.}
+\end{describelist*}
+\end{describelist}
+
+\section{Creating a starray}\label{pack:new}
+\begin{codedescribe}{\starray_new:n,\starray_new:nTF}
+\begin{codesyntax}%
+\tsmacro{\starray_new:n}{starray}
+\tsmacro{\starray_new:nTF}{starray,if-true,if-false}
+\end{codesyntax}
+\end{codedescribe}
+
+Creates a new \tsobj[marg]{starray} or raises a warning  if the name is already taken. The declaration (and associated property lists) is global. The given name is referred (in this text) as the \tsobj[marg]{starray-root} or just \tsobj[marg]{root}. 
+\begin{tsremark}
+  A warning is raised (see \ref{pack:options}) if the name is already taken. The branching version doesn't raise any warning.
+\end{tsremark}
+
+\section{Defining and initialising a starray structure}\label{pack:def}
+
+\begin{codedescribe}{\starray_def_prop:nnn,\starray_def_prop:nnnTF}
+\begin{codesyntax}%
+\tsmacro{\starray_def_prop:nnn}{starray-ref,prop-key,initial-value}
+\tsmacro{\starray_def_prop:nnnTF}{starray-ref,prop-key,initial-value,if-true,if-false}
+\end{codesyntax}
+Adds an entry, \tsobj[marg]{prop-key}, to the \tsobj[marg]{starray-ref} (see \ref{pack:ref}) definition and set its initial value. If \tsobj[marg]{prop-key} is already present its initial value is updated. Both \tsobj[marg]{prop-key} and \tsobj[marg]{initial-value} may contain any \tsobj[marg]{balanced text}. \tsobj[marg]{prop-key} is an (\tsobj[pkg]{expl3}) property list \tsobj[marg]{key} meaning that category codes are ignored.
+
+The definition/assignment of a \tsobj[marg]{prop-key} to a \tsobj[marg]{starray-ref} is global.
+\end{codedescribe}
+
+\begin{tsremark}
+A warning is raised (see \ref{pack:options}) in case of a \tsobj[marg]{starray-ref} syntax/reference error. The branching version doesn't raise any warning.
+\end{tsremark}
+
+\begin{codedescribe}{\starray_def_structure:nn,\starray_def_structure:nnTF}
+\begin{codesyntax}%
+\tsmacro{\starray_def_struct:nn}{starray-ref,struct-name}
+\tsmacro{\starray_def_struct:nnTF}{starray-ref,struct-name,if-true,if-false}
+\end{codesyntax}
+Adds a sub-structure (a \tsobj[pkg]{starray} in itself) to \tsobj[marg]{starray-ref} (see \ref{pack:ref}). If \tsobj[marg]{struct-name} is already present nothing happens. The definition/assignment of a \tsobj[marg]{struct-name} to a \tsobj[marg]{starray-ref} is global.
+\end{codedescribe}
+
+
+\begin{tsremark}
+Do not use a dot when defining a (sub-)structure name, it might seems to work but it will breaks further down (see \ref{pack:ref}).
+\end{tsremark}
+
+
+\begin{tsremark}[Note 2:]
+A warning is raised (see \ref{pack:options}) in case of a \tsobj[marg]{starray-ref} syntax error. The branching version doesn't raise any warning.
+\end{tsremark}
+
+\begin{codedescribe}{\starray_def_from_keyval:nn,\starray_def_from_keyval:nnTF}
+\begin{codesyntax}%
+\tsmacro{\starray_def_from_keyval:nn}{starray-ref,keyval-lst}
+\tsmacro{\starray_def_from_keyval:nnTF}{starray-ref,keyval-lst,if-true,if-false}
+\end{codesyntax}
+
+Adds a set of \tsobj[marg]{keys} / \tsobj[marg]{values} and/or \tsobj[marg]{structures} to \tsobj[marg]{starray-ref} (see \ref{pack:ref}). The \tsobj[marg]{keyval-lst} is pretty straightforward, 
+the construction \tsobj[key]{\tsobj[marg]{key} . struct} denotes a nested structure :
+\end{codedescribe}
+
+\begin{codestore}[keyval.demo]
+\starray_def_from_keyval:nn {root.substructure} 
+  {
+    keyA = valA ,
+    keyB = valB ,
+    subZ . struct = 
+      {
+        keyZA = valZA ,
+        keyZB = valZB ,
+      }
+    subY . struct =
+      {
+        keyYA = valYA ,
+        keyYB = valYB ,
+        subYYY . struct =
+          {
+            keyYYYa = valYYYa ,
+            keyYYYb = valYYYb 
+          }
+      }
+  }
+\end{codestore}
+
+\tscode*[codeprefix=~]{keyval.demo}
+
+The definitions/assignments  to \tsobj[marg]{starray-ref} are all global.
+
+
+The non-branching version raises a warning (see \ref{pack:options}) in case of a \tsobj[marg]{starray-ref} syntax error. The branching version doesn't raise any warning. Please note that, syntax errors on the \tsobj[marg]{keyval-lst} might raise low level (\TeX) errors.
+
+\subsection{Fixing an ill-instantiated starray}\label{pack:def-fix}
+
+When instantiating (see \ref{pack:instantiate}) a \tsobj[pkg]{starray}, the associated structured will be constructed based on it's ''current definition'' (see \ref{pack:def}). A problem that migh arise, when one extends the definition of an already instantiated \tsobj[pkg]{starray}  (better said, if one adds a sub-structure), is a \textsl{quark loop} (from \tsobj[pkg]{l3quark}). To avoid a \textsl{quark loop} it is necessary to ''fix'' the structure of already instantiated terms.
+
+\begin{codedescribe}{\starray_fix_terms:n}
+\begin{codesyntax}%
+\tsmacro{\starray_fix_terms:n}{starray-ref}
+\end{codesyntax}
+\end{codedescribe}
+The sole purpose of this function is to ''fix'' the already instantiated terms of a \tsobj[pkg]{starray}. Note, this can be an expensive operation depending on the number of terms (it has to craw over all the terms of an instantiated \tsobj[pkg]{starray} adding any missing sub-structure references), but one doesn't need to run it ''right away'' it is possible to add a bunch of sub-structures and than run this just once.
+
+
+\section{Instantiating starray terms}\label{pack:instantiate}
+
+\begin{codedescribe}{\starray_new_term:n,\starray_new_term:nn,\starray_new_term:nTF,\starray_new_term:nnTF}
+\begin{codesyntax}%
+\tsmacro{\starray_new_term:n}{starray-ref}
+\tsmacro{\starray_new_term:nn}{starray-ref,hash}
+\tsmacro{\starray_new_term:nTF}{starray-ref,if-true,if-false}
+\tsmacro{\starray_new_term:nnTF}{starray-ref,hash,if-true,if-false}
+\end{codesyntax}
+\end{codedescribe}
+This create a new \textsl{term} (in fact a property list) of the (sub-)struture referenced by \tsobj[marg]{starray-ref}. Note that the newly created \textsl{term} will have all properties (key/values) as defined by the associated \tsmacro{\starray_prop_def:nn}{starray-ref}, with the respective ''initial values''. For instance, given the following 
+
+\begin{codestore}[store-env=keyval.demo2]
+\starray_new:n {st-root}
+
+\starray_def_from_keyval:nn {st-root} 
+  {
+    keyA = valA ,
+    keyB = valB ,
+    subZ . struct = 
+      {
+        keyZA = valZA ,
+        keyZB = valZB ,
+      }
+    subY . struct =
+      {
+        keyYA = valYA ,
+        keyYB = valYB ,
+        subYYY . struct =
+          {
+            keyYYYa = valYYYa ,
+            keyYYYb = valYYYb 
+          }
+      }
+  }
+  
+\starray_new_term:n {st-root}
+\starray_new_term:n {st-root.subZ}
+\starray_new_term:n {st-root.subZ}
+\starray_new_term:n {st-root.subY}
+\starray_new_term:nn {st-root}{hash-A}
+\starray_new_term:n {st-root.subZ}
+\end{codestore}
+
+\tscode*[codeprefix=~]{keyval.demo2}
+
+One will have created 6 \textsl{terms}:
+\begin{enumerate}[miditemsep]
+\item 2 \tsobj[marg]{st-root} \textsl{terms}
+  \begin{enumerate}[miditemsep]
+  \item the first one with index 1 and
+  \begin{enumerate}[miditemsep]
+    \item 2 sub-structures \tsobj[marg]{subZ} (indexes 1 and 2)
+    \item 1 sub-structure \tsobj[marg]{subY} (index 1)
+  \end{enumerate}
+  \item the second one with indexes 2 and ''hash-A'' and
+  \begin{enumerate}[miditemsep]
+    \item 1 sub-structure \tsobj[marg]{subZ} (index 1)
+  \end{enumerate}
+  \end{enumerate}
+\end{enumerate}
+
+Note that, in the above example, it was used the ''implicit'' indexing (aka. iterator, see \ref{pack:ref}). Also note that no \textsl{term} of kind \tsobj[marg]{subYYY} was created.
+
+A warning is raised (see \ref{pack:options}) in case of a \tsobj[marg]{starray-ref} syntax error. The branching version doesn't raise any warning.
+
+
+\subsection{referencing terms}\label{pack:ref}
+
+When typing a \tsobj[marg]{starray-ref} there are 3 cases to consider:
+\begin{enumerate}[miditemsep]
+  \item structure definition
+  \item term instantiation
+  \item getting/setting a property 
+\end{enumerate}
+
+The first case is the simplest one, in which, one (starting by \tsobj[marg]{starray-root} will use a construct like \tsobj[marg]{starray-root}.\tsobj[marg]{sub-struct}.\tsobj[marg]{sub-struct}\ldots 
+For example, an equivalent construct to the one shown in \ref{pack:instantiate} :
+
+\begin{codestore}[store-env=demo3]
+\starray_new:n {st-root}
+
+\starray_def_struct:nn {st-root}{subZ}
+
+\starray_def_prop:nnn {st-root}{keyA}{valA}
+\starray_def_prop:nnn {st-root}{keyB}{valB}
+
+\starray_def_prop:nnn {st-root.subZ}{keyZA}{valZA}
+\starray_def_prop:nnn {st-root.subZ}{keyZB}{valZB}
+
+\starray_def_struct:nn {st-root}{subY}
+\starray_def_prop:nnn {st-root.subY}{keyYA}{valYA}
+\starray_def_prop:nnn {st-root.subY}{keyYB}{valYB}
+
+\starray_def_struct:nn {st-root.subY}{subYYY}
+\starray_def_prop:nnn {st-root.subY.subYYY}{keyYYYA}{valYYYA}
+\starray_def_prop:nnn {st-root.subY.subYYY}{keyYYYB}{valYYYB}
+  
+\end{codestore}
+
+\tscode*[codeprefix=~]{demo3}
+
+Note that, all it's needed in order to be able to use \tsobj[marg]{starray-root}.\tsobj[marg]{sub-A} is that \tsobj[marg]{sub-A} is an already declared sub-structure of \tsobj[marg]{starray-root}. The property definitions can be made in any order.
+
+In all other cases, term instantiation, getting/setting a property, one has to address/reference a specific instance/term, implicitly (using iterators) or explicitly using indexes.
+The general form, of a \tsobj[marg]{starray-ref}, is: \par
+\tsobj[marg]{starray-root}\tsobj[oarg]{idx}.\tsobj[marg]{sub-A}\tsobj[oarg]{idxA}.\tsobj[marg]{sub-B}\tsobj[oarg]{idxB} \par
+In the case of term instantiation the last \tsobj[marg]{sub-} cannot be indexed, after all one is creating a new term/index. Moreover, all \tsobj[oarg]{idx} are optional like:\par
+\tsobj[marg]{starray-root}.\tsobj[marg]{sub-A}\tsobj[oarg]{idxA}.\tsobj[marg]{sub-B} \par
+in which case, one is using the ''iterator'' of \tsobj[marg]{starray-root} and \tsobj[marg]{sub-B} (more later, but keep in mind the \tsobj[marg]{sub-B} iterator is the \tsobj[marg]{sub-B} associated with the \tsobj[marg]{sub-A}\tsobj[oarg]{idxA}).
+
+Since one has to explicitly instantiate all (sub)terms of a starray, one can end with a highly asymmetric structure. Starting at the \tsobj[marg]{starray-root} one has a first counter (representing, indexing the root structure terms), then for all sub-strutures of \tsobj[marg]{starray-root} one will have an additional counter for every term of \tsobj[marg]{starray-root} !
+
+So, for example:
+\begin{codestore}[store-env=demo4]
+\starray_new:n {st-root}
+\starray_def_struct:nn {st-root}{subZ}
+\starray_def_struct:nn {st-root}{subY}
+\starray_def_struct:nn {st-root.subY}{subYYY}
+
+\starray_new_term:n {st-root}
+\starray_new_term:n {st-root.subZ}
+\starray_new_term:n {st-root.subZ}
+\starray_new_term:n {st-root.subY}
+\starray_new_term:n {st-root.subY}
+\starray_new_term:n {st-root.subY.subYYY}
+\starray_new_term:n {st-root.subY}
+
+\starray_new_term:n {st-root}
+\starray_new_term:n {st-root.subZ}
+\starray_new_term:n {st-root.subZ}
+\starray_new_term:n {st-root.subY}
+\end{codestore}
+
+\tscode*[codeprefix=~]{demo4}
+
+One has a single \tsobj[marg]{st-root} iterator (pointing to one of the 3 \tsobj[marg]{st-root} terms), then 3 ''\tsobj[marg]{subZ} iterators'', in fact, one \tsobj[marg]{subZ} iterator for each \tsobj[marg]{st-root} term.
+Likewise there are 3 ''\tsobj[marg]{subY} iterators'' and 4 (four) ''\tsobj[marg]{subYYY} iterators'' one for each instance of \tsobj[marg]{subY}.
+
+Every time a new term is created/instantiated, the corresponding iterator will points to it, which allows the notation used in this last example, keep in mind that one could instead, using explicit indexes:
+
+\begin{codestore}[store-env=demo5]
+\starray_new:n {st-root}
+\starray_def_struct:nn {st-root}{subZ}
+\starray_def_struct:nn {st-root}{subY}
+\starray_def_struct:nn {st-root.subY}{subYYY}
+
+\starray_new_term:n {st-root}
+\starray_new_term:n {st-root[1].subZ}
+\starray_new_term:n {st-root[1].subZ}
+\starray_new_term:n {st-root[1].subY}
+\starray_new_term:n {st-root[1].subY}
+\starray_new_term:n {st-root[1].subY[2].subYYY}
+\starray_new_term:n {st-root[1].subY}
+
+\starray_new_term:n {st-root}
+\starray_new_term:n {st-root[2].subZ}
+\starray_new_term:n {st-root[2].subZ}
+\starray_new_term:n {st-root[2].subY}
+\end{codestore}
+
+\tscode*[codeprefix=~]{demo5}
+
+Finally, observe that, when creating a new term, one has the option to assign a ''hash'' to it, in which case that term can be referred to using an iterator, the explicit index or the hash:
+
+\begin{codestore}[store-env=demo6]
+\starray_new:n {st-root}
+\starray_def_struct:nn {st-root}{subZ}
+\starray_def_struct:nn {st-root}{subY}
+\starray_def_struct:nn {st-root.subY}{subYYY}
+
+\starray_new_term:nn {st-root}{hash-A}
+\starray_new_term:n {st-root.subZ}
+\starray_new_term:n {st-root[1].subZ}
+\starray_new_term:n {st-root[hash-A].subZ}
+\end{codestore}
+\tscode*[codeprefix=~]{demo6}
+ 
+Will create 3 \tsobj[marg]{subZ} terms associated with the first (index = 1) \tsobj[marg]{st-root}.
+
+
+\subsection{iterators}\label{pack:iter}
+
+\begin{codedescribe}{\starray_set_iter:nn,\starray_set_iter:nnTF,\starray_reset_iter:nn,\starray_reset_iter:nnTF,\starray_next_iter:nn,\starray_next_iter:nnTF}
+\begin{codesyntax}%
+\tsmacro{\starray_set_iter:nn}{starray-ref,int-val}
+\tsmacro{\starray_set_iter:nTF}{starray-ref,int-val,if-true,if-false}
+\tsmacro{\starray_reset_iter:nn}{starray-ref}
+\tsmacro{\starray_reset_iter:nTF}{starray-ref,if-true,if-false}
+\tsmacro{\starray_next_iter:nn}{starray-ref}
+\tsmacro{\starray_next_iter:nTF}{starray-ref,if-true,if-false}
+\end{codesyntax}
+\end{codedescribe}
+Those functions allows to \tsmacro{set}{} an iterator to a given \tsobj[marg]{int-val}, \tsmacro{reset}{} it (i.e. assign 1 to the iterator), or increase the iterator by one. An iterator might have a value between 1 and the number of instantiated terms (if the given (sub-)structure was already instantiated). If the (sub-)structure hasn't been instantiated yet, the iterator will always end being set to 0. The branching versions allows to catch those cases, like trying to set a value past its maximum, or a value smaller than one.
+
+\begin{tsremark}[Important:]
+Please observe that, when setting/resetting/incrementing the  iterator of a (sub-)structure, all ''descending'' iterators will be also be reset.
+\end{tsremark}
+\begin{tsremark}
+A warning is raised (see \ref{pack:options}) in case of a \tsobj[marg]{starray-ref} syntax error. The branching version doesn't raise any warning.
+\end{tsremark}
+
+
+\begin{codestore}[store-env=demo7]
+\starray_new:n {st-root}
+\starray_def_struct:nn {st-root}{subZ}
+\starray_def_struct:nn {st-root}{subY}
+\starray_def_struct:nn {st-root.subY}{subYYY}
+
+\starray_new_term:n {st-root}
+\starray_new_term:n {st-root.subZ}
+\starray_new_term:n {st-root.subZ}
+\starray_new_term:n {st-root.subY}
+\starray_new_term:n {st-root.subY.subYYY}
+\starray_new_term:n {st-root.subY.subYYY}
+\starray_new_term:n {st-root.subY}
+\starray_new_term:n {st-root.subY.subYYY}
+\starray_new_term:n {st-root.subY.subYYY}
+\starray_new_term:n {st-root}
+\starray_new_term:n {st-root.subZ}
+\starray_new_term:n {st-root.subZ}
+\starray_new_term:n {st-root.subY}
+\starray_new_term:n {st-root.subY.subYYY}
+\starray_new_term:n {st-root.subY.subYYY}
+\starray_new_term:n {st-root.subY}
+\starray_new_term:n {st-root.subY.subYYY}
+\starray_new_term:n {st-root.subY.subYYY}
+
+\starray_set_prop:nnn {st-root.subY.subYYY}{key}{val}
+\starray_set_prop:nnn {st-root[2].subY[2].subYYY[2]}{key}{val}
+
+\starray_reset_iter:n {st-root[2].subY}
+
+\starray_set_prop:nnn {st-root.subY.subYYY}{key}{val}
+\starray_set_prop:nnn {st-root[2].subY[1].subYYY[1]}{key}{val}
+\end{codestore}
+
+\tscode*[codeprefix=~]{demo7}
+
+Before the reset \tsobj[marg]{st-root.subY.subYYY} was equivalent to \tsobj[marg]{st-root[2].subY[2]. subYYY[2]}, given that each iterator was pointing to the ''last term'', since the reset was of the \tsobj[marg]{subY} iterator, only it and the descending ones (in this example just \tsobj[marg]{subYYY}) where reseted, and therefore \tsobj[marg]{st-root.subY.subYYY} was then equivalent to \tsobj[marg]{st-root[2].subY[1].subYYY[1]}
+
+
+
+\begin{codedescribe}{\starray_get_iter:n,\starray_get_iter:nN,\starray_get_iter:nNTF}
+\begin{codesyntax}%
+\tsmacro{\starray_get_iter:n}{starray-ref}
+\tsmacro{\starray_get_iter:nN}{starray-ref,int-var}
+\tsmacro{\starray_get_iter:nNTF}{starray-ref,int-var,if-true,if-false}
+\end{codesyntax}
+\end{codedescribe}
+\tsmacro{\starray_get_iter:n}{starray-ref} will type in the current value of a given iterator, whilst the other two functions will save it's value in a integer variable (\tsobj[pkg]{expl3}).
+\begin{tsremark}
+A warning is raised (see \ref{pack:options}) in case of a \tsobj[marg]{starray-ref} syntax error. The branching version doesn't raise any warning.
+\end{tsremark}
+
+\begin{codedescribe}{\starray_get_cnt:n,\starray_get_cnt:nN,\starray_get_cnt:nNTF}
+\begin{codesyntax}%
+\tsmacro{\starray_get_cnt:n}{starray-ref}
+\tsmacro{\starray_get_cnt:nN}{starray-ref,integer}
+\tsmacro{\starray_get_cnt:nNTF}{starray-ref,integer,if-true,if-false}
+\end{codesyntax}
+\end{codedescribe}
+\tsmacro{\starray_get_cnt:n}{starray-ref} will type in the current number of terms of a given (sub-)structure, whilst the other two functions will save it's value in a integer variable (\tsobj[pkg]{expl3}).
+\begin{tsremark}
+A warning is raised (see \ref{pack:options}) in case of a \tsobj[marg]{starray-ref} syntax error. The branching version doesn't raise any warning.
+\end{tsremark}
+
+\section{Changing and recovering starray properties}\label{pack:get/set}
+
+\begin{codedescribe}{\starray_set_prop:nnn,\starray_set_prop:nnV,\starray_set_prop:nnnTF,\starray_set_prop:nnVTF,\starray_gset_prop:nnn,\starray_gset_prop:nnV,\starray_gset_prop:nnnTF,\starray_gset_prop:nnVTF}
+\begin{codesyntax}%
+\tsmacro{\starray_set_prop:nnn}{starray-ref,prop-key,value}
+\tsmacro{\starray_set_prop:nnV}{starray-ref,prop-key,value}
+\tsmacro{\starray_set_prop:nnnTF}{starray-ref,prop-key,value,if-true,if-false}
+\tsmacro{\starray_set_prop:nnVTF}{starray-ref,prop-key,value,if-true,if-false}
+\tsmacro{\starray_gset_prop:nnn}{starray-ref,prop-key,value}
+\tsmacro{\starray_gset_prop:nnV}{starray-ref,prop-key,value}
+\tsmacro{\starray_gset_prop:nnnTF}{starray-ref,prop-key,value,if-true,if-false}
+\tsmacro{\starray_gset_prop:nnVTF}{starray-ref,prop-key,value,if-true,if-false}
+\end{codesyntax}
+\end{codedescribe}
+Those are the functions that allow to (g)set (change) the value of a term's property. If the \tsobj[marg]{prop-key} isn't already present it will be added just for that term \tsobj[marg]{starray-ref}. The \tsobj[parg]{nnV} variants allow to save any variable like a token list, property list, etc...
+\begin{tsremark}
+A warning is raised (see \ref{pack:options}) in case of a \tsobj[marg]{starray-ref} syntax error. The branching version doesn't raise any warning.
+\end{tsremark}
+
+\begin{codedescribe}{\starray_set_from_keyval:nn,\starray_set_from_keyval:nnTF,\starray_gset_from_keyval:nn,\starray_gset_from_keyval:nnTF}
+\begin{codesyntax}%
+\tsmacro{\starray_set_from_keyval:nnn}{starray-ref,keyval-lst}
+\tsmacro{\starray_set_from_keyval:nnnTF}{starray-ref,keyval-lst,if-true,if-false}
+\tsmacro{\starray_gset_from_keyval:nnn}{starray-ref,keyval-lst}
+\tsmacro{\starray_gset_from_keyval:nnnTF}{starray-ref,keyval-lst,if-true,if-false}
+\end{codesyntax}
+\end{codedescribe}
+
+it is possible to set a collection of properties using a key/val syntax, similar to the one used to define a \tsobj[pkg]{starray} from keyvals (see \ref{pack:def}), with a few distinctions:
+\begin{enumerate}
+  \item when referring a (sub-)structure one can either explicitly use an index, or
+  \item  implicitly use it's iterator 
+  \item if a given key isn't already presented it will be added only to the given term
+\end{enumerate}
+
+ Note that, in the following example, TWO iterators are being used, the one for \tsobj[marg]{st-root} and then \tsobj[marg]{subY}.
+
+\begin{codestore}[store-env=keyval.demo8]
+\starray_set_from_keyval:nn {st-root} 
+  {
+    keyA = valA ,
+    keyB = valB ,
+    subZ[2] = 
+      {
+        keyZA = valZA ,
+        keyZB = valZB ,
+      }
+    subY  =
+      {
+        keyYA = valYA ,
+        keyYB = valYB ,
+        subYYY[1] =
+          {
+            keyYYYa = valYYYa ,
+            keyYYYb = valYYYb 
+          }
+      }
+  }  
+\end{codestore}
+
+\tscode*[codeprefix=~]{keyval.demo8}
+
+Also note that the above example is fully equivalent to:
+
+\begin{codestore}[store-env=keyval.demo9]
+\starray_set_prop:nnn {st-root} {keyA} {valA}
+\starray_set_prop:nnn {st-root} {keyB} {valB}
+\starray_set_prop:nnn {st-root.subZ[2]} {keyZA} {valZA}
+\starray_set_prop:nnn {st-root.subZ[2]} {keyZB} {valZB}
+\starray_set_prop:nnn {st-root.subY} {keyYA} {valYA}
+\starray_set_prop:nnn {st-root.subY} {keyYB} {valYB}
+\starray_set_prop:nnn {st-root.subY.subYYY[1} {keyYYYa} {valYYYa}
+\starray_set_prop:nnn {st-root.subY.subYYY[1} {keyYYYb} {valYYYb}
+\end{codestore}
+
+\tscode*[codeprefix=~]{keyval.demo9}
+
+
+\section{Additional Conditionals}\label{pack:extra}
+
+\begin{codedescribe}{\starray_if_in:nnTF,\starray_term_syntax:nTF}
+\begin{codesyntax}%
+\tsmacro{\starray_if_in:nnTF}{starray-ref,key,if-true,if-false}
+\tsmacro{\starray_term_syntax:nTF}{starray-ref,if-true,if-false}
+\end{codesyntax}
+\end{codedescribe}
+The \tsmacro{\starray_if_in:nnTF}{starray-ref,key,\ldots,\ldots} tests if a given \tsobj[marg]{key} is present, whilst  \tsmacro{\starray_term_syntax:nTF}{starray-ref,\ldots,\ldots} just verifies if the \tsobj[marg]{starray-ref} syntax is valid or not, branching accordly.
+
+
+\section{Showing (debugging) starrays }\label{pack:show}
+
+\begin{codedescribe}{\starray_show_def:n,\starray_show_def_in_text:n}
+\begin{codesyntax}%
+\tsmacro{\starray_show_def:n}{starray-ref}
+\tsmacro{\starray_show_def_in_text:n}{starray-ref}
+\end{codesyntax}
+\end{codedescribe}
+Displays the \tsobj[marg]{starray} structure definition and initial property values in the terminal or directly in text.
+
+\begin{codedescribe}{\starray_show_terms:n,\starray_show_terms_in_text:n}
+\begin{codesyntax}%
+\tsmacro{\starray_show_terms:n}{starray-ref}
+\tsmacro{\starray_show_terms_in_text:n}{starray-ref}
+\end{codesyntax}
+\end{codedescribe}
+Displays the \tsobj[marg]{starray} instantiated terms and current  property values in the terminal or directly in text.
+
+
+
+\end{document}
