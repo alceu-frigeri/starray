@@ -13,7 +13,7 @@ For more details,  see the documentation, *(TO BE DONE)*
 (with the new in kernel *\ProcessKeyOptions* and *\NewDocumentCommand*)
 
 ## Installation
-The stable version is available at [CTAN](https://ctan.org/pkg/starray). *(TO BE DONE)*
+The stable version is available at [CTAN](https://ctan.org/pkg/starray).
 
 ## Usage
 ### Stable version
@@ -73,5 +73,5 @@ The Current Maintainer of this work is Alceu Frigeri
 
 ## Changelog
 
-* Version 1.0beta
+* Version 1.0
     - Initial release  by CTAN.
