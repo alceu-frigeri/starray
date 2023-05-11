@@ -3,7 +3,7 @@ starray
 
 This is a structured (properties) array (hash) package based on expl3.
 
-For more details,  see the documentation, *(TO BE DONE)*
+For more details,  see the documentation,
 [starray.pdf](http://mirrors.ctan.org/macros/latex/contrib/starray/doc/starray.pdf)
 
 --------------
