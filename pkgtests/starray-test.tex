@@ -26,13 +26,10 @@
 \RequirePackage[T1]{fontenc}
 \RequirePackage[utf8]{inputenc}
 \RequirePackage[msg-err=default]{starray}
-\ExplSyntaxOn
-
-%\use:c {@reversemargintrue}
-\ExplSyntaxOff
 
 %\RequirePackage{showframe}
 \begin{document}
+
 
 \ExplSyntaxOn
 
@@ -100,6 +97,18 @@
 %%%
 %%% Testing the creation of a starray with sub-structures, one definition at a time
 %%%
+
+
+
+%\bool_if:nTF { \starray_new_p:n {myfoo} }
+%  { \message { TRUE } }
+%  { \message { FALSE } }
+%
+%\bool_if:nTF { \starray_new_p:n {myfoo} }
+%  { \message { TRUE } }
+%  { \message { FALSE } }
+
+
 \par\noindent
 {\sc Testing~starray}
 \sttests_par:
@@ -591,7 +600,12 @@ setting: STtest[1].TT~(err,~not~instantiated)\par
         {\sttests_pass:n {correct}}
         {\sttests_fail:n {!!!}}
 
+\par
+student~definition:
 \starray_show_def_in_text:n {student}
+
+\\[2\baselineskip]
+student~current~terms:
 \starray_show_terms_in_text:n {student}
 
 

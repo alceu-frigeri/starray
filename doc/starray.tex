@@ -1,3 +1,6 @@
+% !TEX program = pdflatex
+% !TEX ext =  --interaction=nonstopmode --enable-etex
+% !BIB program = none
 %%%==============================================================================
 %% Copyright 2023 by Alceu Frigeri
 %%
@@ -12,20 +15,16 @@
 %%
 %% The Current Maintainer of this work is Alceu Frigeri
 %%
-%% This is version 1.0 (2023/05/11)
+%% This is version 1.1 (2023/05/16)
 %%
 %% The list of files that compose this work can be found in the README.md file at
 %% https://ctan.org/pkg/starray
 %%
 %%%==============================================================================
-% !TEX program = pdflatex
-% !TEX ext =  --interaction=nonstopmode --enable-etex
-% !BIB program = none
 \documentclass[10pt]{article}
 \RequirePackage[verbose,a4paper,marginparwidth=27.5mm,top=2.5cm,bottom=1.5cm,hmargin={40mm,20mm},marginparsep=2.5mm,columnsep=10mm,asymmetric]{geometry}
 %\RequirePackage[verbose,a4paper,marginparwidth=27.5mm,top=2.5cm,bottom=1.5cm,hmargin={45mm,25mm},marginparsep=2.5mm,columnsep=10mm,asymmetric]{geometry}
 \usepackage{codedescribe}
-\usepackage{codelisting}
 \usepackage{starray}
 \RequirePackage[inline]{enumitem}
 \SetEnumitemKey{miditemsep}{parsep=0ex,itemsep=0.4ex}
@@ -34,7 +33,7 @@
 \begin{document}
 \tstitle{
   author={Alceu Frigeri\footnote{\tsverb{https://github.com/alceu-frigeri/starray}}},
-  date={2023/05/11},
+  date={\tsdate},
   title={The starray Package\break Version \PkgInfo{starray}{version}}
   }
   
@@ -54,13 +53,20 @@ Internally, a \tsobj[pkg]{starray} is stored as a collection of property lists. 
 
 The construction/definition of a \tsobj[pkg]{starray} can be done piecewise (a property/sub-structure a time) or with a keyval interface or both, either way, one has to first ''create a root starray'' (\tsmacro{\starray_new:n}{}), define it's elements (properties and sub-structures), then instantiate them ''as needed''. An instance of a \tsobj[pkg]{starray} (or one of it's sub-structures) is referred, in this text, as a ''term''.
 
-Finally, almost all defined functions have a branching version, as per \tsobj[pkg]{expl3}: \tsobj[code]{_p,T,F,TF}. For simplicity, in the text bellow only the \underline{\textsl{TF}} variant is described, as in \tsobj[code]{\starray_new:nTF}, keep in mind that all 4 variants do exist, e.g. \tsobj[code]{\starray_new_p:n,\starray_new:nT,\starray_new_p:nF,\starray_new_p:nTF}. As usual, the \tsobj[code]{_p} version denotes, is the predicate one (which can be used in boolena expressions).
+Finally, almost all defined functions have a branching version, as per \tsobj[pkg]{expl3}: \tsobj[code]{T,F,TF} (note: no \tsobj{_p} variants, see below). For simplicity, in the text bellow only the \underline{\textsl{TF}} variant is described, as in \tsobj[code]{\starray_new:nTF}, keep in mind that all 3 variants are defined, e.g. \tsobj[code]{\starray_new:nT,\starray_new:nF,\starray_new:nTF}.
 
-\begin{tsremark}[N.B.:]
+\begin{tsremark}[Note:]
  Could it be implemented with a single property list? It sure could, but at a cost: 
 \begin{enumerate*}   \item complexity;    \item access time.   \end{enumerate*}
 The current implementation, albeit also complex, tries to reach a balance between inherent structure complexity, number of used/defined auxiliary property lists and access time.
 \end{tsremark}
+
+\begin{tsremark}[\color{red}Important:]
+ \textsl{Expandability}, unfortunately most/all defined functions are not ''fully expandable'', in particular, the conditional/branching functions aren't. This means, among other things, one can't have a 'predicated variant' of any conditional defined in this (for instance, to be used in a boolean expression).
+ 
+ For what it's worth, all user visible functions are 'protected'.
+\end{tsremark}
+
 
 \section{Class Options}\label{pack:options}
 The package options (\tsobj[key]{key}\,=\tsobj[value]{value}) are:
@@ -95,7 +101,6 @@ By default, the \tsobj[pkg]{starray} package only generates ''warnings'', with \
 \tsmacro{\starray_new:nTF}{starray,if-true,if-false}
 \end{codesyntax}
 \end{codedescribe}
-
 Creates a new \tsobj[marg]{starray} or raises a warning  if the name is already taken. The declaration (and associated property lists) is global. The given name is referred (in this text) as the \tsobj[marg]{starray-root} or just \tsobj[marg]{root}. 
 \begin{tsremark}
   A warning is raised (see \ref{pack:options}) if the name is already taken. The branching version doesn't raise any warning.
@@ -172,8 +177,9 @@ the construction \tsobj[key]{\tsobj[marg]{key} . struct} denotes a nested struct
 
 The definitions/assignments  to \tsobj[marg]{starray-ref} are all global.
 
-
-The non-branching version raises a warning (see \ref{pack:options}) in case of a \tsobj[marg]{starray-ref} syntax error. The branching version doesn't raise any warning. Please note that, syntax errors on the \tsobj[marg]{keyval-lst} might raise low level (\TeX) errors.
+\begin{tsremark}
+The non-branching version raises a warning (see \ref{pack:options}) in case of a \tsobj[marg]{starray-ref} syntax error. The branching version doesn't raise any warning. Also note that, syntax errors on the \tsobj[marg]{keyval-lst} might raise low level (\TeX) errors.
+\end{tsremark}
 
 \subsection{Fixing an ill-instantiated starray}\label{pack:def-fix}
 
@@ -250,9 +256,9 @@ One will have created 6 \textsl{terms}:
 \end{enumerate}
 
 Note that, in the above example, it was used the ''implicit'' indexing (aka. iterator, see \ref{pack:ref}). Also note that no \textsl{term} of kind \tsobj[marg]{subYYY} was created.
-
+\begin{tsremark}
 A warning is raised (see \ref{pack:options}) in case of a \tsobj[marg]{starray-ref} syntax error. The branching version doesn't raise any warning.
-
+\end{tsremark}
 
 \subsection{referencing terms}\label{pack:ref}
 
@@ -552,6 +558,7 @@ The \tsmacro{\starray_if_in:nnTF}{starray-ref,key,\ldots,\ldots} tests if a give
 \end{codesyntax}
 \end{codedescribe}
 Displays the \tsobj[marg]{starray} structure definition and initial property values in the terminal or directly in text.
+
 
 \begin{codedescribe}{\starray_show_terms:n,\starray_show_terms_in_text:n}
 \begin{codesyntax}%

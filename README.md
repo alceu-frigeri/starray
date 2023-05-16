@@ -33,7 +33,7 @@ at [the github page](http://github.com/alceu-frigeri/starray)
 
 ## Contacting Author
 
-For bug reports and enhacement suggestions, the preferred way is to use
+For bug reports and enhancement suggestions, the preferred way is to use
 [the project's issue page](https://github.com/alceu-frigeri/starray/issues).
 Please be ready to provide an example code showing the bug, if any.
 
@@ -72,6 +72,13 @@ The Current Maintainer of this work is Alceu Frigeri
 -------------
 
 ## Changelog
+
+* Version 1.1
+    - Issues #1/#2
+    - most/all commands are protected now
+    - removed predicate version of conditionals
+    - documentation
+
 
 * Version 1.0
     - Initial release  by CTAN.

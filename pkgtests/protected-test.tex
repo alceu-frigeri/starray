@@ -1,0 +1,45 @@
+\documentclass{article}
+\RequirePackage{expl3}
+
+\ExplSyntaxOn
+
+\tl_new:N \l__starray_prefix_tl
+
+\prg_new_protected_conditional:Npnn \__starray_if_free:n #1 {T, F, TF}
+  {
+    \prop_if_exist:cTF {#1}
+      { \prg_return_false: }
+      { \prg_return_true: }
+  }
+
+%\prg_generate_conditional_variant:Nnn \__starray_if_free:n {e} {T, F, TF}
+
+\prg_new_protected_conditional:Npnn \starray_new:n #1 { T, F, TF}
+  {
+    \__starray_if_free:nTF {\l__starray_prefix_tl #1 _def_prop}
+      {
+%        \__starray_new:e {#1 }
+%        \__starray_base_new:ee {#1}{#1} % TODO: might be incomplete !!!
+        \prg_return_true:
+      }
+      { \prg_return_false: }
+  }
+
+\prg_generate_conditional_variant:Nnn \starray_new:n {e} {p , T, F, TF}
+
+%\ExplSyntaxOff
+
+\begin{document}
+ this ~  is ~ just ~ a  ~ test
+ 
+ \bool_if:nTF { \starray_new_p:e {myfoo} }
+  { \message { TRUE } }
+  { \message { FALSE } }
+
+ 
+ 
+ 
+\end{document}
+
+  
+\ExplSyntaxOff
