@@ -15,7 +15,7 @@
 %%
 %% The Current Maintainer of this work is Alceu Frigeri
 %%
-%% This is version 1.1 (2023/05/16)
+%% This is version 1.2 (2023/05/20)
 %%
 %% The list of files that compose this work can be found in the README.md file at
 %% https://ctan.org/pkg/starray
@@ -29,7 +29,7 @@
 \RequirePackage[inline]{enumitem}
 \SetEnumitemKey{miditemsep}{parsep=0ex,itemsep=0.4ex}
 
-
+\RequirePackage[hidelinks,hypertexnames=false]{hyperref}
 \begin{document}
 \tstitle{
   author={Alceu Frigeri\footnote{\tsverb{https://github.com/alceu-frigeri/starray}}},
@@ -62,9 +62,8 @@ The current implementation, albeit also complex, tries to reach a balance betwee
 \end{tsremark}
 
 \begin{tsremark}[\color{red}Important:]
- \textsl{Expandability}, unfortunately most/all defined functions are not ''fully expandable'', in particular, the conditional/branching functions aren't. This means, among other things, one can't have a 'predicated variant' of any conditional defined in this (for instance, to be used in a boolean expression).
+ \textsl{Expandability}, unfortunately most/all defined functions are not ''fully expandable'', in particular, most conditional/branching functions aren't, with just a few exceptions (marked with a star \ding{72}, as per \tsobj[pkg]{expl3} documentation convention).
  
- For what it's worth, all user visible functions are 'protected'.
 \end{tsremark}
 
 
@@ -100,10 +99,25 @@ By default, the \tsobj[pkg]{starray} package only generates ''warnings'', with \
 \tsmacro{\starray_new:n}{starray}
 \tsmacro{\starray_new:nTF}{starray,if-true,if-false}
 \end{codesyntax}
-\end{codedescribe}
 Creates a new \tsobj[marg]{starray} or raises a warning  if the name is already taken. The declaration (and associated property lists) is global. The given name is referred (in this text) as the \tsobj[marg]{starray-root} or just \tsobj[marg]{root}. 
+\end{codedescribe}
 \begin{tsremark}
   A warning is raised (see \ref{pack:options}) if the name is already taken. The branching version doesn't raise any warning.
+\end{tsremark}
+
+\subsection{Conditionals}\label{conditionals:exist}
+\begin{codedescribe}[code,EXP,new=2023/05/20]{\starray_if_exist_p:n,\starray_if_exist:nTF,\starray_if_valid_p:n,\starray_if_valid:nTF}
+\begin{codesyntax}%
+\tsmacro{\starray_if_exist_p:n}{starray}
+\tsmacro{\starray_if_exist:nTF}{starray,if-true,if-false}
+\tsmacro{\starray_if_valid_p:n}{starray}
+\tsmacro{\starray_if_valid:nTF}{starray,if-true,if-false}
+\end{codesyntax}
+\tsobj{\starray_if_exist:nTF} only tests if \tsobj[marg]{starray} (the base property) is defined. It doesn't verifies if it really is a  \tsobj[pkg]{starray}.
+\tsobj{\starray_if_valid:nTF} further tests if an internal boolean (\tsobj[key]{is\_starray}) is also defined. This doesn't necessary mean it is a \tsobj[pkg]{starray} or if it's a really valid one (chances are that it is, but...), see \tsobj{\starray_term_syntax:nTF}, section \ref{conditionals:terms}, for a more reliable validity test.
+\end{codedescribe}
+\begin{tsremark}
+The predicate versions, \tsobj{_p}, expand to either \tsobj{\prg_return_true:} or \tsobj{\prg_return_false:}.
 \end{tsremark}
 
 \section{Defining and initialising a starray structure}\label{pack:def}
@@ -448,6 +462,17 @@ Before the reset \tsobj[marg]{st-root.subY.subYYY} was equivalent to \tsobj[marg
 A warning is raised (see \ref{pack:options}) in case of a \tsobj[marg]{starray-ref} syntax error. The branching version doesn't raise any warning.
 \end{tsremark}
 
+\begin{codedescribe}[code,EXP,new=2023/05/20]{\starray_parsed_get_iter:}
+\begin{codesyntax}%
+\tsobj{\starray_parsed_get_iter:}{}
+\end{codesyntax}
+\tsobj{\starray_parsed_get_iter:} will place in the current iterator's value,  using \tsobj{\int_use:N}, of the last parsed term in the input stream.
+\end{codedescribe}
+\begin{tsremark}[\color{red}Warning:]
+This can be used after any command which 'parses a term', for instance \tsobj{\starray_term_syntax:n}, see section \ref{conditionals:terms}, but it only makes sense (and returns a reliable/meaningful result) IF the last parser operation was successfully executed.
+\end{tsremark}
+
+
 \begin{codedescribe}{\starray_get_cnt:n,\starray_get_cnt:nN,\starray_get_cnt:nNTF}
 \begin{codesyntax}%
 \tsmacro{\starray_get_cnt:n}{starray-ref}
@@ -459,6 +484,17 @@ A warning is raised (see \ref{pack:options}) in case of a \tsobj[marg]{starray-r
 \begin{tsremark}
 A warning is raised (see \ref{pack:options}) in case of a \tsobj[marg]{starray-ref} syntax error. The branching version doesn't raise any warning.
 \end{tsremark}
+
+\begin{codedescribe}[code,EXP,new=2023/05/20]{\starray_parsed_get_cnt:}
+\begin{codesyntax}%
+\tsobj{\starray_parsed_get_cnt:}{}
+\end{codesyntax}
+\tsobj{\starray_parsed_get_cnt:} will place the current number of terms, using \tsobj{\int_use:N}, of the last parsed term, in the input stream.
+\end{codedescribe}
+\begin{tsremark}[\color{red}Warning:]
+This can be used after any command which 'parses a term', for instance \tsobj{\starray_term_syntax:n}, see section \ref{conditionals:terms}, but it only makes sense (and returns a reliable/meaningful result) IF the last parser operation was successfully executed.
+\end{tsremark}
+
 
 \section{Changing and recovering starray properties}\label{pack:get/set}
 
@@ -537,17 +573,68 @@ Also note that the above example is fully equivalent to:
 
 \tscode*[codeprefix=~]{keyval.demo9}
 
+\begin{codedescribe}{\starray_get_prop:nn,\starray_get_prop:nnN,\starray_get_prop:nnNTF}
+\begin{codesyntax}%
+\tsmacro{\starray_get_prop:nn}{starray-ref,key}
+\tsmacro{\starray_get_prop:nnN}{starray-ref,key,tl-var}
+\tsmacro{\starray_get_prop:nnNTF}{starray-ref,key,tl-var,if-true,if-false}
+\end{codesyntax}
+\tsmacro{\starray_get_prop:nn}{starray-ref,key} places the value of \tsobj[marg]{key} in the input stream.
+\tsmacro{\starray_get_prop:nnN}{starray-ref,key,tl-var} recovers the value of \tsobj[marg]{key} and places it in \tsobj[marg]{tl-var} (a token list variable), this is specially useful in conjunction with \tsobj{\starray_set_prop:nnV}, whilst the \tsobj{\starray_get_prop:nnNTF} version branches accordly.
+\end{codedescribe}
+\begin{tsremark}
+In case of a syntax error, or \tsobj[marg]{key} doesn't exist, an empty value is left in the stream (or \tsobj[marg]{tl-var}).
+\end{tsremark}
+\begin{tsremark}
+A warning is raised (see \ref{pack:options}) in case of a \tsobj[marg]{starray-ref} syntax error. The branching version doesn't raise any warning.
+\end{tsremark}
 
-\section{Additional Conditionals}\label{pack:extra}
+
+\begin{codedescribe}[code,EXP,new=2023/05/20]{\starray_parsed_get_prop:n}
+\begin{codesyntax}%
+\tsmacro{\starray_parsed_get_prop:nn}{key}
+\end{codesyntax}
+\tsmacro{\starray_parsed_get_prop:n}{key} places the value of \tsobj[marg]{key}, if it exists, from the last parsed term, in the input stream. 
+\end{codedescribe}
+\begin{tsremark}[\color{red}Warning:]
+This can be used after any command which 'parses a term', for instance \tsobj{\starray_term_syntax:n}, see section \ref{conditionals:terms}, but it only makes sense (and returns a reliable/meaningful result) IF the last parser operation was successfully executed.
+\end{tsremark}
+
+
+\section{Additional Commands and Conditionals}\label{conditionals:terms}
 
 \begin{codedescribe}{\starray_if_in:nnTF,\starray_term_syntax:nTF}
 \begin{codesyntax}%
 \tsmacro{\starray_if_in:nnTF}{starray-ref,key,if-true,if-false}
 \tsmacro{\starray_term_syntax:nTF}{starray-ref,if-true,if-false}
 \end{codesyntax}
+The \tsmacro{\starray_if_in:nnTF}{starray-ref,key,\ldots,\ldots} tests if a given \tsobj[marg]{key} is present, whilst  \tsmacro{\starray_term_syntax:nTF}{starray-ref,if-true,if-false} just verifies if the \tsobj[marg]{starray-ref} syntax is valid or not, branching accordly.
 \end{codedescribe}
-The \tsmacro{\starray_if_in:nnTF}{starray-ref,key,\ldots,\ldots} tests if a given \tsobj[marg]{key} is present, whilst  \tsmacro{\starray_term_syntax:nTF}{starray-ref,\ldots,\ldots} just verifies if the \tsobj[marg]{starray-ref} syntax is valid or not, branching accordly.
 
+\begin{codedescribe}{\starray_term_syntax:n}
+\begin{codesyntax}%
+\tsmacro{\starray_term_syntax:n}{starray-ref}
+\end{codesyntax}
+This will just parse  a \tsobj[marg]{starray-ref} reference, and set interval variables so that commands like \tsobj{\starray_parsed_} can be used.
+\end{codedescribe}
+\begin{tsremark}[\color{red}Warning:]
+The main idea is to allow some expandable commands, but be aware that all \tsobj{\starray_} commands that use a \tsobj[marg]{starray-ref} use the very same parser variables.
+\end{tsremark}
+
+
+\begin{codedescribe}[code,EXP,new=2023/05/20]{\starray_parsed_if_in_p:n,\starray_parsed_if_in:nTF}
+\begin{codesyntax}%
+\tsmacro{\starray_parsed_if_in_p:nTF}{key}
+\tsmacro{\starray_parsed_if_in:nTF}{key,if-true,if-false}
+\end{codesyntax}
+This will test if the given \tsobj[key]{key} is present in the "last parsed term". 
+\end{codedescribe}
+\begin{tsremark}
+The predicate version, \tsobj{_p}, expands to either \tsobj{\prg_return_true:} or \tsobj{\prg_return_false:}.
+\end{tsremark}
+\begin{tsremark}[\color{red}Warning:]
+This can be used after any command which 'parses a term', for instance \tsobj{\starray_term_syntax:n}, but it only makes sense (and returns a reliable/meaningful result) IF the last parser operation was successfully executed.
+\end{tsremark}
 
 \section{Showing (debugging) starrays }\label{pack:show}
 

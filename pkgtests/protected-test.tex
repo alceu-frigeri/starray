@@ -1,9 +1,14 @@
+% !TEX program = pdflatex
+% !TEX ext =  --interaction=nonstopmode --enable-etex
+% !BIB program = none
 \documentclass{article}
 \RequirePackage{expl3}
 
 \ExplSyntaxOn
 
 \tl_new:N \l__starray_prefix_tl
+
+\cs_generate_variant:Nn \tl_set:Nn {Ne }
 
 \prg_new_protected_conditional:Npnn \__starray_if_free:n #1 {T, F, TF}
   {
@@ -12,14 +17,12 @@
       { \prg_return_true: }
   }
 
-%\prg_generate_conditional_variant:Nnn \__starray_if_free:n {e} {T, F, TF}
+\prg_generate_conditional_variant:Nnn \__starray_if_free:n {e} {p, T, F, TF}
 
 \prg_new_protected_conditional:Npnn \starray_new:n #1 { T, F, TF}
   {
     \__starray_if_free:nTF {\l__starray_prefix_tl #1 _def_prop}
       {
-%        \__starray_new:e {#1 }
-%        \__starray_base_new:ee {#1}{#1} % TODO: might be incomplete !!!
         \prg_return_true:
       }
       { \prg_return_false: }
@@ -31,10 +34,15 @@
 
 \begin{document}
  this ~  is ~ just ~ a  ~ test
- 
- \bool_if:nTF { \starray_new_p:e {myfoo} }
-  { \message { TRUE } }
-  { \message { FALSE } }
+
+\tl_new:N \l__test_tl
+
+\tl_set:No \l__test_tl { ~some }
+
+\l__test_tl 
+% \bool_if:nTF { \starray_new_p:n {myfoo} }
+%  { \message { TRUE } }
+%  { \message { FALSE } }
 
  
  

@@ -73,6 +73,11 @@ The Current Maintainer of this work is Alceu Frigeri
 
 ## Changelog
 
+* Version 1.2 (this)
+    - Issues #3
+    - added expandable versions of some commands (see manual)
+    - documentation
+
 * Version 1.1
     - Issues #1/#2
     - most/all commands are protected now

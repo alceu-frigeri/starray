@@ -12,7 +12,7 @@
 %%
 %% The Current Maintainer of this work is Alceu Frigeri
 %%
-%% This is version 1.1 (2023/05/16)
+%% This is version 1.2 (2023/05/20)
 %%
 %% The list of files that compose this work can be found in the README.md file at
 %% https://ctan.org/pkg/starray
@@ -24,8 +24,8 @@
 
 \ProvidesExplPackage
     {starray}
-    {2023/05/16}
-    {1.0}
+    {2023/05/20}
+    {1.2}
     {A structured array/hash of properties}
 
 %%%%%%%
@@ -38,8 +38,8 @@
   {
      name        .code:n = starray ,
      prefix      .code:n = starray ,
-     date        .code:n = 2023/05/16 ,
-     version     .code:n = 1.1 ,
+     date        .code:n = 2023/05/20 ,
+     version     .code:n = 1.2 ,
      description .code:n = A~structured~array/hash~of~properties
   }
 \cs_if_exist:NF \__codedesc_pkg_info:nn 
@@ -129,7 +129,7 @@
 \cs_generate_variant:Nn \tl_put_right:Nn {Ne}
 \cs_generate_variant:Nn \tl_gput_right:Nn {Ne}
 \cs_generate_variant:Nn \tl_set:Nn {Ne , ce}
-\cs_generate_variant:Nn \tl_gset:Nn {Ne , ce}
+\cs_generate_variant:Nn \tl_gset:Nn {Ne , ce} 
 
 \cs_generate_variant:Nn \seq_put_right:Nn {ce}
 \cs_generate_variant:Nn \seq_gput_right:Nn {ce}
@@ -139,9 +139,9 @@
 \cs_generate_variant:Nn \prop_put:Nnn {Nee , cee}
 \cs_generate_variant:Nn \prop_gput:Nnn {Nee , cee}
 
-\cs_generate_variant:Nn \prop_get:NnN {Nnc , cnc , Nec , cec}
+\cs_generate_variant:Nn \prop_get:NnN { cnc , cec }
 
-\prg_generate_conditional_variant:Nnn \prop_get:NnN {Nnc , cnc , Nec , cec} { F , T , TF}
+\prg_generate_conditional_variant:Nnn \prop_get:NnN { Nec } { F , T , TF}
 
 \prg_generate_conditional_variant:Nnn \seq_if_in:Nn {ce} {TF}
 \prg_generate_conditional_variant:Nnn \prop_if_in:Nn {ce} {TF}
@@ -326,9 +326,11 @@
 
 %%%%
 %%%% recursive/reentrant aware tmp variables.
+%%%% this is clumsy and utterly ugly... 
+%%%% a set of variables for each recursing level...
 %%%%
 
-\int_set:Nn \l_tmpa_int {7}
+\int_set:Nn \l_tmpa_int {9}
 \tl_clear:N \l_tmpa_tl
 \int_do_while:nNnn {\l_tmpa_int} > {0}
   {
@@ -371,6 +373,7 @@
 \tl_new:N \l__starray_parsed_ref_tl
 \tl_new:N \l__starray_parsed_base_ref_tl
 \tl_new:N \l__starray_parsed_root_ref_tl
+\tl_new:N \l__starray_parsed_ref_no_idx_ending_tl
   
 \tl_new:N \l__starray_parsing_term_tl 
 
@@ -404,25 +407,42 @@
 %%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%
 
-% probably EXP
-\prg_new_protected_conditional:Npnn \__starray_if_free:n #1 {T, F, TF}
+%
+%
+\prg_new_conditional:Npnn \__starray_if_free:n #1 {p, T, F, TF}
   {
     \prop_if_exist:cTF {#1}
       { \prg_return_false: }
       { \prg_return_true: }
   }
 
-\prg_generate_conditional_variant:Nnn \__starray_if_free:n {e} {T, F, TF}
+\prg_generate_conditional_variant:Nnn \__starray_if_free:n {e} {p, T, F, TF}
 
-% possible rEXP
-\prg_new_protected_conditional:Npnn \__starray_if_valid:n #1 {T, F, TF}
+
+\prg_new_conditional:Npnn \starray_if_exist:n #1 {p, T, F, TF}
+  {
+    \__starray_if_free:nTF {\l__starray_prefix_tl #1 _def_prop}
+      { \prg_return_false: }
+      { \prg_return_true: }
+  }
+
+
+\prg_new_conditional:Npnn \__starray_if_valid:n #1 {p, T, F, TF}
   {
     \bool_lazy_and:nnTF {\prop_if_exist_p:c {#1}} {\prop_item:cn {#1} {is_starray}}
       { \prg_return_true: }
       { \prg_return_false: }
   }
 
-\prg_generate_conditional_variant:Nnn \__starray_if_valid:n {e} {T, F, TF}
+\prg_generate_conditional_variant:Nnn \__starray_if_valid:n {e} {p, T, F, TF}
+
+\prg_new_conditional:Npnn \starray_if_valid:n #1 {p, T, F, TF}
+  {
+    \__starray_if_valid:nTF {\l__starray_prefix_tl #1 _def_prop}
+      { \prg_return_true: }
+      { \prg_return_false: }
+  }
+
 
 %%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%
@@ -756,15 +776,17 @@
 %%%%%%%%%%%%%%%
 
 
-\prg_new_protected_conditional:Npnn \__starray_def_from_keyval_testdot_aux:w  #1 . \q_nil { TF}
+\prg_new_conditional:Npnn \__starray_def_from_keyval_testdot_aux:w  #1 . \q_nil { TF}
   {
     \str_compare:nNnTF {#1} = {struct}
       { \prg_return_true: }
       { \prg_return_false: }
   }
 
-
-\prg_new_protected_conditional:Npnn \__starray_def_from_keyval_testdot:w  #1 . #2 \q_stop { TF}
+%
+% This should be protected (\tl_set:Ne isn't expandable) but only the TF form matters.
+%
+\prg_new_conditional:Npnn \__starray_def_from_keyval_testdot:w  #1 . #2 \q_stop { TF}
   {
     \quark_if_nil:nTF {#2}
       {
@@ -777,7 +799,6 @@
             \prg_return_true:
           } % dot struct, OK
           {
-%            \bool_gset_false:N \l__starray_rtn_bool
             \prg_return_false:
           } %% possible syntax ERR (dot, but no struct!)
       }
@@ -1180,7 +1201,7 @@
 %%%%%%%%%%%%%%%
 
 
-\cs_new_protected:Npn \__starray_get_prop:nn #1#2
+\cs_new:Npn \__starray_get_prop:nn #1#2
   {
     \prop_item:cn {\l__starray_prefix_tl #1 _term_prop}{#2}
   }
@@ -1205,6 +1226,17 @@
       \msg_warning:nnnn {starray} {syntax /  prop} {get:1} {#1}
     } % returns nothing by default
   }
+  
+  
+%%%%%%%%%%%%%%%%
+%%%
+%%% WARNING: This is uses the 'last parsed term'.
+%%%
+%%%%%%%%%%%%%%%%  
+\cs_new:Npn \starray_parsed_get_prop:n #1
+  {
+    \__starray_get_prop:ee {\l__starray_parsed_ref_tl}{#1}
+  }  
 
 \cs_new_protected:Npn \starray_get_prop:nnN #1#2#3
   {
@@ -1228,7 +1260,9 @@
     \__starray_parser:nnTF {\c__starray_idx_ending_bool}{#1}
       {
         \prop_get:cnNTF 
-          {\l__starray_prefix_tl \l__starray_parsed_ref_tl _term_prop} {#2} #3
+          {\l__starray_prefix_tl \l__starray_parsed_ref_tl _term_prop} 
+          {#2} 
+          #3
           {
             \prg_return_true:
           }
@@ -1245,23 +1279,35 @@
   }
 
 
+
 \prg_new_protected_conditional:Npnn \starray_if_in:nn #1#2 {T, F, TF}
   {
-    \__starray_parser:nnTF {\c__starray_idx_ending_bool}{#1}
+    \__starray_parser:nnTF {\c__starray_idx_ending_bool} {#1}
       {
         \prop_if_in:cnTF 
-          {\l__starray_prefix_tl \l__starray_parsed_ref_tl _term_prop} {#2}
-          {
-            \prg_return_true:
-          }
-          {
-            \prg_return_false:
-          }
+          { \l__starray_prefix_tl \l__starray_parsed_ref_tl _term_prop } 
+          {#2}
+          { \prg_return_true: }
+          { \prg_return_false: }
       }
       {
         \seq_clear:N \l__starray_msg_seq
         \prg_return_false:
       } % returns nothing by default
+  }
+
+%%%%%%%%%%%%%%%%
+%%%
+%%% WARNING: This is uses the 'last parsed term'.
+%%%
+%%%%%%%%%%%%%%%%
+\prg_new_conditional:Npnn \starray_parsed_if_in:n #1 {p, T, F, TF}
+  {
+    \prop_if_in:cnTF 
+      { \l__starray_prefix_tl \l__starray_parsed_ref_tl _term_prop } 
+      {#1}
+      { \prg_return_true: }
+      { \prg_return_false: }
   }
 
 
@@ -1277,6 +1323,19 @@
         \msg_warning:nnnn {starray} {syntax /  prop} {get:XX} {#1}
       } % returns nothing by default
   }
+
+
+%%%%%%%%%%%%%%%%
+%%%
+%%% WARNING: This uses the 'last parsed term'.
+%%%         It will leave cnt directly in the input stream
+%%%%%%%%%%%%%%%%
+\cs_new:Npn \starray_parsed_get_cnt:
+  {
+    \int_use:N
+      \prop_item:cn { \l__starray_prefix_tl \l__starray_parsed_ref_no_idx_ending_tl _base_prop } {cnt}
+  }
+   
 
 \cs_new_protected:Npn \starray_get_cnt:nN #1#2
   {
@@ -1320,6 +1379,18 @@
         \msg_warning:nnnn {starray} {syntax /  prop} 
           {get:XX} {#1}
       } % returns nothing by default
+  }
+
+
+%%%%%%%%%%%%%%%%
+%%%
+%%% WARNING: This uses the 'last parsed term'.
+%%%         It will leave current iter directly in the input stream
+%%%%%%%%%%%%%%%%
+\cs_new:Npn \starray_parsed_get_iter:
+  {
+    \int_use:N 
+      \prop_item:cn { \l__starray_prefix_tl \l__starray_parsed_ref_no_idx_ending_tl _base_prop } {iter}
   }
 
 
@@ -1445,8 +1516,11 @@
 %%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%
 
-
-\prg_new_protected_conditional:Npnn \__starray_set_parse_end:w  #1#2 ] #3 \q_stop { TF}
+%
+% Not expandable. DO NOT generate a predicate version! 
+% but, already a :w conditional anyway (internal)
+%
+\prg_new_conditional:Npnn \__starray_set_parse_end:w  #1#2 ] #3 \q_stop { TF}
   {
     \quark_if_nil:nTF {#3}
       { \prg_return_false: } %% syntax ERR
@@ -1457,7 +1531,11 @@
   }
 
 
-\prg_new_protected_conditional:Npnn \__starray_set_parse_aux:w  #1#2 [ \q_nil \q_stop { TF}
+%
+% Not expandable. DO NOT generate a predicate version! 
+% but, already a :w conditional anyway (internal)
+%
+\prg_new_conditional:Npnn \__starray_set_parse_aux:w  #1#2 [ \q_nil \q_stop { TF}
   {
     \__starray_set_parse_end:wTF  {#1}#2 ] \q_nil\q_stop
       {\prg_return_true:}
@@ -1465,7 +1543,11 @@
   }
 
 
-\prg_new_protected_conditional:Npnn \__starray_set_parse_begin:w #1#2 [ #3 \q_stop { TF}
+%
+% Not expandable. DO NOT generate a predicate version! 
+% but, already a :w conditional anyway (internal)
+%
+\prg_new_conditional:Npnn \__starray_set_parse_begin:w #1#2 [ #3 \q_stop { TF}
   {
     \quark_if_nil:nTF {#3}
       {               % no 'term' ref, just array_name (current/iter term)
@@ -1703,7 +1785,11 @@
 %%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%
 
-\prg_new_protected_conditional:Npnn \__starray_term_parse_end:w  #1 ] #2 \q_stop { TF}
+%%%
+%%% \tl_set: isn't expandable... but (internal) and only the TF variant is needed.
+%%% :w macro anyway...
+%%%
+\prg_new_conditional:Npnn \__starray_term_parse_end:w  #1 ] #2 \q_stop { TF}
   {
     \quark_if_nil:nTF {#2}
       { \prg_return_false: } %% syntax ERR
@@ -1714,7 +1800,11 @@
   }
 
 
-\prg_new_protected_conditional:Npnn \__starray_term_parse_aux:w  #1 [ \q_nil \q_stop { TF}
+%%%
+%%% \tl_set: isn't expandable (see above)... but (internal) and only the TF variant is needed.
+%%% :w macro anyway...
+%%%
+\prg_new_conditional:Npnn \__starray_term_parse_aux:w  #1 [ \q_nil \q_stop { TF}
   {
     \__starray_term_parse_end:wTF  #1 ] \q_nil\q_stop
       {\prg_return_true:}
@@ -1722,7 +1812,11 @@
   }
 
 
-\prg_new_protected_conditional:Npnn \__starray_term_parse_begin:w #1 [ #2 \q_stop { TF}
+%%%
+%%% \tl_set: isn't expandable (see above)... but (internal) and only the TF variant is needed.
+%%% :w macro anyway...
+%%%
+\prg_new_conditional:Npnn \__starray_term_parse_begin:w #1 [ #2 \q_stop { TF}
   {
     \tl_set:Nn \l__starray_parsed_term_tl {#1}
 
@@ -1787,6 +1881,9 @@
           {
             \quark_if_nil:nTF {#2}
             {       % this is the last one
+              \tl_set:Ne 
+                \l__starray_parsed_ref_no_idx_ending_tl 
+                {\l__starray_parsed_ref_tl}
               \bool_if:NTF \l__starray_parser_no_idx_ending_bool
               {                                  % assuming it is to add a term...
                 \tl_if_empty:NTF \l__starray_parsed_idx_tl
@@ -1910,6 +2007,13 @@
         \prg_return_false:
       }
   }
+  
+\cs_new:Npn \starray_term_syntax:n #1
+  {
+    \__starray_parser:nnTF {\c__starray_idx_ending_bool}{#1}
+      {}
+      {}  
+  }  
 
 %%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%

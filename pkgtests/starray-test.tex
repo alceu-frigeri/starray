@@ -15,7 +15,7 @@
 %%
 %% The Current Maintainer of this work is Alceu Frigeri
 %%
-%% This is version 1.0 (2023/05/11)
+%% This is version 1.2 (2023/05/20)
 %%
 %% The list of files that compose this work can be found in the README.md file at
 %% https://ctan.org/pkg/starray
@@ -100,9 +100,9 @@
 
 
 
-%\bool_if:nTF { \starray_new_p:n {myfoo} }
-%  { \message { TRUE } }
-%  { \message { FALSE } }
+\bool_if:nTF { \__starray_if_valid_p:n {myfoo} }
+  {  \sttests_fail:n {myfoo~shouldn'b~be~defined } }
+  {   \sttests_pass:n {myfoo~not~defined } }
 %
 %\bool_if:nTF { \starray_new_p:n {myfoo} }
 %  { \message { TRUE } }
@@ -241,6 +241,71 @@ STtest.TT.ZX~(correct)~
 
 \sttests_par:
 
+\sttests_work_in:n {Texting~expandable~ predicates~and~command}
+
+
+\bool_if:nTF {\starray_if_exist_p:n {myfoo}}
+  {\sttests_fail:n {myfoo~shouldn't~exist}}
+  { \sttests_pass:n {myfoo~isn't~defined}}
+
+\bool_if:nTF {\starray_if_valid_p:n {myfoo}}
+  {\sttests_fail:n {myfoo~shouldn't~exist}}
+  { \sttests_pass:n {myfoo~isn't~defined}}
+
+\bool_if:nTF {\starray_if_valid_p:n {STtest.TT.ZX}}
+  {\sttests_pass:n {STtest.TT.ZX~is~a~starray}}
+  { \sttests_fail:n {STtest.TT.ZX~should~exist}}
+\sttests_par:
+
+executing~term~syntax:n ~(no~output)\\
+\starray_term_syntax:n {STtest.TT.ZX}
+
+\sttests_par:
+This~ is~ ZXa:<<\starray_parsed_get_prop:n{ZXa}>>~(using~'parsed'~one)
+\sttests_par:
+
+\sttests_work_in:n {expandable~ cnt/iter~commands}
+The~current~cnt:\starray_parsed_get_cnt:~(using~'parsed'~one)\\
+
+\int_compare:nNnTF {\starray_parsed_get_cnt:} = {0}
+  {\sttests_fail:n{cnt~should'nt~be~equal}} 
+  {\sttests_pass:n{cnt~isn't~0}}
+  
+\sttests_par:
+The~current~iter:\starray_parsed_get_iter:~(using~'parsed'~one)\\
+
+\int_compare:nNnTF {\starray_parsed_get_iter:} = {2}
+  {\sttests_pass:n{iter~is~2}} 
+  {\sttests_fail:n{iter~isn't~2}}
+%\int_use:N \prop_item:cn {l__starray_ STtest_B.TT_A.ZX_B _base_prop} {cnt}
+
+
+\sttests_par:
+
+\bool_if:nTF { \starray_parsed_if_in_p:n {myfoo} }
+  {  \sttests_fail:n {myfoo~shouldn't~be~defined } }
+  {   \sttests_pass:n {myfoo~not~a~prop~of } }
+
+\bool_if:nTF { \starray_parsed_if_in_p:n {ZXa} }
+  {  \sttests_pass:n {ZXa~is~prop } }
+  {   \sttests_fail:n {ZXa~wasn't~found } }
+
+
+
+
+
+\sttests_par:
+
+
+  
+\starray_set_prop:nnn {STtest.TT.ZX}  {Zxa} {\c_true_bool}
+
+\bool_if:nTF { \starray_parsed_get_prop:n {Zxa} }
+  {  \sttests_pass:n {ZXa~is~true } }
+  {   \sttests_fail:n {ZXa~isn't~true } }
+  
+  
+  \sttests_par:
   
 \sttests_work_in:n {testing~get_prop~functions}
 \sttests_remark:n {This~is~(default)~'X'~property~from STtest[hah]~term:~}\starray_get_prop:nn {STtest[hah]}{X}
