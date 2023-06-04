@@ -649,18 +649,31 @@ setting: STtest[1].TT~(err,~not~instantiated)\par
           first = first~name ,
           last = last~name ,
           advisor[2] = {
-            first = advisor~first~name ,
-            last  = advisor~last~name ,
+            first = advisorB~first~name ,
+            last  = advisorB~last~name ,
           } ,
           reviewers = {
-            first = reviewer~first~name ,
-            last  = reviewer~last~name ,
+            first = reviewerI~first~name ,
+            last  = reviewerI~last~name ,
           } ,
           advisor[1] = {
-            first = advisor~first~name ,
-            last  = advisor~last~name ,
+            first = advisorA~first~name ,
+            last  = advisorA~last~name ,
           } ,
           email
+        }
+        {\sttests_pass:n {correct}}
+        {\sttests_fail:n {!!!}}
+
+\sttests_work_in:n {setting~from~keyval~with~branching~II}
+
+      \starray_set_from_keyval:nnTF
+        {student[1]}
+        {
+          advisor[2] = {
+            first = student2set~first~name ,
+            last  = student2set~last~name ,
+            }
         }
         {\sttests_pass:n {correct}}
         {\sttests_fail:n {!!!}}
