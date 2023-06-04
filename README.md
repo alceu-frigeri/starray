@@ -73,7 +73,7 @@ The Current Maintainer of this work is Alceu Frigeri
 
 ## Changelog
 
-* Version 1.3 (this)
+* Version 1.3 (this) 
     - Fixed issue #4, where (in some instances) _set_from_keyval could render a quark loop.
 
 * Version 1.2
