@@ -15,7 +15,7 @@
 %%
 %% The Current Maintainer of this work is Alceu Frigeri
 %%
-%% This is version 1.3 (2023/06/04)
+%% This is version 1.4 (2023/11/18)
 %%
 %% The list of files that compose this work can be found in the README.md file at
 %% https://ctan.org/pkg/starray
@@ -450,6 +450,18 @@ Before the reset \tsobj[marg]{st-root.subY.subYYY} was equivalent to \tsobj[marg
 
 
 
+\begin{codedescribe}[code,new=2023/11/04]{\starray_set_iter_from_hash:nn,\starray_set_iter_from_hash:nnTF}
+\begin{codesyntax}%
+\tsmacro{\starray_set_iter_from_hash:nn}{starray-ref,hash}
+\tsmacro{\starray_set_iter_from_hash:nnTF}{starray-ref,hash,if-true,if-false}
+\end{codesyntax}
+\end{codedescribe}
+\tsmacro{\starray_set_iter_from_hash:nn}{starray-ref,hash} will set iter based on the \tsobj[meta]{hash} used when instantiating a term (see \ref{pack:instantiate} ).
+\begin{tsremark}
+A warning is raised (see \ref{pack:options}) in case of a \tsobj[marg]{starray-ref} syntax error or invalid \tsobj[meta]{hash}. The branching version doesn't raise any warning.
+\end{tsremark}
+
+
 \begin{codedescribe}{\starray_get_iter:n,\starray_get_iter:nN,\starray_get_iter:nNTF}
 \begin{codesyntax}%
 \tsmacro{\starray_get_iter:n}{starray-ref}
@@ -494,6 +506,21 @@ A warning is raised (see \ref{pack:options}) in case of a \tsobj[marg]{starray-r
 \begin{tsremark}[\color{red}Warning:]
 This can be used after any command which 'parses a term', for instance \tsobj{\starray_term_syntax:n}, see section \ref{conditionals:terms}, but it only makes sense (and returns a reliable/meaningful result) IF the last parser operation was successfully executed.
 \end{tsremark}
+
+\begin{codedescribe}[code,new=2023/11/04]{\starray_iterate_over:nn,\starray_iterate_over:nnTF}
+\begin{codesyntax}%
+\tsmacro{\starray_iterate_over:nn}{starray-ref,code}
+\tsmacro{\starray_iterate_over:nnTF}{starray-ref,code,if-true,if-false}
+\end{codesyntax}
+\tsobj{\starray_iterate_over:nn} will reset the \tsobj[marg]{starray-ref} iterator, and then execute \tsobj[marg]{code} for each valid value of \tsobj{iter}. At the loop's end, the \tsobj[marg]{starray-ref} iterator will point to the last element of it. The \tsobj[marg]{if-true} is executed, at the loop's end if there is no syntax error. Similarly \tsobj[marg]{if-false} is only execute if a syntax error is detected.
+\end{codedescribe}
+\begin{tsremark}
+\tsobj{\starray_iterate_over:nn} Creates a local group, so that one can recurse over sub-structures. Be aware, then, that \tsobj[marg]{code} is executed in said local group.
+\end{tsremark}
+\begin{tsremark}
+A warning is raised (see \ref{pack:options}) in case of a \tsobj[marg]{starray-ref} syntax error. The branching version doesn't raise any warning.
+\end{tsremark}
+
 
 
 \section{Changing and recovering starray properties}\label{pack:get/set}

@@ -15,7 +15,7 @@
 %%
 %% The Current Maintainer of this work is Alceu Frigeri
 %%
-%% This is version 1.2 (2023/05/20)
+%% This is version 1.4 (2023/05/20)
 %%
 %% The list of files that compose this work can be found in the README.md file at
 %% https://ctan.org/pkg/starray
@@ -280,6 +280,7 @@ The~current~iter:\starray_parsed_get_iter:~(using~'parsed'~one)\\
 %\int_use:N \prop_item:cn {l__starray_ STtest_B.TT_A.ZX_B _base_prop} {cnt}
 
 
+
 \sttests_par:
 
 \bool_if:nTF { \starray_parsed_if_in_p:n {myfoo} }
@@ -356,6 +357,11 @@ iter: \starray_get_iter:n{STtest}
 \sttests_remark:n {next~iter} \starray_next_iter:n{STtest}
 iter: \starray_get_iter:n{STtest}
 
+
+\sttests_remark:n {set~iter~hash} \starray_set_iter_from_hash:nn {STtest}{hah}
+iter: \starray_get_iter:n{STtest}
+
+
 \sttests_remark:n {set~iter->5} \starray_set_iter:nn{STtest}{5}
 iter: \starray_get_iter:n{STtest}
 
@@ -391,6 +397,12 @@ iter: \starray_get_iter:n{STtest}
 \starray_next_iter:nTF{STtest}
   {\sttests_fail:}
   {\sttests_pass:n {'saturated'}~}
+iter: \starray_get_iter:n{STtest}
+
+\sttests_remark:n {set~iter~hash} 
+\starray_set_iter_from_hash:nnTF {STtest}{hah}
+  {\sttests_pass:n {hash~found}}
+  {\sttests_fail:n {hash~err}}
 iter: \starray_get_iter:n{STtest}
 
 \sttests_remark:n {set~iter->5} 
@@ -633,7 +645,7 @@ setting: STtest[1].TT~(err,~not~instantiated)\par
 
 
         \starray_new_term:nn {student}{}
-        \starray_new_term:nn {student.advisor}{}
+        \starray_new_term:nn {student.advisor}{AB}
         \starray_new_term:nn {student.advisor.somedata}{}
         \starray_new_term:nn {student.advisor}{}
         \starray_new_term:nn {student.advisor.somedata}{}

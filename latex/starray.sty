@@ -12,7 +12,7 @@
 %%
 %% The Current Maintainer of this work is Alceu Frigeri
 %%
-%% This is version 1.3 (2023/06/04) 
+%% This is version 1.4 (2023/11/18) 
 %%
 %% The list of files that compose this work can be found in the README.md file at
 %% https://ctan.org/pkg/starray
@@ -24,8 +24,8 @@
 
 \ProvidesExplPackage
     {starray}
-    {2023/06/04}
-    {1.3}
+    {2023/11/18}
+    {1.4}
     {A structured array/hash of properties}
 
 %%%%%%%
@@ -38,8 +38,8 @@
   {
      name        .code:n = starray ,
      prefix      .code:n = starray ,
-     date        .code:n = 2023/06/04,
-     version     .code:n = 1.3 ,
+     date        .code:n = 2023/11/18,
+     version     .code:n = 1.4 ,
      description .code:n = A~structured~array/hash~of~properties
   }
 \cs_if_exist:NF \__codedesc_pkg_info:nn 
@@ -145,6 +145,7 @@
 \cs_generate_variant:Nn \seq_gput_right:Nn {ce}
 
 \cs_generate_variant:Nn \int_to_Alph:n {e}
+\cs_generate_variant:Nn \int_gset:Nn {Ne}
 
 \cs_generate_variant:Nn \prop_put:Nnn {Nee , cee}
 \cs_generate_variant:Nn \prop_gput:Nnn {Nee , cee}
@@ -1088,6 +1089,63 @@
 %%%% \starray_set_iter
 %%%%
 %%%%%%%%%%%%%%%
+\prg_new_protected_conditional:Npnn \__starray_set_iter_from_hash:nn #1#2 {T , F, TF}
+  {
+    \prop_get:cnN {\l__starray_prefix_tl #1 _base_prop} {iter_hash} \l_tmpa_prop
+    \prop_get:NnNTF \l_tmpa_prop {#2} \l_tmpa_tl
+      {
+        \int_gset:Nn
+          { \prop_item:cn {\l__starray_prefix_tl #1 _base_prop} {iter} }
+          { \l_tmpa_tl }
+        \prg_return_true:
+      }
+      {
+        \prg_return_false:
+      }    
+  }
+
+
+\cs_new_protected:Npn \starray_set_iter_from_hash:nn #1#2
+  {
+    \__starray_parser:nnTF {\c__starray_no_idx_ending_bool}{#1}
+      {
+        \__starray_set_iter_from_hash:nnTF {\l__starray_parsed_ref_tl}{#2}
+          {
+            \__starray_set_sub_iter:nnn {}{\l__starray_parsed_ref_tl}{}        
+          }
+          {
+            \msg_warning:nnnn {starray} {reference /  iter} {iterhash:1} {#1}{#2}            
+          }
+      }
+      {
+        \__starray_msg_dispatch:
+        \msg_warning:nnnn {starray} {syntax /  iter} {iter:1} {#1}
+      } % returns nothing by default
+  }
+
+\prg_new_protected_conditional:Npnn \starray_set_iter_from_hash:nn #1#2 {T, F, TF}
+  {
+    \bool_set_true:N \l__starray_rtn_bool
+
+    \__starray_parser:nnTF {\c__starray_no_idx_ending_bool}{#1}
+      {
+        \__starray_set_iter_from_hash:nnTF {\l__starray_parsed_ref_tl}{#2}
+          {
+            \__starray_set_sub_iter:nnn {}{\l__starray_parsed_ref_tl}{}        
+            \prg_return_true:
+          }
+          {
+            \bool_set_false:N \l__starray_rtn_bool
+            \prg_return_false:
+          }
+      }
+      {
+        \bool_set_false:N \l__starray_rtn_bool
+        \seq_clear:N \l__starray_msg_seq
+        \prg_return_false:
+      } % returns nothing by default
+  }
+
 
 \cs_new_protected:Npn \starray_set_iter:nn #1#2
   {
@@ -1226,6 +1284,62 @@
       }
   }
 
+
+%%%%%%%%%%%%%%%
+%%%%
+%%%% \starray_iterate_over
+%%%%
+%%%%%%%%%%%%%%%
+\bool_new:N \l__starray_iterate_bool
+
+\cs_new_protected:Npn \starray_iterate_over:nn #1#2
+  {
+    
+        \bool_if_exist:cF {l__starray_iterate_ #1 _bool}
+          { \bool_new:c   {l__starray_iterate_ #1 _bool} }
+        \starray_reset_iter:nTF {#1}
+          {
+            \bool_gset_true:c {l__starray_iterate_ #1 _bool}
+            \bool_do_while:cn {l__starray_iterate_ #1 _bool}
+            {
+            
+              #2
+              
+              \starray_next_iter:nTF {#1}
+                { \bool_gset_true:c  {l__starray_iterate_ #1 _bool} }
+                { \bool_gset_false:c {l__starray_iterate_ #1 _bool} }
+            }
+          }
+          {
+            \bool_set_false:N \l__starray_rtn_bool
+            \msg_warning:nnnn {starray} {syntax /  iter} {iter:6} {#1}
+          }
+     
+  }
+
+\prg_new_protected_conditional:Npnn \starray_iterate_over:nn #1#2 {T, F, TF}
+  {
+     \bool_if_exist:cF {l__starray_iterate_#1_bool}{\bool_new:c {l__starray_iterate_#1_bool}}
+        \starray_reset_iter:nTF {#1}
+          {
+            \bool_gset_true:c {l__starray_iterate_#1_bool}
+            \bool_do_while:cn {l__starray_iterate_#1_bool}
+            {
+              #2
+              \starray_next_iter:nF {#1}
+                %{\bool_gset_true:c {l__starray_iterate_#1_bool}}
+                {\bool_gset_false:c {l__starray_iterate_#1_bool}}
+            }
+            \prg_return_true:
+          }
+          {
+            \seq_clear:N \l__starray_msg_seq
+            \prg_return_false: 
+          }
+  }
+
+
+
 %%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%
 %%%%
@@ -1265,7 +1379,7 @@
   
 %%%%%%%%%%%%%%%%
 %%%
-%%% WARNING: This is uses the 'last parsed term'.
+%%% WARNING: This uses the 'last parsed term'.
 %%%
 %%%%%%%%%%%%%%%%  
 \cs_new:Npn \starray_parsed_get_prop:n #1
