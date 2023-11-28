@@ -15,7 +15,7 @@
 %%
 %% The Current Maintainer of this work is Alceu Frigeri
 %%
-%% This is version 1.4 (2023/05/20)
+%% This is version {1.4} {2023/11/28}
 %%
 %% The list of files that compose this work can be found in the README.md file at
 %% https://ctan.org/pkg/starray
@@ -308,6 +308,92 @@ The~current~iter:\starray_parsed_get_iter:~(using~'parsed'~one)\\
   
   \sttests_par:
   
+  
+\sttests_work_in:n {Texting~expandable~ predicates~and~command~ with~ parsed~ref~variables}
+\tl_new:N \__refAa_tl
+\tl_new:N \__refBa_tl
+\tl_new:N \__refAb_tl
+\tl_new:N \__refBb_tl
+
+
+%%%%%%%%%%
+%%%%%%%%%%
+
+executing~term~syntax:nNN ~(no~output~refA)\\
+\starray_term_syntax:nNN {STtest.TT.ZX} \__refAa_tl \__refBa_tl
+
+executing~term~syntax:nNN ~(no~output~refB)\\
+\starray_term_syntax:nNN {STtest.TT} \__refAb_tl \__refBb_tl
+
+
+\sttests_par:
+This~ is~ ZXa:<<\starray_parsed_get_prop:NNn \__refAa_tl \__refBa_tl {ZXa}>>~(using~'refA'~one)
+\sttests_par:
+
+\sttests_work_in:n {expandable~ cnt/iter~commands}
+The~current~cnt:\starray_parsed_get_cnt:NN \__refAa_tl \__refBa_tl ~(using~'refA'~one)\\
+
+\int_compare:nNnTF {\starray_parsed_get_cnt:NN \__refAa_tl \__refBa_tl} = {0}
+  {\sttests_fail:n{cnt~should'nt~be~equal}} 
+  {\sttests_pass:n{cnt~isn't~0}}
+  
+\sttests_par:
+The~current~iter:\starray_parsed_get_iter:NN \__refAb_tl \__refBb_tl~(using~'refB'~one)\\
+
+\int_compare:nNnTF {\starray_parsed_get_iter:NN \__refAb_tl \__refBb_tl} = {1}
+  {\sttests_pass:n{iter~is~1}} 
+  {\sttests_fail:n{iter~isn't~1}}
+%\int_use:N \prop_item:cn {l__starray_ STtest_B.TT_A.ZX_B _base_prop} {cnt}
+
+\sttests_par:
+The~current~iter:\starray_parsed_get_iter:NN \__refAa_tl \__refBa_tl~(using~'refA'~one)\\
+
+\int_compare:nNnTF {\starray_parsed_get_iter:NN \__refAa_tl \__refBa_tl} = {2}
+  {\sttests_pass:n{iter~is~2}} 
+  {\sttests_fail:n{iter~isn't~2}}
+%\int_use:N \prop_item:cn {l__starray_ STtest_B.TT_A.ZX_B _base_prop} {cnt}
+
+
+\sttests_par:
+
+(using~ refA):
+\bool_if:nTF { \starray_parsed_if_in_p:NNn \__refAa_tl \__refBa_tl {myfoo} }
+  {  \sttests_fail:n {myfoo~shouldn't~be~defined } }
+  {   \sttests_pass:n {myfoo~not~a~prop~of } }
+
+(using~ refA):
+\bool_if:nTF { \starray_parsed_if_in_p:NNn \__refAa_tl \__refBa_tl {ZXa} }
+  {  \sttests_pass:n {ZXa~is~prop } }
+  {   \sttests_fail:n {ZXa~wasn't~found } }
+
+(using~ refB):
+\bool_if:nTF { \starray_parsed_if_in_p:NNn \__refAb_tl \__refBb_tl {ZXa} }
+  {  \sttests_fail:n {ZXa~is~prop } }
+  {   \sttests_pass:n {ZXa~wasn't~found } }
+
+
+
+
+\sttests_par:
+
+
+  
+\starray_set_prop:nnn {STtest.TT.ZX}  {Zxa} {\c_true_bool}
+
+\bool_if:nTF { \starray_parsed_get_prop:n {Zxa} }
+  {  \sttests_pass:n {ZXa~is~true } }
+  {   \sttests_fail:n {ZXa~isn't~true } }
+
+
+%%%%%%%%%%
+%%%%%%%%%%
+
+
+
+\sttests_par:
+
+  
+  
 \sttests_work_in:n {testing~get_prop~functions}
 \sttests_remark:n {This~is~(default)~'X'~property~from STtest[hah]~term:~}\starray_get_prop:nn {STtest[hah]}{X}
 \sttests_par:
@@ -342,6 +428,7 @@ The~current~iter:\starray_parsed_get_iter:~(using~'parsed'~one)\\
 
  
 \sttests_par:
+
 
 \sttests_work_in:n {Testing~iter~functions}
 Current~STtest~iter: 

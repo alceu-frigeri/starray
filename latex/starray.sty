@@ -12,20 +12,20 @@
 %%
 %% The Current Maintainer of this work is Alceu Frigeri
 %%
-%% This is version 1.4 (2023/11/18) 
+%% This is version {1.5} {2023/11/28} 
 %%
 %% The list of files that compose this work can be found in the README.md file at
 %% https://ctan.org/pkg/starray
 %%
 %%%==============================================================================
 \NeedsTeXFormat{LaTeX2e}[2022/06/01]
-\RequirePackage{ expl3 }
+
 
 
 \ProvidesExplPackage
     {starray}
-    {2023/11/18}
-    {1.4}
+    {2023/11/28}
+    {1.5}
     {A structured array/hash of properties}
 
 %%%%%%%
@@ -36,11 +36,11 @@
 %%%%%%%
 \keys_define:nn { starray / pkg info}
   {
-     name        .code:n = starray ,
-     prefix      .code:n = starray ,
-     date        .code:n = 2023/11/18,
-     version     .code:n = 1.4 ,
-     description .code:n = A~structured~array/hash~of~properties
+     name        .code:n = {starray} ,
+     prefix      .code:n = {starray} ,
+     date        .code:n = {2023/11/28},
+     version     .code:n = {1.5} ,
+     description .code:n = {A~structured~array/hash~of~properties}
   }
 \cs_if_exist:NF \__codedesc_pkg_info:nn 
   {
@@ -49,6 +49,13 @@
   }
 \cs_if_exist:NF \PkgInfo
   { \NewDocumentCommand \PkgInfo {mm} { \keys_set:nn {#1 / pkg info}{#2} } }
+\cs_if_exist:NF \PkgDescription
+  { 
+    \NewDocumentCommand \PkgDescription {m} 
+      { 
+        \noindent Package~ \textbf{\PkgInfo{#1}{name}}~Version:~\PkgInfo{#1}{version}~ -~ \PkgInfo{#1}{date}\par \emph{\PkgInfo{#1}{description}}~\par 
+      } 
+  }
 %%%%%%%
 %%% End of cut-n-paste
 %%%%%%%
@@ -1387,6 +1394,19 @@
     \__starray_get_prop:ee {\l__starray_parsed_ref_tl}{#1}
   }  
 
+
+%%%%%%%%%%%%%%%%
+%%%
+%%% WARNING: #1 should be \l__starray_parsed_ref_tl
+%%%          #2 should be \l__starray_parsed_ref_no_idx_ending_tl
+%%%         
+%%%%%%%%%%%%%%%%
+\cs_new:Npn \starray_parsed_get_prop:NNn #1#2#3
+  {
+    \__starray_get_prop:ee {#1}{#3}
+  }  
+
+
 \cs_new_protected:Npn \starray_get_prop:nnN #1#2#3
   {
     \__starray_parser:nnTF {\c__starray_idx_ending_bool}{#1}
@@ -1459,6 +1479,23 @@
       { \prg_return_false: }
   }
 
+%%%%%%%%%%%%%%%%
+%%%
+%%% WARNING: #1 should be \l__starray_parsed_ref_tl
+%%%          #2 should be \l__starray_parsed_ref_no_idx_ending_tl
+%%%         
+%%%%%%%%%%%%%%%%
+\prg_new_conditional:Npnn \starray_parsed_if_in:NNn #1#2#3 {p, T, F, TF}
+  {
+    \prop_if_in:cnTF 
+      { \l__starray_prefix_tl #1 _term_prop } 
+      {#3}
+      { \prg_return_true: }
+      { \prg_return_false: }
+  }
+
+
+
 
 \cs_new_protected:Npn \starray_get_cnt:n #1
   {
@@ -1485,6 +1522,18 @@
       \prop_item:cn { \l__starray_prefix_tl \l__starray_parsed_ref_no_idx_ending_tl _base_prop } {cnt}
   }
    
+%%%%%%%%%%%%%%%%
+%%%
+%%% WARNING: #1 should be \l__starray_parsed_ref_tl
+%%%          #2 should be \l__starray_parsed_ref_no_idx_ending_tl
+%%%         
+%%%%%%%%%%%%%%%%
+\cs_new:Npn \starray_parsed_get_cnt:NN #1#2
+  {
+    \int_use:N
+      \prop_item:cn { \l__starray_prefix_tl #2 _base_prop } {cnt}
+  }
+
 
 \cs_new_protected:Npn \starray_get_cnt:nN #1#2
   {
@@ -1542,6 +1591,18 @@
       \prop_item:cn { \l__starray_prefix_tl \l__starray_parsed_ref_no_idx_ending_tl _base_prop } {iter}
   }
 
+
+%%%%%%%%%%%%%%%%
+%%%
+%%% WARNING: #1 should be \l__starray_parsed_ref_tl
+%%%          #2 should be \l__starray_parsed_ref_no_idx_ending_tl
+%%%         
+%%%%%%%%%%%%%%%%
+\cs_new:Npn \starray_parsed_get_iter:NN #1#2
+  {
+    \int_use:N 
+      \prop_item:cn { \l__starray_prefix_tl #2 _base_prop } {iter}
+  }
 
 \cs_new_protected:Npn \starray_get_iter:nN #1#2
   {
@@ -2194,12 +2255,46 @@
       }
   }
   
-\cs_new:Npn \starray_term_syntax:n #1
+\prg_new_protected_conditional:Npnn \starray_term_syntax:nNN #1#2#3 {T, F, TF}
+  {
+    \__starray_parser:nnTF {\c__starray_idx_ending_bool}{#1}
+      {
+        \tl_gset:Ne #2 {\l__starray_parsed_ref_tl}
+        \tl_gset:Ne #3 {\l__starray_parsed_ref_no_idx_ending_tl}
+        \prg_return_true:
+      }
+      {
+        \seq_clear:N \l__starray_msg_seq
+        \prg_return_false:
+      }  
+  }  
+
+\cs_new_protected:Npn \starray_term_syntax:n #1
   {
     \__starray_parser:nnTF {\c__starray_idx_ending_bool}{#1}
       {}
-      {}  
+      {
+        \__starray_msg_dispatch:
+        \msg_warning:nnnn {starray} {syntax /  prop} 
+          {setkeyval:1} {#1}
+      }  
   }  
+
+\cs_new_protected:Npn \starray_term_syntax:nNN #1#2#3
+  {
+    \__starray_parser:nnTF {\c__starray_idx_ending_bool}{#1}
+      {
+        \tl_gset:Ne #2 {\l__starray_parsed_ref_tl}
+        \tl_gset:Ne #3 {\l__starray_parsed_ref_no_idx_ending_tl}
+      }
+      {
+        \__starray_msg_dispatch:
+        \msg_warning:nnnn {starray} {syntax /  prop} 
+          {setkeyval:1} {#1}
+      }  
+  }  
+
+
 
 %%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%
