@@ -72,8 +72,10 @@ The Current Maintainer of this work is Alceu Frigeri
 -------------
 
 ## Changelog
+* Version 1.5 (this) 
+    - added \starray_term_syntax:nNN variant and friends (\starray_parsed_ ... :NN ) the _parsed_ ones being expandable
 
-* Version 1.4 (this) 
+* Version 1.4
     - added a few functions _set_iter_from_hash:nn and _iterate_over:n.
 
 * Version 1.3 
