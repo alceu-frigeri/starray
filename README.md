@@ -42,7 +42,7 @@ Please do not use the issue page for generic help on how to use the package.
 * git: https://github.com/alceu-frigeri/starray
 
 -------------
-Copyright 2023 by Alceu Frigeri
+Copyright 2023-present by Alceu Frigeri
 
  This work may be distributed and/or modified under the
  conditions of
