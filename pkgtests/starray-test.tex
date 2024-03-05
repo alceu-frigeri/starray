@@ -192,6 +192,7 @@
   {
     \sttests_remark:n{STtest~def~\tl_to_str:n {\show}~shall~appear~in~logs~(if~fixed)}
     \starray_show_def:n {STtest}
+    \starray_show_def_in_text:n {STtest}
     
     \sttests_remark:n{STtest~terms~\tl_to_str:n {\show}~shall~appear~in~logs~(if~fixed)}
     \starray_show_terms:n {STtest}
@@ -240,6 +241,25 @@ STtest.TT.ZX~(correct)~
   {\sttests_fail:}
 
 \sttests_par:
+
+
+
+\prop_show:N \l__starray_STtest_base_prop
+\prop_show:N \l__starray_STtest_def_prop
+\prop_show:c {l__starray_STtest_A.TT_base_prop}
+\prop_show:c {l__starray_STtest_A.SS_base_prop}
+\prop_show:c {l__starray_STtest_B.TT_base_prop}
+\prop_show:c {l__starray_STtest_B.SS_base_prop}
+\prop_show:c {l__starray_STtest.TT_def_prop}
+\prop_show:c {l__starray_STtest.TT_defkeys_prop}
+\prop_show:c {l__starray_STtest.TT.ZX_def_prop}
+\prop_show:c {l__starray_STtest.TT.ZX_defkeys_prop}
+\prop_show:c {l__starray_STtest.SS_def_prop}
+\prop_show:c {l__starray_STtest.SS_defkeys_prop}
+\prop_show:c {l__starray_STtest.SS.ZsX_def_prop}
+\prop_show:c {l__starray_STtest.SS.ZsX_defkeys_prop}
+\prop_show:c {l__starray_STtest.SS.TTy_def_prop}
+\prop_show:c {l__starray_STtest.SS.TTy_defkeys_prop}
 
 \sttests_work_in:n {Texting~expandable~ predicates~and~command}
 
@@ -780,6 +800,7 @@ setting: STtest[1].TT~(err,~not~instantiated)\par
 \par
 student~definition:
 \starray_show_def_in_text:n {student}
+\starray_show_def:n {student}
 
 \\[2\baselineskip]
 student~current~terms:

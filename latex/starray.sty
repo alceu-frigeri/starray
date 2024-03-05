@@ -534,8 +534,11 @@
 
     \prop_gput:cnV { \l__starray_prefix_tl #1 _def_prop } {@st_seq} \c_empty_seq
 
-    \prop_gput:cnV
-      { \l__starray_prefix_tl #1 _def_prop} {def} \l_tmpa_prop
+%    \prop_gput:cnV
+%      { \l__starray_prefix_tl #1 _def_prop} {def} \l_tmpa_prop
+      
+    %% V-less : This shall be the new key's holder {def}
+    \prop_new:c {\l__starray_prefix_tl #1 _defkeys_prop}
 
   }
 
@@ -619,9 +622,12 @@
 % needs protection.
 \cs_new_protected:Npn \__starray_def_prop:nnn #1#2#3
   {
-    \prop_get:cnN {\l__starray_prefix_tl #1 _def_prop} {def} \l_tmpa_prop
-    \prop_put:Nnn \l_tmpa_prop {#2} {#3}
-    \prop_gput:cnV {\l__starray_prefix_tl #1 _def_prop} {def} \l_tmpa_prop
+%    \prop_get:cnN {\l__starray_prefix_tl #1 _def_prop} {def} \l_tmpa_prop
+%    \prop_put:Nnn \l_tmpa_prop {#2} {#3}
+%    \prop_gput:cnV {\l__starray_prefix_tl #1 _def_prop} {def} \l_tmpa_prop
+    
+    %% V-less : This shall be the new key's holder {def}
+    \prop_gput:cnn {\l__starray_prefix_tl #1 _defkeys_prop} {#2} {#3}
   }
 
 
@@ -949,9 +955,14 @@
 
     \prop_get:cnN {\l__starray_prefix_tl #1 _base_prop} {def_ref} \l_tmpb_tl
 
-    \prop_get:cnN {\l__starray_prefix_tl \l_tmpb_tl _def_prop} {def} \l_tmpa_prop
+%    %% V-less : To be removed
+%    \prop_get:cnN {\l__starray_prefix_tl \l_tmpb_tl _def_prop} {def} \l_tmpa_prop
+%
+%    \prop_gset_eq:cN { \l__starray_prefix_tl #1 _ \l_tmpa_tl _term_prop } \l_tmpa_prop
 
-    \prop_gset_eq:cN { \l__starray_prefix_tl #1 _ \l_tmpa_tl _term_prop } \l_tmpa_prop
+    %% V-less : replacing above
+    \prop_gset_eq:cc { \l__starray_prefix_tl #1 _ \l_tmpa_tl _term_prop } {\l__starray_prefix_tl \l_tmpb_tl _defkeys_prop}
+
 
     \prop_get:cnN {\l__starray_prefix_tl \l_tmpb_tl _def_prop} {@st_seq} \l_tmpa_seq
 
@@ -2325,20 +2336,34 @@
         \tl_to_str:n {{#3} ~ struct}
         \use:nn { ~ } { ~ } =>
       }
-  
-      \prop_get:cnc 
-        {\l__starray_prefix_tl #2#3 _def_prop} 
-        {def} 
+    
+%    %% V-less : to be removed
+%      \prop_get:cnc 
+%        {\l__starray_prefix_tl #2#3 _def_prop} 
+%        {def} 
+%        {l__starray_tmp A _def_prop}
+
+    %% V-less : replacing above
+      \prop_set_eq:cc 
         {l__starray_tmp A _def_prop}
+        {\l__starray_prefix_tl #2#3 _defkeys_prop} 
+
   
       \prop_get:cnc 
         { \l__starray_prefix_tl #2#3 _def_prop } 
         { @st_seq } 
         {l__starray_tmp A _seq }
   
+%    %% V-less : This can be optimized-> referencing _defkeys_ directly
+%      \prop_map_tokens:cn 
+%        {l__starray_tmp A _def_prop} 
+%        {\__starray_show_def_item:nnn {#1}}
+
+    %% V-less : direct reference to _defkeys
       \prop_map_tokens:cn 
-        {l__starray_tmp A _def_prop} 
+        {\l__starray_prefix_tl #2#3 _defkeys_prop} 
         {\__starray_show_def_item:nnn {#1}}
+
   
       \seq_if_empty:cF { l__starray_tmp A _seq }
         {
