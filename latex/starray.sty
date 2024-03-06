@@ -532,12 +532,10 @@
 
     \prop_clear:N \l_tmpa_prop
 
-    \prop_gput:cnV { \l__starray_prefix_tl #1 _def_prop } {@st_seq} \c_empty_seq
-
-%    \prop_gput:cnV
-%      { \l__starray_prefix_tl #1 _def_prop} {def} \l_tmpa_prop
+    %% V-less : new st_seq => defstkeys_seq
+    \seq_new:c { \l__starray_prefix_tl #1 _defstkeys_seq }
       
-    %% V-less : This shall be the new key's holder {def}
+    %% V-less : This shall be the new defkey's holder {def}
     \prop_new:c {\l__starray_prefix_tl #1 _defkeys_prop}
 
   }
@@ -674,15 +672,15 @@
 % needs protection because of \seq_if...
 \cs_new_protected:Npn \__starray_def_struct:nn #1#2
   {
-    \prop_get:cnN {\l__starray_prefix_tl #1 _def_prop} {@st_seq} \l_tmpa_seq
-    \seq_if_in:NnF \l_tmpa_seq {#2}
+    %% V-less : new st_seq... can be optimized by direct reference (no tmpa)
+    \seq_if_in:cnF {\l__starray_prefix_tl #1 _defstkeys_seq} {#2}
       {
-        \seq_put_right:Nn \l_tmpa_seq {#2}
-    
-        \prop_gput:cnV {\l__starray_prefix_tl #1 _def_prop} {@st_seq} \l_tmpa_seq
+    %% V-less : new st_seq
+        \seq_gput_right:cn {\l__starray_prefix_tl #1 _defstkeys_seq} {#2}
     
         \__starray_new:e { #1 . #2}
       }
+
   }
 
 \cs_generate_variant:Nn \__starray_def_struct:nn {ne}
@@ -715,10 +713,11 @@
       {\l__starray_prefix_tl #2 _base_prop}
       {def_ref}
       \l_tmpa_tl
-    \prop_get:cec
-      {\l__starray_prefix_tl \l_tmpa_tl _def_prop}
-      {@st_seq}
-      {l__starray_tmp  A_seq}
+
+    %% V-less : new st_seq
+    \seq_set_eq:cc {l__starray_tmp  A_seq}{\l__starray_prefix_tl \l_tmpa_tl _defstkeys_seq}
+
+    %% V-less : can't be optimized. _fix_terms_ will change _defstkeys_seq
     \seq_map_tokens:cn
       {l__starray_tmp  A_seq}
       {\__starray_fix_terms_seq_aux:nnnn {#1}{#2}{#4}}
@@ -955,24 +954,17 @@
 
     \prop_get:cnN {\l__starray_prefix_tl #1 _base_prop} {def_ref} \l_tmpb_tl
 
-%    %% V-less : To be removed
-%    \prop_get:cnN {\l__starray_prefix_tl \l_tmpb_tl _def_prop} {def} \l_tmpa_prop
-%
-%    \prop_gset_eq:cN { \l__starray_prefix_tl #1 _ \l_tmpa_tl _term_prop } \l_tmpa_prop
-
     %% V-less : replacing above
     \prop_gset_eq:cc { \l__starray_prefix_tl #1 _ \l_tmpa_tl _term_prop } {\l__starray_prefix_tl \l_tmpb_tl _defkeys_prop}
 
-
-    \prop_get:cnN {\l__starray_prefix_tl \l_tmpb_tl _def_prop} {@st_seq} \l_tmpa_seq
-
 % map over 'all sub-starrays parts of def_ref -> st_seq (those starting with a dot, @st_seq)
-    \seq_map_tokens:Nn
-      \l_tmpa_seq
+    \seq_map_tokens:cn
+      {\l__starray_prefix_tl \l_tmpb_tl _defstkeys_seq}
       {
         \__starray_sub_base_new:nnn
           { \l_tmpb_tl }{ #1 _ \l_tmpa_tl }
       }
+
   }
 
 
@@ -1064,12 +1056,11 @@
           {\l__starray_prefix_tl #2#3 _base_prop} 
           {def_ref} 
           \l_tmpa_tl
-  
-        \prop_get:cnc 
-          { \l__starray_prefix_tl \l_tmpa_tl _def_prop } 
-          { @st_seq } 
-          {l__starray_tmp #1 A_seq }
-  
+            
+      %% V-less : new st_seq
+        \seq_set_eq:cc {l__starray_tmp #1 A_seq }{ \l__starray_prefix_tl \l_tmpa_tl _defstkeys_seq } 
+          
+      %% V-less : could it be optimized? direct reference to defstkeys !?
         \seq_if_empty:cF {l__starray_tmp #1 A_seq }
           {
             \seq_map_variable:cNn
@@ -1822,11 +1813,11 @@
               {def_ref}
               {l__starray_tmp #1 _def_prop}
             
-            \prop_get:cnc 
-              {\l__starray_prefix_tl \tl_use:c {l__starray_tmp #1 _def_prop} _def_prop}
-              {@st_seq}
-              {l__starray_tmp #1 _seq}
-              
+
+      %% V-less : new st_seq
+            \seq_set_eq:cc {l__starray_tmp #1 _seq}{\l__starray_prefix_tl \tl_use:c {l__starray_tmp #1 _def_prop} _defstkeys_seq}
+
+      %% V-less : could it be optimized? direct reference to defstkeys !?            
             \seq_if_in:cnTF {l__starray_tmp #1 _seq}{#4}
               { 
                 \prop_get:cnc
@@ -1875,11 +1866,11 @@
               {def_ref}
               {l__starray_tmp #1 _def_prop}
             
-            \prop_get:cnc 
-              {\l__starray_prefix_tl \tl_use:c {l__starray_tmp #1 _def_prop} _def_prop}
-              {@st_seq}
-              {l__starray_tmp #1 _seq}
 
+      %% V-less : new st_seq
+            \seq_set_eq:cc {l__starray_tmp #1 _seq}{\l__starray_prefix_tl \tl_use:c {l__starray_tmp #1 _def_prop} _defstkeys_seq}
+
+      %% V-less : could it be optimized? direct reference to defstkeys !?
             \seq_if_in:ceTF 
               { l__starray_tmp #1 _seq }  { \tl_use:c{l__starray_tmp #1 :B_tl} }
               {
@@ -2337,38 +2328,17 @@
         \use:nn { ~ } { ~ } =>
       }
     
-%    %% V-less : to be removed
-%      \prop_get:cnc 
-%        {\l__starray_prefix_tl #2#3 _def_prop} 
-%        {def} 
-%        {l__starray_tmp A _def_prop}
-
-    %% V-less : replacing above
-      \prop_set_eq:cc 
-        {l__starray_tmp A _def_prop}
-        {\l__starray_prefix_tl #2#3 _defkeys_prop} 
-
-  
-      \prop_get:cnc 
-        { \l__starray_prefix_tl #2#3 _def_prop } 
-        { @st_seq } 
-        {l__starray_tmp A _seq }
-  
-%    %% V-less : This can be optimized-> referencing _defkeys_ directly
-%      \prop_map_tokens:cn 
-%        {l__starray_tmp A _def_prop} 
-%        {\__starray_show_def_item:nnn {#1}}
-
     %% V-less : direct reference to _defkeys
       \prop_map_tokens:cn 
         {\l__starray_prefix_tl #2#3 _defkeys_prop} 
         {\__starray_show_def_item:nnn {#1}}
 
-  
-      \seq_if_empty:cF { l__starray_tmp A _seq }
+
+    %% V-less : direct reference to _defstkeys
+      \seq_if_empty:cF { \l__starray_prefix_tl #2#3 _defstkeys_seq}
         {
           \seq_map_tokens:cn
-          { l__starray_tmp A _seq }
+          { \l__starray_prefix_tl #2#3 _defstkeys_seq}
           { \__starray_show_def:nnn  { #1 \use:nnn { ~ } { ~ } { ~ }} { #2#3. }  }
         }
     \group_end:
@@ -2438,19 +2408,17 @@
         { \l__starray_prefix_tl #2 #3 _base_prop } 
         { def_ref } 
         \l_tmpa_tl
-  
-      \prop_get:cnc 
-        { \l__starray_prefix_tl \l_tmpa_tl _def_prop } 
-        { @st_seq } 
-        {l__starray_tmp A _seq }
-  
-      \seq_if_empty:cTF { l__starray_tmp A _seq }
+         
+    %% V-less : this can be optimized: direct reference to defstkeys_seq  
+      \seq_if_empty:cTF { \l__starray_prefix_tl \l_tmpa_tl _defstkeys_seq }
         {}
         {
           \seq_map_tokens:cn
-            { l__starray_tmp A _seq }
+            { \l__starray_prefix_tl \l_tmpa_tl _defstkeys_seq }
             { \__starray_show_terms:nen { #1 \use:nnn { ~ } { ~ } { ~ }} { #2  #3_#5. }  }
         }
+
+        
     \group_end:
   }
 
