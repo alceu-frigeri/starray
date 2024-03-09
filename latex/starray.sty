@@ -151,7 +151,7 @@
 
 \cs_generate_variant:Nn \prop_get:NnN { cnc , cec }
 
-\prg_generate_conditional_variant:Nnn \prop_get:NnN { Nec , cec , ceN } { F , T , TF}
+\prg_generate_conditional_variant:Nnn \prop_get:NnN { Nec , cec , ceN , cnN } { F , T , TF}
 
 \prg_generate_conditional_variant:Nnn \seq_if_in:Nn {ce} {TF}
 \prg_generate_conditional_variant:Nnn \prop_if_in:Nn {ce} {TF}
@@ -501,12 +501,9 @@
 
   %% V-less : new
     \prop_new:c {\l__starray_prefix_tl #2 _base_idxhash_prop}
-
-
-    \prop_gput:cnV
-      { \l__starray_prefix_tl #2 _base_prop }
-      { iter_hash }
-      \c_empty_prop
+      
+  %% V-less : new iterhash
+    \prop_new:c {\l__starray_prefix_tl #2 _base_iterhash_prop}
   }
 
 \cs_generate_variant:Nn \__starray_base_new:nn { ee }
@@ -919,19 +916,16 @@
        {\prop_item:cn {\l__starray_prefix_tl #1 _base_prop} {iter} }
        {\prop_item:cn {\l__starray_prefix_tl #1 _base_prop} {cnt} }
 
-
-    \prop_get:cnN {\l__starray_prefix_tl #1 _base_prop} {iter_hash} \l_tmpb_prop
-
-
   %% V-less : new
     \prop_put:cee {\l__starray_prefix_tl #1 _base_idxhash_prop}
       { \int_use:N  \prop_item:cn {\l__starray_prefix_tl #1 _base_prop} {cnt}  }
       { \int_to_Alph:e { \prop_item:cn {\l__starray_prefix_tl #1 _base_prop} {cnt} }  }
 
-    \prop_put:Nee \l_tmpb_prop
+  %% V-less : new iterhash
+    \prop_put:cee {\l__starray_prefix_tl #1 _base_iterhash_prop}
       { \int_use:N  \prop_item:cn {\l__starray_prefix_tl #1 _base_prop} {cnt}  }
       { \int_use:N  \prop_item:cn {\l__starray_prefix_tl #1 _base_prop} {cnt}  }
-
+  
     \tl_if_blank:nF {#2}
       {
         %% V-less : new
@@ -939,13 +933,11 @@
           { #2  }
           { \int_to_Alph:e { \prop_item:cn {\l__starray_prefix_tl #1 _base_prop} {cnt} }  }
 
-        \prop_put:Nee \l_tmpb_prop
+    %% V-less : new iter_hash
+        \prop_put:cee {\l__starray_prefix_tl #1 _base_iterhash_prop}    
           { #2  }
           { \int_use:N  \prop_item:cn {\l__starray_prefix_tl #1 _base_prop} {cnt} }  
       }
-
-
-    \prop_gput:cnV  {\l__starray_prefix_tl #1 _base_prop} {iter_hash} \l_tmpb_prop
 
     % creating the 'new property list' (aka. term)
     \tl_set:Ne \l_tmpa_tl
@@ -1094,8 +1086,8 @@
 %%%%%%%%%%%%%%%
 \prg_new_protected_conditional:Npnn \__starray_set_iter_from_hash:nn #1#2 {T , F, TF}
   {
-    \prop_get:cnN {\l__starray_prefix_tl #1 _base_prop} {iter_hash} \l_tmpa_prop
-    \prop_get:NnNTF \l_tmpa_prop {#2} \l_tmpa_tl
+%  %% V-less : replacing ... iter_hash
+    \prop_get:cnNTF {\l__starray_prefix_tl #1 _base_iterhash_prop} {#2} \l_tmpa_tl
       {
         \int_gset:Nn
           { \prop_item:cn {\l__starray_prefix_tl #1 _base_prop} {iter} }
