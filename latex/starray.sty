@@ -151,7 +151,7 @@
 
 \cs_generate_variant:Nn \prop_get:NnN { cnc , cec }
 
-\prg_generate_conditional_variant:Nnn \prop_get:NnN { Nec } { F , T , TF}
+\prg_generate_conditional_variant:Nnn \prop_get:NnN { Nec , cec , ceN } { F , T , TF}
 
 \prg_generate_conditional_variant:Nnn \seq_if_in:Nn {ce} {TF}
 \prg_generate_conditional_variant:Nnn \prop_if_in:Nn {ce} {TF}
@@ -498,10 +498,10 @@
       { iter }
       { \use:c {\l__starray_prefix_tl #2 _iter_int} }
 
-    \prop_gput:cnV
-      { \l__starray_prefix_tl #2 _base_prop }
-      { idx_hash }
-      \c_empty_prop
+
+  %% V-less : new
+    \prop_new:c {\l__starray_prefix_tl #2 _base_idxhash_prop}
+
 
     \prop_gput:cnV
       { \l__starray_prefix_tl #2 _base_prop }
@@ -727,16 +727,17 @@
 \cs_new_protected:Npn \__starray_fix_terms:nn #1#2
   {
     \group_begin:
-      \prop_get:cnc
-        {\l__starray_prefix_tl #2 _base_prop}
-        {idx_hash}
-        {l__starray_tmp  A_prop}
+  %% V-less : and replaced by
+      \prop_set_eq:cc {l__starray_tmp  A_prop} {\l__starray_prefix_tl #2 _base_idxhash_prop}
+      
+  %% V-less : can be improved by direct reference.
       \prop_if_empty:cF {l__starray_tmp  A_prop}
         {
           \prop_map_tokens:cn
             {l__starray_tmp  A_prop}
             {\__starray_fix_terms_seq:nnnn {#1}{#2}}
         }
+          
     \group_end:
   }
 
@@ -919,11 +920,11 @@
        {\prop_item:cn {\l__starray_prefix_tl #1 _base_prop} {cnt} }
 
 
-    % idx_hash Update.
-    \prop_get:cnN {\l__starray_prefix_tl #1 _base_prop} {idx_hash} \l_tmpa_prop
     \prop_get:cnN {\l__starray_prefix_tl #1 _base_prop} {iter_hash} \l_tmpb_prop
 
-    \prop_put:Nee \l_tmpa_prop
+
+  %% V-less : new
+    \prop_put:cee {\l__starray_prefix_tl #1 _base_idxhash_prop}
       { \int_use:N  \prop_item:cn {\l__starray_prefix_tl #1 _base_prop} {cnt}  }
       { \int_to_Alph:e { \prop_item:cn {\l__starray_prefix_tl #1 _base_prop} {cnt} }  }
 
@@ -933,15 +934,16 @@
 
     \tl_if_blank:nF {#2}
       {
-        \prop_put:Nee \l_tmpa_prop
+        %% V-less : new
+        \prop_put:cee {\l__starray_prefix_tl #1 _base_idxhash_prop}
           { #2  }
           { \int_to_Alph:e { \prop_item:cn {\l__starray_prefix_tl #1 _base_prop} {cnt} }  }
+
         \prop_put:Nee \l_tmpb_prop
           { #2  }
           { \int_use:N  \prop_item:cn {\l__starray_prefix_tl #1 _base_prop} {cnt} }  
       }
 
-    \prop_gput:cnV  {\l__starray_prefix_tl #1 _base_prop} {idx_hash} \l_tmpa_prop
 
     \prop_gput:cnV  {\l__starray_prefix_tl #1 _base_prop} {iter_hash} \l_tmpb_prop
 
@@ -1046,9 +1048,9 @@
 
 \cs_new_protected:Npn \__starray_set_sub_iter:nnn #1#2#3
   {
-    \prop_get:cnN {\l__starray_prefix_tl #2#3 _base_prop} {idx_hash} \l_tmpa_prop
   
-    \prop_get:NecT \l_tmpa_prop
+  %% V-less : to be replaced by
+    \prop_get:cecT {\l__starray_prefix_tl #2#3 _base_idxhash_prop}
       { \int_use:N \prop_item:cn {\l__starray_prefix_tl #2#3 _base_prop} {iter} }
       { l__starray_tmp #1 A_tl }
       {
@@ -1820,10 +1822,9 @@
       %% V-less : could it be optimized? direct reference to defstkeys !?            
             \seq_if_in:cnTF {l__starray_tmp #1 _seq}{#4}
               { 
-                \prop_get:cnc
-                  { \l__starray_prefix_tl #3 .#4 _base_prop }
-                  { idx_hash }
-                  { l__starray_tmp #1 _hash_prop }
+  %% V-less : replacing above
+                \prop_set_eq:cc { l__starray_tmp #1 _hash_prop } { \l__starray_prefix_tl #3 .#4 _base_idxhash_prop }
+
                 \prop_get:cnc
                   { \l__starray_prefix_tl #3 .#4 _base_prop }
                   { iter }
@@ -1874,10 +1875,11 @@
             \seq_if_in:ceTF 
               { l__starray_tmp #1 _seq }  { \tl_use:c{l__starray_tmp #1 :B_tl} }
               {
-                \prop_get:cnc
-                  { \l__starray_prefix_tl #3. \tl_use:c{l__starray_tmp #1 :B_tl} _base_prop }
-                  { idx_hash }
-                  { l__starray_tmp #1 _hash_prop }
+      %% V-less : could it be optimized? direct reference !?
+                \prop_set_eq:cc 
+                  { l__starray_tmp #1 _hash_prop } 
+                  { \l__starray_prefix_tl #3. \tl_use:c{l__starray_tmp #1 :B_tl} _base_idxhash_prop }
+
                 \tl_set:ce
                   { l__starray_tmp #1 _idx_tl }
                   {
@@ -2077,17 +2079,17 @@
 %  if #2 is empty, test if #1 is valid, return true/false
 \prg_new_protected_conditional:Npnn \__starray_if_valid_idx:nn #1#2 {T, F, TF}
   {
-    \prop_get:cnN {\l__starray_prefix_tl \l__starray_parsed_ref_tl _base_prop} {idx_hash} \l_tmpa_prop
-
     \tl_if_blank:nTF {#2}
       {
-        \tl_put_right:Ne \l__starray_parsed_ref_tl
-          {  _  \prop_item:Ne \l_tmpa_prop {#1} }
+        \prop_get:ceNF {\l__starray_prefix_tl \l__starray_parsed_ref_tl _base_idxhash_prop} {#1} \l_tmpa_tl
+          { \tl_set:Nn \l_tmpa_tl {} }
       }
       {
-        \tl_put_right:Ne \l__starray_parsed_ref_tl
-          {  _  \prop_item:Ne \l_tmpa_prop {#2} }
+        \prop_get:ceNF {\l__starray_prefix_tl \l__starray_parsed_ref_tl _base_idxhash_prop} {#2} \l_tmpa_tl
+          { \tl_set:Nn \l_tmpa_tl {} }
       }
+    \tl_put_right:Ne \l__starray_parsed_ref_tl { _ \l_tmpa_tl }
+
 
     \prop_if_exist:cTF { \l__starray_prefix_tl \l__starray_parsed_ref_tl _term_prop }
       {\prg_return_true:}
@@ -2427,13 +2429,9 @@
 \cs_new_protected:Npn \__starray_show_terms:nnn #1#2#3
   {
     \group_begin:
-      \prop_get:cnc 
-        {\l__starray_prefix_tl #2 #3 _base_prop} 
-        {idx_hash} 
-        {l__starray_tmp A _idx_prop}
-  
+    %% V-less : direct reference
       \prop_map_tokens:cn
-        {l__starray_tmp A _idx_prop}
+        {\l__starray_prefix_tl #2 #3 _base_idxhash_prop}
         {\__starray_show_term_item:nnnnn {#1}{#2}{#3}}
     \group_end:
   }
