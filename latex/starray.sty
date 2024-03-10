@@ -1,5 +1,5 @@
 %%%==============================================================================
-%% Copyright 2023 by Alceu Frigeri
+%% Copyright 2023-present by Alceu Frigeri
 %%
 %% This work may be distributed and/or modified under the conditions of
 %%
@@ -12,7 +12,7 @@
 %%
 %% The Current Maintainer of this work is Alceu Frigeri
 %%
-%% This is version {1.5} {2023/11/28} 
+%% This is version {1.6} {2024/03/10} 
 %%
 %% The list of files that compose this work can be found in the README.md file at
 %% https://ctan.org/pkg/starray
@@ -24,8 +24,8 @@
 
 \ProvidesExplPackage
     {starray}
-    {2023/11/28}
-    {1.5}
+    {2024/03/10}
+    {1.6}
     {A structured array/hash of properties}
 
 %%%%%%%
@@ -38,8 +38,8 @@
   {
      name        .code:n = {starray} ,
      prefix      .code:n = {starray} ,
-     date        .code:n = {2023/11/28},
-     version     .code:n = {1.5} ,
+     date        .code:n = {2024/03/10},
+     version     .code:n = {1.6} ,
      description .code:n = {A~structured~array/hash~of~properties}
   }
 \cs_if_exist:NF \PkgInfo 
@@ -1622,6 +1622,21 @@
     } % returns nothing by default
   }
 
+
+\prg_new_protected_conditional:Npnn \starray_get_unique_id:nN #1#2 {T, F, TF}
+  {
+    \__starray_parser:nnTF {\c__starray_idx_ending_bool}{#1}
+    {
+      \tl_set:Ne 
+        #2 
+        { \l__starray_parsed_ref_tl }
+      \prg_return_true:
+    }
+    {
+      \seq_clear:N \l__starray_msg_seq
+      \prg_return_false:
+    } % returns nothing by default
+  }
 
 
 

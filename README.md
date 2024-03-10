@@ -72,7 +72,12 @@ The Current Maintainer of this work is Alceu Frigeri
 -------------
 
 ## Changelog
-* Version 1.5 (this) 
+* Version 1.6 (this) 
+    - removing all V-expansion of property/sequence lists to avoid further issues with l3kernel 
+      issues: #6, https://github.com/latex3/latex3/issues/1460 and https://github.com/latex3/latex3/issues/1466
+    - Remarks: code is operational but needs further cleanup!
+
+* Version 1.5
     - added \starray_term_syntax:nNN variant and friends (\starray_parsed_ ... :NN ) the _parsed_ ones being expandable
 
 * Version 1.4
