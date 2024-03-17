@@ -15,7 +15,7 @@
 %%
 %% The Current Maintainer of this work is Alceu Frigeri
 %%
-%% This is version {1.6} {2024/03/10}
+%% This is version {1.7} {2024/03/17}
 %%
 %% The list of files that compose this work can be found in the README.md file at
 %% https://ctan.org/pkg/starray
@@ -39,8 +39,8 @@
   
 \begin{typesetabstract}
 
-This package implements vector like 'structures', like in 'C' and other programming languages. 
-It's based on \tsobj[pkg]{expl3} and aimed at 'package writers', and not end users. The provided 'functions' are similar the ones provided for property (or sequence, or token) lists. For most of the provided functions there is a companion 'branching version'.
+This package implements vector like 'structures', alike 'C' and other programming languages. 
+It's based on \tsobj[pkg]{expl3} and aimed at 'package writers', and not end users. The provided 'functions' are similar the ones provided for property (or sequence, or token) lists. Most of the provided functions have a companion 'branching version'.
 
 \end{typesetabstract}
 
@@ -533,13 +533,13 @@ This can be used after any command which 'parses a term', for instance \tsobj{\s
 \tsmacro{\starray_iterate_over:nn}{starray-ref,code}
 \tsmacro{\starray_iterate_over:nnTF}{starray-ref,code,if-true,if-false}
 \end{codesyntax}
-\tsobj{\starray_iterate_over:nn} will reset the \tsobj[marg]{starray-ref} iterator, and then execute \tsobj[marg]{code} for each valid value of \tsobj{iter}. At the loop's end, the \tsobj[marg]{starray-ref} iterator will point to the last element of it. The \tsobj[marg]{if-true} is executed, at the loop's end if there is no syntax error. Similarly \tsobj[marg]{if-false} is only execute if a syntax error is detected.
+\tsobj{\starray_iterate_over:nn} will reset the \tsobj[marg]{starray-ref} iterator, and then execute \tsobj[marg]{code} for each valid value of \tsobj{iter}. At the loop's end, the \tsobj[marg]{starray-ref} iterator will point to the last element of it. The \tsobj[marg]{if-true} is executed, at the loop's end if there is no syntax error, and the referenced structure was properly instantiated. Similarly \tsobj[marg]{if-false} is only execute if a syntax error is detected or the referenced structure wasn't properly instantiated
 \end{codedescribe}
 \begin{tsremark}
 \tsobj{\starray_iterate_over:nn} Creates a local group, so that one can recurse over sub-structures. Be aware, then, that \tsobj[marg]{code} is executed in said local group.
 \end{tsremark}
 \begin{tsremark}
-A warning is raised (see \ref{pack:options}) in case of a \tsobj[marg]{starray-ref} syntax error. The branching version doesn't raise any warning.
+A warning is raised (see \ref{pack:options}) in case of a \tsobj[marg]{starray-ref} syntax error or the structure wasn't yet instantiated. The branching version doesn't raise any warning.
 \end{tsremark}
 
 
@@ -656,7 +656,7 @@ This can be used after any command which 'parses a term', for instance \tsobj{\s
 \tsobj{\starray_parsed_get_prop:NNn} places the value of \tsobj[marg]{key}, if it exists, associated with \tsobj[marg]{parsed-refA,parsed-refB}.
 \end{codedescribe}
 \begin{tsremark}[\color{red}Warning:]
-\tsobj[marg]{parsed-refA,parsed-refB} are the values returned by \tsobj{\starray_term_syntax:nNN}.
+\tsobj[marg]{parsed-refA,parsed-refB} should be the values returned by \tsobj{\starray_term_syntax:nNN}.
 \end{tsremark}
 
 
@@ -688,7 +688,7 @@ A warning is raised (see \ref{pack:options}) in case of a \tsobj[marg]{starray-r
 \tsmacro{\starray_term_syntax:nNN}{starray-ref,parsed-refA,parsed-refB}
 \tsmacro{\starray_term_syntax:nNNTF}{starray-ref,parsed-refA,parsed-refB,if-true,if-false}
 \end{codesyntax}
-Similar to the ones above (\tsobj{\starray_term_syntax:n}). \tsobj[marg]{parsed-refA,parsed-refB} (assumed to be two token list vars, \tsobj[meta]{tl-var}) will receive two 'internal references' that can be used in commands like \tsobj{\starray_parsed_...:NN} which expects such 'references', without having to worry about not using other \tsobj{\starray_} commands.
+Similar to the ones above (\tsobj{\starray_term_syntax:n}). \tsobj[marg]{parsed-refA,parsed-refB} (assumed to be two token list vars, \tsobj[meta]{tl-var}) will receive two 'internal references' that can be used in commands like \tsobj{\starray_parsed_...:NN} which expects such 'references', without having to worry about using another \tsobj{\starray_} command.
 \end{codedescribe}
 \begin{tsremark}
 Once correctly parsed, \tsobj[marg]{parsed-refA,parsed-refB} can be used at 'any time' (by those few \tsobj{\starray_parsed_...:NN} associated commands).\end{tsremark}
@@ -723,8 +723,20 @@ This will test if the given \tsobj[key]{key} is present/associated with \tsobj[m
 The predicate version, \tsobj{_p}, expands to either \tsobj{\prg_return_true:} or \tsobj{\prg_return_false:}.
 \end{tsremark}
 \begin{tsremark}[\color{red}Warning:]
-\tsobj[marg]{parsed-refA,parsed-refB} are the values returned by \tsobj{\starray_term_syntax:nNN}.
+\tsobj[marg]{parsed-refA,parsed-refB} should be the values returned by \tsobj{\starray_term_syntax:nNN}.
 \end{tsremark}
+
+\begin{codedescribe}[code,new=2024/03/10]{\starray_get_unique_id:nN,\starray_get_unique_id:nNTF}
+\begin{codesyntax}%
+\tsmacro{\starray_get_unique_id:nN}{starray-ref,tl-var}
+\tsmacro{\starray_get_unique_id:nNTF}{starray-ref,tl-var}
+\end{codesyntax}
+\end{codedescribe}
+Gets an 'unique ID' for a given \tsobj[marg]{starray-ref} \emph{term}, it should help defining/creating uniquely identified auxiliary structures, like auxiliary property or sequence lists, since one can't (better said shouldn't, as per l3kernel) store an anonymous property/sequence list using V-expansion. 
+\begin{tsremark}
+A warning is raised (see \ref{pack:options}) in case of a \tsobj[marg]{starray-ref} syntax error. The branching version doesn't raise any warning.
+\end{tsremark}
+
 
 
 \section{Showing (debugging) starrays }\label{pack:show}

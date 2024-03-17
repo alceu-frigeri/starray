@@ -72,7 +72,11 @@ The Current Maintainer of this work is Alceu Frigeri
 -------------
 
 ## Changelog
-* Version 1.6 (this) 
+* Version 1.7 (this) 
+    - code cleanup. Still related to issues: #6, https://github.com/latex3/latex3/issues/1460 and https://github.com/latex3/latex3/issues/1466
+    - documented \starray_get_uniqueID (helper function, see documentation)
+
+* Version 1.6
     - removing all V-expansion of property/sequence lists to avoid further issues with l3kernel 
       issues: #6, https://github.com/latex3/latex3/issues/1460 and https://github.com/latex3/latex3/issues/1466
     - Remarks: code is operational but needs further cleanup!

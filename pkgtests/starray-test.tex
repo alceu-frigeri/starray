@@ -15,7 +15,7 @@
 %%
 %% The Current Maintainer of this work is Alceu Frigeri
 %%
-%% This is version {1.4} {2024/03/10}
+%% This is version {1.4} {2024/03/17}
 %%
 %% The list of files that compose this work can be found in the README.md file at
 %% https://ctan.org/pkg/starray
@@ -777,6 +777,8 @@ setting: STtest[1].TT~(err,~not~instantiated)\par
         \starray_new_term:nn {student.reviewers}{}
 
 
+%\prop_show:c {l__starray_student_A.reviewers_base_idxhash_prop}
+
 \sttests_work_in:n {setting~from~keyval~with~branching}
 
       \starray_set_from_keyval:nnTF
@@ -808,7 +810,7 @@ setting: STtest[1].TT~(err,~not~instantiated)\par
         {
           advisor[2] = {
             first = student2set~first~name ,
-            last  = student2set~last~name ,
+%            last  = student2set~last~name ,
             }
         }
         {\sttests_pass:n {correct}}
