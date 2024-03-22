@@ -9,8 +9,8 @@ For more details,  see the documentation,
 --------------
 
 ## Requirements
-* none besides a fairly recent LaTeX distribution as recent as 2022/06/01
-(with the new in kernel *\ProcessKeyOptions* and *\NewDocumentCommand*)
+* none besides a fairly recent LaTeX distribution as recent as 2023/11/01
+(with the new in kernel *\ProcessKeyOptions* and *\NewDocumentCommand* and *\prop_new_linked:*)
 
 ## Installation
 The stable version is available at [CTAN](https://ctan.org/pkg/starray).
@@ -72,7 +72,10 @@ The Current Maintainer of this work is Alceu Frigeri
 -------------
 
 ## Changelog
-* Version 1.7 (this) 
+* Version 1.8 (this) 
+    - code speedup thanks to 'linked' property lists. Code now relies on a more recent l3kernel.
+
+* Version 1.7
     - code cleanup. Still related to issues: #6, https://github.com/latex3/latex3/issues/1460 and https://github.com/latex3/latex3/issues/1466
     - documented \starray_get_uniqueID (helper function, see documentation)
 

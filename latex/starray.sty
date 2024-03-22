@@ -12,21 +12,21 @@
 %%
 %% The Current Maintainer of this work is Alceu Frigeri
 %%
-%% This is version {1.7} {2024/03/17} 
+%% This is version {1.8} {2024/03/22} 
 %%
 %% The list of files that compose this work can be found in the README.md file at
 %% https://ctan.org/pkg/starray
 %%
 %%%==============================================================================
-\NeedsTeXFormat{LaTeX2e}[2022/06/01]
-
+\NeedsTeXFormat{LaTeX2e}[2023/11/01]
 
 
 \ProvidesExplPackage
     {starray}
-    {2024/03/17}
-    {1.7}
+    {2024/03/22}
+    {1.8}
     {A structured array/hash of properties}
+
 
 %%%%%%%
 %%%
@@ -38,8 +38,8 @@
   {
      name        .code:n = {starray} ,
      prefix      .code:n = {starray} ,
-     date        .code:n = {2024/03/17},
-     version     .code:n = {1.7} ,
+     date        .code:n = {2024/03/22},
+     version     .code:n = {1.8} ,
      description .code:n = {A~structured~array/hash~of~properties}
   }
 \cs_if_exist:NF \PkgInfo 
@@ -167,6 +167,14 @@
 %%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%
 
+\msg_new:nnnn {starray} {strict / Expl}
+  {
+    Expl~ version~ too~ old.~ Update~ needed!
+  }
+  {
+    Expl~ version~ too~ old.~ Update~ needed!
+  }
+
 \msg_new:nnnn {starray} {strict / (re)define}
   {
     (ID:#1)~'#2'~already~defined!
@@ -291,6 +299,7 @@
 
 
 
+\IfExplAtLeastTF{2024-03-14}{}{\msg_warning:nn {starray} {strict / Expl} }
 
 
 \cs_new_protected:Npn \__starray_msg:nnnnn #1#2#3#4#5
@@ -417,32 +426,28 @@
 %%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%
 
-%
-%
-\prg_new_conditional:Npnn \__starray_if_free:n #1 {p, T, F, TF}
-  {
-    \prop_if_exist:cTF {#1}
-      { \prg_return_false: }
-      { \prg_return_true: }
-  }
 
-\prg_generate_conditional_variant:Nnn \__starray_if_free:n {e} {p, T, F, TF}
+\prg_new_eq_conditional:NNn \__starray_if_exist:n \prop_if_exist:c {p, T, F, TF}
+
+\prg_generate_conditional_variant:Nnn \__starray_if_exist:n {e} {p, T, F, TF}
 
 
 \prg_new_conditional:Npnn \starray_if_exist:n #1 {p, T, F, TF}
   {
-    \__starray_if_free:nTF {\l__starray_prefix_tl #1 _def_prop}
-      { \prg_return_false: }
-      { \prg_return_true: }
-  }
-
-
-\prg_new_conditional:Npnn \__starray_if_valid:n #1 {p, T, F, TF}
-  {
-    \bool_lazy_and:nnTF {\prop_if_exist_p:c {#1}} {\prop_item:cn {#1} {is_starray}}
+    \__starray_if_exist:nTF {\l__starray_prefix_tl #1 _def_prop}
       { \prg_return_true: }
       { \prg_return_false: }
   }
+
+
+%\prg_new_conditional:Npnn \__starray_if_valid:n #1 {p, T, F, TF}
+%  {
+%    \bool_lazy_and:nnTF {\prop_if_exist_p:c {#1}} {\prop_item:cn {#1} {is_starray}}
+%      { \prg_return_true: }
+%      { \prg_return_false: }
+%  }
+
+\prg_new_eq_conditional:NNn \__starray_if_valid:n \prop_if_exist:c {p, T, F, TF}
 
 \prg_generate_conditional_variant:Nnn \__starray_if_valid:n {e} {p, T, F, TF}
 
@@ -485,19 +490,9 @@
         is_starray  = \c_true_bool ,
       }
 
-    \prop_gput:cne
-      { \l__starray_prefix_tl #2 _base_prop }
-      { cnt }
-      { \use:c { \l__starray_prefix_tl #2 _base_cnt_int } }
-
-    \prop_gput:cne
-      { \l__starray_prefix_tl #2 _base_prop }
-      { iter }
-      { \use:c {\l__starray_prefix_tl #2 _base_iter_int} }
-
-    \prop_new:c {\l__starray_prefix_tl #2 _base_idxhash_prop}
+    \prop_new_linked:c {\l__starray_prefix_tl #2 _base_idxhash_prop}
       
-    \prop_new:c {\l__starray_prefix_tl #2 _base_iterhash_prop}
+    \prop_new_linked:c {\l__starray_prefix_tl #2 _base_iterhash_prop}
   }
 
 \cs_generate_variant:Nn \__starray_base_new:nn { ee }
@@ -541,13 +536,13 @@
 % needs protection.
 \cs_new_protected:Npn \starray_new:n #1
   {
-    \__starray_if_free:nTF {\l__starray_prefix_tl #1 _def_prop}
+    \__starray_if_exist:nTF {\l__starray_prefix_tl #1 _def_prop}
+      {
+        \msg_warning:nnnn {starray} {strict / (re)define} {new:1} {#1}
+      }
       {
         \__starray_new:e {#1 }
         \__starray_base_new:ee {#1}{#1} % TODO: might be incomplete !!!
-      }
-      {
-        \msg_warning:nnnn {starray} {strict / (re)define} {new:1} {#1}
       }
   }
 
@@ -555,13 +550,13 @@
 % needs protection.
 \prg_new_protected_conditional:Npnn \starray_new:n #1 {T, F, TF}
   {
-    \__starray_if_free:nTF {\l__starray_prefix_tl #1 _def_prop}
+    \__starray_if_exist:nTF {\l__starray_prefix_tl #1 _def_prop}
+      { \prg_return_false: }
       {
         \__starray_new:e {#1 }
         \__starray_base_new:ee {#1}{#1} % TODO: might be incomplete !!!
         \prg_return_true:
       }
-      { \prg_return_false: }
   }
 
 %%%%%%%%%%%%%%%
@@ -915,7 +910,7 @@
           { \int_use:c {\l__starray_prefix_tl #1 _base_cnt_int} }  
       }
 
-    \prop_new:c
+    \prop_new_linked:c
       { \l__starray_prefix_tl #1 _ \l__starray_tmpa_tl _term_prop }
 
     \prop_get:cnN {\l__starray_prefix_tl #1 _base_prop} {def_ref} \l_tmpb_tl
