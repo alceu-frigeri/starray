@@ -15,7 +15,7 @@
 %%
 %% The Current Maintainer of this work is Alceu Frigeri
 %%
-%% This is version {1.8} {2024/03/22}
+%% This is version {1.9} {2024/03/28}
 %%
 %% The list of files that compose this work can be found in the README.md file at
 %% https://ctan.org/pkg/starray
@@ -106,18 +106,17 @@ Creates a new \tsobj[marg]{starray} or raises a warning  if the name is already 
 \end{tsremark}
 
 \subsection{Conditionals}\label{conditionals:exist}
-\begin{codedescribe}[code,EXP,new=2023/05/20]{\starray_if_exist_p:n,\starray_if_exist:nTF,\starray_if_valid_p:n,\starray_if_valid:nTF}
+\begin{codedescribe}[code,EXP,new=2023/05/20,update=2024/03/28]{\starray_if_exist_p:n,\starray_if_exist:nTF,\starray_if_valid_p:n,\starray_if_valid:nTF}
 \begin{codesyntax}%
 \tsmacro{\starray_if_exist_p:n}{starray}
 \tsmacro{\starray_if_exist:nTF}{starray,if-true,if-false}
 \tsmacro{\starray_if_valid_p:n}{starray}
 \tsmacro{\starray_if_valid:nTF}{starray,if-true,if-false}
 \end{codesyntax}
-\tsobj{\starray_if_exist:nTF} only tests if \tsobj[marg]{starray} (the base property) is defined. It doesn't verifies if it really is a  \tsobj[pkg]{starray}.
-\tsobj{\starray_if_valid:nTF} further tests if an internal boolean (\tsobj[key]{is\_starray}) is also defined. This doesn't necessary mean it is a \tsobj[pkg]{starray} or if it's a really valid one (chances are that it is, but...), see \tsobj{\starray_term_syntax:nTF}, section \ref{conditionals:terms}, for a more reliable validity test.
+\tsobj{\starray_if_exist:nTF} only tests if \tsobj[marg]{starray} (the base property) is defined. It doesn't verifies if it really is a  \tsobj[pkg]{starray}. \tsobj{\starray_if_valid:nTF} is functionally equivalent since release 1.9. See \tsobj{\starray_term_syntax:nTF}, section \ref{conditionals:terms}, for a more reliable validity test.
 \end{codedescribe}
 \begin{tsremark}
-The predicate versions, \tsobj{_p}, expand to either \tsobj{\prg_return_true:} or \tsobj{\prg_return_false:}.
+The predicate versions, \tsobj{_p}, expand to either \tsobj{\prg_return_true:} or \tsobj{\prg_return_false:}
 \end{tsremark}
 
 \section{Defining and initialising a starray structure}\label{pack:def}

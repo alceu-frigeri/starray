@@ -15,7 +15,7 @@
 %%
 %% The Current Maintainer of this work is Alceu Frigeri
 %%
-%% This is version {1.4} {2024/03/22}
+%% This is version {1.4} {2024/03/28}
 %%
 %% The list of files that compose this work can be found in the README.md file at
 %% https://ctan.org/pkg/starray
@@ -156,23 +156,51 @@ doc
 
 \par
 
-\benchmark:n 
-  {
-    \prg_replicate:nn {1000}
-      {
-        \int_incr:N \l__test_X_int
-      }
-  }
-  
-\int_use:N \l__test_X_int 
+%\benchmark:n 
+%  {
+%    \prg_replicate:nn {1000}
+%      {
+%        \int_incr:N \l__test_X_int
+%      }
+%  }
+%  
+%\int_use:N \l__test_X_int 
+%
+%\exp_args:No \benchmark:n 
+%  {
+%    \prg_replicate:nn {1000}
+%      {
+%        \int_incr:N \l__test_X_int
+%      }
+%  }
 
-\exp_args:No \benchmark:n 
+
+\cs_new_protected:Npn \mymod_benchX:n #1
   {
-    \prg_replicate:nn {1000}
+    \benchmark:n
       {
-        \int_incr:N \l__test_X_int
+        \int_set:Nn \l_tmpa_int {#1}
+        \tl_clear:N \l_tmpa_tl
+        \int_do_while:nNnn {\l_tmpa_int} > {0}
+          {
+            \tl_put_right:Nn \l_tmpa_tl {A}
+            \prop_clear_new:c {l__tmp_ \l_tmpa_tl A_prop}
+            \prop_clear_new_linked:c {l__tmp_ \l_tmpa_tl B_prop}
+            \prop_put:cnn {l__tmp_ \l_tmpa_tl A_prop} {key1}{val1}
+            \prop_put:cnn {l__tmp_ \l_tmpa_tl A_prop} {key2}{val2}
+            \prop_put:cnn {l__tmp_ \l_tmpa_tl A_prop} {key3}{val3}
+            \prop_put:cnn {l__tmp_ \l_tmpa_tl A_prop} {key4}{val4}
+            \prop_put:cnn {l__tmp_ \l_tmpa_tl A_prop} {key5}{val5}
+            \prop_put:cnn {l__tmp_ \l_tmpa_tl A_prop} {key6}{val6}
+            \prop_set_eq:cc {l__tmp_ \l_tmpa_tl B_prop} {l__tmp_ \l_tmpa_tl A_prop}
+            %\prop_make_linked:c {l__tmp_ \l_tmpa_tl B_prop}
+
+            \int_decr:N \l_tmpa_int
+          }
       }
   }
+
+
 
 \cs_new_protected:Npn \mymod_benchy:nn #1#2
   {
@@ -199,120 +227,136 @@ doc
       { \use:c {l__test_ \l__varname_tl _ #1 _int} }
   }
 
-\mymod_st_test:n {AB}
-\int_show:N \l__test_X_int
+%%%%%%\mymod_st_test:n {AB}
+%%%%%%\int_show:N \l__test_X_int
+%%%%%%
+%%%%%%
+%%%%%%\mymod_benchy:nn {1000} {\int_incr:N \l__test_X_int}
+%%%%%%
+%%%%%%\mymod_benchyo:nn {1000} {\int_incr:N \l__test_X_int}
+%%%%%%
+%%%%%%\mymod_benchy:nn {1000} {\int_incr:c {l__test_X_int}}
+%%%%%%
+%%%%%%\mymod_benchyo:nn {1000} {\int_incr:c {l__test_X_int}}
+%%%%%%
+%%%%%%
+%%%%%%
+%%%%%%\mymod_benchy:nn {1000} {\int_incr:c {l__test_ \l__varname_tl _A_int}}
+%%%%%%
+%%%%%%\mymod_benchyo:nn {1000} {\int_incr:c {l__test_ \l__varname_tl _A_int}}
+%%%%%%
+%%%%%%\int_show:N \l__test_X_int
+%%%%%%
+%%%%%%\mymod_benchy:nn {1000} {\int_incr:N {\prop_item:cn {l__test_ \l__varname_tl _prop} {cntA}}}
+%%%%%%
+%%%%%%\mymod_benchyo:nn {1000} {\int_incr:N {\prop_item:cn {l__test_ \l__varname_tl _prop} {cntA}}}
+%%%%%%
+%%%%%%\int_show:N \l__test_X_int
+%%%%%%\int_show:N \l__test_X_int
+%%%%%%
+%%%%%%\mymod_benchy:nn {1000} {\int_incr:N {\prop_item:cn {l__test_ \l__varname_tl _prop} {cntAa}}}
+%%%%%%
+%%%%%%\mymod_benchyo:nn {1000} {\int_incr:N {\prop_item:cn {l__test_ \l__varname_tl _prop} {cntAa}}}
+%%%%%%
+%%%%%%\int_show:N \l__test_XX_int
+%%%%%%\int_show:N \l__test_XX_int
+%%%%%%
+%%%%%%\mymod_benchy:nn {1000} {\int_incr:c {\prop_item:cn {l__test_ \l__varname_tl _prop} {cntBb}}}
+%%%%%%
+%%%%%%\mymod_benchyo:nn {1000} {\int_incr:c {\prop_item:cn {l__test_ \l__varname_tl _prop} {cntBb}}}
+%%%%%%
+%%%%%%\int_show:N \l__test_Y_int
+%%%%%%
+%%%%%%\mymod_benchy:nn {1000} {\int_incr:N {\prop_item:cn {l__test_ \l__varname_tl _prop} {cntCx}}}
+%%%%%%
+%%%%%%\mymod_benchyo:nn {1000} {\int_incr:N {\prop_item:cn {l__test_ \l__varname_tl _prop} {cntCx}}}
+%%%%%%
+%%%%%%\int_show:N \l__test_YY_int
+%%%%%%
+%%%%%%\mymod_benchy:nn {1000} 
+%%%%%%  {
+%%%%%%    \prop_get:cnN  {l__test_ \l__varname_tl _prop} {cntCx} \l__test_C_tl
+%%%%%%    \int_incr:N {\l__test_C_tl}
+%%%%%%  }
+%%%%%%
+%%%%%%
+%%%%%%%%%%%%% that's the way !!!
+%%%%%%%%%%%%%
+%%%%%%\mymod_benchy:nn {1000} 
+%%%%%%  {
+%%%%%%    \prop_get:cnN  {l__test_ \l__varname_tl _prop} {cntAa} \l__test_C_tl
+%%%%%%    \int_incr:N \l__test_C_tl
+%%%%%%  }
+%%%%%%  \tl_show:N \l__test_C_tl
+%%%%%%
+%%%%%%\mymod_benchy:nn {1000} 
+%%%%%%  {
+%%%%%%    \prop_get:cnNTF  {l__test_ \l__varname_tl _prop} {cntAa} \l__test_C_tl
+%%%%%%      {\int_incr:N \l__test_C_tl}{}
+%%%%%%  }
+%%%%%%  \tl_show:N \l__test_C_tl
+%%%%%%
+%%%%%%
+%%%%%%
+%%%%%%\int_show:N \l__test_C_tl
+%%%%%%
+%%%%%%
+%%%%%%
+%%%%%%
+%%%%%%\mymod_benchy:nn {1000} 
+%%%%%%  {
+%%%%%%    \prop_get:cnN  {l__test_ \l__varname_tl _prop} {cntBb} \l__test_C_tl
+%%%%%%    \int_incr:c \l__test_C_tl
+%%%%%%  }
+%%%%%%
+%%%%%%
+%%%%%%\int_show:N \l__test_Z_int
+%%%%%%
+%%%%%%
+%%%%%%
+%%%%%%\mymod_benchy:nn {1000} 
+%%%%%%  {
+%%%%%%    \int_set:Nn \l__test_X_int {\prop_item:cn {l__test_ \l__varname_tl _prop} {cntDx}}
+%%%%%%    \int_incr:N \l__test_X_int
+%%%%%%    \prop_gput:cno {l__test_ \l__varname_tl _prop} {cntDx} {\int_use:N \l__test_X_int}
+%%%%%%  }
+%%%%%%
+%%%%%%\mymod_benchyo:nn {1000} 
+%%%%%%  {
+%%%%%%    \int_set:Nn \l__test_X_int {\prop_item:cn {l__test_ \l__varname_tl _prop} {cntDx}}
+%%%%%%    \int_incr:N \l__test_X_int
+%%%%%%    \prop_gput:cno {l__test_ \l__varname_tl _prop} {cntDx} {\int_use:N \l__test_X_int}
+%%%%%%  }
+%%%%%%
+%%%%%%\int_show:N \l__test_ZZ_int
+%%%%%%
+%%%%%%
+%%%%%%\par X:~
+%%%%%%\int_use:N \l__test_X_int
+%%%%%%
+%%%%%%\prop_show:c {l__test_ \l__varname_tl _prop}
+%%%%%%
+%%%%%%
 
 
-\mymod_benchy:nn {1000} {\int_incr:N \l__test_X_int}
-
-\mymod_benchyo:nn {1000} {\int_incr:N \l__test_X_int}
-
-\mymod_benchy:nn {1000} {\int_incr:c {l__test_X_int}}
-
-\mymod_benchyo:nn {1000} {\int_incr:c {l__test_X_int}}
-
-
-
-\mymod_benchy:nn {1000} {\int_incr:c {l__test_ \l__varname_tl _A_int}}
-
-\mymod_benchyo:nn {1000} {\int_incr:c {l__test_ \l__varname_tl _A_int}}
-
-\int_show:N \l__test_X_int
-
-\mymod_benchy:nn {1000} {\int_incr:N {\prop_item:cn {l__test_ \l__varname_tl _prop} {cntA}}}
-
-\mymod_benchyo:nn {1000} {\int_incr:N {\prop_item:cn {l__test_ \l__varname_tl _prop} {cntA}}}
-
-\int_show:N \l__test_X_int
-\int_show:N \l__test_X_int
-
-\mymod_benchy:nn {1000} {\int_incr:N {\prop_item:cn {l__test_ \l__varname_tl _prop} {cntAa}}}
-
-\mymod_benchyo:nn {1000} {\int_incr:N {\prop_item:cn {l__test_ \l__varname_tl _prop} {cntAa}}}
-
-\int_show:N \l__test_XX_int
-\int_show:N \l__test_XX_int
-
-\mymod_benchy:nn {1000} {\int_incr:c {\prop_item:cn {l__test_ \l__varname_tl _prop} {cntBb}}}
-
-\mymod_benchyo:nn {1000} {\int_incr:c {\prop_item:cn {l__test_ \l__varname_tl _prop} {cntBb}}}
-
-\int_show:N \l__test_Y_int
-
-\mymod_benchy:nn {1000} {\int_incr:N {\prop_item:cn {l__test_ \l__varname_tl _prop} {cntCx}}}
-
-\mymod_benchyo:nn {1000} {\int_incr:N {\prop_item:cn {l__test_ \l__varname_tl _prop} {cntCx}}}
-
-\int_show:N \l__test_YY_int
-
-\mymod_benchy:nn {1000} 
-  {
-    \prop_get:cnN  {l__test_ \l__varname_tl _prop} {cntCx} \l__test_C_tl
-    \int_incr:N {\l__test_C_tl}
-  }
+%\prop_new:N \l__test_A_prop
+%\prop_new:N \l__test_B_prop
+%
+%\mymod_benchy:nn {1000}
+%  {
+%    \prop_clear:N \l__test_A_prop
+%    \prop_clear:N \l__test_B_prop
+%    \prop_put:Nnn \l__test_A_prop {key1}{val1}
+%    \prop_put:Nnn \l__test_A_prop {key2}{val2}
+%    \prop_put:Nnn \l__test_A_prop {key3}{val3}
+%    \prop_put:Nnn \l__test_A_prop {key4}{val4}
+%    \prop_put:Nnn \l__test_A_prop {key5}{val5}
+%    \prop_put:Nnn \l__test_A_prop {key6}{val6}
+%    \prop_set_eq:NN \l__test_B_prop \l__test_A_prop
+%  }
 
 
-%%%%%%% that's the way !!!
-%%%%%%%
-\mymod_benchy:nn {1000} 
-  {
-    \prop_get:cnN  {l__test_ \l__varname_tl _prop} {cntAa} \l__test_C_tl
-    \int_incr:N \l__test_C_tl
-  }
-  \tl_show:N \l__test_C_tl
-
-\mymod_benchy:nn {1000} 
-  {
-    \prop_get:cnNTF  {l__test_ \l__varname_tl _prop} {cntAa} \l__test_C_tl
-      {\int_incr:N \l__test_C_tl}{}
-  }
-  \tl_show:N \l__test_C_tl
-
-
-
-\int_show:N \l__test_C_tl
-
-
-
-
-\mymod_benchy:nn {1000} 
-  {
-    \prop_get:cnN  {l__test_ \l__varname_tl _prop} {cntBb} \l__test_C_tl
-    \int_incr:c \l__test_C_tl
-  }
-
-
-\int_show:N \l__test_Z_int
-
-
-
-\mymod_benchy:nn {1000} 
-  {
-    \int_set:Nn \l__test_X_int {\prop_item:cn {l__test_ \l__varname_tl _prop} {cntDx}}
-    \int_incr:N \l__test_X_int
-    \prop_gput:cno {l__test_ \l__varname_tl _prop} {cntDx} {\int_use:N \l__test_X_int}
-  }
-
-\mymod_benchyo:nn {1000} 
-  {
-    \int_set:Nn \l__test_X_int {\prop_item:cn {l__test_ \l__varname_tl _prop} {cntDx}}
-    \int_incr:N \l__test_X_int
-    \prop_gput:cno {l__test_ \l__varname_tl _prop} {cntDx} {\int_use:N \l__test_X_int}
-  }
-
-\int_show:N \l__test_ZZ_int
-
-
-\par X:~
-\int_use:N \l__test_X_int
-
-\prop_show:c {l__test_ \l__varname_tl _prop}
-
-
-
-
-
-
+\mymod_benchX:n {1000}
 
 \int_gzero:N \g_tmpa_int
 \benchmark_once:n { \int_gincr:N \g_tmpa_int }

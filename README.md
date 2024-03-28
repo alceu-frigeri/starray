@@ -72,7 +72,10 @@ The Current Maintainer of this work is Alceu Frigeri
 -------------
 
 ## Changelog
-* Version 1.8 (this) 
+* Version 1.9 (this) 
+    - Removing some internal structures (_base_prop, _def_prop) deprecated by the last three updates.
+
+* Version 1.8
     - code speedup thanks to 'linked' property lists. Code now relies on a more recent l3kernel.
 
 * Version 1.7
