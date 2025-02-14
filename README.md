@@ -72,7 +72,10 @@ The Current Maintainer of this work is Alceu Frigeri
 -------------
 
 ## Changelog
-* Version 1.9 (this) 
+* Version 1.9b (this) 
+    - fixing issue #7 (related to https://github.com/latex3/latex3/issues/1189) and removing the (unneeded) ```predicate``` in variant generation of ``` \starray_(g)set_prop:nnn```.
+
+* Version 1.9 
     - Removing some internal structures (_base_prop, _def_prop) deprecated by the last three updates.
 
 * Version 1.8

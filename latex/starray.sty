@@ -12,7 +12,7 @@
 %%
 %% The Current Maintainer of this work is Alceu Frigeri
 %%
-%% This is version {1.9} {2024/03/28} 
+%% This is version {1.9b} {2025/02/14} 
 %%
 %% The list of files that compose this work can be found in the README.md file at
 %% https://ctan.org/pkg/starray
@@ -23,8 +23,8 @@
 
 \ProvidesExplPackage
     {starray}
-    {2024/03/28}
-    {1.9}
+    {2025/02/14}
+    {1.9b}
     {A structured array/hash of properties}
 
 
@@ -38,8 +38,8 @@
   {
      name        .code:n = {starray} ,
      prefix      .code:n = {starray} ,
-     date        .code:n = {2024/03/28},
-     version     .code:n = {1.9} ,
+     date        .code:n = {2025/02/14},
+     version     .code:n = {1.9b} ,
      description .code:n = {A~structured~array/hash~of~properties}
   }
 \cs_if_exist:NF \PkgInfo 
@@ -1653,7 +1653,7 @@
       }
   }
 
-\prg_generate_conditional_variant:Nnn \starray_set_prop:nnn { nnV } { p , T, F , TF }
+\prg_generate_conditional_variant:Nnn \starray_set_prop:nnn { nnV } {T, F , TF } %%%
 
 
 \prg_new_protected_conditional:Npnn \starray_gset_prop:nnn #1#2#3 {T, F, TF}
@@ -1670,7 +1670,7 @@
       }
   }
 
-\prg_generate_conditional_variant:Nnn \starray_gset_prop:nnn { nnV } { p , T, F , TF }
+\prg_generate_conditional_variant:Nnn \starray_gset_prop:nnn { nnV } {T, F , TF }
 
 
 %%%%%%%%%%%%%%%
