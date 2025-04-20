@@ -15,6 +15,10 @@
 *.cb2
 .*.lb
 
+## test directories
+#tests/
+#deprecated/
+
 ## TeXstudio
 *.txss2
 
@@ -27,7 +31,7 @@
 *-converted-to.*
 # these rules might exclude image files for figures etc.
 *.ps
-*.eps
+#*.eps
 #*.pdf
 
 ## Generated if empty string is given at "Please type another file name for output:"
@@ -130,6 +134,7 @@ acs-*.bib
 # gnuplot
 *.gnuplot
 *.table
+*.vrs
 
 # gnuplottex
 *-gnuplottex-*
