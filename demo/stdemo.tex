@@ -32,10 +32,13 @@
 
 \setnewcodekey{stdemo}{codeprefix={},resultprefix={},letter={@,_},texcs2={starray_new,starray_def_from_keyval}}
 
-\section{Data Model}
-As an example, let's define two structures, one to describe/list ``Activities'' (like a term project, course project, etc.)  and a second one to describe/list the enrolled students (assuming that each enrolled student has one, or more, advisors and a set of reviewers.
+\section{Data Model}\label{DataModel}
+As an example, let's define two structures, one to describe/list ``Activities'' (like a term project, course project, etc.)  and a second one to describe/list the enrolled students (assuming that each enrolled student has one, or more, advisors and a set of reviewers).
 \begin{tsremark}
 As in any ``procedural language'', one is advised to pay special attention and carefully design the data model, since this will shape the functions which will set and use said data.
+\end{tsremark}
+\begin{tsremark}
+  Pay attention to the use of the tildes,  \~{} , since those definitions will be made, most likely, in an \tsobj[pkg]{expl3} code régime, one has to remember that spaces are ignored, therefore, if needed, one has to explicitly use a tilde instead of a space.
 \end{tsremark}
 
 \subsection{Activity Set}
@@ -71,14 +74,13 @@ For the activities one could set an ``starray'' as follow:
   first = ,
   last = ,
   name = \rule{\l__stdemo_name_rule_dim}{.1pt} ,
-  Nproc = \rule{\l__stdemo_ID_rule_dim}{.1pt} ,
   ID    = \rule{\l__stdemo_ID_rule_dim}{.1pt} , 
   email = \rule{\l__stdemo_email_rule_dim}{.1pt} ,
   worktitle = \rule{\l__stdemo_worktitle_rule_dim}{.1pt} ,
   remarks = ,
-  board-local = {local} ,
-  board-date   = {dia} ,
-  board-time  = {hora} ,
+  board-local = {~local/place~} ,
+  board-date   = {~date~} ,
+  board-time  = {~time~} ,
   gradeavrg = 0,
   grade = ,
   flag-null = \c_false_bool , %% IF no grade was given
@@ -125,13 +127,13 @@ For the activities one could set an ``starray'' as follow:
 \tscode*[stdemo]{activity-def}
 
 
-Whereas, the ``coord'' sub-structured is for the activity's coordinator, whilst ``calendar'' shall (for instance) contains a list of calendar events, and, finally, the many ``chk* '' will be used for a ``check list''.
+Whereas, the ``coord'' sub-structure is for the activity's coordinator, whilst ``calendar'' shall (for instance) contains a list of calendar events, and, finally, the many ``chk* '' will be used for a ``check list''.
 
 \begin{tsremark}
 The ``chkID'' (and checklists). In many cases it's handy to have an unique identifier for a given structure. That can be obtained with \tsobj{\starray_get_unique_ID:nN}, and to avoid having to call this function time and time again, one can just store that ID as a field for later use. (as it will be done in this example).
 \end{tsremark}
 \begin{tsremark}
-  Could the Coordinator's name and title be a direct property (dismissing the ``coord'' sub-structure) ? of course, that's a matter of taste/choice, on how to model it.
+  Could the Coordinator's name and title be a direct property (dismissing the ``coord'' sub-structure)? of course, that's a matter of taste/choice, on how to model it.
 \end{tsremark}
 
 \subsection{Student Set}
@@ -145,6 +147,120 @@ Of course, one doesn't need to define a \tsobj[pkg]{starray} structure using \ts
 
 \tscode*[stdemo]{student-def}
 
+
+
+\section{Auxiliary Functions}
+Once the data layout is fixed (see \ref{DataModel}) the next step is to define a set of (document level) functions, so the data can be initialized and used.
+
+\subsection{Activity Functions}
+
+\begin{codestore}[ActivityFunctions]
+\tl_new:N \l__stdemo_tmpID_tl
+\NewDocumentCommand{\NewActivity}{m} {
+    \starray_new_term:nn {activity}{#1}
+    \starray_new_term:nn {activity.coord}{}
+    \starray_get_unique_id:nNTF {activity} \l__stdemo_tmpID_tl
+      {}
+      {}
+    \starray_gset_prop:nnV {activity}{chkID} \l__stdemo_tmpID_tl
+    \prop_new_linked:c {l__stdemo_ \l__stdemo_tmpID_tl _chkmarked_prop}
+    \prop_new_linked:c {l__stdemo_ \l__stdemo_tmpID_tl _chkunmarked_prop}
+    \prop_new_linked:c {l__stdemo_ \l__stdemo_tmpID_tl _chkref_prop}
+}
+
+\NewDocumentCommand{\ActivitySet}{O{}mm} {
+  \tl_if_blank:nTF {#1}
+    {
+      \starray_set_prop:nnn {activity}{name}{#3}
+      \starray_set_prop:nnn {activity}{acronym}{#2}
+    }
+    {
+      \starray_set_prop:nnn {activity[#1]}{name}{#3}
+      \starray_set_prop:nnn {activity[#1]}{acronym}{#2}
+    }
+}
+\end{codestore}
+
+\begin{codestore}[ActivityFunctions]
+\NewDocumentCommand{\ActivitySetCoordTitle}{O{}m} {
+  \tl_if_blank:nTF {#1}
+    { \starray_set_prop:nnn {activity.coord}{title}{#2} }
+    { \starray_set_prop:nnn {activity[#1].coord}{title}{#2} }
+}
+
+\NewDocumentCommand{\ActivitySetCoord}{O{}mO{}}{
+  \tl_if_blank:nTF {#1}
+    {
+      \starray_gset_prop:nnn {activity.coord}{name}{#2}
+    }
+    {
+      \starray_gset_prop:nnn {activity[#1].coord}{name}{#2}
+    }
+}
+\end{codestore}
+
+\begin{codestore}[ActivityFunctions]
+\NewDocumentCommand{\ActivitySelect}{m}
+  { 
+    \starray_set_iter_from_hash:nn {activity}{#1} 
+  }
+\end{codestore}
+
+\begin{codestore}[ActivityFunctions]
+\NewDocumentCommand{\Activity}{O{}m}{
+  \tl_if_blank:nTF {#1}
+    { \starray_get_prop:nn {activity}{#2} }
+    { \starray_get_prop:nn {activity[#1]}{#2} }
+}
+
+\NewDocumentCommand{\ActivityCoord}{O{}m}{
+  \tl_if_blank:nTF {#1}
+    { \starray_get_prop:nn {activity.coord}{#2} }
+    { \starray_get_prop:nn {activity[#1].coord}{#2} }
+}
+\end{codestore}
+
+\begin{codestore}[ActivityFunctions]
+\NewDocumentCommand{\ActivityCalendarIterate}{m}{
+    \starray_iterate_over:nn{activity.calendar}{#1}
+}
+\end{codestore}
+
+
+\begin{codestore}[ActivityUseDemo]
+  \NewActivity{FinalWork I}
+  \ActivitySet{Final Work I}{FW001}
+  
+  \NewActivity{FinalWork II}
+  
+  \NewActivity{InternShip B}
+  \ActivitySet{Final Intership}{IN099}
+  
+  \ActivitySet[FinalWork II]{Final Work II}{FW002}
+\end{codestore}
+
+
+One could define a single function to initialize all fields (using a key=val interface), but, thinking of a more traditional way (and hiding the implementation from end user) one could set two functions to start the initialization process \tsobj{\NewActivity,\ActivitySet}. 
+\tscode*[stdemo]{ActivityFunctions}[1]
+
+The idea being to use one right after the other, though, once created \tsobj{\NewActivity} it can be, at a later point in time ``initialized'' using the optional argument from \tsobj{\ActivitySet}
+\tscode*[stdemo]{ActivityUseDemo}[1]
+
+~
+
+\tscode*[stdemo]{ActivityFunctions}[2]
+
+~
+
+\tscode*[stdemo]{ActivityFunctions}[3]
+
+~
+
+\tscode*[stdemo]{ActivityFunctions}[4]
+
+~
+
+\tscode*[stdemo]{ActivityFunctions}[5]
 
 
 \end{document} 

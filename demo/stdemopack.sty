@@ -154,14 +154,13 @@
   first = ,
   last = ,
   name = \rule{\l__stdemo_name_rule_dim}{.1pt} ,
-  Nproc = \rule{\l__stdemo_ID_rule_dim}{.1pt} ,
   ID    = \rule{\l__stdemo_ID_rule_dim}{.1pt} , 
   email = \rule{\l__stdemo_email_rule_dim}{.1pt} ,
   worktitle = \rule{\l__stdemo_worktitle_rule_dim}{.1pt} ,
   remarks = ,
-  board-local = {local} ,
-  board-date   = {dia} ,
-  board-time  = {hora} ,
+  board-local = {~local/place~} ,
+  board-date   = {~date~} ,
+  board-time  = {~time~} ,
   gradeavrg = 0,
   grade = ,
   flag-null = \c_false_bool , %% IF no grade was given
@@ -287,12 +286,12 @@
 }
 
 
-\NewDocumentCommand{\ActivityCalLine}{O{}m}{
-  \tl_if_blank:nF {#1}
-    {\starray_set_iter_from_hash:nn {activity}{#1}}
-  \starray_set_iter_from_hash:nn {activity.calendar}{#2}
-  \starray_get_prop:nn {activity.calendar}{date} & \starray_get_prop:nn {activity.calendar}{week} & \starray_get_prop:nn {activity.calendar}{event}
-}
+%%\NewDocumentCommand{\ActivityCalLine}{O{}m}{
+%%  \tl_if_blank:nF {#1}
+%%    {\starray_set_iter_from_hash:nn {activity}{#1}}
+%%  \starray_set_iter_from_hash:nn {activity.calendar}{#2}
+%%  \starray_get_prop:nn {activity.calendar}{date} & \starray_get_prop:nn {activity.calendar}{week} & \starray_get_prop:nn {activity.calendar}{event}
+%%}
 
 \NewDocumentCommand{\ActivityCalendarIterate}{m}{
     \starray_iterate_over:nn{activity.calendar}{#1}
