@@ -1,0 +1,150 @@
+%%%==============================================================================
+%% Copyright 2023-present by Alceu Frigeri
+%%
+%% This work may be distributed and/or modified under the conditions of
+%%
+%% * The [LaTeX Project Public License](http://www.latex-project.org/lppl.txt),
+%%   version 1.3c (or later), and/or
+%% * The [GNU Affero General Public License](https://www.gnu.org/licenses/agpl-3.0.html),
+%%   version 3 (or later)
+%%
+%% This work has the LPPL maintenance status *maintained*.
+%%
+%% The Current Maintainer of this work is Alceu Frigeri
+%%
+%% This is version {1.9b} {2025/02/14} 
+%%
+%% The list of files that compose this work can be found in the README.md file at
+%% https://ctan.org/pkg/starray
+%%
+%%%==============================================================================
+\NeedsTeXFormat{LaTeX2e}[2023/11/01]
+\documentclass[10pt]{article}
+\RequirePackage[verbose,a4paper,marginparwidth=27.5mm,top=2.5cm,bottom=1.5cm,hmargin={40mm,20mm},marginparsep=2.5mm,columnsep=10mm,asymmetric]{geometry}
+%\RequirePackage[verbose,a4paper,marginparwidth=27.5mm,top=2.5cm,bottom=1.5cm,hmargin={45mm,25mm},marginparsep=2.5mm,columnsep=10mm,asymmetric]{geometry}
+\usepackage{codedescribe}
+\usepackage{stdemopack}
+\RequirePackage[inline]{enumitem}
+\SetEnumitemKey{miditemsep}{parsep=0ex,itemsep=0.4ex}
+
+\RequirePackage[hidelinks,hypertexnames=false]{hyperref}
+\begin{document}
+
+\setnewcodekey{stdemo}{codeprefix={},resultprefix={},letter={@,_},texcs2={starray_new,starray_def_from_keyval}}
+
+\section{Data Model}
+As an example, let's define two structures, one to describe/list ``Activities'' (like a term project, course project, etc.)  and a second one to describe/list the enrolled students (assuming that each enrolled student has one, or more, advisors and a set of reviewers.
+\begin{tsremark}
+As in any ``procedural language'', one is advised to pay special attention and carefully design the data model, since this will shape the functions which will set and use said data.
+\end{tsremark}
+
+\subsection{Activity Set}
+For the activities one could set an ``starray'' as follow:
+
+
+\begin{codestore}[activity-def]
+\starray_new:n {activity}
+\starray_def_from_keyval:nn {activity} {
+    name = Activity's~ name ,
+    acronym = ACRO ,
+    coord . struct =  {
+        name = Coordinator's~ name,
+        title = Coordinator's~ title ,
+      } ,
+    calendar . struct = {
+        date = {-day-} ,
+        week = {-week-} ,
+        event = {-event-} ,
+      } ,
+    chkID = ,        %%% 'unique ID' for checklists
+    chkmarked = ,    %%% This shall be a prop list of   marked itens
+    chkunmarked = ,  %%% This shall be a prop list of unmarked itens
+    chkref = ,       %%% This shall be a prop list of ref      itens
+  }
+\end{codestore}
+
+
+\begin{codestore}[student-def]
+\starray_new:n {student}
+\starray_def_from_keyval:nn {student} {
+  self = , %% this shall be self hash (if any)
+  first = ,
+  last = ,
+  name = \rule{\l__stdemo_name_rule_dim}{.1pt} ,
+  Nproc = \rule{\l__stdemo_ID_rule_dim}{.1pt} ,
+  ID    = \rule{\l__stdemo_ID_rule_dim}{.1pt} , 
+  email = \rule{\l__stdemo_email_rule_dim}{.1pt} ,
+  worktitle = \rule{\l__stdemo_worktitle_rule_dim}{.1pt} ,
+  remarks = ,
+  board-local = {local} ,
+  board-date   = {dia} ,
+  board-time  = {hora} ,
+  gradeavrg = 0,
+  grade = ,
+  flag-null = \c_false_bool , %% IF no grade was given
+  flag-graded = \c_false_bool , %%% IF gradeavrg AND finalgrade already calculated (or defined)
+  flag-approved = \c_false_bool ,
+  flag-coadvisor = \c_false_bool ,
+  advisor . struct = {
+    first = ,
+    last =  ,
+    name = \rule{\l__stdemo_name_rule_dim}{.1pt},
+    institution = \rule{\l__stdemo_name_rule_dim}{.1pt},
+    title = \rule{\l__stdemo_title_rule_dim}{.1pt} ,
+    email = \rule{\l__stdemo_email_rule_dim}{.1pt} ,
+  } ,
+  coadvisor . struct = {
+    first = ,
+    last =  ,
+    name = \rule{\l__stdemo_name_rule_dim}{.1pt},
+    institution = \rule{\l__stdemo_name_rule_dim}{.1pt},
+    title = \rule{\l__stdemo_title_rule_dim}{.1pt} ,
+    email = \rule{\l__stdemo_email_rule_dim}{.1pt} ,
+  } ,
+  reviewer . struct = {
+    first = ,
+    last =  ,
+    name = \rule{\l__stdemo_name_rule_dim}{.1pt},
+    institution = \rule{\l__stdemo_name_rule_dim}{.1pt},
+    title = \rule{\l__stdemo_title_rule_dim}{.1pt} ,
+    email = \rule{\l__stdemo_email_rule_dim}{.1pt} ,
+    pointA = ,
+    pointB = ,
+    pointC = ,
+    pointD = ,
+    grade = 0 ,
+    flag-set = \c_false_bool , 
+  } ,
+ }
+\end{codestore}
+
+
+
+
+
+\tscode*[stdemo]{activity-def}
+
+
+Whereas, the ``coord'' sub-structured is for the activity's coordinator, whilst ``calendar'' shall (for instance) contains a list of calendar events, and, finally, the many ``chk* '' will be used for a ``check list''.
+
+\begin{tsremark}
+The ``chkID'' (and checklists). In many cases it's handy to have an unique identifier for a given structure. That can be obtained with \tsobj{\starray_get_unique_ID:nN}, and to avoid having to call this function time and time again, one can just store that ID as a field for later use. (as it will be done in this example).
+\end{tsremark}
+\begin{tsremark}
+  Could the Coordinator's name and title be a direct property (dismissing the ``coord'' sub-structure) ? of course, that's a matter of taste/choice, on how to model it.
+\end{tsremark}
+
+\subsection{Student Set}
+Similarly, a student's structure might contain, besides student's name, work title, some flags, an advisor (and co-advisor, if needed), reviewer's list (with a provision for reviewer's grade, if needed).
+
+Of course, one doesn't need to define a \tsobj[pkg]{starray} structure using \tsobj{\starray_def_from_keyval:nn}, but, as in this,  if the set of properties is known, it always makes for a cleaner definition.
+
+\begin{tsremark}
+  The fields/properties defaults can be anything, including usual \LaTeXe\  commands, like a \tsobj{\rule} which is handy, for instance, when generating forms, e.g., if the fields are all set, a form can be created with the proper values, otherwise, it will be  created with ``rules'' in place (no need to test if the properties were set).
+\end{tsremark}
+
+\tscode*[stdemo]{student-def}
+
+
+
+\end{document} 

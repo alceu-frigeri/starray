@@ -77,8 +77,8 @@ The package options (\tsobj[key]{key}\,=\tsobj[value]{value}) are:
 \begin{describelist}{option}
 \describe{prefix}{(default: \tsobj[value]{\detokenize{l__starray_}} ). Set the \tsobj[key]{prefix} used when declaring the property lists associated with any \tsobj[pkg]{starray}.}
 
-\describe{msg-err}{ 
-By default, the \tsobj[pkg]{starray} package only generates ''warnings'', with \tsobj[option]{msg-err} one can choose which cases will generate ''package error'' messages. There are 3 message classes: 1. \tsobj[value]{strict} relates to \tsmacro{\starray_new:n}{} cases (\tsobj[pkg]{starray} creation); 2. \tsobj[value]{syntax} relates to ''term syntax'' errors (student.work.reviewer in the above examples); finally 3. \tsobj[value]{reference} relates to cases whereas the syntax is correct but referring to non-existent terms/properties. }
+\describe{msg-err}
+{By default, the \tsobj[pkg]{starray} package only generates ''warnings'', with \tsobj[option]{msg-err} one can choose which cases will generate ''package error'' messages. There are 3 message classes: 1. \tsobj[value]{strict} relates to \tsmacro{\starray_new:n}{} cases (\tsobj[pkg]{starray} creation); 2. \tsobj[value]{syntax} relates to ''term syntax'' errors (student.work.reviewer in the above examples); finally 3. \tsobj[value]{reference} relates to cases whereas the syntax is correct but referring to non-existent terms/properties. }
 
 \begin{describelist*}{value}
 \describe{none}{ (default) no package message will raise an error.}
@@ -88,7 +88,7 @@ By default, the \tsobj[pkg]{starray} package only generates ''warnings'', with \
 \describe{all}{ will raise an error on all cases.}
 \end{describelist*}
 
-\describe{msg-suppress}{ ditto, to suppress classes of messages:}
+\describe{msg-suppress}{ditto, to suppress classes of messages:}
 \begin{describelist*}{value}
 \describe{none}{ (default) no package message will be suppressed.}
 \describe{reference}{ only \tsobj[value]{reference} level messages will be suppressed.}
@@ -201,14 +201,14 @@ The non-branching version raises a warning (see \ref{pack:options}) in case of a
 
 \subsection{Fixing an ill-instantiated starray}\label{pack:def-fix}
 
-When instantiating (see \ref{pack:instantiate}) a \tsobj[pkg]{starray}, the associated structured will be constructed based on it's ''current definition'' (see \ref{pack:def}). A problem that migh arise, when one extends the definition of an already instantiated \tsobj[pkg]{starray}  (better said, if one adds a sub-structure), is a \textsl{quark loop} (from \tsobj[pkg]{l3quark}). To avoid a \textsl{quark loop} it is necessary to ''fix'' the structure of already instantiated terms.
+When instantiating (see \ref{pack:instantiate}) a \tsobj[pkg]{starray}, the associated structured will be constructed based on it's ``current definition'' (see \ref{pack:def}). A problem that migh arise, when one extends the definition of an already instantiated \tsobj[pkg]{starray}  (better said, if one adds a sub-structure), is a \textsl{quark loop} (from \tsobj[pkg]{l3quark}). To avoid a \textsl{quark loop} it is necessary to ``fix'' the structure of already instantiated terms.
 
 \begin{codedescribe}{\starray_fix_terms:n}
 \begin{codesyntax}%
 \tsmacro{\starray_fix_terms:n}{starray-ref}
 \end{codesyntax}
-\end{codedescribe}
 The sole purpose of this function is to ''fix'' the already instantiated terms of a \tsobj[pkg]{starray}. Note, this can be an expensive operation depending on the number of terms (it has to craw over all the terms of an instantiated \tsobj[pkg]{starray} adding any missing sub-structure references), but one doesn't need to run it ''right away'' it is possible to add a bunch of sub-structures and than run this just once.
+\end{codedescribe}
 
 
 \section{Instantiating starray terms}\label{pack:instantiate}
@@ -220,8 +220,8 @@ The sole purpose of this function is to ''fix'' the already instantiated terms o
 \tsmacro{\starray_new_term:nTF}{starray-ref,if-true,if-false}
 \tsmacro{\starray_new_term:nnTF}{starray-ref,hash,if-true,if-false}
 \end{codesyntax}
-\end{codedescribe}
 This create a new \textsl{term} (in fact a property list) of the (sub-)struture referenced by \tsobj[marg]{starray-ref}. Note that the newly created \textsl{term} will have all properties (key/values) as defined by the associated \tsmacro{\starray_prop_def:nn}{starray-ref}, with the respective ''initial values''. For instance, given the following 
+\end{codedescribe}
 
 \begin{codestore}[store-env=keyval.demo2]
 \starray_new:n {st-root}
@@ -403,8 +403,8 @@ Will create 3 \tsobj[marg]{subZ} terms associated with the first (index = 1) \ts
 \tsmacro{\starray_next_iter:nn}{starray-ref}
 \tsmacro{\starray_next_iter:nTF}{starray-ref,if-true,if-false}
 \end{codesyntax}
-\end{codedescribe}
 Those functions allows to \tsmacro{set}{} an iterator to a given \tsobj[marg]{int-val}, \tsmacro{reset}{} it (i.e. assign 1 to the iterator), or increase the iterator by one. An iterator might have a value between 1 and the number of instantiated terms (if the given (sub-)structure was already instantiated). If the (sub-)structure hasn't been instantiated yet, the iterator will always end being set to 0. The branching versions allows to catch those cases, like trying to set a value past its maximum, or a value smaller than one.
+\end{codedescribe}
 
 \begin{tsremark}[Important:]
 Please observe that, when setting/resetting/incrementing the  iterator of a (sub-)structure, all ''descending'' iterators will be also be reset.
@@ -459,8 +459,8 @@ Before the reset \tsobj[marg]{st-root.subY.subYYY} was equivalent to \tsobj[marg
 \tsmacro{\starray_set_iter_from_hash:nn}{starray-ref,hash}
 \tsmacro{\starray_set_iter_from_hash:nnTF}{starray-ref,hash,if-true,if-false}
 \end{codesyntax}
-\end{codedescribe}
 \tsmacro{\starray_set_iter_from_hash:nn}{starray-ref,hash} will set iter based on the \tsobj[meta]{hash} used when instantiating a term (see \ref{pack:instantiate} ).
+\end{codedescribe}
 \begin{tsremark}
 A warning is raised (see \ref{pack:options}) in case of a \tsobj[marg]{starray-ref} syntax error or invalid \tsobj[meta]{hash}. The branching version doesn't raise any warning.
 \end{tsremark}
@@ -472,8 +472,8 @@ A warning is raised (see \ref{pack:options}) in case of a \tsobj[marg]{starray-r
 \tsmacro{\starray_get_iter:nN}{starray-ref,int-var}
 \tsmacro{\starray_get_iter:nNTF}{starray-ref,int-var,if-true,if-false}
 \end{codesyntax}
-\end{codedescribe}
 \tsmacro{\starray_get_iter:n}{starray-ref} will type in the current value of a given iterator, whilst the other two functions will save it's value in a integer variable (\tsobj[pkg]{expl3}).
+\end{codedescribe}
 \begin{tsremark}
 A warning is raised (see \ref{pack:options}) in case of a \tsobj[marg]{starray-ref} syntax error. The branching version doesn't raise any warning.
 \end{tsremark}
@@ -505,8 +505,8 @@ This can be used after any command which 'parses a term', for instance \tsobj{\s
 \tsmacro{\starray_get_cnt:nN}{starray-ref,integer}
 \tsmacro{\starray_get_cnt:nNTF}{starray-ref,integer,if-true,if-false}
 \end{codesyntax}
-\end{codedescribe}
 \tsmacro{\starray_get_cnt:n}{starray-ref} will type in the current number of terms of a given (sub-)structure, whilst the other two functions will save it's value in a integer variable (\tsobj[pkg]{expl3}).
+\end{codedescribe}
 \begin{tsremark}
 A warning is raised (see \ref{pack:options}) in case of a \tsobj[marg]{starray-ref} syntax error. The branching version doesn't raise any warning.
 \end{tsremark}
@@ -574,16 +574,16 @@ A warning is raised (see \ref{pack:options}) in case of a \tsobj[marg]{starray-r
 \tsmacro{\starray_gset_from_keyval:nnn}{starray-ref,keyval-lst}
 \tsmacro{\starray_gset_from_keyval:nnnTF}{starray-ref,keyval-lst,if-true,if-false}
 \end{codesyntax}
-\end{codedescribe}
-
 it is possible to set a collection of properties using a key/val syntax, similar to the one used to define a \tsobj[pkg]{starray} from keyvals (see \ref{pack:def}), with a few distinctions:
 \begin{enumerate}
   \item when referring a (sub-)structure one can either explicitly use an index, or
   \item  implicitly use it's iterator 
   \item if a given key isn't already presented it will be added only to the given term
 \end{enumerate}
-
  Note that, in the following example, TWO iterators are being used, the one for \tsobj[marg]{st-root} and then \tsobj[marg]{subY}.
+\end{codedescribe}
+
+
 
 \begin{codestore}[store-env=keyval.demo8]
 \starray_set_from_keyval:nn {st-root} 
@@ -681,7 +681,7 @@ The \tsmacro{\starray_if_in:nnTF}{starray-ref,key,\ldots,\ldots} tests if a give
 This will just parse  a \tsobj[marg]{starray-ref} reference, and set interval variables so that commands like \tsobj{\starray_parsed_} can be used.
 \end{codedescribe}
 \begin{tsremark}[\color{red}Warning:]
-The main idea is to allow some expandable commands, but be aware that all \tsobj{\starray_} commands that use a \tsobj[marg]{starray-ref} use the very same parser variables. In case one needs are more permanent/resilient \tsobj[pkg]{starray} reference, one should use the \tsobj{\starray_term_syntax:nNN} variant.
+The main idea is to allow some expandable commands, but be aware that all \tsobj{\starray_} commands that use a \tsobj[marg]{starray-ref} use the very same parser variables. For a more permanent/resilient \tsobj[pkg]{starray} reference, one should use the \tsobj{\starray_term_syntax:nNN} variant.
 \end{tsremark}
 \begin{tsremark}
 A warning is raised (see \ref{pack:options}) in case of a \tsobj[marg]{starray-ref} syntax error. The branching version doesn't raise any warning.
@@ -735,8 +735,8 @@ The predicate version, \tsobj{_p}, expands to either \tsobj{\prg_return_true:} o
 \tsmacro{\starray_get_unique_id:nN}{starray-ref,tl-var}
 \tsmacro{\starray_get_unique_id:nNTF}{starray-ref,tl-var}
 \end{codesyntax}
+Gets an `unique ID' for a given \tsobj[marg]{starray-ref} \emph{term}, it should help defining/creating uniquely identified auxiliary structures, like auxiliary property or sequence lists, since one can't (better said shouldn't, as per l3kernel) store an anonymous property/sequence list using V-expansion. 
 \end{codedescribe}
-Gets an 'unique ID' for a given \tsobj[marg]{starray-ref} \emph{term}, it should help defining/creating uniquely identified auxiliary structures, like auxiliary property or sequence lists, since one can't (better said shouldn't, as per l3kernel) store an anonymous property/sequence list using V-expansion. 
 \begin{tsremark}
 A warning is raised (see \ref{pack:options}) in case of a \tsobj[marg]{starray-ref} syntax error. The branching version doesn't raise any warning.
 \end{tsremark}
@@ -750,8 +750,8 @@ A warning is raised (see \ref{pack:options}) in case of a \tsobj[marg]{starray-r
 \tsmacro{\starray_show_def:n}{starray-ref}
 \tsmacro{\starray_show_def_in_text:n}{starray-ref}
 \end{codesyntax}
-\end{codedescribe}
 Displays the \tsobj[marg]{starray} structure definition and initial property values in the terminal or directly in text.
+\end{codedescribe}
 
 
 \begin{codedescribe}{\starray_show_terms:n,\starray_show_terms_in_text:n}
@@ -759,8 +759,8 @@ Displays the \tsobj[marg]{starray} structure definition and initial property val
 \tsmacro{\starray_show_terms:n}{starray-ref}
 \tsmacro{\starray_show_terms_in_text:n}{starray-ref}
 \end{codesyntax}
-\end{codedescribe}
 Displays the \tsobj[marg]{starray} instantiated terms and current  property values in the terminal or directly in text.
+\end{codedescribe}
 
 
 

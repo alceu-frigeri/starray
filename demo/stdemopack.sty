@@ -1,0 +1,550 @@
+%%%==============================================================================
+%% Copyright 2023-present by Alceu Frigeri
+%%
+%% This work may be distributed and/or modified under the conditions of
+%%
+%% * The [LaTeX Project Public License](http://www.latex-project.org/lppl.txt),
+%%   version 1.3c (or later), and/or
+%% * The [GNU Affero General Public License](https://www.gnu.org/licenses/agpl-3.0.html),
+%%   version 3 (or later)
+%%
+%% This work has the LPPL maintenance status *maintained*.
+%%
+%% The Current Maintainer of this work is Alceu Frigeri
+%%
+%% This is version {1.9b} {2025/02/14} 
+%%
+%% The list of files that compose this work can be found in the README.md file at
+%% https://ctan.org/pkg/starray
+%%
+%%%==============================================================================
+\NeedsTeXFormat{LaTeX2e}[2023/11/01]
+
+
+\ProvidesExplPackage
+    {stdemopack}
+    {2025/02/14}
+    {1.9b}
+    {A starray based demo package}
+
+
+%%%%%%%
+%%%
+%%% Just an attempt of having my packages info in a regular way
+%%% Idea being: { <pck-name> / pkg info } for each and all.
+%%%
+%%%%%%%
+\keys_define:nn { stdemopack / pkg info}
+  {
+     name        .code:n = {stdemopack} ,
+     prefix      .code:n = {stdemo} ,
+     date        .code:n = {2025/02/14},
+     version     .code:n = {1.9b} ,
+     description .code:n = {A starray based demo package}
+  }
+\cs_if_exist:NF \PkgInfo 
+  {
+    \NewDocumentCommand \PkgInfo {mm} { \keys_set:nn {#1 / pkg info}{#2} } 
+    \NewDocumentCommand \PkgDescription {m} 
+      { \noindent Package~ \textbf{\PkgInfo{#1}{name}}~Version:~\PkgInfo{#1}{version}~ -~ \PkgInfo{#1}{date}\par \emph{\PkgInfo{#1}{description}}~\par } 
+  }  
+%%%%%%%
+%%% End of cut-n-paste
+%%%%%%%
+
+
+\RequirePackage{starray} % For array definitions
+
+
+
+\msg_new:nnnn {st demo} {unknown key}
+  {
+    Invalid~ key:~ '#1'
+  }
+  {
+    Key~ not~ known: ~ '#1'
+  }
+
+\cs_generate_variant:Nn \msg_warning:nnn {nnx}
+
+\keys_define:nn  { st demo  }
+  {
+    firstname .usage:n = general ,
+    firstname .tl_set:N = \l_firstname_tl ,
+    firstname .default:n = {} ,
+    
+    lastname .usage:n = general ,
+    lastname .tl_set:N = \l_lastname_tl ,
+    lastname .default:n = {} ,
+    
+    kthid .usage:n = general ,
+    kthid .tl_set:N = \l_kthid_tl ,
+    kthid .default:n = {} ,
+
+    organization .usage:n = general ,
+    organization .tl_set:N = \l_organization_tl ,
+    organization .default:n = {} ,
+
+    email .usage:n = general ,
+    email .tl_set:N = \l_email_tl ,
+    email .default:n = {} ,
+
+    school .usage:n = general ,
+    school .tl_set:N = \l_school_tl ,
+    school .default:n = {} ,
+
+    department .usage:n = general ,
+    department .tl_set:N = \l_department_tl ,
+    department .default:n = {} ,
+       
+    % not very efficient, but quick to write...
+    default .usage:n = general ,
+    default .meta:nn = {st test}
+      { firstname , lastname, kthid, organization, email, school, department } ,
+      
+    unknown .code:n =
+      {
+        \msg_warning:nnx 
+          {st test} {unknown key}
+          {Unknown~ supervisor~ key:~ \l_keys_key_str}
+      } ,
+    unknown .default:V = \c_novalue_tl
+
+  }
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+% starray based student commands%
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\dim_new:N \l__stdemo_ID_rule_dim
+\dim_new:N \l__stdemo_email_rule_dim
+\dim_new:N \l__stdemo_name_rule_dim
+\dim_new:N \l__stdemo_title_rule_dim
+\dim_new:N \l__stdemo_worktitle_rule_dim
+\dim_new:N \l__stdemo_phone_rule_dim
+\dim_new:N \l__stdemo_agree_rule_dim
+\dim_new:N \l__stdemo_date_rule_dim
+\dim_new:N \l__stdemo_register_rule_dim
+\dim_new:N \l__stdemo_office_rule_dim
+\dim_new:N \l__stdemo_field_rule_dim
+
+\dim_set:Nn \l__stdemo_ID_rule_dim {30mm}
+\dim_set:Nn \l__stdemo_email_rule_dim {40mm}
+\dim_set:Nn \l__stdemo_name_rule_dim {50mm}
+\dim_set:Nn \l__stdemo_title_rule_dim {30mm}
+\dim_set:Nn \l__stdemo_worktitle_rule_dim {60mm}
+\dim_set:Nn \l__stdemo_phone_rule_dim {20mm}
+\dim_set:Nn \l__stdemo_agree_rule_dim {25mm}
+\dim_set:Nn \l__stdemo_date_rule_dim {15mm}
+\dim_set:Nn \l__stdemo_register_rule_dim {20mm}
+\dim_set:Nn \l__stdemo_office_rule_dim {25mm}
+\dim_set:Nn \l__stdemo_field_rule_dim {30mm}
+
+
+
+
+\starray_new:n {student}
+\starray_def_from_keyval:nn {student}
+ {
+  self = , %% this shall be self hash (if any)
+  first = ,
+  last = ,
+  name = \rule{\l__stdemo_name_rule_dim}{.1pt} ,
+  Nproc = \rule{\l__stdemo_ID_rule_dim}{.1pt} ,
+  ID    = \rule{\l__stdemo_ID_rule_dim}{.1pt} , 
+  email = \rule{\l__stdemo_email_rule_dim}{.1pt} ,
+  worktitle = \rule{\l__stdemo_worktitle_rule_dim}{.1pt} ,
+  remarks = ,
+  board-local = {local} ,
+  board-date   = {dia} ,
+  board-time  = {hora} ,
+  gradeavrg = 0,
+  grade = ,
+  flag-null = \c_false_bool , %% IF no grade was given
+  flag-graded = \c_false_bool , %%% IF gradeavrg AND finalgrade already calculated (or defined)
+  flag-approved = \c_false_bool ,
+  flag-coadvisor = \c_false_bool ,
+  advisor . struct = {
+    first = ,
+    last =  ,
+    name = \rule{\l__stdemo_name_rule_dim}{.1pt},
+    institution = \rule{\l__stdemo_name_rule_dim}{.1pt},
+    title = \rule{\l__stdemo_title_rule_dim}{.1pt} ,
+    email = \rule{\l__stdemo_email_rule_dim}{.1pt} ,
+  } ,
+  coadvisor . struct = {
+    first = ,
+    last =  ,
+    name = \rule{\l__stdemo_name_rule_dim}{.1pt},
+    institution = \rule{\l__stdemo_name_rule_dim}{.1pt},
+    title = \rule{\l__stdemo_title_rule_dim}{.1pt} ,
+    email = \rule{\l__stdemo_email_rule_dim}{.1pt} ,
+  } ,
+  reviewer . struct = {
+    first = ,
+    last =  ,
+    name = \rule{\l__stdemo_name_rule_dim}{.1pt},
+    institution = \rule{\l__stdemo_name_rule_dim}{.1pt},
+    title = \rule{\l__stdemo_title_rule_dim}{.1pt} ,
+    email = \rule{\l__stdemo_email_rule_dim}{.1pt} ,
+    pointA = ,
+    pointB = ,
+    pointC = ,
+    pointD = ,
+    grade = 0 ,
+    flag-set = \c_false_bool , 
+  } ,
+ }
+
+
+\prop_new_linked:N \l__stdemo_forms_prop
+
+\starray_new:n {activity}
+\starray_def_from_keyval:nn {activity}
+  {
+    name = Activity's~ name ,
+    acronym = ACRO ,
+    coord . struct = 
+      {
+        name = Coordinator's~ name,
+        title = Coordinator's~ title ,
+      } ,
+    calendar . struct =
+      {
+        date = {-day-} ,
+        week = {-week-} ,
+        event = {-event-} ,
+      } ,
+    chkID = ,        %%% 'unique ID' for checklists
+    chkmarked = ,    %%% This shall be a prop list of   marked itens
+    chkunmarked = ,  %%% This shall be a prop list of unmarked itens
+    chkref = ,       %%% This shall be a prop list of ref      itens
+  }
+
+%% workaround (V-less) 
+%%   => \starray_get_uniqueID {starray-ref} .... 
+%%      (might just be parser construct...) and use it to define a unique prop name.
+
+\tl_new:N \l__stdemo_tmpID_tl
+\NewDocumentCommand{\NewActivity}{m} {
+    \starray_new_term:nn {activity}{#1}
+    \starray_new_term:nn {activity.coord}{}
+    \starray_get_unique_id:nNTF {activity} \l__stdemo_tmpID_tl
+      {}
+      {}
+    \starray_gset_prop:nnV {activity}{chkID} \l__stdemo_tmpID_tl
+    \prop_new_linked:c {l__stdemo_ \l__stdemo_tmpID_tl _chkmarked_prop}
+    \prop_new_linked:c {l__stdemo_ \l__stdemo_tmpID_tl _chkunmarked_prop}
+    \prop_new_linked:c {l__stdemo_ \l__stdemo_tmpID_tl _chkref_prop}
+}
+
+
+\NewDocumentCommand{\ActivitySet}{O{}mm} {
+  \tl_if_blank:nTF {#1}
+    {
+      \starray_set_prop:nnn {activity}{name}{#3}
+      \starray_set_prop:nnn {activity}{acronym}{#2}
+    }
+    {
+      \starray_set_prop:nnn {activity[#1]}{name}{#3}
+      \starray_set_prop:nnn {activity[#1]}{acronym}{#2}
+    }
+}
+ 
+\NewDocumentCommand{\ActivitySetCoordTitle}{O{}m} {
+  \tl_if_blank:nTF {#1}
+    { \starray_set_prop:nnn {activity.coord}{title}{#2} }
+    { \starray_set_prop:nnn {activity[#1].coord}{title}{#2} }
+}
+
+\NewDocumentCommand{\ActivitySetCoord}{O{}mO{}}{
+  \tl_if_blank:nTF {#1}
+    {
+      \starray_gset_prop:nnn {activity.coord}{name}{#2}
+    }
+    {
+      \starray_gset_prop:nnn {activity[#1].coord}{name}{#2}
+    }
+}
+
+\NewDocumentCommand{\ActivitySelect}{m}{ \starray_set_iter_from_hash:nn {activity}{#1} }
+
+
+\NewDocumentCommand{\Activity}{O{}m}{
+  \tl_if_blank:nTF {#1}
+    { \starray_get_prop:nn {activity}{#2} }
+    { \starray_get_prop:nn {activity[#1]}{#2} }
+}
+
+\NewDocumentCommand{\ActivityCoord}{O{}m}{
+  \tl_if_blank:nTF {#1}
+    { \starray_get_prop:nn {activity.coord}{#2} }
+    { \starray_get_prop:nn {activity[#1].coord}{#2} }
+}
+
+
+\NewDocumentCommand{\ActivityCalLine}{O{}m}{
+  \tl_if_blank:nF {#1}
+    {\starray_set_iter_from_hash:nn {activity}{#1}}
+  \starray_set_iter_from_hash:nn {activity.calendar}{#2}
+  \starray_get_prop:nn {activity.calendar}{date} & \starray_get_prop:nn {activity.calendar}{week} & \starray_get_prop:nn {activity.calendar}{event}
+}
+
+\NewDocumentCommand{\ActivityCalendarIterate}{m}{
+    \starray_iterate_over:nn{activity.calendar}{#1}
+}
+
+
+
+\NewDocumentCommand{\student}{O{}mm}{%
+  \tl_if_blank:nTF {#1}
+    {\starray_new_term:nn {student}{}}
+    {\starray_new_term:nn {student}{#1}}
+  \starray_gset_from_keyval:nn {student}
+    {
+      self  = {#1} ,
+      first = {#3} ,
+      last = {#2} ,
+      name = {#3~ #2} ,
+    }
+
+  \starray_get_unique_id:nNTF {student}\l__stdemo_tmpID_tl
+    {}
+    {}
+  \starray_gset_prop:nnV {student}{chkID} \l__stdemo_tmpID_tl
+  \prop_new:c {l__stdemo_ \l__stdemo_tmpID_tl _checklist_prop}
+}%
+  %
+\NewDocumentCommand{\eDataSet}{m}{
+  \starray_term_syntax:n{#1}
+}  
+
+\cs_new:Npn \eDataFields #1 
+  { \starray_parsed_get_prop:n{#1} }
+
+
+\NewDocumentCommand{\DataFields}{mm}{
+  \starray_get_prop:nn{#1}{#2}
+}  
+
+\NewDocumentCommand{\DataGet}{mmm}{
+  \starray_get_prop:nnN{#1}{#2}{#3}
+}  
+
+\NewDocumentCommand{\studentReviewerSelect}{m}{
+  \starray_set_iter:nn {student.reviewer}{#1}
+}
+  %
+
+\NewDocumentCommand{\studentCoadvCase}{+m+m}{
+    \starray_term_syntax:n{student}
+    \bool_if:nTF {\starray_parsed_get_prop:n{flag-coadvisor}}
+      {#1}
+      {#2}
+}
+
+\NewDocumentCommand{\studentAdvCase}{mm}{
+    \starray_term_syntax:n{student.advisor}
+    \int_compare:nNnTF {\starray_parsed_get_cnt:} > {1}
+      {#1}
+      {#2}
+}
+
+\NewDocumentCommand{\studentremark}{m}{
+  \starray_gset_prop:nnn {student}{remarks}{#1}
+}
+
+
+\NewDocumentCommand{\studentReviewerSetCase}{mmm}{
+    \starray_term_syntax:n{student.reviewer[#1]}
+    \bool_if:nTF {\starray_parsed_get_prop:n{flag-set}}
+      {#2}
+      {#3}
+}
+
+
+
+\NewDocumentCommand{\studentCase}{mmmmm}{
+    \starray_term_syntax:n{student}
+    \bool_case:nF
+    {
+      {\starray_parsed_get_prop:n{flag-ff}}
+        {#5}
+      {\starray_parsed_get_prop:n{flag-exam}}
+        {
+          \bool_if:nTF{\starray_parsed_get_prop:n{flag-approved}}
+            {#3}
+            {#4}
+        }
+    }
+    {
+      \bool_if:nTF{\starray_parsed_get_prop:n{flag-approved}}
+        {#1}
+        {#2}
+    }
+}
+
+
+\NewDocumentCommand{\studentDismissOtherCase}{mm}{
+    \starray_term_syntax:n{student}
+    \bool_if:nTF {\starray_parsed_get_prop:n{flag-dismiss} || \starray_parsed_get_prop:n{flag-other}}
+      {#1}
+      {#2}
+}
+
+\NewDocumentCommand{\studentReviewerCase}{mmm}{
+    \starray_term_syntax:n{student.reviewer[#1]}
+    \bool_if:nTF {\starray_parsed_get_prop:n{flag-examreview}}
+      {#2}
+      {#3}
+}
+
+
+\NewDocumentCommand{\studentiterate}{m}{
+    \starray_iterate_over:nn{student}{#1}
+}
+
+\NewDocumentCommand{\studentadvisoriterate}{m}{
+    \starray_iterate_over:nn{student.advisor}{#1}
+}
+
+\NewDocumentCommand{\worktitle}{m}{%%
+  \starray_gset_prop:nnn {student}{worktitle}{#1}
+}
+
+\NewDocumentCommand{\workbrief}{m}{
+  \starray_gset_prop:nnn {student}{brief}{#1}
+}
+
+\NewDocumentCommand{\advisorreview}{m}{
+  \starray_gset_prop:nnn {student.advisor}{assessment}{#1}
+}
+
+
+
+\NewDocumentCommand{\studentinfo}{O{}mm}{%
+  \starray_gset_from_keyval:nn {student}
+    {
+      Nproc = {#1} ,
+      ID    = {#2} ,
+      email = {\tl_to_str:n{#3}} ,
+    }
+}%
+
+
+
+\NewDocumentCommand{\studentselect}{m}{ \starray_set_iter_from_hash:nn {student}{#1} }
+
+\cs_new_protected:Npn \__stdemo_set_prof:nnnnn #1#2#3#4#5 
+  {
+    \tl_if_blank:nTF {#2}
+      {
+        \starray_gset_from_keyval:nn {student.#1}
+          {
+            last = {#3} ,
+            first = {#4} ,
+            name = {#4~ #3} ,
+          }
+      }
+      {
+        \starray_gset_from_keyval:nn {student.#1}
+          {
+            last = {#3} ,
+            first = {#4} ,
+            name = {#2~ #4~ #3} ,
+          }
+      }
+   \__stdemo_setgender:nn {student.#1}{#5}
+  }
+
+
+\cs_new_protected:Npn \__stdemo_set_prof_info:nnnnn #1#2#3#4#5
+  {
+    \starray_gset_from_keyval:nn {student.#1}
+      {
+        institution = {#2} ,
+        title = {#3} ,
+        email = {\tl_to_str:n{#4}} ,
+        phone = {#5} ,
+      }
+  }
+
+\cs_new_protected:Npn \__stdemo_emptyterm_if_none:nnn #1#2#3
+  {
+    \starray_get_cnt:nN {#2} \l_tmpa_int
+    \int_while_do:nNnn {\l_tmpa_int} < {#1}
+      { 
+        \starray_new_term:nn {#2}{} 
+        #3
+        \starray_get_cnt:nN {#2} \l_tmpa_int
+      }
+  }
+
+\NewDocumentCommand{\emptytermifnone}{O{1}mO{}}
+  {
+    \__stdemo_emptyterm_if_none:nnn {#1}{#2}{#3}
+  }
+
+\cs_new_protected:Npn \__stdemo_student_emptyfields_if_none:
+  {
+    \__stdemo_emptyterm_if_none:nnn {1}{student}{}
+    \__stdemo_emptyterm_if_none:nnn {1}{student.advisor}{}
+    \__stdemo_emptyterm_if_none:nnn {3}{student.reviewer}{}
+  }
+
+
+\NewDocumentCommand{\advisor}{O{}mmO{}}{%%
+  \starray_new_term:nn {student.advisor}{}
+  \__stdemo_set_prof:nnnnn {advisor}{#1}{#2}{#3}{#4}
+  \starray_term_syntax:n{student}
+  \bool_if:nF {\starray_parsed_get_prop:n{flag-distinctboard}}
+    { \examiner[#1]{#2}{#3}[#4] }
+}
+
+\NewDocumentCommand{\advisorinfo}{mmmm}{%%
+  \__stdemo_set_prof_info:nnnnn {advisor}{#1}{#2}{#3}{#4}
+  \starray_term_syntax:n{student}
+  \bool_if:nF {\starray_parsed_get_prop:n{flag-distinctboard}}
+    { \examinerinfo{#1}{#2}{#3}{#4} }
+}%
+
+
+\NewDocumentCommand{\examiner}{O{}mmO{}}{%%
+  \starray_new_term:nn {student.reviewer}{}
+  \starray_gset_prop:nnn {student.reviewer}{flag-set}{\c_true_bool}
+  \__stdemo_set_prof:nnnnn {reviewer}{#1}{#2}{#3}{#4}
+}%
+
+\NewDocumentCommand{\examinerinfo}{mmmm}{%%
+  \__stdemo_set_prof_info:nnnnn {reviewer}{#1}{#2}{#3}{#4}
+}%
+
+\NewDocumentCommand{\altexaminer}{O{}mmO{}}{%%
+  \starray_new_term:nn {student.altreviewer}{}
+  \__stdemo_set_prof:nnnnn {altreviewer}{#1}{#2}{#3}{#4}
+}%
+\NewDocumentCommand{\altexaminerinfo}{mmmm}{%%
+  \__stdemo_set_prof_info:nnnnn {altreviewer}{#1}{#2}{#3}{#4}
+}%
+
+
+\cs_new_protected:Npn \__stdemo_emptyfields:
+  {
+    \starray_new_term:nn {student}{empty}
+    \starray_new_term:nn {student.advisor}{}
+    \starray_new_term:nn {student.coadvisor}{}
+    \starray_new_term:nn {student.reviewer}{}
+    \starray_new_term:nn {student.reviewer}{}
+    \starray_new_term:nn {student.reviewer}{}
+    \starray_new_term:nn {student.altreviewer}{}
+    \starray_new_term:nn {student.supervisor}{}
+    \starray_new_term:nn {student.tutor}{}
+    \starray_new_term:nn {student.internship}{}
+  }
+
+\def\emptybox{\framebox[3em]{\color{white}W}}
+  

@@ -1,0 +1,181 @@
+\documentclass{article}
+\RequirePackage[T1]{fontenc}
+\RequirePackage[utf8]{inputenc}
+
+\usepackage{starray} % For array definitions
+
+
+% Writing it all in expl3
+%
+\ExplSyntaxOn
+
+
+\msg_new:nnnn {st test} {unknown key}
+  {
+    Invalid~ key:~ '#1'
+  }
+  {
+    Key~ not~ known: ~ '#1'
+  }
+
+\cs_generate_variant:Nn \msg_warning:nnn {nnx}
+
+\keys_define:nn  { st test }
+  {
+    firstname .usage:n = general ,
+    firstname .tl_set:N = \l_firstname_tl ,
+    firstname .default:n = {} ,
+    
+    lastname .usage:n = general ,
+    lastname .tl_set:N = \l_lastname_tl ,
+    lastname .default:n = {} ,
+    
+    kthid .usage:n = general ,
+    kthid .tl_set:N = \l_kthid_tl ,
+    kthid .default:n = {} ,
+
+    organization .usage:n = general ,
+    organization .tl_set:N = \l_organization_tl ,
+    organization .default:n = {} ,
+
+    email .usage:n = general ,
+    email .tl_set:N = \l_email_tl ,
+    email .default:n = {} ,
+
+    school .usage:n = general ,
+    school .tl_set:N = \l_school_tl ,
+    school .default:n = {} ,
+
+    department .usage:n = general ,
+    department .tl_set:N = \l_department_tl ,
+    department .default:n = {} ,
+       
+    % not very efficient, but quick to write...
+    default .usage:n = general ,
+    default .meta:nn = {st test}
+      { firstname , lastname, kthid, organization, email, school, department } ,
+      
+    unknown .code:n =
+      {
+        \msg_warning:nnx 
+          {st test} {unknown key}
+          {Unknown~ supervisor~ key:~ \l_keys_key_str}
+      } ,
+    unknown .default:V = \c_novalue_tl
+
+  }
+
+
+
+
+% 2. STARRAY SETUP: Declare the array to hold supervisor records (STANDARD LaTeX command)
+
+\starray_new:n {SupervisorRecords}
+\starray_def_from_keyval:nn {SupervisorRecords}
+  {
+    lastname = {} ,
+    firstname = {} ,
+    kthid = {} ,
+    email = {} ,
+    organization = {} ,
+    school = {} ,
+    department = {} ,    
+  }
+  % it can be done either way...
+%\starray_def_prop:nnn {SupervisorRecords}{lastname}{}
+%\starray_def_prop:nnn {SupervisorRecords}{firstname}{}
+%\starray_def_prop:nnn {SupervisorRecords}{kthid}{}
+%\starray_def_prop:nnn {SupervisorRecords}{email}{}
+%\starray_def_prop:nnn {SupervisorRecords}{organization}{}
+%\starray_def_prop:nnn {SupervisorRecords}{school}{}
+%\starray_def_prop:nnn {SupervisorRecords}{department}{}
+
+
+
+% use with care (see the use below)
+\cs_generate_variant:Nn \starray_set_from_keyval:nn {ne}
+
+
+% --- Helper Expl3 Macro to ADD SUPERVISOR DATA TO STARRAY ---
+% This handles all expl3 and pgfkeys parsing for \addsupervisor
+% #1 = A string of key=value pairs for one supervisor
+\NewDocumentCommand{\addsupervisor}{m}
+  {%
+
+    \keys_set:nn { st test } {default , #1}
+
+    \tl_if_empty:NTF \l_lastname_tl{
+    Nothing~to~process\par
+    } % end of true case
+    { % start of false case
+    start~of~false~case\par
+    
+
+    
+    %% I would suggest the last name, for instance as a non numerical index
+    \starray_new_term:nn {SupervisorRecords}{\l_lastname_tl} 
+    
+  
+    %% note the full expantion. it is needed so the token list variables VALUE get used... use with care.
+%    \starray_set_from_keyval:ne {SupervisorRecords}
+%      {
+%        lastname = { \l_lastname_tl } ,
+%        firstname = { \l_firstname_tl } ,
+%        kthid = { \l_kthid_tl } ,
+%        email = { \l_email_tl } ,
+%        organization = { \l_organization_tl } ,
+%        school = { \l_school_tl } ,
+%        department = { \l_department_tl } ,    
+%      }
+      %% OR JUST
+      %% without using any explicit index it will always refers to the current iterator (which is the just created new term)
+
+    \starray_set_prop:nnV {SupervisorRecords}{lastname}    \l_lastname_tl  %% store
+    \starray_set_prop:nnV {SupervisorRecords}{firstname}   \l_firstname_tl  %% store
+    \starray_set_prop:nnV {SupervisorRecords}{kthid}       \l_kthid_tl  %% store
+    \starray_set_prop:nnV {SupervisorRecords}{email}       \l_email_tl  %% store
+    \starray_set_prop:nnV {SupervisorRecords}{organization} \l_organization_tl %% store
+    \starray_set_prop:nnV {SupervisorRecords}{school}      \l_school_tl %% store
+    \starray_set_prop:nnV {SupervisorRecords}{department}  \l_department_tl %% store
+      
+
+    } % end of false case 
+    
+
+}
+
+\ExplSyntaxOff
+
+
+% --- DOCUMENT START ---
+\begin{document}
+\section{Show basic array}
+\ExplSyntaxOn
+\starray_show_def_in_text:n {SupervisorRecords}\\
+\par Terms:
+\starray_show_terms_in_text:n {SupervisorRecords}\\
+\ExplSyntaxOff
+
+% Populate Supervisor Data (using addsupervisor macro)
+\addsupervisor{lastname={Maguire}, firstname={Gerald}, kthid={uld12345}, email={maguire@kth.se}, school={EECS}, department={Computer Science}}
+\addsupervisor{lastname={Doe}, firstname={Jane}, email={jane.doe@example.com}, organization={University of Example}}
+\addsupervisor{lastname={Smith}, firstname={John}, school={ITM}}
+\addsupervisor{lastname={}} % Example of an empty supervisor (will be skipped in JSON output)
+
+\section{Show basic array}
+\ExplSyntaxOn
+\starray_show_def_in_text:n {SupervisorRecords}\\
+\par Terms:
+\starray_show_terms_in_text:n {SupervisorRecords}\\
+\ExplSyntaxOff
+
+
+\section{Iterating over all terms}
+\ExplSyntaxOn
+\starray_iterate_over:nn {SupervisorRecords}
+  {
+    \noindent some~text ~ supervisor's ~ last ~name:~ \starray_get_prop:nn {SupervisorRecords} {lastname} ~and~ (if~ any)~ kthid:~ \starray_get_prop:nn {SupervisorRecords} {kthid} \par
+  }
+\ExplSyntaxOff
+
+\end{document}
