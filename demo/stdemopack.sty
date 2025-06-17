@@ -254,12 +254,6 @@
     }
 }
  
-\NewDocumentCommand{\ActivitySetCoordTitle}{O{}m} {
-  \tl_if_blank:nTF {#1}
-    { \starray_set_prop:nnn {activity.coord}{title}{#2} }
-    { \starray_set_prop:nnn {activity[#1].coord}{title}{#2} }
-}
-
 \NewDocumentCommand{\ActivitySetCoord}{O{}mO{}}{
   \tl_if_blank:nTF {#1}
     {
@@ -269,6 +263,133 @@
       \starray_gset_prop:nnn {activity[#1].coord}{name}{#2}
     }
 }
+
+\NewDocumentCommand{\ActivitySetCoordTitle}{O{}m} {
+  \tl_if_blank:nTF {#1}
+    { \starray_set_prop:nnn {activity.coord}{title}{#2} }
+    { \starray_set_prop:nnn {activity[#1].coord}{title}{#2} }
+}
+
+
+
+\NewDocumentCommand{\ActivitySetNewEvent}{O{}mm}{
+  \tl_if_blank:nTF {#1}
+    {
+      \starray_new_term:nn {activity.calendar}{#2}
+      \starray_gset_prop:nnn {activity.calendar}{event}{#3}
+    }
+    {
+      \starray_new_term:nn {activity[#1].calendar}{#2}
+      \starray_gset_prop:nnn {activity[#1].calendar}{event}{#3}
+    }
+}
+
+\NewDocumentCommand{\ActivitySetEventDay}{O{}mmm}{
+  \tl_if_blank:nTF {#1}
+    {
+      \starray_gset_from_keyval:nn {activity.calendar[#2]}
+        {
+            date = {#3} ,
+            week = {#4} ,
+        }
+    }
+    {
+      \starray_gset_from_keyval:nn {activity[#1].calendar[#2]}
+        {
+            date = {#3} ,
+            week = {#4} ,
+        }
+    }
+}
+
+
+\cs_new_protected:Npn \__stdemo_checkedbox: 
+  {  $\checkmark$  }
+
+\cs_new_protected:Npn \__stdemo_uncheckedbox: 
+  {  $\square$  }
+
+\tl_new:N \l__stdemo_chkID_tl
+\tl_new:N \l__stdemo_chkIDa_tl
+\tl_new:N \l__stdemo_chkIDb_tl
+
+\NewDocumentCommand{\checkdef}{mmm}{
+  \starray_get_prop:nnN {activity}{chkID}\l__stdemo_chkID_tl
+  \prop_gput:cnn {l__stdemo_ \l__stdemo_chkID_tl _chkmarked_prop} {#1}{\__stdemo_checkedbox:~\ #3}
+  \prop_gput:cnn {l__stdemo_ \l__stdemo_chkID_tl _chkunmarked_prop} {#1}{\__stdemo_uncheckedbox:~\ #3}
+  \prop_gput:cnn {l__stdemo_ \l__stdemo_chkID_tl _chkref_prop} {#2}{#1}
+}
+
+\cs_generate_variant:Nn \prop_gput:Nnn {Nee}
+
+
+\tl_new:N \l__stdemo_checkB_tl
+\tl_new:N \l__stdemo_checkref_tl
+\NewDocumentCommand{\checklist}{O{}m}{
+  \tl_if_blank:nF {#1}
+    {  \starray_set_iter_from_hash:nn {activity}{#1}  }
+
+  \starray_get_prop:nnN {student}  {chkID} \l__stdemo_chkIDa_tl
+  \starray_get_prop:nnN {activity} {chkID} \l__stdemo_chkIDb_tl
+
+  \clist_map_inline:nn {#2}
+    {
+      \prop_get:cnNT {l__stdemo_ \l__stdemo_chkIDb_tl _chkref_prop} {##1} \l__stdemo_checkref_tl
+        {
+          \prop_get:ceN {l__stdemo_ \l__stdemo_chkIDb_tl _chkmarked_prop} {\l__stdemo_checkref_tl} \l__stdemo_checkB_tl
+          \prop_gput:cee {l__stdemo_ \l__stdemo_chkIDa_tl _checklist_prop} {\l__stdemo_checkref_tl} {\l__stdemo_checkB_tl}
+        }
+    }
+}
+
+\tl_new:N \l__stdemo_tmpx_tl
+\tl_new:N \l__stdemo_tmpy_tl
+\tl_new:N \l__stdemo_table_tl
+
+
+\cs_new_protected:Npn \__stdemo_checktable_lines:nn #1#2 {
+
+  \starray_get_prop:nnN {student}  {chkID} \l__stdemo_chkIDa_tl
+  \starray_get_prop:nnN {activity} {chkID} \l__stdemo_chkIDb_tl
+  {
+    \prop_map_inline:cn {l__stdemo_ \l__stdemo_chkIDa_tl _checklist_prop}
+      { \prop_put:cnn {l__stdemo_ \l__stdemo_chkIDb_tl _chkunmarked_prop} {##1}{##2}  }  
+  
+    \tl_gclear:N \l__stdemo_table_tl
+    \clist_map_inline:nn {#1}    
+      { 
+        \tl_gclear:N \l_tmpa_tl    
+        \clist_map_inline:nn {#2}
+          {       
+           \tl_gset:Nn \l__stdemo_tmpx_tl {##1####1} 
+           \prop_get:ceNTF {l__stdemo_ \l__stdemo_chkIDb_tl _chkunmarked_prop} {\l__stdemo_tmpx_tl} \l__stdemo_tmpy_tl
+             {\tl_gput_right:Ne \l__stdemo_table_tl {\l_tmpa_tl~ \l__stdemo_tmpy_tl}}
+             {\tl_gput_right:Ne \l__stdemo_table_tl {\l_tmpa_tl~ }}
+           \tl_gset:Nn \l_tmpa_tl {~&~}
+          }
+        \tl_gput_right:Nn \l__stdemo_table_tl {\\*}
+      }
+    }
+    \l__stdemo_table_tl   
+}
+
+
+\cs_new_protected:Npn \StudentCheckListTable {
+              \begin{tabular}{llllll}
+                \__stdemo_checktable_lines:nn {L1,L2,L3}{C1,C2,C3,C4,C5,C6}
+              \end{tabular}
+}
+
+
+\bool_new:N \l__stdemo_checklist_bool
+\bool_set_true:N \l__stdemo_checklist_bool
+
+\NewDocumentCommand{\suppresschecklist}{}{
+  \bool_set_false:N \l__stdemo_checklist_bool
+}
+
+
+
 
 \NewDocumentCommand{\ActivitySelect}{m}{ \starray_set_iter_from_hash:nn {activity}{#1} }
 
@@ -285,13 +406,6 @@
     { \starray_get_prop:nn {activity[#1].coord}{#2} }
 }
 
-
-%%\NewDocumentCommand{\ActivityCalLine}{O{}m}{
-%%  \tl_if_blank:nF {#1}
-%%    {\starray_set_iter_from_hash:nn {activity}{#1}}
-%%  \starray_set_iter_from_hash:nn {activity.calendar}{#2}
-%%  \starray_get_prop:nn {activity.calendar}{date} & \starray_get_prop:nn {activity.calendar}{week} & \starray_get_prop:nn {activity.calendar}{event}
-%%}
 
 \NewDocumentCommand{\ActivityCalendarIterate}{m}{
     \starray_iterate_over:nn{activity.calendar}{#1}
