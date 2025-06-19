@@ -23,12 +23,36 @@
 \RequirePackage[verbose,a4paper,marginparwidth=27.5mm,top=2.5cm,bottom=1.5cm,hmargin={40mm,20mm},marginparsep=2.5mm,columnsep=10mm,asymmetric]{geometry}
 %\RequirePackage[verbose,a4paper,marginparwidth=27.5mm,top=2.5cm,bottom=1.5cm,hmargin={45mm,25mm},marginparsep=2.5mm,columnsep=10mm,asymmetric]{geometry}
 \usepackage{codedescribe}
-\usepackage{stdemopack}
+\usepackage{stdemo}
 \RequirePackage[inline]{enumitem}
 \SetEnumitemKey{miditemsep}{parsep=0ex,itemsep=0.4ex}
 
 \RequirePackage[hidelinks,hypertexnames=false]{hyperref}
 \begin{document}
+
+\tstitle{
+  author={Alceu Frigeri\footnote{\tsverb{https://github.com/alceu-frigeri/starray/tree/main/demo}}},
+  date={\tsdate},
+  title={The stdemo Package\break for starray version \PkgInfo{starray}{version}}
+  }
+ 
+ 
+\begin{tsabstract}
+  As an example of how a package writer could use the \tsobj[pkg]{starray} package, this documents a demo package, \tsobj[pkg]{stdemo}, which defines a set of commands aiming to describe a set of activities and students' work associated with them. A companion document, \tsobj[pkg]{stdemodoc}, shows how to use these commands.
+\end{tsabstract}
+
+\tableofcontents
+
+\section{Introduction}
+The purpose of this is to create an example of how to use a \tsobj[pkg]{starray} in a complete setup. That for, this demo has a few parts:
+\begin{enumerate*}
+  \item A companion package \tsobj[pkg]{stdemo.sty},
+  \item this document which documents not just the user level functions/commands, but also how the the companion package was created, and
+  \item a document using the demo package.
+\end{enumerate*}
+\begin{tsremark}
+  About the version number, since this is ``part'' of \tsobj[pkg]{starray}, and to keep tracking simple, the same version number (from \tsobj[pkg]{starray}) will be used.
+\end{tsremark}
 
 \setnewcodekey{stdemo}{codeprefix={},resultprefix={},letter={@,_},
   texcs2={
@@ -45,19 +69,7 @@
     }
   }
 
-\section{Data Model}\label{DataModel}
-As an example, let's define two structures, one to describe/list of ``Activities'' (like a term project, course project, etc.)  and a second one to describe/list the enrolled students (assuming that each enrolled student has one, or more, advisors and a set of reviewers).
-\begin{tsremark}
-As in any ``procedural language'', one is advised to  carefully design the data model, since this will shape the functions which will set and use said data.
-\end{tsremark}
-\begin{tsremark}
-  Pay attention to the use of the tildes,  \~{} , since those definitions will be made, most likely, in an \tsobj[pkg]{expl3} code régime, one has to remember that spaces are ignored, therefore, if needed, one has to explicitly use a tilde instead of a space.
-\end{tsremark}
-
-\subsection{Activity Set}
-For the activities one could set an ``starray'' as follow:
-
-
+% this shall be <activity-def> [1]
 \begin{codestore}[activity-def]
 \starray_new:n {activity}
 \starray_def_from_keyval:nn {activity} {
@@ -80,6 +92,7 @@ For the activities one could set an ``starray'' as follow:
 \end{codestore}
 
 
+% this shall be <student-def> [1]
 \begin{codestore}[student-def]
 \starray_new:n {student}
 \starray_def_from_keyval:nn {student} {
@@ -135,40 +148,28 @@ For the activities one could set an ``starray'' as follow:
 
 
 
+\begin{codestore}[DataRecovery]
+\NewDocumentCommand{\eDataSet}{m}{
+  \starray_term_syntax:n{#1}
+}  
+
+\cs_new:Npn \eDataField #1 
+  { \starray_parsed_get_prop:n{#1} }
+\end{codestore}
 
 
-\tscode*[stdemo]{activity-def}
+\begin{codestore}[DataRecovery]
+\NewDocumentCommand{\DataField }{mm}{
+  \starray_get_prop:nn{#1}{#2}
+}  
 
+\NewDocumentCommand{\DataGet}{mmm}{
+  \starray_get_prop:nnN{#1}{#2}{#3}
+}  
+\end{codestore}
 
-Whereas, the ``coord'' sub-structure is for the activity's coordinator, whilst ``calendar'' shall (for instance) contains a list of calendar events, and, finally, the many ``chk* '' will be used for a ``check list''.
-
-\begin{tsremark}
-The ``chkID'' (and checklists). In many cases it's handy to have an unique identifier for a given structure. That can be obtained with \tsobj{\starray_get_unique_ID:nN}, and to avoid calling this function time and time again, one can just store that ID as a field for later use.
-\end{tsremark}
-\begin{tsremark}
-  Could the Coordinator's name and title be a direct property (dismissing the ``coord'' sub-structure)? of course, that's a matter of taste/choice, on how to model it.
-\end{tsremark}
-
-\subsection{Student Set}
-Similarly, a student's structure might contain, besides student's name, work title, some flags, an advisor (and co-advisor, if needed), reviewer's list (with a provision for reviewer's grade, if needed).
-
-Of course, one doesn't need to define a \tsobj[pkg]{starray} structure using \tsobj{\starray_def_from_keyval:nn}, but, as in this,  if the set of properties is known, it always makes for a cleaner definition.
-
-\begin{tsremark}
-  The fields/properties defaults can be anything, including usual \LaTeXe\  commands, like a \tsobj{\rule} which is handy, for instance, when generating forms, e.g., if the fields are all set, a form can be created with the proper values, otherwise, it will be  created with ``rules'' in place (no need to test if the properties were set).
-\end{tsremark}
-
-\tscode*[stdemo]{student-def}
-
-
-
-\section{Auxiliary Functions}
-Once the data layout is set (see \ref{DataModel}) the next step is to define a set of (document level) functions, so the data can be initialized and used by the end user.
-
-\subsection{Activity Functions}
-
+% this shall be <ActivityFunctions> [1]
 \begin{codestore}[ActivityFunctions]
-\tl_new:N \l__stdemo_tmpID_tl
 \NewDocumentCommand{\NewActivity}{m} {
     \starray_new_term:nn {activity}{#1}
     \starray_new_term:nn {activity.coord}{}
@@ -194,6 +195,7 @@ Once the data layout is set (see \ref{DataModel}) the next step is to define a s
 }
 \end{codestore}
 
+% this shall be <ActivityFunctions> [2]
 \begin{codestore}[ActivityFunctions]
 \NewDocumentCommand{\ActivitySetCoord}{O{}mO{}}{
   \tl_if_blank:nTF {#1}
@@ -212,34 +214,9 @@ Once the data layout is set (see \ref{DataModel}) the next step is to define a s
 }
 \end{codestore}
 
-\begin{codestore}[ActivityFunctions]
-\NewDocumentCommand{\ActivitySelect}{m}
-  { 
-    \starray_set_iter_from_hash:nn {activity}{#1} 
-  }
-\end{codestore}
-
-\begin{codestore}[ActivityFunctions]
-\NewDocumentCommand{\Activity}{O{}m}{
-  \tl_if_blank:nTF {#1}
-    { \starray_get_prop:nn {activity}{#2} }
-    { \starray_get_prop:nn {activity[#1]}{#2} }
-}
-
-\NewDocumentCommand{\ActivityCoord}{O{}m}{
-  \tl_if_blank:nTF {#1}
-    { \starray_get_prop:nn {activity.coord}{#2} }
-    { \starray_get_prop:nn {activity[#1].coord}{#2} }
-}
-\end{codestore}
-
-\begin{codestore}[ActivityFunctions]
-\NewDocumentCommand{\ActivityCalendarIterate}{m}{
-    \starray_iterate_over:nn{activity.calendar}{#1}
-}
-\end{codestore}
 
 
+% this shall be <ActivityFunctions> [5]
 \begin{codestore}[ActivityFunctions] 
 \NewDocumentCommand{\ActivitySetNewEvent}{O{}mm}{
   \tl_if_blank:nTF {#1}
@@ -252,7 +229,10 @@ Once the data layout is set (see \ref{DataModel}) the next step is to define a s
       \starray_gset_prop:nnn {activity[#1].calendar}{event}{#3}
     }
 }
+\end{codestore}
 
+% this shall be <ActivityFunctions> [6]
+\begin{codestore}[ActivityFunctions] 
 \NewDocumentCommand{\ActivitySetEventDay}{O{}mmm}{
   \tl_if_blank:nTF {#1}
     {
@@ -269,6 +249,83 @@ Once the data layout is set (see \ref{DataModel}) the next step is to define a s
             week = {#4} ,
         }
     }
+}
+\end{codestore}
+
+% this shall be <ActivityFunctions> [7]
+\begin{codestore}[ActivityFunctions]
+\NewDocumentCommand{\checkdef}{mmm}{
+    \starray_get_prop:nnN {activity}{chkID}\l__stdemo_chkID_tl
+    \prop_gput:cnn {l__stdemo_ \l__stdemo_chkID_tl _chkmarked_prop} {#1}{\__stdemo_checkedbox:~\ #3}
+    \prop_gput:cnn {l__stdemo_ \l__stdemo_chkID_tl _chkunmarked_prop} {#1}{\__stdemo_uncheckedbox:~\ #3}
+    \prop_gput:cnn {l__stdemo_ \l__stdemo_chkID_tl _chkref_prop} {#2}{#1}
+  }
+
+\NewDocumentCommand{\checklist}{O{}m}{
+    \tl_if_blank:nF {#1}
+      {  \starray_set_iter_from_hash:nn {activity}{#1}  }
+  
+    \starray_get_prop:nnN {student}  {chkID} \l__stdemo_chkIDa_tl
+    \starray_get_prop:nnN {activity} {chkID} \l__stdemo_chkIDb_tl
+  
+    \clist_map_inline:nn {#2}
+      {
+        \prop_get:cnNT {l__stdemo_ \l__stdemo_chkIDb_tl _chkref_prop} {##1} \l__stdemo_checkref_tl
+          {
+            \prop_get:ceN {l__stdemo_ \l__stdemo_chkIDb_tl _chkmarked_prop} {\l__stdemo_checkref_tl} \l__stdemo_checkB_tl
+            \prop_gput:cee {l__stdemo_ \l__stdemo_chkIDa_tl _checklist_prop} {\l__stdemo_checkref_tl} {\l__stdemo_checkB_tl}
+          }
+      }
+  }
+\end{codestore}
+
+
+% this shall be <ActivityFunctions> [3]
+\begin{codestore}[ActivityFunctions]
+\NewDocumentCommand{\ActivitySelect}{m}
+  { 
+    \starray_set_iter_from_hash:nn {activity}{#1} 
+  }
+\end{codestore}
+
+% this shall be <ActivityFunctions> [4]
+\begin{codestore}[ActivityFunctions]
+\NewDocumentCommand{\Activity}{O{}m}{
+  \tl_if_blank:nTF {#1}
+    { \starray_get_prop:nn {activity}{#2} }
+    { \starray_get_prop:nn {activity[#1]}{#2} }
+}
+
+\NewDocumentCommand{\ActivityCoord}{O{}m}{
+  \tl_if_blank:nTF {#1}
+    { \starray_get_prop:nn {activity.coord}{#2} }
+    { \starray_get_prop:nn {activity[#1].coord}{#2} }
+}
+\end{codestore}
+
+% this shall be <ActivityFunctions> [5]
+\begin{codestore}[ActivityFunctions]
+\NewDocumentCommand{\ActivityCalendarIterate}{m}{
+    \starray_iterate_over:nn{activity.calendar}{#1}
+}
+\end{codestore}
+
+
+
+%% this shall be <ActivityFunctions> [8]
+\begin{codestore}[ActivityFunctions]
+\NewDocumentCommand{\ActivitySelect}{m}{ \starray_set_iter_from_hash:nn {activity}{#1} }
+
+\NewDocumentCommand{\Activity}{O{}m}{
+  \tl_if_blank:nTF {#1}
+    { \starray_get_prop:nn {activity}{#2} }
+    { \starray_get_prop:nn {activity[#1]}{#2} }
+}
+
+\NewDocumentCommand{\ActivityCoord}{O{}m}{
+  \tl_if_blank:nTF {#1}
+    { \starray_get_prop:nn {activity.coord}{#2} }
+    { \starray_get_prop:nn {activity[#1].coord}{#2} }
 }
 \end{codestore}
 
@@ -298,10 +355,111 @@ Once the data layout is set (see \ref{DataModel}) the next step is to define a s
 \end{codestore}
 
 
+
+
+
+
+\section{Data Model}\label{DataModel}
+As an example, let's define two structures:
+\begin{enumerate}
+  \item ``Activities'' (like a term project, course project, etc.)  with associated 
+elements: 
+\begin{enumerate}
+  \item name, acronym
+  \item coordinator
+  \item calendar events (presentation dates, exams...)
+  \item a check list.
+\end{enumerate}
+
+  \item Students, with associated date:
+\begin{enumerate}
+  \item name, IDs, etc.
+  \item advisor and (perhaps) co-advisor.
+  \item reviewer(s).
+  \item flags, etc.
+\end{enumerate}
+  
+  
+\end{enumerate}
+
+\begin{tsremark}
+As in any ``procedural language'', one is advised to  carefully design the data model, since this will shape the functions which will set and use said data.
+\end{tsremark}
+
+\begin{tsremark}
+  Pay attention to the use of the tildes,  \~{} , since those definitions will be made, most likely, in an \tsobj[pkg]{expl3} code régime, one has to remember that spaces are ignored, therefore, if needed, one has to explicitly use a tilde instead of a space.
+\end{tsremark}
+
+
+\subsection{Student Set}
+A student's structure might contain, besides student's name, work title, some flags, an advisor (and co-advisor, if needed), reviewer's list (with a provision for reviewer's grade, if needed).
+
+Of course, one doesn't need to define a \tsobj[pkg]{starray} structure using \tsobj{\starray_def_from_keyval:nn}, but, as in this,  if the set of properties is known, it always makes for a cleaner definition.
+
+\begin{tsremark}
+  The fields/properties defaults can be anything, including usual \LaTeXe\  commands, like a \tsobj{\rule} which is handy, for instance, when generating forms, e.g., if the fields are all set, a form can be created with the proper values, otherwise, it will be  created with ``rules'' in place (no need to test if the properties were set).
+\end{tsremark}
+
+\tscode*[stdemo]{student-def}
+
+
+
+\subsection{Activity Set}\label{Activity-set}
+For the activities one could set an ``starray'' as follow:
+
+
+
+
+
+
+
+\tscode*[stdemo]{activity-def}
+
+
+Whereas, the ``coord'' sub-structure is for the activity's coordinator, whilst ``calendar'' shall (for instance) contains a list of calendar events, and, finally, the many ``chk* '' will be used for a ``check list''.
+
+\begin{tsremark}
+The ``chkID'' (and checklists). In many cases it's handy to have an unique identifier for a given structure. That can be obtained with \tsobj{\starray_get_unique_ID:nN}, and to avoid calling this function time and time again, one can just store that ID as a field for later use.
+\end{tsremark}
+\begin{tsremark}
+  Could the Coordinator's name and title be a direct property (dismissing the ``coord'' sub-structure)? of course, that's a matter of taste/choice, on how to model it.
+\end{tsremark}
+
+
+
+\section{Auxiliary Functions}
+Once the data layout is set (see \ref{DataModel}) the next step is to define a set of (document level) functions, so the data can be initialized and used by the end user.
+
+\subsection{Generic Recovery Functions}
+
+\begin{codedescribe}{\DataField,\DataGet}
+  \begin{codesyntax}
+    \tsmacro{\DataField}{starray,item}
+    \tsmacro{\DataGet}{starray,item,store-var}
+  \end{codesyntax}
+\tsobj{\DataField} will recovery an item from any \tsobj[pkg]{starray}, for instance, \tsobj[marg]{starray} might be \tsobj[meta,sep=or]{activity,activity.coord,activity.calendar,student,student.advisor} etc. whilst \tsobj[marg]{item} might be any corresponding field. The \tsobj{\DataGet} will store said value in an auxiliary \tsobj[marg]{store-var}.
+\end{codedescribe}
+
+
+\tscode*[stdemo]{DataRecovery}[2]
+
+\subsection{Activity's Functions}
+
 One could define a single function to initialize all fields (using a key=val interface), but, in a more traditional approach  one can set two functions to start the initialization process \tsobj{\NewActivity,\ActivitySet}. 
-\tscode*[stdemo]{ActivityFunctions}[1]
+
+
+~
+
+\begin{codedescribe}{\NewActivity,\ActivitySet}
+\begin{codesyntax}
+  \tsmacro{\NewActiviy}{act-ID}
+  \tsmacro{\ActivitySet}[act-ID]{name,acronym}
+\end{codesyntax}
+\tsobj{\NewActivity} will create a new one, \tsobj[marg]{act-ID} will be the identifier of it. \tsobj{\ActivitySet} will set the \tsobj[marg]{name,acronym} of an activity. If not given, the current \tsobj[oarg]{act-ID} will be used.
 
 The idea is to (normally) use one right after the other, though, once created with \tsobj{\NewActivity}, an activity can be initialized/changed at a later point using the optional argument from \tsobj{\ActivitySet}.
+
+\end{codedescribe}
 \begin{tsremark}
   Every time a \tsobj[pkg]{starray} is instantiated, up to two hashes are created: a numerical one (starting at one) and an ``user defined one''. In the \tsobj{\NewActivity} function above, the given argument is that hash, so the just created instance can be later referenced by it. Of course, it must be an unique ID/hash.
 \end{tsremark}
@@ -309,28 +467,34 @@ The idea is to (normally) use one right after the other, though, once created wi
   One thing to be noticed about \tsobj[pkg]{starrays}: every structure has an associated internal index (iterator). When you create a new instance, this iterator always points to the newly created one, therefore, sparing the use of an explicit index.
 \end{tsremark}
 
-%\tscode*[stdemo]{ActivityUseDemo}[1]
-%
-%~
-%
-%\tscode*[stdemo]{ActivityUseDemo}[2]
+\tscode*[stdemo]{ActivityFunctions}[1]
+
+~
 
 Similarly, one can define some functions to set the activity's coordinator. Of course, it's up to the package programmer to choose if one, two (or more) functions for this.
 
+\begin{codedescribe}{\ActivitySetCoord,\ActivitySetCoordTitle}
+\begin{codesyntax}
+  \tsmacro{\ActivitySetCoord}[act-ID]{name}
+  \tsmacro{\ActivitySetCoordTitle}[act-ID]{title}
+\end{codesyntax}
+For both, \tsobj{\ActivitySetCoord,\ActivitySetCoordTitle}, the optional argument \tsobj[oarg]{act-ID} refers to an already create activity, and, if not given, will use the current one.
+\end{codedescribe}
 
 \tscode*[stdemo]{ActivityFunctions}[2]
 
-And the associated ``Calendar Events'', assuming there will be a fixed set of events (each semester, each year), leaving the date to be set later on. \tsobj{\ActivitySetNewEvent} second parameter  is a hash to reference said event (to be used, for instance, with \tsobj{\ActivitySetEventDay}), and the third parameter is it description.
-
-~
-
-\tscode*[stdemo]{ActivityFunctions}[6]
 
 
-In many cases, it's desirable to have a ``check list''. Since what such list could entice is always up to debate. So, the idea behind the few next functions is to allow the end user to define which items such a matrix might have.
+And the associated ``Calendar Events'', assuming there will be a fixed set of events (each semester/year), leaving the date to be set later on. 
 
+\begin{codedescribe}{\ActivitySetNewEvent,\ActivitySetEventDay}
+\begin{codesyntax}
+  \tsmacro{\ActivitySetNewEvent}[act-ID]{event-ID,description}
+  \tsmacro{\ActivitySetEventDay}[act-ID]{event-ID,date,week}
+\end{codesyntax}
+The optional argument \tsobj[oarg]{act-ID} refers to an already create activity, and, if not given, will use the current one. \tsobj[marg]{event-ID} can be any identifier. That way, the user can first define a set of events, and only later on, set the associated dates.
+\end{codedescribe}
 
-~
 
 \tscode*[stdemo]{ActivityFunctions}[3]
 
@@ -338,10 +502,66 @@ In many cases, it's desirable to have a ``check list''. Since what such list cou
 
 \tscode*[stdemo]{ActivityFunctions}[4]
 
-~
+
+
+In many cases, it's desirable to have a ``check list''. What such list could entice is always up to debate, the idea behind the few next functions is to allow the end user to define which items such a list (as a matrix) might have.
+
+\begin{codedescribe}{\checkdef,\checklist}
+\begin{codesyntax}
+  \tsmacro{\checkdef}{chkID,chkPos,chktext}
+  \tsmacro{\checklist}[act-ID]{chkID-list}
+\end{codesyntax}
+  \tsobj[marg]{chkID} is just an ID to reference the check list item. \tsobj[marg]{chkPos} will relate the item to a position in a matrix (tabular environment, see \tsobj{\StudentCheckListTabLine}) and \tsobj[marg]{chktext} is the (assumed) short text.
+  The command \tsobj{\checkdef} defines/create a new item, whilst \tsobj{\checklist} sets a list of \tsobj[marg]{chkID}s (note that \tsobj[marg]{chkID-list} is a csv list).
+\end{codedescribe}
+\begin{tsremark}
+  In the implementation below, note that the check list items are associated with an activity, but the final list itself is a student by student one. Better said, each student will have a property list (constructed based on a student's unique ID) of the ``checked items'' (see \tsobj{\StudentCheckListTabLine}).
+\end{tsremark}
+
+
 
 \tscode*[stdemo]{ActivityFunctions}[5]
 
+~
 
+\subsubsection{Recovering/Using Activity's Data}
+
+\begin{codedescribe}{\ActivitySelect}
+  \begin{codesyntax}
+    \tsmacro{\ActivitySelect}{act-ID}
+  \end{codesyntax}
+  This will just select an activity, identified by \tsobj[marg]{act-ID} as the current one. So that, in the following commands, one can avoid the first, optional, argument.
+\end{codedescribe}
+
+
+\tscode*[stdemo]{ActivityFunctions}[6]
+
+
+\begin{codedescribe}{\Activity,\ActivityCoord}
+\begin{codesyntax}
+  \tsmacro{\Activity}[act-ID]{field}
+  \tsmacro{\ActivityCoord}[act-ID]{field}
+\end{codesyntax}
+  \tsobj{\Activity} will recover the associated \tsobj[marg]{field} value (from \ref{Activity-set} it can (reasonably) be \tsobj[meta,sep=or]{name,acronym}).
+  \tsobj{\ActivityCoord}, similarly, will recover the associated \tsobj[marg]{field} value for the activity's coordinator (field can be, from \ref{Activity-set},  \tsobj[meta,sep=or]{name,title}).
+\end{codedescribe}
+
+\tscode*[stdemo]{ActivityFunctions}[7]
+
+\begin{codedescribe}{\ActivityCalendarIterate}
+  \begin{codesyntax}
+    \tsmacro{\ActivityCalendarIterate}{code}
+  \end{codesyntax}
+  This is a helper function, so that the end user is free to construct an ``Event Calendar'' with the (activity's) stored data. The suggested pattern is: 
+  \begin{enumerate*}
+    \item Select an activity with \tsobj{\ActivitySelect}, then
+    \item execute the code for each item stored in the activity's calendar list.
+  \end{enumerate*}. The user is supposed to use (in \tsobj[marg]{code}) \tsobj[code,sep=or]{\DataField,\DataGet} to retrieve and use the calendar's data.
+\end{codedescribe}
+
+\tscode*[stdemo]{ActivityFunctions}[8]
+
+
+\subsection{Student's Functions}
 
 \end{document} 

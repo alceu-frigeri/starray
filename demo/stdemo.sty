@@ -22,7 +22,7 @@
 
 
 \ProvidesExplPackage
-    {stdemopack}
+    {stdemo}
     {2025/02/14}
     {1.9b}
     {A starray based demo package}
@@ -34,9 +34,9 @@
 %%% Idea being: { <pck-name> / pkg info } for each and all.
 %%%
 %%%%%%%
-\keys_define:nn { stdemopack / pkg info}
+\keys_define:nn { stdemo / pkg info}
   {
-     name        .code:n = {stdemopack} ,
+     name        .code:n = {stdemo} ,
      prefix      .code:n = {stdemo} ,
      date        .code:n = {2025/02/14},
      version     .code:n = {1.9b} ,
@@ -224,6 +224,24 @@
     chkref = ,       %%% This shall be a prop list of ref      itens
   }
 
+
+
+\NewDocumentCommand{\eDataSet}{m}{
+  \starray_term_syntax:n{#1}
+}  
+
+\cs_new:Npn \eDataFields #1 
+  { \starray_parsed_get_prop:n{#1} }
+
+
+\NewDocumentCommand{\DataFields}{mm}{
+  \starray_get_prop:nn{#1}{#2}
+}  
+
+\NewDocumentCommand{\DataGet}{mmm}{
+  \starray_get_prop:nnN{#1}{#2}{#3}
+}  
+
 %% workaround (V-less) 
 %%   => \starray_get_uniqueID {starray-ref} .... 
 %%      (might just be parser construct...) and use it to define a unique prop name.
@@ -342,43 +360,43 @@
     }
 }
 
+
+
+
 \tl_new:N \l__stdemo_tmpx_tl
 \tl_new:N \l__stdemo_tmpy_tl
 \tl_new:N \l__stdemo_table_tl
 
 
-\cs_new_protected:Npn \__stdemo_checktable_lines:nn #1#2 {
-
-  \starray_get_prop:nnN {student}  {chkID} \l__stdemo_chkIDa_tl
-  \starray_get_prop:nnN {activity} {chkID} \l__stdemo_chkIDb_tl
+%\cs_new_protected:Npn \__stdemo_checktable_lines:nn #1#2 {
+\NewDocumentCommand{\StudentCheckListTabLine}{mm}
   {
-    \prop_map_inline:cn {l__stdemo_ \l__stdemo_chkIDa_tl _checklist_prop}
-      { \prop_put:cnn {l__stdemo_ \l__stdemo_chkIDb_tl _chkunmarked_prop} {##1}{##2}  }  
-  
-    \tl_gclear:N \l__stdemo_table_tl
-    \clist_map_inline:nn {#1}    
-      { 
-        \tl_gclear:N \l_tmpa_tl    
-        \clist_map_inline:nn {#2}
-          {       
-           \tl_gset:Nn \l__stdemo_tmpx_tl {##1####1} 
-           \prop_get:ceNTF {l__stdemo_ \l__stdemo_chkIDb_tl _chkunmarked_prop} {\l__stdemo_tmpx_tl} \l__stdemo_tmpy_tl
-             {\tl_gput_right:Ne \l__stdemo_table_tl {\l_tmpa_tl~ \l__stdemo_tmpy_tl}}
-             {\tl_gput_right:Ne \l__stdemo_table_tl {\l_tmpa_tl~ }}
-           \tl_gset:Nn \l_tmpa_tl {~&~}
-          }
-        \tl_gput_right:Nn \l__stdemo_table_tl {\\*}
+    \starray_get_prop:nnN {student}  {chkID} \l__stdemo_chkIDa_tl
+    \starray_get_prop:nnN {activity} {chkID} \l__stdemo_chkIDb_tl
+    {
+      \prop_map_inline:cn {l__stdemo_ \l__stdemo_chkIDa_tl _checklist_prop}
+        { \prop_put:cnn {l__stdemo_ \l__stdemo_chkIDb_tl _chkunmarked_prop} {##1}{##2}  }  
+    
+      \tl_gclear:N \l__stdemo_table_tl
+      \clist_map_inline:nn {#1}    
+        { 
+          \tl_gclear:N \l_tmpa_tl    
+          \clist_map_inline:nn {#2}
+            {       
+             \tl_gset:Nn \l__stdemo_tmpx_tl {##1####1} 
+             \prop_get:ceNTF {l__stdemo_ \l__stdemo_chkIDb_tl _chkunmarked_prop} {\l__stdemo_tmpx_tl} \l__stdemo_tmpy_tl
+               {\tl_gput_right:Ne \l__stdemo_table_tl {\l_tmpa_tl~ \l__stdemo_tmpy_tl}}
+               {\tl_gput_right:Ne \l__stdemo_table_tl {\l_tmpa_tl~ }}
+             \tl_gset:Nn \l_tmpa_tl {~&~}
+            }
+          \tl_gput_right:Nn \l__stdemo_table_tl {\\*}
+        }
       }
-    }
-    \l__stdemo_table_tl   
-}
+      \l__stdemo_table_tl   
+  }
 
-
-\cs_new_protected:Npn \StudentCheckListTable {
-              \begin{tabular}{llllll}
-                \__stdemo_checktable_lines:nn {L1,L2,L3}{C1,C2,C3,C4,C5,C6}
-              \end{tabular}
-}
+%like
+%\StudentCheckListTabLine{L1,L2,L3}{C1,C2,C3,C4,C5,C6}
 
 
 \bool_new:N \l__stdemo_checklist_bool
@@ -432,21 +450,6 @@
   \prop_new:c {l__stdemo_ \l__stdemo_tmpID_tl _checklist_prop}
 }%
   %
-\NewDocumentCommand{\eDataSet}{m}{
-  \starray_term_syntax:n{#1}
-}  
-
-\cs_new:Npn \eDataFields #1 
-  { \starray_parsed_get_prop:n{#1} }
-
-
-\NewDocumentCommand{\DataFields}{mm}{
-  \starray_get_prop:nn{#1}{#2}
-}  
-
-\NewDocumentCommand{\DataGet}{mmm}{
-  \starray_get_prop:nnN{#1}{#2}{#3}
-}  
 
 \NewDocumentCommand{\studentReviewerSelect}{m}{
   \starray_set_iter:nn {student.reviewer}{#1}
