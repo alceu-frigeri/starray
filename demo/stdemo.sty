@@ -120,32 +120,16 @@
 %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\dim_new:N \l__stdemo_ID_rule_dim
-\dim_new:N \l__stdemo_email_rule_dim
-\dim_new:N \l__stdemo_name_rule_dim
-\dim_new:N \l__stdemo_title_rule_dim
-\dim_new:N \l__stdemo_worktitle_rule_dim
-\dim_new:N \l__stdemo_phone_rule_dim
-\dim_new:N \l__stdemo_agree_rule_dim
-\dim_new:N \l__stdemo_date_rule_dim
-\dim_new:N \l__stdemo_register_rule_dim
-\dim_new:N \l__stdemo_office_rule_dim
-\dim_new:N \l__stdemo_field_rule_dim
-
-\dim_set:Nn \l__stdemo_ID_rule_dim {30mm}
-\dim_set:Nn \l__stdemo_email_rule_dim {40mm}
-\dim_set:Nn \l__stdemo_name_rule_dim {50mm}
-\dim_set:Nn \l__stdemo_title_rule_dim {30mm}
-\dim_set:Nn \l__stdemo_worktitle_rule_dim {60mm}
-\dim_set:Nn \l__stdemo_phone_rule_dim {20mm}
-\dim_set:Nn \l__stdemo_agree_rule_dim {25mm}
-\dim_set:Nn \l__stdemo_date_rule_dim {15mm}
-\dim_set:Nn \l__stdemo_register_rule_dim {20mm}
-\dim_set:Nn \l__stdemo_office_rule_dim {25mm}
-\dim_set:Nn \l__stdemo_field_rule_dim {30mm}
-
-
-
+\dim_const:Nn \l__stdemo_ID_rule_dim {30mm}
+\dim_const:Nn \l__stdemo_email_rule_dim {40mm}
+\dim_const:Nn \l__stdemo_name_rule_dim {50mm}
+\dim_const:Nn \l__stdemo_title_rule_dim {30mm}
+\dim_const:Nn \l__stdemo_worktitle_rule_dim {60mm}
+\dim_const:Nn \l__stdemo_agree_rule_dim {25mm}
+\dim_const:Nn \l__stdemo_date_rule_dim {15mm}
+\dim_const:Nn \l__stdemo_register_rule_dim {20mm}
+\dim_const:Nn \l__stdemo_office_rule_dim {25mm}
+\dim_const:Nn \l__stdemo_field_rule_dim {30mm}
 
 \starray_new:n {student}
 \starray_def_from_keyval:nn {student}
@@ -163,7 +147,6 @@
   board-time  = {~time~} ,
   gradeavrg = 0,
   grade = ,
-  flag-null = \c_false_bool , %% IF no grade was given
   flag-graded = \c_false_bool , %%% IF gradeavrg AND finalgrade already calculated (or defined)
   flag-approved = \c_false_bool ,
   flag-coadvisor = \c_false_bool ,
@@ -234,7 +217,7 @@
   { \starray_parsed_get_prop:n{#1} }
 
 
-\NewDocumentCommand{\DataFields}{mm}{
+\NewDocumentCommand{\DataField}{mm}{
   \starray_get_prop:nn{#1}{#2}
 }  
 
@@ -369,10 +352,12 @@
 
 
 %\cs_new_protected:Npn \__stdemo_checktable_lines:nn #1#2 {
-\NewDocumentCommand{\StudentCheckListTabLine}{mm}
+\NewDocumentCommand{\StudentCheckListTable}{mm}
   {
     \starray_get_prop:nnN {student}  {chkID} \l__stdemo_chkIDa_tl
     \starray_get_prop:nnN {activity} {chkID} \l__stdemo_chkIDb_tl
+%    \tl_show:N \l__stdemo_chkIDa_tl
+%    \tl_show:N \l__stdemo_chkIDb_tl
     {
       \prop_map_inline:cn {l__stdemo_ \l__stdemo_chkIDa_tl _checklist_prop}
         { \prop_put:cnn {l__stdemo_ \l__stdemo_chkIDb_tl _chkunmarked_prop} {##1}{##2}  }  
@@ -396,7 +381,7 @@
   }
 
 %like
-%\StudentCheckListTabLine{L1,L2,L3}{C1,C2,C3,C4,C5,C6}
+%\StudentCheckListTable{L1,L2,L3}{C1,C2,C3,C4,C5,C6}
 
 
 \bool_new:N \l__stdemo_checklist_bool
@@ -412,26 +397,14 @@
 \NewDocumentCommand{\ActivitySelect}{m}{ \starray_set_iter_from_hash:nn {activity}{#1} }
 
 
-\NewDocumentCommand{\Activity}{O{}m}{
-  \tl_if_blank:nTF {#1}
-    { \starray_get_prop:nn {activity}{#2} }
-    { \starray_get_prop:nn {activity[#1]}{#2} }
-}
 
-\NewDocumentCommand{\ActivityCoord}{O{}m}{
-  \tl_if_blank:nTF {#1}
-    { \starray_get_prop:nn {activity.coord}{#2} }
-    { \starray_get_prop:nn {activity[#1].coord}{#2} }
-}
-
-
-\NewDocumentCommand{\ActivityCalendarIterate}{m}{
+\NewDocumentCommand{\ActivityCalendarIterate}{+m}{
     \starray_iterate_over:nn{activity.calendar}{#1}
 }
 
 
 
-\NewDocumentCommand{\student}{O{}mm}{%
+\NewDocumentCommand{\student}{O{}mmmm}{%
   \tl_if_blank:nTF {#1}
     {\starray_new_term:nn {student}{}}
     {\starray_new_term:nn {student}{#1}}
@@ -441,6 +414,8 @@
       first = {#3} ,
       last = {#2} ,
       name = {#3~ #2} ,
+      ID   = {#4} ,
+      email   = {\tl_to_str:n{#5}} 
     }
 
   \starray_get_unique_id:nNTF {student}\l__stdemo_tmpID_tl
@@ -449,113 +424,33 @@
   \starray_gset_prop:nnV {student}{chkID} \l__stdemo_tmpID_tl
   \prop_new:c {l__stdemo_ \l__stdemo_tmpID_tl _checklist_prop}
 }%
-  %
-
-\NewDocumentCommand{\studentReviewerSelect}{m}{
-  \starray_set_iter:nn {student.reviewer}{#1}
-}
-  %
-
-\NewDocumentCommand{\studentCoadvCase}{+m+m}{
-    \starray_term_syntax:n{student}
-    \bool_if:nTF {\starray_parsed_get_prop:n{flag-coadvisor}}
-      {#1}
-      {#2}
-}
-
-\NewDocumentCommand{\studentAdvCase}{mm}{
-    \starray_term_syntax:n{student.advisor}
-    \int_compare:nNnTF {\starray_parsed_get_cnt:} > {1}
-      {#1}
-      {#2}
-}
 
 \NewDocumentCommand{\studentremark}{m}{
   \starray_gset_prop:nnn {student}{remarks}{#1}
-}
-
-
-\NewDocumentCommand{\studentReviewerSetCase}{mmm}{
-    \starray_term_syntax:n{student.reviewer[#1]}
-    \bool_if:nTF {\starray_parsed_get_prop:n{flag-set}}
-      {#2}
-      {#3}
-}
-
-
-
-\NewDocumentCommand{\studentCase}{mmmmm}{
-    \starray_term_syntax:n{student}
-    \bool_case:nF
-    {
-      {\starray_parsed_get_prop:n{flag-ff}}
-        {#5}
-      {\starray_parsed_get_prop:n{flag-exam}}
-        {
-          \bool_if:nTF{\starray_parsed_get_prop:n{flag-approved}}
-            {#3}
-            {#4}
-        }
-    }
-    {
-      \bool_if:nTF{\starray_parsed_get_prop:n{flag-approved}}
-        {#1}
-        {#2}
-    }
-}
-
-
-\NewDocumentCommand{\studentDismissOtherCase}{mm}{
-    \starray_term_syntax:n{student}
-    \bool_if:nTF {\starray_parsed_get_prop:n{flag-dismiss} || \starray_parsed_get_prop:n{flag-other}}
-      {#1}
-      {#2}
-}
-
-\NewDocumentCommand{\studentReviewerCase}{mmm}{
-    \starray_term_syntax:n{student.reviewer[#1]}
-    \bool_if:nTF {\starray_parsed_get_prop:n{flag-examreview}}
-      {#2}
-      {#3}
-}
-
-
-\NewDocumentCommand{\studentiterate}{m}{
-    \starray_iterate_over:nn{student}{#1}
-}
-
-\NewDocumentCommand{\studentadvisoriterate}{m}{
-    \starray_iterate_over:nn{student.advisor}{#1}
 }
 
 \NewDocumentCommand{\worktitle}{m}{%%
   \starray_gset_prop:nnn {student}{worktitle}{#1}
 }
 
-\NewDocumentCommand{\workbrief}{m}{
-  \starray_gset_prop:nnn {student}{brief}{#1}
+\NewDocumentCommand{\advisor}{O{}mm}{%%
+  \starray_new_term:nn {student.advisor}{}
+  \__stdemo_set_prof:nnnn {advisor}{#1}{#2}{#3}
 }
 
-\NewDocumentCommand{\advisorreview}{m}{
-  \starray_gset_prop:nnn {student.advisor}{assessment}{#1}
+\NewDocumentCommand{\coadvisor}{O{}mm}{%%
+  \starray_new_term:nn {student.coadvisor}{}
+  \starray_gset_prop:nnn {student}{flag-coadvisor}{\c_true_bool}
+  \__stdemo_set_prof:nnnn {coadvisor}{#1}{#2}{#3}
 }
 
-
-
-\NewDocumentCommand{\studentinfo}{O{}mm}{%
-  \starray_gset_from_keyval:nn {student}
-    {
-      Nproc = {#1} ,
-      ID    = {#2} ,
-      email = {\tl_to_str:n{#3}} ,
-    }
+\NewDocumentCommand{\examiner}{O{}mm}{%%
+  \starray_new_term:nn {student.reviewer}{}
+  \starray_gset_prop:nnn {student.reviewer}{flag-set}{\c_true_bool}
+  \__stdemo_set_prof:nnnn {reviewer}{#1}{#2}{#3}
 }%
 
-
-
-\NewDocumentCommand{\studentselect}{m}{ \starray_set_iter_from_hash:nn {student}{#1} }
-
-\cs_new_protected:Npn \__stdemo_set_prof:nnnnn #1#2#3#4#5 
+\cs_new_protected:Npn \__stdemo_set_prof:nnnn #1#2#3#4
   {
     \tl_if_blank:nTF {#2}
       {
@@ -574,20 +469,159 @@
             name = {#2~ #4~ #3} ,
           }
       }
-   \__stdemo_setgender:nn {student.#1}{#5}
   }
 
+\NewDocumentCommand{\advisorinfo}{mmm}{%%
+  \__stdemo_set_prof_info:nnnn {advisor}{#1}{#2}{#3}
+}%
 
-\cs_new_protected:Npn \__stdemo_set_prof_info:nnnnn #1#2#3#4#5
+\NewDocumentCommand{\coadvisorinfo}{mmm}{%%
+  \__stdemo_set_prof_info:nnnn {coadvisor}{#1}{#2}{#3}
+}%
+
+\NewDocumentCommand{\examinerinfo}{mmm}{%%
+  \__stdemo_set_prof_info:nnnn {reviewer}{#1}{#2}{#3}
+}%
+
+
+\cs_new_protected:Npn \__stdemo_set_prof_info:nnnn #1#2#3#4
   {
     \starray_gset_from_keyval:nn {student.#1}
       {
         institution = {#2} ,
         title = {#3} ,
         email = {\tl_to_str:n{#4}} ,
-        phone = {#5} ,
       }
   }
+
+
+\cs_generate_variant:Nn \starray_gset_prop:nnn {nne}
+
+\NewDocumentCommand{\examinergrades}{O{A}mmmm} {
+  \tl_if_blank:nTF {#2}
+    { 
+      \starray_gset_prop:nnn {student.reviewer}{grade}{0} 
+    }
+    {
+      \starray_gset_from_keyval:nn {student.reviewer}
+        {
+          pointA = #2 ,
+          pointB = #3 ,
+          pointC = #4 ,
+          pointD = #5 ,
+        }
+      \str_case:nnF {#1}
+        {
+          {A} 
+            {
+              \starray_gset_prop:nne {student.reviewer}{grade}
+                {
+                  \fp_eval:n{round((#2  + #3 + #4 + #5) / 4 , 2 , 1) }
+                }    
+            }
+          {B} 
+            {
+              \starray_gset_prop:nne {student.reviewer}{grade}
+                {
+                  \fp_eval:n{round((#2  + #3 + #4) / 3 , 2 , 1) }
+                }    
+            }
+        }
+        {
+          \starray_gset_prop:nne {student.reviewer}{grade}
+            {
+              \fp_eval:n{round((#2  + #3 + #4 + #5) / 4 , 2 , 1) }
+            }    
+        }
+      
+    }
+  }
+
+\NewDocumentCommand{\studentgrade}{O{A}}
+  { %assuming there are 3 of them...
+    \starray_get_prop:nnN {student.reviewer[1]}{grade} \l__stdemo_A_tl
+    \starray_get_prop:nnN {student.reviewer[2]}{grade} \l__stdemo_B_tl
+    \starray_get_prop:nnN {student.reviewer[3]}{grade} \l__stdemo_C_tl
+    \str_case:nnF {#1}
+      {
+        {A} 
+          {
+            \starray_gset_prop:nne {student.reviewer}{grade}
+              {
+                \fp_eval:n{round((\l__stdemo_A_tl + \l__stdemo_B_tl + \l__stdemo_C_tl) / 3 , 2 , 1) }
+              }    
+          }
+        {B} 
+          {
+            \starray_gset_prop:nne {student.reviewer}{grade}
+              {
+                \fp_eval:n{round((\l__stdemo_A_tl + \l__stdemo_B_tl) / 2 , 2 , 1) }
+              }    
+          }
+        {C} 
+          {
+            \starray_gset_prop:nne {student.reviewer}{grade}
+              {
+                \fp_eval:n{round(3 / (1/\l__stdemo_A_tl + 1/\l__stdemo_B_tl + 1/\l__stdemo_C_tl) , 2 , 1) }
+              }    
+          }
+      }
+      {
+        \starray_gset_prop:nne {student.reviewer}{grade}
+          {
+            \fp_eval:n{round((\l__stdemo_A_tl + \l__stdemo_B_tl + \l__stdemo_C_tl) / 3 , 2 , 1) }
+          }    
+      }
+  }
+
+
+\NewDocumentCommand{\studentselect}{m} { 
+    \starray_set_iter_from_hash:nn {student}{#1} 
+  }
+
+
+\NewDocumentCommand{\studentReviewerSelect}{m} {
+    \starray_set_iter:nn {student.reviewer}{#1}
+  }
+
+\NewDocumentCommand{\studentAdvCase}{mm} {
+    \starray_term_syntax:n{student.advisor}
+    \int_compare:nNnTF {\starray_parsed_get_cnt:} > {1}
+      {#1}
+      {#2}
+  }
+
+\NewDocumentCommand{\studentCoadvCase}{+m+m} {
+    \starray_term_syntax:n{student}
+    \bool_if:nTF {\starray_parsed_get_prop:n{flag-coadvisor}}
+      {#1}
+      {#2}
+  }
+
+\NewDocumentCommand{\studentReviewerSetCase}{mmm} {
+    \starray_term_syntax:n{student.reviewer[#1]}
+    \bool_if:nTF {\starray_parsed_get_prop:n{flag-set}}
+      {#2}
+      {#3}
+}
+
+
+\NewDocumentCommand{\studentCase}{mm} {
+    \starray_term_syntax:n{student}
+    \bool_if:nTF{\starray_parsed_get_prop:n{flag-approved}}
+      {#1}
+      {#2}
+}
+
+
+\NewDocumentCommand{\studentiterate}{+m} {
+    \starray_iterate_over:nn{student}{#1}
+}
+
+\NewDocumentCommand{\studentadvisoriterate}{+m} {
+    \starray_iterate_over:nn{student.advisor}{#1}
+}
+
 
 \cs_new_protected:Npn \__stdemo_emptyterm_if_none:nnn #1#2#3
   {
@@ -613,40 +647,9 @@
   }
 
 
-\NewDocumentCommand{\advisor}{O{}mmO{}}{%%
-  \starray_new_term:nn {student.advisor}{}
-  \__stdemo_set_prof:nnnnn {advisor}{#1}{#2}{#3}{#4}
-  \starray_term_syntax:n{student}
-  \bool_if:nF {\starray_parsed_get_prop:n{flag-distinctboard}}
-    { \examiner[#1]{#2}{#3}[#4] }
-}
-
-\NewDocumentCommand{\advisorinfo}{mmmm}{%%
-  \__stdemo_set_prof_info:nnnnn {advisor}{#1}{#2}{#3}{#4}
-  \starray_term_syntax:n{student}
-  \bool_if:nF {\starray_parsed_get_prop:n{flag-distinctboard}}
-    { \examinerinfo{#1}{#2}{#3}{#4} }
-}%
-
-
-\NewDocumentCommand{\examiner}{O{}mmO{}}{%%
-  \starray_new_term:nn {student.reviewer}{}
-  \starray_gset_prop:nnn {student.reviewer}{flag-set}{\c_true_bool}
-  \__stdemo_set_prof:nnnnn {reviewer}{#1}{#2}{#3}{#4}
-}%
-
-\NewDocumentCommand{\examinerinfo}{mmmm}{%%
-  \__stdemo_set_prof_info:nnnnn {reviewer}{#1}{#2}{#3}{#4}
-}%
-
-\NewDocumentCommand{\altexaminer}{O{}mmO{}}{%%
-  \starray_new_term:nn {student.altreviewer}{}
-  \__stdemo_set_prof:nnnnn {altreviewer}{#1}{#2}{#3}{#4}
-}%
-\NewDocumentCommand{\altexaminerinfo}{mmmm}{%%
-  \__stdemo_set_prof_info:nnnnn {altreviewer}{#1}{#2}{#3}{#4}
-}%
-
+\NewDocumentCommand{\emptyfields}{} {
+    \__stdemo_emptyfields:
+  }
 
 \cs_new_protected:Npn \__stdemo_emptyfields:
   {
@@ -656,11 +659,80 @@
     \starray_new_term:nn {student.reviewer}{}
     \starray_new_term:nn {student.reviewer}{}
     \starray_new_term:nn {student.reviewer}{}
-    \starray_new_term:nn {student.altreviewer}{}
-    \starray_new_term:nn {student.supervisor}{}
-    \starray_new_term:nn {student.tutor}{}
-    \starray_new_term:nn {student.internship}{}
   }
+
+
+\cs_generate_variant:Nn \seq_gput_right:Nn {ce}
+
+\NewDocumentCommand{\studentaddtolist}{m}
+  {
+    \seq_if_exist:cF {l__stdemo_#1_list_seq}
+      {
+        \seq_new:c {l__stdemo_#1_list_seq}
+
+        \bool_new:c {l__stdemo_#1_classified_bool}
+      }
+    \bool_set_false:c {l__stdemo_#1_classified_bool}  
+    \starray_term_syntax:n {student}
+    \seq_gput_right:ce {l__stdemo_#1_list_seq} {\starray_parsed_get_prop:n {self}}
+  }
+  
+\NewDocumentCommand{\studentlistsort}{O{name}m}
+  {
+    \bool_set_true:c {l__stdemo_#2_classified_bool}
+    \__stdemo_seq_sort:nn {#2}{#1} 
+ }
+
+
+\tl_new:N \l__stdemo_sortA_tl
+\tl_new:N \l__stdemo_sortB_tl
+\cs_new_protected:Npn \__stdemo_seq_sort:nn #1#2
+  {
+    \seq_gsort:cn {l__stdemo_#1_list_seq }
+      {
+        \starray_set_iter_from_hash:nn {student}{##1}
+        \starray_get_prop:nnN {student}{#2} \l__stdemo_sortA_tl
+        \starray_set_iter_from_hash:nn {student}{##2}
+        \starray_get_prop:nnN {student}{#2} \l__stdemo_sortB_tl          
+        \str_compare:eNeTF { \l__stdemo_sortA_tl } > { \l__stdemo_sortB_tl }
+          { \sort_return_swapped: }
+          { \sort_return_same: }
+      }  
+  }
+
+\NewDocumentCommand{\listemptytermsifnone}{m}
+  {
+   \seq_map_inline:cn {l__stdemo_#1_list_seq}
+      {
+        \starray_set_iter_from_hash:nn {student}{##1}
+     
+        \emptytermifnone{student.advisor}
+        \emptytermifnone[3]{student.reviewer}[\starray_gset_prop:nnn {student}{flag-null}{\c_true_bool}]
+%        % those could be, instead
+%        \__stdemo_emptyterm_if_none:nnn 
+%          {}
+%          { student.advisor }
+%          {}
+%        \__stdemo_emptyterm_if_none:nnn 
+%          {3}
+%          { student.reviewer } 
+%          { \starray_gset_prop:nnn {student}{flag-null}{\c_true_bool} }
+      }       
+  }
+
+
+\NewDocumentCommand{\studentlistiterate}{m+m}
+  {
+    \bool_if:cF {l__stdemo_#1_classified_bool}
+      { \studentlistsort{#1} }
+    \listemptytermsifnone{#1}
+    \seq_map_inline:cn {l__stdemo_#1_list_seq}
+      {
+        \starray_set_iter_from_hash:nn {student}{##1}
+        #2
+      }
+  }
+
 
 \def\emptybox{\framebox[3em]{\color{white}W}}
   

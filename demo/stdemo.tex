@@ -27,6 +27,8 @@
 \RequirePackage[inline]{enumitem}
 \SetEnumitemKey{miditemsep}{parsep=0ex,itemsep=0.4ex}
 
+\RequirePackage{amsfonts} % for those check marks: \checkmark and \square
+
 \RequirePackage[hidelinks,hypertexnames=false]{hyperref}
 \begin{document}
 
@@ -38,7 +40,7 @@
  
  
 \begin{tsabstract}
-  As an example of how a package writer could use the \tsobj[pkg]{starray} package, this documents a demo package, \tsobj[pkg]{stdemo}, which defines a set of commands aiming to describe a set of activities and students' work associated with them. A companion document, \tsobj[pkg]{stdemodoc}, shows how to use these commands.
+  As an example of how a package writer could use the \tsobj[pkg]{starray} package, this documents a demo package, \tsobj[pkg]{stdemo}, which defines a set of commands aiming to describe a set of activities and students' work associated with them. An example of how to use these commands is presented at the end of this document.
 \end{tsabstract}
 
 \tableofcontents
@@ -69,7 +71,6 @@ The purpose of this is to create an example of how to use a \tsobj[pkg]{starray}
     }
   }
 
-% this shall be <activity-def> [1]
 \begin{codestore}[activity-def]
 \starray_new:n {activity}
 \starray_def_from_keyval:nn {activity} {
@@ -92,7 +93,6 @@ The purpose of this is to create an example of how to use a \tsobj[pkg]{starray}
 \end{codestore}
 
 
-% this shall be <student-def> [1]
 \begin{codestore}[student-def]
 \starray_new:n {student}
 \starray_def_from_keyval:nn {student} {
@@ -109,7 +109,6 @@ The purpose of this is to create an example of how to use a \tsobj[pkg]{starray}
   board-time  = {~time~} ,
   gradeavrg = 0,
   grade = ,
-  flag-null = \c_false_bool , %% IF no grade was given
   flag-graded = \c_false_bool , %%% IF gradeavrg AND finalgrade already calculated (or defined)
   flag-approved = \c_false_bool ,
   flag-coadvisor = \c_false_bool ,
@@ -146,13 +145,13 @@ The purpose of this is to create an example of how to use a \tsobj[pkg]{starray}
  }
 \end{codestore}
 
-
-
 \begin{codestore}[DataRecovery]
 \NewDocumentCommand{\eDataSet}{m}{
   \starray_term_syntax:n{#1}
 }  
+\end{codestore}
 
+\begin{codestore}[DataRecovery]
 \cs_new:Npn \eDataField #1 
   { \starray_parsed_get_prop:n{#1} }
 \end{codestore}
@@ -162,14 +161,15 @@ The purpose of this is to create an example of how to use a \tsobj[pkg]{starray}
 \NewDocumentCommand{\DataField }{mm}{
   \starray_get_prop:nn{#1}{#2}
 }  
+\end{codestore}
 
+\begin{codestore}[DataRecovery]
 \NewDocumentCommand{\DataGet}{mmm}{
   \starray_get_prop:nnN{#1}{#2}{#3}
 }  
 \end{codestore}
 
-% this shall be <ActivityFunctions> [1]
-\begin{codestore}[ActivityFunctions]
+\begin{codestore}[ActCmd:New]
 \NewDocumentCommand{\NewActivity}{m} {
     \starray_new_term:nn {activity}{#1}
     \starray_new_term:nn {activity.coord}{}
@@ -181,7 +181,9 @@ The purpose of this is to create an example of how to use a \tsobj[pkg]{starray}
     \prop_new_linked:c {l__stdemo_ \l__stdemo_tmpID_tl _chkunmarked_prop}
     \prop_new_linked:c {l__stdemo_ \l__stdemo_tmpID_tl _chkref_prop}
 }
+\end{codestore}
 
+\begin{codestore}[ActCmd:New]
 \NewDocumentCommand{\ActivitySet}{O{}mm} {
   \tl_if_blank:nTF {#1}
     {
@@ -195,8 +197,7 @@ The purpose of this is to create an example of how to use a \tsobj[pkg]{starray}
 }
 \end{codestore}
 
-% this shall be <ActivityFunctions> [2]
-\begin{codestore}[ActivityFunctions]
+\begin{codestore}[ActCmd:SetCoord]
 \NewDocumentCommand{\ActivitySetCoord}{O{}mO{}}{
   \tl_if_blank:nTF {#1}
     {
@@ -206,7 +207,9 @@ The purpose of this is to create an example of how to use a \tsobj[pkg]{starray}
       \starray_gset_prop:nnn {activity[#1].coord}{name}{#2}
     }
 }
+\end{codestore}
 
+\begin{codestore}[ActCmd:SetCoord]
 \NewDocumentCommand{\ActivitySetCoordTitle}{O{}m} {
   \tl_if_blank:nTF {#1}
     { \starray_set_prop:nnn {activity.coord}{title}{#2} }
@@ -216,8 +219,7 @@ The purpose of this is to create an example of how to use a \tsobj[pkg]{starray}
 
 
 
-% this shall be <ActivityFunctions> [5]
-\begin{codestore}[ActivityFunctions] 
+\begin{codestore}[ActCmd:SetEvent] 
 \NewDocumentCommand{\ActivitySetNewEvent}{O{}mm}{
   \tl_if_blank:nTF {#1}
     {
@@ -231,8 +233,7 @@ The purpose of this is to create an example of how to use a \tsobj[pkg]{starray}
 }
 \end{codestore}
 
-% this shall be <ActivityFunctions> [6]
-\begin{codestore}[ActivityFunctions] 
+\begin{codestore}[ActCmd:SetEvent] 
 \NewDocumentCommand{\ActivitySetEventDay}{O{}mmm}{
   \tl_if_blank:nTF {#1}
     {
@@ -252,15 +253,16 @@ The purpose of this is to create an example of how to use a \tsobj[pkg]{starray}
 }
 \end{codestore}
 
-% this shall be <ActivityFunctions> [7]
-\begin{codestore}[ActivityFunctions]
+\begin{codestore}[ActCmd:CheckList]
 \NewDocumentCommand{\checkdef}{mmm}{
     \starray_get_prop:nnN {activity}{chkID}\l__stdemo_chkID_tl
     \prop_gput:cnn {l__stdemo_ \l__stdemo_chkID_tl _chkmarked_prop} {#1}{\__stdemo_checkedbox:~\ #3}
     \prop_gput:cnn {l__stdemo_ \l__stdemo_chkID_tl _chkunmarked_prop} {#1}{\__stdemo_uncheckedbox:~\ #3}
     \prop_gput:cnn {l__stdemo_ \l__stdemo_chkID_tl _chkref_prop} {#2}{#1}
   }
+\end{codestore}
 
+\begin{codestore}[ActCmd:CheckList]
 \NewDocumentCommand{\checklist}{O{}m}{
     \tl_if_blank:nF {#1}
       {  \starray_set_iter_from_hash:nn {activity}{#1}  }
@@ -280,54 +282,390 @@ The purpose of this is to create an example of how to use a \tsobj[pkg]{starray}
 \end{codestore}
 
 
-% this shall be <ActivityFunctions> [3]
-\begin{codestore}[ActivityFunctions]
+\begin{codestore}[ActCmd:Select]
 \NewDocumentCommand{\ActivitySelect}{m}
   { 
     \starray_set_iter_from_hash:nn {activity}{#1} 
   }
 \end{codestore}
 
-% this shall be <ActivityFunctions> [4]
-\begin{codestore}[ActivityFunctions]
-\NewDocumentCommand{\Activity}{O{}m}{
-  \tl_if_blank:nTF {#1}
-    { \starray_get_prop:nn {activity}{#2} }
-    { \starray_get_prop:nn {activity[#1]}{#2} }
-}
 
-\NewDocumentCommand{\ActivityCoord}{O{}m}{
-  \tl_if_blank:nTF {#1}
-    { \starray_get_prop:nn {activity.coord}{#2} }
-    { \starray_get_prop:nn {activity[#1].coord}{#2} }
-}
-\end{codestore}
-
-% this shall be <ActivityFunctions> [5]
-\begin{codestore}[ActivityFunctions]
+\begin{codestore}[ActCmd:CalIterate]
 \NewDocumentCommand{\ActivityCalendarIterate}{m}{
     \starray_iterate_over:nn{activity.calendar}{#1}
 }
 \end{codestore}
 
-
-
-%% this shall be <ActivityFunctions> [8]
-\begin{codestore}[ActivityFunctions]
-\NewDocumentCommand{\ActivitySelect}{m}{ \starray_set_iter_from_hash:nn {activity}{#1} }
-
-\NewDocumentCommand{\Activity}{O{}m}{
+\begin{codestore}[student:New]
+\NewDocumentCommand{\student}{O{}mmmm}{%
   \tl_if_blank:nTF {#1}
-    { \starray_get_prop:nn {activity}{#2} }
-    { \starray_get_prop:nn {activity[#1]}{#2} }
-}
+    {\starray_new_term:nn {student}{}}
+    {\starray_new_term:nn {student}{#1}}
+  \starray_gset_from_keyval:nn {student}
+    {
+      self  = {#1} ,
+      first = {#3} ,
+      last = {#2} ,
+      name = {#3~ #2} ,
+      ID   = {#4} ,
+      email   = {\tl_to_str:n{#5}} 
+    }
 
-\NewDocumentCommand{\ActivityCoord}{O{}m}{
-  \tl_if_blank:nTF {#1}
-    { \starray_get_prop:nn {activity.coord}{#2} }
-    { \starray_get_prop:nn {activity[#1].coord}{#2} }
+  \starray_get_unique_id:nNTF {student}\l__stdemo_tmpID_tl
+    {}
+    {}
+  \starray_gset_prop:nnV {student}{chkID} \l__stdemo_tmpID_tl
+  \prop_new:c {l__stdemo_ \l__stdemo_tmpID_tl _checklist_prop}
+}%
+\end{codestore}
+
+\begin{codestore}[student:New]
+\NewDocumentCommand{\studentremark}{m}{
+  \starray_gset_prop:nnn {student}{remarks}{#1}
 }
 \end{codestore}
+
+\begin{codestore}[student:New]
+\NewDocumentCommand{\worktitle}{m}{%%
+  \starray_gset_prop:nnn {student}{worktitle}{#1}
+}
+\end{codestore}
+
+\begin{codestore}[student:NewAdv]
+\NewDocumentCommand{\advisor}{O{}mm}{%%
+  \starray_new_term:nn {student.advisor}{}
+  \__stdemo_set_prof:nnnn {advisor}{#1}{#2}{#3}
+}
+\end{codestore}
+
+
+\begin{codestore}[student:NewAdv]
+\NewDocumentCommand{\coadvisor}{O{}mm}{%%
+  \starray_new_term:nn {student.coadvisor}{}
+  \starray_gset_prop:nnn {student}{flag-coadvisor}{\c_true_bool}
+  \__stdemo_set_prof:nnnn {coadvisor}{#1}{#2}{#3}
+}
+\end{codestore}
+
+
+
+\begin{codestore}[student:NewAdv]
+\NewDocumentCommand{\examiner}{O{}mm}{%%
+  \starray_new_term:nn {student.reviewer}{}
+  \starray_gset_prop:nnn {student.reviewer}{flag-set}{\c_true_bool}
+  \__stdemo_set_prof:nnnn {reviewer}{#1}{#2}{#3}
+}%
+\end{codestore}
+
+\begin{codestore}[student:NewAdv]
+\cs_new_protected:Npn \__stdemo_set_prof:nnnn #1#2#3#4 
+  {
+    \tl_if_blank:nTF {#2}
+      {
+        \starray_gset_from_keyval:nn {student.#1}
+          {
+            last = {#3} ,
+            first = {#4} ,
+            name = {#4~ #3} ,
+          }
+      }
+      {
+        \starray_gset_from_keyval:nn {student.#1}
+          {
+            last = {#3} ,
+            first = {#4} ,
+            name = {#2~ #4~ #3} ,
+          }
+      }
+  }
+\end{codestore}
+
+\begin{codestore}[student:NewAdv]
+\NewDocumentCommand{\advisorinfo}{mmm}{%%
+  \__stdemo_set_prof_info:nnnn {advisor}{#1}{#2}{#3}
+}%
+\end{codestore}
+
+\begin{codestore}[student:NewAdv]
+\NewDocumentCommand{\coadvisorinfo}{mmm}{%%
+  \__stdemo_set_prof_info:nnnn {coadvisor}{#1}{#2}{#3}
+}%
+\end{codestore}
+
+\begin{codestore}[student:NewAdv]
+\NewDocumentCommand{\examinerinfo}{mmm}{%%
+  \__stdemo_set_prof_info:nnnn {reviewer}{#1}{#2}{#3}
+}%
+\end{codestore}
+
+
+\begin{codestore}[student:NewAdv]
+\cs_new_protected:Npn \__stdemo_set_prof_info:nnnn #1#2#3#4
+  {
+    \starray_gset_from_keyval:nn {student.#1}
+      {
+        institution = {#2} ,
+        title = {#3} ,
+        email = {\tl_to_str:n{#4}} ,
+      }
+  }
+\end{codestore}
+
+
+
+
+\begin{codestore}[student:grades]
+\NewDocumentCommand{\examinergrades}{O{A}mmmm} {
+  \tl_if_blank:nTF {#2}
+    { \starray_gset_prop:nnn {student.reviewer}{grade}{0} }
+    {
+      \starray_gset_from_keyval:nn {student.reviewer}
+        {
+          pointA = #2 ,
+          pointB = #3 ,
+          pointC = #4 ,
+          pointD = #5 ,
+        }
+      \str_case:nnF {#1}
+        {
+          {A} 
+            {
+              \starray_gset_prop:nne {student.reviewer}{grade}
+                { \fp_eval:n{round((#2  + #3 + #4 + #5) / 4 , 2 , 1) } }    
+            }
+          {B} 
+            {
+              \starray_gset_prop:nne {student.reviewer}{grade}
+                { \fp_eval:n{round((#2  + #3 + #4) / 3 , 2 , 1) } }    
+            }
+        }
+        {
+          \starray_gset_prop:nne {student.reviewer}{grade}
+            { \fp_eval:n{round((#2  + #3 + #4 + #5) / 4 , 2 , 1) } }    
+        }
+      
+    }
+  }
+\end{codestore}
+
+
+\begin{codestore}[student:grades]
+\NewDocumentCommand{\studentgrade}{O{A}}
+  { %assuming there are 3 of them...
+    \starray_get_prop:nnN {student.reviewer[1]}{grade} \l__stdemo_A_tl
+    \starray_get_prop:nnN {student.reviewer[2]}{grade} \l__stdemo_B_tl
+    \starray_get_prop:nnN {student.reviewer[3]}{grade} \l__stdemo_C_tl
+    \str_case:nnF {#1}
+      {
+        {A} 
+          {
+            \starray_gset_prop:nne {student.reviewer}{grade}
+              { \fp_eval:n{round((\l__stdemo_A_tl + \l__stdemo_B_tl + \l__stdemo_C_tl) / 3 , 2 , 1) } }    
+          }
+        {B} 
+          {
+            \starray_gset_prop:nne {student.reviewer}{grade}
+              { \fp_eval:n{round((\l__stdemo_A_tl + \l__stdemo_B_tl) / 2 , 2 , 1) } }    
+          }
+        {C} 
+          {
+            \starray_gset_prop:nne {student.reviewer}{grade}
+              { \fp_eval:n{round(3 / (1/\l__stdemo_A_tl + 1/\l__stdemo_B_tl + 1/\l__stdemo_C_tl) , 2 , 1) } }    
+          }
+      }
+      {
+        \starray_gset_prop:nne {student.reviewer}{grade}
+          { \fp_eval:n{round((\l__stdemo_A_tl + \l__stdemo_B_tl + \l__stdemo_C_tl) / 3 , 2 , 1) } }    
+      }
+  }
+\end{codestore}
+
+
+\begin{codestore}[student:select]
+\NewDocumentCommand{\studentselect}{m} { 
+    \starray_set_iter_from_hash:nn {student}{#1} 
+  }
+\end{codestore}
+
+\begin{codestore}[student:select]
+\NewDocumentCommand{\studentReviewerSelect}{m} {
+    \starray_set_iter:nn {student.reviewer}{#1}
+  }
+\end{codestore}
+
+\begin{codestore}[student:cases]
+\NewDocumentCommand{\studentAdvCase}{mm} {
+    \starray_term_syntax:n{student.advisor}
+    \int_compare:nNnTF {\starray_parsed_get_cnt:} > {1}
+      {#1}
+      {#2}
+  }
+\end{codestore}
+
+\begin{codestore}[student:cases]
+\NewDocumentCommand{\studentCoadvCase}{+m+m} {
+    \starray_term_syntax:n{student}
+    \bool_if:nTF {\starray_parsed_get_prop:n{flag-coadvisor}}
+      {#1}
+      {#2}
+  }
+\end{codestore}
+
+\begin{codestore}[student:cases]
+\NewDocumentCommand{\studentReviewerSetCase}{mmm} {
+    \starray_term_syntax:n{student.reviewer[#1]}
+    \bool_if:nTF {\starray_parsed_get_prop:n{flag-set}}
+      {#2}
+      {#3}
+}
+\end{codestore}
+
+\begin{codestore}[student:cases]
+\NewDocumentCommand{\studentCase}{mm} {
+    \starray_term_syntax:n{student}
+    \bool_if:nTF{\starray_parsed_get_prop:n{flag-approved}}
+      {#1}
+      {#2}
+}
+\end{codestore}
+
+
+
+\begin{codestore}[student:iter]
+\NewDocumentCommand{\studentiterate}{m} {
+    \starray_iterate_over:nn{student}{#1}
+}
+\end{codestore}
+
+\begin{codestore}[student:iter]
+\NewDocumentCommand{\studentadvisoriterate}{m} {
+    \starray_iterate_over:nn{student.advisor}{#1}
+}
+\end{codestore}
+
+
+\begin{codestore}[student:emptyterm]
+\NewDocumentCommand{\emptytermifnone}{O{1}mO{}}
+  {
+    \__stdemo_emptyterm_if_none:nnn {#1}{#2}{#3}
+  }
+
+\cs_new_protected:Npn \__stdemo_emptyterm_if_none:nnn #1#2#3
+  {
+    \starray_get_cnt:nN {#2} \l_tmpa_int
+    \int_while_do:nNnn {\l_tmpa_int} < {#1}
+      { 
+        \starray_new_term:nn {#2}{} 
+        #3
+        \starray_get_cnt:nN {#2} \l_tmpa_int
+      }
+  }
+
+
+\cs_new_protected:Npn \__stdemo_student_emptyfields_if_none:
+  {
+    \__stdemo_emptyterm_if_none:nnn {1}{student}{}
+    \__stdemo_emptyterm_if_none:nnn {1}{student.advisor}{}
+    \__stdemo_emptyterm_if_none:nnn {3}{student.reviewer}{}
+  }
+\end{codestore}
+
+
+\begin{codestore}[student:emptyterm]
+\NewDocumentCommand{\emptyfields}{} {
+    \__stdemo_emptyfields:
+  }
+
+
+\cs_new_protected:Npn \__stdemo_emptyfields:
+  {
+    \starray_new_term:nn {student}{empty}
+    \starray_new_term:nn {student.advisor}{}
+    \starray_new_term:nn {student.coadvisor}{}
+    \starray_new_term:nn {student.reviewer}{}
+    \starray_new_term:nn {student.reviewer}{}
+    \starray_new_term:nn {student.reviewer}{}
+  }
+\end{codestore}
+
+
+\begin{codestore}[student:list]
+\NewDocumentCommand{\studentaddtolist}{m}
+  {
+    \seq_if_exist:cF {l__stdemo_#1_list_seq}
+      {
+        \seq_new:c {l__stdemo_#1_list_seq}
+
+        \bool_new:c {l__stdemo_#1_classified_bool}
+      }
+    \bool_set_false:c {l__stdemo_#1_classified_bool}  
+    \starray_term_syntax:n {student}
+    \seq_gput_right:ce {l__stdemo_#1_list_seq} {\starray_parsed_get_prop:n {self}}
+  }
+\end{codestore}
+
+\begin{codestore}[student:list]
+\NewDocumentCommand{\studentlistsort}{O{name}m}
+  {
+    \bool_set_true:c {l__stdemo_#1_classified_bool}
+    \__stdemo_seq_sort:nn {#2}{#1} 
+  }
+
+\cs_new_protected:Npn \__stdemo_seq_sort:nn #1#2
+  {
+    \seq_gsort:cn {l__stdemo_#1_list_seq }
+      {
+        \starray_set_iter_from_hash:nn {student}{##1}
+        \starray_get_prop:nnN {student}{#2} \l__stdemo_sortA_tl
+        \starray_set_iter_from_hash:nn {student}{##2}
+        \starray_get_prop:nnN {student}{#2} \l__stdemo_sortB_tl          
+        \str_compare:eNeTF { \l__stdemo_sortA_tl } > { \l__stdemo_sortB_tl }
+          { \sort_return_swapped: }
+          { \sort_return_same: }
+      }  
+  }
+\end{codestore}  
+
+\begin{codestore}[student:list]
+\NewDocumentCommand{\listemptytermsifnone}{m}
+  {
+   \seq_map_inline:cn {l__stdemo_#1_list_seq}
+      {
+        \starray_set_iter_from_hash:nn {student}{##1}
+     
+        \emptytermifnone{student.advisor}
+        \emptytermifnone[3]{student.reviewer}[\starray_gset_prop:nnn {student}{flag-null}{\c_true_bool}]
+%        % those could be, instead
+%        \__stdemo_emptyterm_if_none:nnn 
+%          {}
+%          { student.advisor }
+%          {}
+%        \__stdemo_emptyterm_if_none:nnn 
+%          {3}
+%          { student.reviewer } 
+%          { \starray_gset_prop:nnn {student}{flag-null}{\c_true_bool} }
+      }       
+  }
+
+\end{codestore}
+
+
+
+\begin{codestore}[student:list]
+\NewDocumentCommand{\studentlistiterate}{m+m}
+  {
+    \bool_if:cF {l__stdemo_#1_classified_bool}
+      { \studentlistsort{#1} }
+    \listemptytermsifnone{#1}
+    \seq_map_inline:cn {l__stdemo_#1_list_seq}
+      {
+        \starray_set_iter_from_hash:nn {student}{##1}
+        #2
+      }
+  }
+\end{codestore}
+
+
 
 \begin{codestore}[ActivityUseDemo]
   \NewActivity{FinalWork I}
@@ -391,19 +729,6 @@ As in any ``procedural language'', one is advised to  carefully design the data 
 \end{tsremark}
 
 
-\subsection{Student Set}
-A student's structure might contain, besides student's name, work title, some flags, an advisor (and co-advisor, if needed), reviewer's list (with a provision for reviewer's grade, if needed).
-
-Of course, one doesn't need to define a \tsobj[pkg]{starray} structure using \tsobj{\starray_def_from_keyval:nn}, but, as in this,  if the set of properties is known, it always makes for a cleaner definition.
-
-\begin{tsremark}
-  The fields/properties defaults can be anything, including usual \LaTeXe\  commands, like a \tsobj{\rule} which is handy, for instance, when generating forms, e.g., if the fields are all set, a form can be created with the proper values, otherwise, it will be  created with ``rules'' in place (no need to test if the properties were set).
-\end{tsremark}
-
-\tscode*[stdemo]{student-def}
-
-
-
 \subsection{Activity Set}\label{Activity-set}
 For the activities one could set an ``starray'' as follow:
 
@@ -422,15 +747,35 @@ Whereas, the ``coord'' sub-structure is for the activity's coordinator, whilst `
 The ``chkID'' (and checklists). In many cases it's handy to have an unique identifier for a given structure. That can be obtained with \tsobj{\starray_get_unique_ID:nN}, and to avoid calling this function time and time again, one can just store that ID as a field for later use.
 \end{tsremark}
 \begin{tsremark}
-  Could the Coordinator's name and title be a direct property (dismissing the ``coord'' sub-structure)? of course, that's a matter of taste/choice, on how to model it.
+  Could the Coordinator's name and title be a direct property (avoiding the ``coord'' sub-structure)? of course, that's a matter of choice on how to model it.
 \end{tsremark}
+
+
+
+
+
+\subsection{Student Set}
+A student's structure might contain, besides student's name, work title, some flags, an advisor (and co-advisor, if needed), reviewer's list (with a provision for reviewer's grade, if needed).
+
+Of course, one doesn't need to define a \tsobj[pkg]{starray} structure using \tsobj{\starray_def_from_keyval:nn}, but, as in this,  if the set of properties is known, it always makes for a cleaner definition.
+
+\begin{tsremark}
+  The fields/properties defaults can be anything, including usual \LaTeXe\  commands, like a \tsobj{\rule} which is handy, for instance, when generating forms, e.g., if the fields are all set, a form can be created with the proper values, otherwise, it will be  created with ``rules'' in place (no need to test if the properties were set).
+\end{tsremark}
+
+\tscode*[stdemo]{student-def}
+
+
+
+
+
 
 
 
 \section{Auxiliary Functions}
 Once the data layout is set (see \ref{DataModel}) the next step is to define a set of (document level) functions, so the data can be initialized and used by the end user.
 
-\subsection{Generic Recovery Functions}
+\subsection{Generic Recovery Functions}\label{generic:datafield}
 
 \begin{codedescribe}{\DataField,\DataGet}
   \begin{codesyntax}
@@ -441,14 +786,15 @@ Once the data layout is set (see \ref{DataModel}) the next step is to define a s
 \end{codedescribe}
 
 
-\tscode*[stdemo]{DataRecovery}[2]
+\tscode*[stdemo]{DataRecovery}[3]
+\tscode*[stdemo]{DataRecovery}[4]
 
 \subsection{Activity's Functions}
 
 One could define a single function to initialize all fields (using a key=val interface), but, in a more traditional approach  one can set two functions to start the initialization process \tsobj{\NewActivity,\ActivitySet}. 
 
 
-~
+\subsubsection{Creating and Setting an Activity's Data}
 
 \begin{codedescribe}{\NewActivity,\ActivitySet}
 \begin{codesyntax}
@@ -467,7 +813,8 @@ The idea is to (normally) use one right after the other, though, once created wi
   One thing to be noticed about \tsobj[pkg]{starrays}: every structure has an associated internal index (iterator). When you create a new instance, this iterator always points to the newly created one, therefore, sparing the use of an explicit index.
 \end{tsremark}
 
-\tscode*[stdemo]{ActivityFunctions}[1]
+\tscode*[stdemo]{ActCmd:New}[1]
+\tscode*[stdemo]{ActCmd:New}[2]
 
 ~
 
@@ -481,8 +828,8 @@ Similarly, one can define some functions to set the activity's coordinator. Of c
 For both, \tsobj{\ActivitySetCoord,\ActivitySetCoordTitle}, the optional argument \tsobj[oarg]{act-ID} refers to an already create activity, and, if not given, will use the current one.
 \end{codedescribe}
 
-\tscode*[stdemo]{ActivityFunctions}[2]
-
+\tscode*[stdemo]{ActCmd:SetCoord}[1]
+\tscode*[stdemo]{ActCmd:SetCoord}[2]
 
 
 And the associated ``Calendar Events'', assuming there will be a fixed set of events (each semester/year), leaving the date to be set later on. 
@@ -496,35 +843,42 @@ The optional argument \tsobj[oarg]{act-ID} refers to an already create activity,
 \end{codedescribe}
 
 
-\tscode*[stdemo]{ActivityFunctions}[3]
+\tscode*[stdemo]{ActCmd:SetEvent}[1]
 
-~
 
-\tscode*[stdemo]{ActivityFunctions}[4]
+
+\tscode*[stdemo]{ActCmd:SetEvent}[2]
 
 
 
 In many cases, it's desirable to have a ``check list''. What such list could entice is always up to debate, the idea behind the few next functions is to allow the end user to define which items such a list (as a matrix) might have.
 
+\subsubsection{Check Lists}
 \begin{codedescribe}{\checkdef,\checklist}
 \begin{codesyntax}
   \tsmacro{\checkdef}{chkID,chkPos,chktext}
   \tsmacro{\checklist}[act-ID]{chkID-list}
 \end{codesyntax}
-  \tsobj[marg]{chkID} is just an ID to reference the check list item. \tsobj[marg]{chkPos} will relate the item to a position in a matrix (tabular environment, see \tsobj{\StudentCheckListTabLine}) and \tsobj[marg]{chktext} is the (assumed) short text.
+  \tsobj[marg]{chkID} is just an ID to reference the check list item. \tsobj[marg]{chkPos} will relate the item to a position in a matrix (tabular environment, see \tsobj{\StudentCheckListTable}) and \tsobj[marg]{chktext} is the (assumed) short text.
   The command \tsobj{\checkdef} defines/create a new item, whilst \tsobj{\checklist} sets a list of \tsobj[marg]{chkID}s (note that \tsobj[marg]{chkID-list} is a csv list).
 \end{codedescribe}
 \begin{tsremark}
-  In the implementation below, note that the check list items are associated with an activity, but the final list itself is a student by student one. Better said, each student will have a property list (constructed based on a student's unique ID) of the ``checked items'' (see \tsobj{\StudentCheckListTabLine}).
+  In the implementation below, note that the check list items are associated with an activity, but the final list itself is a student by student one. Better said, each student will have a property list (constructed based on a student's unique ID) of the ``checked items'' (see \tsobj{\StudentCheckListTable}).
 \end{tsremark}
 
 
 
-\tscode*[stdemo]{ActivityFunctions}[5]
+\tscode*[stdemo]{ActCmd:CheckList}[1]
 
 ~
 
-\subsubsection{Recovering/Using Activity's Data}
+\tscode*[stdemo]{ActCmd:CheckList}[2]
+
+%\tsmergedcode*[stdemo]{{ActCmd:CheckList}[1-2]}
+
+~
+
+\subsubsection{Selecting an Activity}
 
 \begin{codedescribe}{\ActivitySelect}
   \begin{codesyntax}
@@ -534,19 +888,11 @@ In many cases, it's desirable to have a ``check list''. What such list could ent
 \end{codedescribe}
 
 
-\tscode*[stdemo]{ActivityFunctions}[6]
+\tscode*[stdemo]{ActCmd:Select}
 
 
-\begin{codedescribe}{\Activity,\ActivityCoord}
-\begin{codesyntax}
-  \tsmacro{\Activity}[act-ID]{field}
-  \tsmacro{\ActivityCoord}[act-ID]{field}
-\end{codesyntax}
-  \tsobj{\Activity} will recover the associated \tsobj[marg]{field} value (from \ref{Activity-set} it can (reasonably) be \tsobj[meta,sep=or]{name,acronym}).
-  \tsobj{\ActivityCoord}, similarly, will recover the associated \tsobj[marg]{field} value for the activity's coordinator (field can be, from \ref{Activity-set},  \tsobj[meta,sep=or]{name,title}).
-\end{codedescribe}
 
-\tscode*[stdemo]{ActivityFunctions}[7]
+\subsubsection{Iterating over Calendar Data}
 
 \begin{codedescribe}{\ActivityCalendarIterate}
   \begin{codesyntax}
@@ -559,9 +905,405 @@ In many cases, it's desirable to have a ``check list''. What such list could ent
   \end{enumerate*}. The user is supposed to use (in \tsobj[marg]{code}) \tsobj[code,sep=or]{\DataField,\DataGet} to retrieve and use the calendar's data.
 \end{codedescribe}
 
-\tscode*[stdemo]{ActivityFunctions}[8]
+\tscode*[stdemo]{ActCmd:CalIterate}
 
 
 \subsection{Student's Functions}
+
+\subsubsection{Creating and Setting Student's Data}
+
+\begin{codedescribe}{\student,\studentremark,\worktitle}
+  \begin{codesyntax}
+    \tsmacro{\student}[student-hash]{last,first,ID,email}
+    \tsmacro{\studentremark}{remark}
+    \tsmacro{\worktitle}{work-title}
+  \end{codesyntax}
+  some text
+\end{codedescribe}
+
+\tscode*[stdemo]{student:New}[1]
+\tscode*[stdemo]{student:New}[2]
+\tscode*[stdemo]{student:New}[3]
+
+\begin{codedescribe}{\advisor,\coadvisor,\examiner}
+  \begin{codesyntax}
+    \tsmacro{\advisor}[pre-nom]{last,first}
+    \tsmacro{\coadvisor}[pre-nom]{last,first}
+    \tsmacro{\examiner}[pre-nom]{last,first}
+  \end{codesyntax}
+  some text
+\end{codedescribe}
+
+\tscode*[stdemo]{student:NewAdv}[1]
+\tscode*[stdemo]{student:NewAdv}[2]
+\tscode*[stdemo]{student:NewAdv}[3]
+\tscode*[stdemo]{student:NewAdv}[4]
+
+\begin{codedescribe}{\advisorinfo,\coadvisorinfo,\examinerinfo}
+  \begin{codesyntax}
+    \tsmacro{\advisorinfo}{institute,title,email}
+    \tsmacro{\coadvisorinfo}{institute,title,email}
+    \tsmacro{\examinerinfo}{institute,title,email}
+  \end{codesyntax}
+  some text
+\end{codedescribe}
+
+\tscode*[stdemo]{student:NewAdv}[5]
+\tscode*[stdemo]{student:NewAdv}[6]
+\tscode*[stdemo]{student:NewAdv}[7]
+\tscode*[stdemo]{student:NewAdv}[8]
+
+
+\begin{codedescribe}{\examinergrades}
+\begin{codesyntax}
+  \tsmacro{\examinergrades}[case]{gradeA,gradeB,gradeC,gradeD}
+\end{codesyntax}  
+some text
+\end{codedescribe}
+
+\tscode*[stdemo]{student:grades}[1]
+
+
+
+\begin{codedescribe}{\studentgrade}
+\begin{codesyntax}
+  \tsmacro{\studentgrade}[case]{}
+\end{codesyntax}  
+some text
+\end{codedescribe}
+
+\tscode*[stdemo]{student:grades}[2]
+
+
+\subsubsection{Recovering/Selecting a Student's Data}
+
+\begin{codedescribe}{\studentselect,\studentreviewerselect}
+\begin{codesyntax}
+  \tsmacro{\studentselect}{student-hash}
+  \tsmacro{\studentreviewerselect}{rev-index}
+\end{codesyntax}
+ some text
+\end{codedescribe}
+
+\tscode*[stdemo]{student:select}[1]
+\tscode*[stdemo]{student:select}[2]
+
+\begin{codedescribe}{\studentcase,\studentadvcase,\studentcoadvcase,\studentreviewersetcase}
+\begin{codesyntax}
+  \tsmacro{\studentcase}{if-approved,if-not}
+  \tsmacro{\studentadvcase}{if-one,if-many}
+  \tsmacro{\studentcoadvcase}{if-set,if-not}
+  \tsmacro{\studentreviewersetcase}{if-set,if-not}  
+\end{codesyntax}
+ some text
+\end{codedescribe}
+
+\tscode*[stdemo]{student:cases}[1]
+\tscode*[stdemo]{student:cases}[2]
+\tscode*[stdemo]{student:cases}[3]
+\tscode*[stdemo]{student:cases}[4]
+
+
+\subsubsection{Iterating over Students}
+
+\begin{codedescribe}{\studentiterate,\studentadvisoriterate}
+  \begin{codesyntax}
+    \tsmacro{\studentiterate}{code}
+    \tsmacro{\studentadvisoriterate}{code}
+  \end{codesyntax}
+  some text
+\end{codedescribe}
+
+\tscode*[stdemo]{student:iter}[1]
+\tscode*[stdemo]{student:iter}[2]
+
+
+\subsubsection{Auxiliary Commands}
+\begin{codedescribe}{\emptytermifnone,\emptyfields}
+  \begin{codesyntax}
+    \tsmacro{\emptytermifnone}[count]{struct}\tsargs[oarg]{code}
+    \tsmacro{\emptyfields}{}
+  \end{codesyntax}
+  some text
+\end{codedescribe}
+
+\tscode*[stdemo]{student:emptyterm}[1]
+\tscode*[stdemo]{student:emptyterm}[2]
+
+
+
+\subsubsection{Student's Lists}
+\begin{codedescribe}{\studentaddtolist,\studentlistsort}
+\begin{codesyntax}
+  \tsmacro{\studentaddtolist}{list}
+  \tsmacro{\studentlistsort}[field]{list}
+\end{codesyntax}
+some text
+\end{codedescribe}
+
+\tscode*[stdemo]{student:list}[1]
+
+\tscode*[stdemo]{student:list}[2]
+
+\begin{codedescribe}{\listemptytermsifnone}
+\begin{codesyntax}
+  \tsmacro{\listemptytermsifnone}{list}
+\end{codesyntax}
+some text.  
+\end{codedescribe}
+
+\tscode*[stdemo]{student:list}[3]
+
+
+\begin{codedescribe}{\studentlistiterate}
+\begin{codesyntax}
+  \tsmacro{\studentlistiterate}{list}
+\end{codesyntax}
+some text.  
+\end{codedescribe}
+
+\tscode*[stdemo]{student:list}[4]
+
+
+\section{Example of Use}
+\subsection{Setting Things up}
+
+\begin{codestore}[demo:datasetting]
+  \NewActivity{FW I}
+  \ActivitySet{Final Work I}{fw0501}
+  \ActivitySetCoord{Prof. Willian S.}
+  \ActivitySetCoordTitle{Final Work Coordinator}
+
+  \NewActivity{FW II}
+  \ActivitySetCoord[FW II]{Prof. Karen S.}
+  \ActivitySetCoordTitle[FW II]{Final Work Coordinator}
+  \ActivitySet{Final Work II}{fw0502}
+  
+  \NewActivity{TN A}
+  \ActivitySetCoord{Prof. Samantha S.}
+  \ActivitySetCoordTitle{Trainee Program Coordinator}
+  \ActivitySet{Trainee}{tn0101}  
+\end{codestore}
+
+\tscode*[stdemo]{demo:datasetting}
+
+\tsexec{demo:datasetting}
+
+
+\subsection{Defining a Check List}
+
+
+\begin{codestore}[activity:checklist]
+\ActivitySelect{FW I}
+
+\checkdef{L1C1}{docs}{Documentation OK}
+\checkdef{L2C1}{prop}{Proposal OK}
+\checkdef{L3C1}{advisor}{Advisor assig.}
+
+\checkdef{L1C2}{middle}{middle term}
+\checkdef{L2C2}{examiners}{Examiners assig.}
+
+\checkdef{L1C3}{final}{Final Text}
+\checkdef{L2C3}{tutorok}{Tutor approval}
+
+\checkdef{L1C4}{text}{text approved}
+\checkdef{L2C4}{graded}{examiners grade}
+
+\checkdef{L3C5}{library}{Text Catalogued}
+\end{codestore}
+
+
+\begin{codestore}[activity:checklist]
+\ActivitySelect{FW II}
+
+\checkdef{L1C1}{docs}{Documentation OK}
+\checkdef{L2C1}{prop}{Proposal OK}
+\checkdef{L3C1}{advisor}{Advisor assig.}
+
+\checkdef{L1C2}{middle}{middle term}
+\checkdef{L2C2}{examiners}{Examiners assig.}
+
+\checkdef{L1C3}{final}{Final Text}
+\checkdef{L2C3}{tutorok}{Tutor approval}
+
+\checkdef{L1C4}{text}{text approved}
+\checkdef{L2C4}{graded}{examiners grade}
+
+\checkdef{L3C5}{library}{Text Catalogued}
+\end{codestore}
+
+
+\begin{codestore}[activity:checklist]
+\ActivitySelect{TN A}
+\checkdef{L1C1}{docs}{Documentation OK}
+
+\checkdef{L2C1}{tutor}{tutor assigned}
+
+\checkdef{L1C2}{middle}{middle term report}
+
+\checkdef{L1C3}{final}{Final Report}
+\checkdef{L2C3}{tutorok}{tutor approval}
+
+\checkdef{L1C4}{text}{text approved}
+
+\checkdef{L3C5}{library}{Report Catalogued}
+\end{codestore}
+
+\tscode*[stdemo]{activity:checklist}[1]
+\tscode*[stdemo]{activity:checklist}[2]
+\tscode*[stdemo]{activity:checklist}[3]
+\tsexec{activity:checklist}[1]
+\tsexec{activity:checklist}[2]
+\tsexec{activity:checklist}[3]
+
+
+\subsection{Students}
+
+\begin{codestore}[demo:student.data]
+  \student[James S.]{Smith}{James}{ID001}{smith.james@uni.gov}
+  \studentremark{2nd time}
+  \worktitle{Some Useful System}
+
+  \advisor{T.}{Jonathan}
+  \advisorinfo{University of Z}{Prof.}{jon.t@uni.gov}
+
+  \examiner{T.}{William}
+  \examinergrades{10}{9}{8}{7}
+  \examinerinfo{University of Z}{Prof.}{william.t@uni.gov}
+
+  \examiner{T.}{Jame}
+  \examinerinfo{University of Z}{Prof.}{jame@uni.gov}
+  \examinergrades{10}{9}{8}{7} 
+
+  \examiner{T.}{Thomaz}
+  \examinerinfo{University of Z}{Prof.}{thomaz.t@uni.gov}
+  \examinergrades{10}{9}{8}{7}
+  
+  \ActivitySelect{FW I}
+  \checklist{docs,prop,advisor,middle,examiners,text,graded}
+  \studentaddtolist{FW-I}
+  
+\end{codestore}
+
+\begin{codestore}[demo:student.data]
+  \student[Sarah S.]{Barnes}{James}{ID003}{sarah.james@uni.gov}
+  \worktitle{Some Useful System}
+
+  \advisor{T.}{Jonathan}
+  \advisorinfo{University of Z}{Prof.}{jon.t@uni.gov}
+
+  \examiner{T.}{William}
+  \examinergrades{10}{9}{8}{7}
+  \examinerinfo{University of Z}{Prof.}{william.t@uni.gov}
+
+  \examiner{T.}{Jame}
+  \examinerinfo{University of Z}{Prof.}{jame@uni.gov}
+  \examinergrades{10}{9}{8}{7} 
+
+  \examiner{T.}{Thomaz}
+  \examinerinfo{University of Z}{Prof.}{thomaz.t@uni.gov}
+  \examinergrades{10}{9}{8}{7}
+  
+  \ActivitySelect{FW II}
+  \checklist{docs,prop,advisor,middle,examiners,text,graded,library}
+  \studentaddtolist{FW-II}
+
+\end{codestore}
+
+
+\begin{codestore}[demo:student.data]
+  \student[Barney]{Smith}{Barney}{ID002}{loren.s@uni.gov}
+  \worktitle{Some Useful System}
+
+  \advisor{T.}{J.J.}
+  \advisorinfo{University of Z}{Prof.}{jon.t@uni.gov}
+
+  \examiner{T.}{Ceasare}
+  \examinergrades{10}{9}{8}{7}
+  \examinerinfo{University of Z}{Prof.}{william.t@uni.gov}
+
+  \examiner{T.}{Marcus}
+  \examinerinfo{University of Z}{Prof.}{jame@uni.gov}
+  \examinergrades{10}{9}{8}{7} 
+
+  \examiner{T.}{Brutus}
+  \examinerinfo{University of Z}{Prof.}{thomaz.t@uni.gov}
+  \examinergrades{10}{9}{8}{7}
+
+  \ActivitySelect{FW II}
+  \checklist{docs,prop}
+  \studentaddtolist{FW-II}
+
+  \student[Kate]{Smithson}{Kate}{ID004}{loren.s@uni.gov}
+  \worktitle{Some Useful System}
+
+  \advisor{T.}{Jonathan}
+  \advisorinfo{University of Z}{Prof.}{jon.t@uni.gov}
+
+  \advisor{T.}{William}
+  \advisorinfo{University of Z}{Prof.}{jon.t@uni.gov}
+
+  \examiner{Aurelius}{T.}
+  \examinergrades{10}{9}{8}{7}
+  \examinerinfo{Uni. Z}{Prof.}{aurelius@uni.gov}
+
+  \examiner{T.}{Cicero}
+  \examinerinfo{Uni. Z}{Prof.}{cicero@uni.gov}
+  \examinergrades{10}{9}{8}{7} 
+
+  \examiner{T.}{Plutarco}
+  \examinerinfo{Uni. Z}{Prof.}{plutarco.t@uni.gov}
+  \examinergrades{10}{9}{8}{7}
+
+  \ActivitySelect{FW II}
+  \checklist{docs,prop}
+  \studentaddtolist{FW-II}
+
+\end{codestore}
+and others likely defined.
+
+
+\tscode*[stdemo]{demo:student.data}[1]
+\tscode*[stdemo]{demo:student.data}[2]
+\tsexec{demo:student.data}[1]
+\tsexec{demo:student.data}[2]
+\tsexec{demo:student.data}[3]
+
+
+
+\ActivitySelect{FW I}
+\studentselect{James S.}
+\begingroup
+  \scriptsize
+  \begin{tabular}{llllll}
+  \StudentCheckListTable{L1,L2,L3}{C1,C2,C3,C4,C5}
+  \end{tabular}
+\endgroup
+
+
+\studentlistsort[last]{FW-II}
+\studentlistiterate{FW-II}{
+    \studentgrade[A]
+    \par
+    student: \DataField{student}{name}\par
+    \studentAdvCase
+      { % more then one
+        Advisors:
+        \studentadvisoriterate
+          {
+            \DataField{student.advisor}{name}, ~
+          }
+      }
+      { %only one
+        Advisor: \DataField{student.advisor}{name}
+      }
+    \par
+    \begingroup
+      \scriptsize
+      \begin{tabular}{llllll}
+      \StudentCheckListTable{L1,L2,L3}{C1,C2,C3,C4,C5}
+      \end{tabular}
+    \endgroup
+  }
 
 \end{document} 
