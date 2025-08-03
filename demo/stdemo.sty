@@ -145,9 +145,8 @@
   board-local = {~local/place~} ,
   board-date   = {~date~} ,
   board-time  = {~time~} ,
-  gradeavrg = 0,
-  grade = ,
-  flag-graded = \c_false_bool , %%% IF gradeavrg AND finalgrade already calculated (or defined)
+  grade = 0 ,
+  flag-graded = \c_false_bool , %%% IF grade already calculated (or defined)
   flag-approved = \c_false_bool ,
   flag-coadvisor = \c_false_bool ,
   advisor . struct = {
@@ -225,50 +224,32 @@
   \starray_get_prop:nnN{#1}{#2}{#3}
 }  
 
-%% workaround (V-less) 
-%%   => \starray_get_uniqueID {starray-ref} .... 
-%%      (might just be parser construct...) and use it to define a unique prop name.
 
 \tl_new:N \l__stdemo_tmpID_tl
-\NewDocumentCommand{\NewActivity}{m} {
-    \starray_new_term:nn {activity}{#1}
-    \starray_new_term:nn {activity.coord}{}
-    \starray_get_unique_id:nNTF {activity} \l__stdemo_tmpID_tl
-      {}
-      {}
+
+\NewDocumentCommand{\NewActivity}{mmm} {
+    \starray_new_term:nn  {activity}{#1}
+    \starray_set_prop:nnn {activity}{acronym}{#2}
+    \starray_set_prop:nnn {activity}{name}{#3}
+    \starray_new_term:nn  {activity.coord}{}
+    \starray_get_unique_id:nN {activity} \l__stdemo_tmpID_tl
     \starray_gset_prop:nnV {activity}{chkID} \l__stdemo_tmpID_tl
     \prop_new_linked:c {l__stdemo_ \l__stdemo_tmpID_tl _chkmarked_prop}
     \prop_new_linked:c {l__stdemo_ \l__stdemo_tmpID_tl _chkunmarked_prop}
     \prop_new_linked:c {l__stdemo_ \l__stdemo_tmpID_tl _chkref_prop}
 }
 
-
-\NewDocumentCommand{\ActivitySet}{O{}mm} {
-  \tl_if_blank:nTF {#1}
-    {
-      \starray_set_prop:nnn {activity}{name}{#3}
-      \starray_set_prop:nnn {activity}{acronym}{#2}
-    }
-    {
-      \starray_set_prop:nnn {activity[#1]}{name}{#3}
-      \starray_set_prop:nnn {activity[#1]}{acronym}{#2}
-    }
-}
  
-\NewDocumentCommand{\ActivitySetCoord}{O{}mO{}}{
+\NewDocumentCommand{\ActivitySetCoord}{O{}mm}{
   \tl_if_blank:nTF {#1}
     {
-      \starray_gset_prop:nnn {activity.coord}{name}{#2}
+      \starray_gset_prop:nnn {activity.coord}{title}{#2}
+      \starray_gset_prop:nnn {activity.coord}{name}{#3}
     }
     {
-      \starray_gset_prop:nnn {activity[#1].coord}{name}{#2}
+      \starray_gset_prop:nnn {activity[#1].coord}{title}{#2}
+      \starray_gset_prop:nnn {activity[#1].coord}{name}{#3}
     }
-}
-
-\NewDocumentCommand{\ActivitySetCoordTitle}{O{}m} {
-  \tl_if_blank:nTF {#1}
-    { \starray_set_prop:nnn {activity.coord}{title}{#2} }
-    { \starray_set_prop:nnn {activity[#1].coord}{title}{#2} }
 }
 
 
@@ -379,19 +360,6 @@
       }
       \l__stdemo_table_tl   
   }
-
-%like
-%\StudentCheckListTable{L1,L2,L3}{C1,C2,C3,C4,C5,C6}
-
-
-\bool_new:N \l__stdemo_checklist_bool
-\bool_set_true:N \l__stdemo_checklist_bool
-
-\NewDocumentCommand{\suppresschecklist}{}{
-  \bool_set_false:N \l__stdemo_checklist_bool
-}
-
-
 
 
 \NewDocumentCommand{\ActivitySelect}{m}{ \starray_set_iter_from_hash:nn {activity}{#1} }
@@ -537,7 +505,7 @@
     }
   }
 
-\NewDocumentCommand{\studentgrade}{O{A}}
+\NewDocumentCommand{\studentgrade}{O{A}m}
   { %assuming there are 3 of them...
     \starray_get_prop:nnN {student.reviewer[1]}{grade} \l__stdemo_A_tl
     \starray_get_prop:nnN {student.reviewer[2]}{grade} \l__stdemo_B_tl
@@ -546,32 +514,41 @@
       {
         {A} 
           {
-            \starray_gset_prop:nne {student.reviewer}{grade}
+            \starray_gset_prop:nne {student}{grade}
               {
                 \fp_eval:n{round((\l__stdemo_A_tl + \l__stdemo_B_tl + \l__stdemo_C_tl) / 3 , 2 , 1) }
               }    
           }
         {B} 
           {
-            \starray_gset_prop:nne {student.reviewer}{grade}
+            \starray_gset_prop:nne {student}{grade}
               {
                 \fp_eval:n{round((\l__stdemo_A_tl + \l__stdemo_B_tl) / 2 , 2 , 1) }
               }    
           }
         {C} 
           {
-            \starray_gset_prop:nne {student.reviewer}{grade}
+            \starray_gset_prop:nne {student}{grade}
               {
                 \fp_eval:n{round(3 / (1/\l__stdemo_A_tl + 1/\l__stdemo_B_tl + 1/\l__stdemo_C_tl) , 2 , 1) }
               }    
           }
       }
       {
-        \starray_gset_prop:nne {student.reviewer}{grade}
+        \starray_gset_prop:nne {student}{grade}
           {
             \fp_eval:n{round((\l__stdemo_A_tl + \l__stdemo_B_tl + \l__stdemo_C_tl) / 3 , 2 , 1) }
           }    
       }
+    \starray_get_prop:nnN {student}{grade} \l__stdemo_tmp_fp
+    \fp_compare:nNnTF {\l__stdemo_tmp_fp} < {#2}
+      {
+        \starray_gset_prop:nnn {student}{flag-approved}{\c_false_bool}
+      }
+      {
+        \starray_gset_prop:nnn {student}{flag-approved}{\c_true_bool}
+      }
+    \starray_gset_prop:nnn {student}{flag-graded}{\c_true_bool}
   }
 
 
@@ -707,16 +684,10 @@
         \starray_set_iter_from_hash:nn {student}{##1}
      
         \emptytermifnone{student.advisor}
-        \emptytermifnone[3]{student.reviewer}[\starray_gset_prop:nnn {student}{flag-null}{\c_true_bool}]
+        \emptytermifnone[3]{student.reviewer}
 %        % those could be, instead
-%        \__stdemo_emptyterm_if_none:nnn 
-%          {}
-%          { student.advisor }
-%          {}
-%        \__stdemo_emptyterm_if_none:nnn 
-%          {3}
-%          { student.reviewer } 
-%          { \starray_gset_prop:nnn {student}{flag-null}{\c_true_bool} }
+%        \__stdemo_emptyterm_if_none:nnn {1}{ student.advisor } {}
+%        \__stdemo_emptyterm_if_none:nnn {3}{ student.reviewer } {}
       }       
   }
 

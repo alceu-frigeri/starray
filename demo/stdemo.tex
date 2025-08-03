@@ -57,18 +57,29 @@ The purpose of this is to create an example of how to use a \tsobj[pkg]{starray}
 \end{tsremark}
 
 \setnewcodekey{stdemo}{codeprefix={},resultprefix={},letter={@,_},
-  texcs2={
+  keywd2={
     starray_new,starray_def_from_keyval,
     starray_new_term,starray_get_unique_id,starray_gset_prop,starray_set_prop,
+    starray_get_cnt,starray_term_syntax,starray_set_iter,
     starray_set_iter_from_hash,starray_get_prop,starray_gset_from_keyval,
-    starray_iterate_over
+    starray_iterate_over,starray_parsed_get_prop,starray_parsed_get_cnt
     },
-  keywd2={
+  texcs2={
     NewActivity,ActivitySet,ActivitySetCoord,ActivitySetCoordTitle,
     ActivitySelect,Activity,ActivityCoord,
     ActivityCalendarIterate,
-    ActivitySetNewEvent,ActivitySetEventDay
-    }
+    ActivitySetNewEvent,ActivitySetEventDay,
+    student,advisor,coadvisor,examiner,reviewer,advisorinfo,coadvisorinfo,examinerinfo,
+    examinergrades,studentgrade,studentselect,studentReviewerSelect,
+    studentAdvCase,studentCoadvCase,studentReviewerSetCase,studentCase,
+    studentiterate,studentadvisoriterate,
+    emptytermifnone, emptyfields,studentaddtolist,studentlistsort,
+    listemptytermsifnone,studentlistiterate,checklist
+    },
+  emph={
+    __stdemo_set_prof_info,__stdemo_set_prof,__stdemo_emptyterm_if_none,__stdemo_student_emptyfields_if_none,
+    __stdemo_seq_sort,__stdemo_emptyfields,
+  },
   }
 
 \begin{codestore}[activity-def]
@@ -95,7 +106,8 @@ The purpose of this is to create an example of how to use a \tsobj[pkg]{starray}
 
 \begin{codestore}[student-def]
 \starray_new:n {student}
-\starray_def_from_keyval:nn {student} {
+\starray_def_from_keyval:nn {student}
+ {
   self = , %% this shall be self hash (if any)
   first = ,
   last = ,
@@ -107,9 +119,8 @@ The purpose of this is to create an example of how to use a \tsobj[pkg]{starray}
   board-local = {~local/place~} ,
   board-date   = {~date~} ,
   board-time  = {~time~} ,
-  gradeavrg = 0,
-  grade = ,
-  flag-graded = \c_false_bool , %%% IF gradeavrg AND finalgrade already calculated (or defined)
+  grade = 0 ,
+  flag-graded = \c_false_bool , %%% IF grade already calculated (or defined)
   flag-approved = \c_false_bool ,
   flag-coadvisor = \c_false_bool ,
   advisor . struct = {
@@ -170,12 +181,12 @@ The purpose of this is to create an example of how to use a \tsobj[pkg]{starray}
 \end{codestore}
 
 \begin{codestore}[ActCmd:New]
-\NewDocumentCommand{\NewActivity}{m} {
-    \starray_new_term:nn {activity}{#1}
-    \starray_new_term:nn {activity.coord}{}
-    \starray_get_unique_id:nNTF {activity} \l__stdemo_tmpID_tl
-      {}
-      {}
+\NewDocumentCommand{\NewActivity}{mmm} {
+    \starray_new_term:nn  {activity}{#1}
+    \starray_set_prop:nnn {activity}{acronym}{#2}
+    \starray_set_prop:nnn {activity}{name}{#3}
+    \starray_new_term:nn  {activity.coord}{}
+    \starray_get_unique_id:nN {activity} \l__stdemo_tmpID_tl
     \starray_gset_prop:nnV {activity}{chkID} \l__stdemo_tmpID_tl
     \prop_new_linked:c {l__stdemo_ \l__stdemo_tmpID_tl _chkmarked_prop}
     \prop_new_linked:c {l__stdemo_ \l__stdemo_tmpID_tl _chkunmarked_prop}
@@ -183,40 +194,19 @@ The purpose of this is to create an example of how to use a \tsobj[pkg]{starray}
 }
 \end{codestore}
 
-\begin{codestore}[ActCmd:New]
-\NewDocumentCommand{\ActivitySet}{O{}mm} {
-  \tl_if_blank:nTF {#1}
-    {
-      \starray_set_prop:nnn {activity}{name}{#3}
-      \starray_set_prop:nnn {activity}{acronym}{#2}
-    }
-    {
-      \starray_set_prop:nnn {activity[#1]}{name}{#3}
-      \starray_set_prop:nnn {activity[#1]}{acronym}{#2}
-    }
-}
-\end{codestore}
-
 \begin{codestore}[ActCmd:SetCoord]
-\NewDocumentCommand{\ActivitySetCoord}{O{}mO{}}{
+\NewDocumentCommand{\ActivitySetCoord}{O{}mm}{
   \tl_if_blank:nTF {#1}
     {
-      \starray_gset_prop:nnn {activity.coord}{name}{#2}
+      \starray_gset_prop:nnn {activity.coord}{title}{#2}
+      \starray_gset_prop:nnn {activity.coord}{name}{#3}
     }
     {
-      \starray_gset_prop:nnn {activity[#1].coord}{name}{#2}
+      \starray_gset_prop:nnn {activity[#1].coord}{title}{#2}
+      \starray_gset_prop:nnn {activity[#1].coord}{name}{#3}
     }
 }
 \end{codestore}
-
-\begin{codestore}[ActCmd:SetCoord]
-\NewDocumentCommand{\ActivitySetCoordTitle}{O{}m} {
-  \tl_if_blank:nTF {#1}
-    { \starray_set_prop:nnn {activity.coord}{title}{#2} }
-    { \starray_set_prop:nnn {activity[#1].coord}{title}{#2} }
-}
-\end{codestore}
-
 
 
 \begin{codestore}[ActCmd:SetEvent] 
@@ -278,6 +268,37 @@ The purpose of this is to create an example of how to use a \tsobj[pkg]{starray}
             \prop_gput:cee {l__stdemo_ \l__stdemo_chkIDa_tl _checklist_prop} {\l__stdemo_checkref_tl} {\l__stdemo_checkB_tl}
           }
       }
+  }
+\end{codestore}
+
+
+\begin{codestore}[ActCmd:CheckList]
+\NewDocumentCommand{\StudentCheckListTable}{mm}
+  {
+    \starray_get_prop:nnN {student}  {chkID} \l__stdemo_chkIDa_tl
+    \starray_get_prop:nnN {activity} {chkID} \l__stdemo_chkIDb_tl
+%    \tl_show:N \l__stdemo_chkIDa_tl
+%    \tl_show:N \l__stdemo_chkIDb_tl
+    {
+      \prop_map_inline:cn {l__stdemo_ \l__stdemo_chkIDa_tl _checklist_prop}
+        { \prop_put:cnn {l__stdemo_ \l__stdemo_chkIDb_tl _chkunmarked_prop} {##1}{##2}  }  
+    
+      \tl_gclear:N \l__stdemo_table_tl
+      \clist_map_inline:nn {#1}    
+        { 
+          \tl_gclear:N \l_tmpa_tl    
+          \clist_map_inline:nn {#2}
+            {       
+             \tl_gset:Nn \l__stdemo_tmpx_tl {##1####1} 
+             \prop_get:ceNTF {l__stdemo_ \l__stdemo_chkIDb_tl _chkunmarked_prop} {\l__stdemo_tmpx_tl} \l__stdemo_tmpy_tl
+               {\tl_gput_right:Ne \l__stdemo_table_tl {\l_tmpa_tl~ \l__stdemo_tmpy_tl}}
+               {\tl_gput_right:Ne \l__stdemo_table_tl {\l_tmpa_tl~ }}
+             \tl_gset:Nn \l_tmpa_tl {~&~}
+            }
+          \tl_gput_right:Nn \l__stdemo_table_tl {\\*}
+        }
+      }
+      \l__stdemo_table_tl   
   }
 \end{codestore}
 
@@ -450,7 +471,7 @@ The purpose of this is to create an example of how to use a \tsobj[pkg]{starray}
 
 
 \begin{codestore}[student:grades]
-\NewDocumentCommand{\studentgrade}{O{A}}
+\NewDocumentCommand{\studentgrade}{O{A}m}
   { %assuming there are 3 of them...
     \starray_get_prop:nnN {student.reviewer[1]}{grade} \l__stdemo_A_tl
     \starray_get_prop:nnN {student.reviewer[2]}{grade} \l__stdemo_B_tl
@@ -459,24 +480,41 @@ The purpose of this is to create an example of how to use a \tsobj[pkg]{starray}
       {
         {A} 
           {
-            \starray_gset_prop:nne {student.reviewer}{grade}
-              { \fp_eval:n{round((\l__stdemo_A_tl + \l__stdemo_B_tl + \l__stdemo_C_tl) / 3 , 2 , 1) } }    
+            \starray_gset_prop:nne {student}{grade}
+              {
+                \fp_eval:n{round((\l__stdemo_A_tl + \l__stdemo_B_tl + \l__stdemo_C_tl) / 3 , 2 , 1) }
+              }    
           }
         {B} 
           {
-            \starray_gset_prop:nne {student.reviewer}{grade}
-              { \fp_eval:n{round((\l__stdemo_A_tl + \l__stdemo_B_tl) / 2 , 2 , 1) } }    
+            \starray_gset_prop:nne {student}{grade}
+              {
+                \fp_eval:n{round((\l__stdemo_A_tl + \l__stdemo_B_tl) / 2 , 2 , 1) }
+              }    
           }
         {C} 
           {
-            \starray_gset_prop:nne {student.reviewer}{grade}
-              { \fp_eval:n{round(3 / (1/\l__stdemo_A_tl + 1/\l__stdemo_B_tl + 1/\l__stdemo_C_tl) , 2 , 1) } }    
+            \starray_gset_prop:nne {student}{grade}
+              {
+                \fp_eval:n{round(3 / (1/\l__stdemo_A_tl + 1/\l__stdemo_B_tl + 1/\l__stdemo_C_tl) , 2 , 1) }
+              }    
           }
       }
       {
-        \starray_gset_prop:nne {student.reviewer}{grade}
-          { \fp_eval:n{round((\l__stdemo_A_tl + \l__stdemo_B_tl + \l__stdemo_C_tl) / 3 , 2 , 1) } }    
+        \starray_gset_prop:nne {student}{grade}
+          {
+            \fp_eval:n{round((\l__stdemo_A_tl + \l__stdemo_B_tl + \l__stdemo_C_tl) / 3 , 2 , 1) }
+          }    
       }
+    \starray_get_prop:nnN {student}{grade} \l__stdemo_tmp_fp
+    \fp_compare:nNnTF {\l__stdemo_tmp_fp} < {#2}
+      {
+        \starray_gset_prop:nnn {student}{flag-approved}{\c_false_bool}
+      }
+      {
+        \starray_gset_prop:nnn {student}{flag-approved}{\c_true_bool}
+      }
+    \starray_gset_prop:nnn {student}{flag-graded}{\c_true_bool}
   }
 \end{codestore}
 
@@ -532,13 +570,13 @@ The purpose of this is to create an example of how to use a \tsobj[pkg]{starray}
 
 
 \begin{codestore}[student:iter]
-\NewDocumentCommand{\studentiterate}{m} {
+\NewDocumentCommand{\studentiterate}{+m} {
     \starray_iterate_over:nn{student}{#1}
 }
 \end{codestore}
 
 \begin{codestore}[student:iter]
-\NewDocumentCommand{\studentadvisoriterate}{m} {
+\NewDocumentCommand{\studentadvisoriterate}{+m} {
     \starray_iterate_over:nn{student.advisor}{#1}
 }
 \end{codestore}
@@ -559,14 +597,6 @@ The purpose of this is to create an example of how to use a \tsobj[pkg]{starray}
         #3
         \starray_get_cnt:nN {#2} \l_tmpa_int
       }
-  }
-
-
-\cs_new_protected:Npn \__stdemo_student_emptyfields_if_none:
-  {
-    \__stdemo_emptyterm_if_none:nnn {1}{student}{}
-    \__stdemo_emptyterm_if_none:nnn {1}{student.advisor}{}
-    \__stdemo_emptyterm_if_none:nnn {3}{student.reviewer}{}
   }
 \end{codestore}
 
@@ -634,19 +664,12 @@ The purpose of this is to create an example of how to use a \tsobj[pkg]{starray}
         \starray_set_iter_from_hash:nn {student}{##1}
      
         \emptytermifnone{student.advisor}
-        \emptytermifnone[3]{student.reviewer}[\starray_gset_prop:nnn {student}{flag-null}{\c_true_bool}]
+        \emptytermifnone[3]{student.reviewer}
 %        % those could be, instead
-%        \__stdemo_emptyterm_if_none:nnn 
-%          {}
-%          { student.advisor }
-%          {}
-%        \__stdemo_emptyterm_if_none:nnn 
-%          {3}
-%          { student.reviewer } 
-%          { \starray_gset_prop:nnn {student}{flag-null}{\c_true_bool} }
+%        \__stdemo_emptyterm_if_none:nnn {1}{ student.advisor } {}
+%        \__stdemo_emptyterm_if_none:nnn {3}{ student.reviewer } {}
       }       
   }
-
 \end{codestore}
 
 
@@ -729,7 +752,7 @@ As in any ``procedural language'', one is advised to  carefully design the data 
 \end{tsremark}
 
 
-\subsection{Activity Set}\label{Activity-set}
+\subsection{Activity Set}\label{Activity:DataModel}
 For the activities one could set an ``starray'' as follow:
 
 
@@ -754,7 +777,7 @@ The ``chkID'' (and checklists). In many cases it's handy to have an unique ident
 
 
 
-\subsection{Student Set}
+\subsection{Student Set}\label{student:DataModel}
 A student's structure might contain, besides student's name, work title, some flags, an advisor (and co-advisor, if needed), reviewer's list (with a provision for reviewer's grade, if needed).
 
 Of course, one doesn't need to define a \tsobj[pkg]{starray} structure using \tsobj{\starray_def_from_keyval:nn}, but, as in this,  if the set of properties is known, it always makes for a cleaner definition.
@@ -783,6 +806,9 @@ Once the data layout is set (see \ref{DataModel}) the next step is to define a s
     \tsmacro{\DataGet}{starray,item,store-var}
   \end{codesyntax}
 \tsobj{\DataField} will recovery an item from any \tsobj[pkg]{starray}, for instance, \tsobj[marg]{starray} might be \tsobj[meta,sep=or]{activity,activity.coord,activity.calendar,student,student.advisor} etc. whilst \tsobj[marg]{item} might be any corresponding field. The \tsobj{\DataGet} will store said value in an auxiliary \tsobj[marg]{store-var}.
+\begin{tsremark}[\color{red}Note:]
+  None of those commands are expandable. In general it should be enough (for the end user) to just use \tsobj{\DataField}, but it might be necessary to use a temporary variable, \tsobj[marg]{store-var}, allowing  its use in an expandable context.
+\end{tsremark}
 \end{codedescribe}
 
 
@@ -796,40 +822,36 @@ One could define a single function to initialize all fields (using a key=val int
 
 \subsubsection{Creating and Setting an Activity's Data}
 
-\begin{codedescribe}{\NewActivity,\ActivitySet}
+\begin{codedescribe}{\NewActivity}
 \begin{codesyntax}
-  \tsmacro{\NewActiviy}{act-ID}
-  \tsmacro{\ActivitySet}[act-ID]{name,acronym}
+  \tsmacro{\NewActiviy}{act-ID,acronym,name}
 \end{codesyntax}
-\tsobj{\NewActivity} will create a new one, \tsobj[marg]{act-ID} will be the identifier of it. \tsobj{\ActivitySet} will set the \tsobj[marg]{name,acronym} of an activity. If not given, the current \tsobj[oarg]{act-ID} will be used.
-
-The idea is to (normally) use one right after the other, though, once created with \tsobj{\NewActivity}, an activity can be initialized/changed at a later point using the optional argument from \tsobj{\ActivitySet}.
+\tsobj{\NewActivity} will create a new activity term, \tsobj[marg]{act-ID} will be it's identifier (hash).
 
 \end{codedescribe}
 \begin{tsremark}
-  Every time a \tsobj[pkg]{starray} is instantiated, up to two hashes are created: a numerical one (starting at one) and an ``user defined one''. In the \tsobj{\NewActivity} function above, the given argument is that hash, so the just created instance can be later referenced by it. Of course, it must be an unique ID/hash.
+  Every time a \tsobj[pkg]{starray} is instantiated, up to two hashes are created: a numerical one (starting at one) and an ``user defined one''. In the \tsobj{\NewActivity} function above, \tsobj[marg]{act-ID} is that hash, so that instance can be later referenced by it. Of course, it must be an unique ID/hash.
 \end{tsremark}
 \begin{tsremark}
-  One thing to be noticed about \tsobj[pkg]{starrays}: every structure has an associated internal index (iterator). When you create a new instance, this iterator always points to the newly created one, therefore, sparing the use of an explicit index.
+  One thing to be noticed about \tsobj[pkg]{starrays}: every structure has an associated internal index (iterator). When you create a new instance, this iterator always points to the newly created one, therefore, sparing the use of an explicit index in the subsequent commands.
 \end{tsremark}
 
 \tscode*[stdemo]{ActCmd:New}[1]
-\tscode*[stdemo]{ActCmd:New}[2]
+%\tscode*[stdemo]{ActCmd:New}[2]
 
 ~
 
 Similarly, one can define some functions to set the activity's coordinator. Of course, it's up to the package programmer to choose if one, two (or more) functions for this.
 
-\begin{codedescribe}{\ActivitySetCoord,\ActivitySetCoordTitle}
+\begin{codedescribe}{\ActivitySetCoord}
 \begin{codesyntax}
-  \tsmacro{\ActivitySetCoord}[act-ID]{name}
-  \tsmacro{\ActivitySetCoordTitle}[act-ID]{title}
+  \tsmacro{\ActivitySetCoord}[act-ID]{name,title}
 \end{codesyntax}
-For both, \tsobj{\ActivitySetCoord,\ActivitySetCoordTitle}, the optional argument \tsobj[oarg]{act-ID} refers to an already create activity, and, if not given, will use the current one.
+The optional argument \tsobj[oarg]{act-ID} should refer to an already create activity, and, if not given, will use the current one.
 \end{codedescribe}
 
 \tscode*[stdemo]{ActCmd:SetCoord}[1]
-\tscode*[stdemo]{ActCmd:SetCoord}[2]
+%\tscode*[stdemo]{ActCmd:SetCoord}[2]
 
 
 And the associated ``Calendar Events'', assuming there will be a fixed set of events (each semester/year), leaving the date to be set later on. 
@@ -839,7 +861,7 @@ And the associated ``Calendar Events'', assuming there will be a fixed set of ev
   \tsmacro{\ActivitySetNewEvent}[act-ID]{event-ID,description}
   \tsmacro{\ActivitySetEventDay}[act-ID]{event-ID,date,week}
 \end{codesyntax}
-The optional argument \tsobj[oarg]{act-ID} refers to an already create activity, and, if not given, will use the current one. \tsobj[marg]{event-ID} can be any identifier. That way, the user can first define a set of events, and only later on, set the associated dates.
+The optional argument \tsobj[oarg]{act-ID} refers to an already create activity, and, if not given, the current one will used. \tsobj[marg]{event-ID} can be any identifier. That way, the user can first define a set of events, and later on, set the associated dates.
 \end{codedescribe}
 
 
@@ -851,28 +873,51 @@ The optional argument \tsobj[oarg]{act-ID} refers to an already create activity,
 
 
 
-In many cases, it's desirable to have a ``check list''. What such list could entice is always up to debate, the idea behind the few next functions is to allow the end user to define which items such a list (as a matrix) might have.
+\subsubsection{Check Lists}\label{Activity-checklist}
 
-\subsubsection{Check Lists}
-\begin{codedescribe}{\checkdef,\checklist}
+It's often desirable to have a ``check list''. What such list could entice is always up to debate, the idea behind the few next functions is to allow the end user to define which items such a list (as a matrix) might have.
+
+\begin{codedescribe}{\checkdef}
 \begin{codesyntax}
   \tsmacro{\checkdef}{chkID,chkPos,chktext}
-  \tsmacro{\checklist}[act-ID]{chkID-list}
 \end{codesyntax}
   \tsobj[marg]{chkID} is just an ID to reference the check list item. \tsobj[marg]{chkPos} will relate the item to a position in a matrix (tabular environment, see \tsobj{\StudentCheckListTable}) and \tsobj[marg]{chktext} is the (assumed) short text.
-  The command \tsobj{\checkdef} defines/create a new item, whilst \tsobj{\checklist} sets a list of \tsobj[marg]{chkID}s (note that \tsobj[marg]{chkID-list} is a csv list).
+  The command \tsobj{\checkdef} defines/create a new check item.
 \end{codedescribe}
 \begin{tsremark}
-  In the implementation below, note that the check list items are associated with an activity, but the final list itself is a student by student one. Better said, each student will have a property list (constructed based on a student's unique ID) of the ``checked items'' (see \tsobj{\StudentCheckListTable}).
+  In the implementation below, three property lists are created (based on the activity unique ID). Two of them with the \tsobj[marg]{chktext} marked and unmarked, and a third relating the \tsobj[marg]{chkID} a given position \tsobj[marg]{chkPos}.
 \end{tsremark}
 
 
 
 \tscode*[stdemo]{ActCmd:CheckList}[1]
 
-~
+\begin{codedescribe}{\checklist}
+\begin{codesyntax}
+  \tsmacro{\checklist}[act-ID]{chkID-list}
+\end{codesyntax}
+  This sets a list of \tsobj[marg]{chkID}s associated with the current student. Note that, since the checklist is based on an activity, the optional parameter allows to explicitly select one.
+\end{codedescribe}
+\begin{tsremark}
+  In the implementation below, the property list, associated with the student unique ID, will use as keys the \tsobj[marg]{chkPost} from \tsobj{\checkdef} and as associated value the ones from the activity's marked property list.
+\end{tsremark}
 
 \tscode*[stdemo]{ActCmd:CheckList}[2]
+
+
+\begin{codedescribe}{\StudentCheckListTable}
+\begin{codesyntax}
+  \tsmacro{\StudentCheckListTable}{L-list,C-list}
+\end{codesyntax}
+  This will produces a checklist matrix. Both \tsobj[marg]{L-list,C-list} shall be a comma list of ``lines'' and ``columns''. More specifically, each \tsobj[marg]{L-list} element will be compose with each \tsobj[marg]{C-list} element like ``$L_iC_j$'' which shall correspond to one of the \tsobj[marg]{chkPos} elements defined with \tsobj{\checkdef}.
+\end{codedescribe}
+\begin{tsremark}
+  Better said, this will produces the inner part of a table, sans the table begin/end. Also note, in the code example below, that each line is finished with a \tsobj[verb]{\\*}.
+\end{tsremark}
+
+\tscode*[stdemo]{ActCmd:CheckList}[3]
+
+
 
 %\tsmergedcode*[stdemo]{{ActCmd:CheckList}[1-2]}
 
@@ -892,13 +937,13 @@ In many cases, it's desirable to have a ``check list''. What such list could ent
 
 
 
-\subsubsection{Iterating over Calendar Data}
+\subsubsection{Iterating over the Calendar Data}
 
 \begin{codedescribe}{\ActivityCalendarIterate}
   \begin{codesyntax}
     \tsmacro{\ActivityCalendarIterate}{code}
   \end{codesyntax}
-  This is a helper function, so that the end user is free to construct an ``Event Calendar'' with the (activity's) stored data. The suggested pattern is: 
+  This is a helper function, based on \tsobj{\starray_iterate_over:nn}, so that the end user is free to construct an ``Event Calendar'' with the (activity's) stored data. The suggested pattern is: 
   \begin{enumerate*}
     \item Select an activity with \tsobj{\ActivitySelect}, then
     \item execute the code for each item stored in the activity's calendar list.
@@ -910,7 +955,7 @@ In many cases, it's desirable to have a ``check list''. What such list could ent
 
 \subsection{Student's Functions}
 
-\subsubsection{Creating and Setting Student's Data}
+\subsubsection{Creating and Setting Student's Data}\label{student:new}
 
 \begin{codedescribe}{\student,\studentremark,\worktitle}
   \begin{codesyntax}
@@ -918,7 +963,7 @@ In many cases, it's desirable to have a ``check list''. What such list could ent
     \tsmacro{\studentremark}{remark}
     \tsmacro{\worktitle}{work-title}
   \end{codesyntax}
-  some text
+  As always, there are many ways to achieve this. The \tsobj{\student} ``creates'' a new student entry, the (not so) optional parameter \tsobj[oarg]{student-hash} associates it with the given hash (otherwise one would have to keep track 'which index' correspond to a student). An auxiliary property list, for a checklist (see \ref{Activity-checklist} and \tsobj{\StudentCheckListTable} ), is created using  the student unique identifier, \tsobj{\starray_get_unique_id}.
 \end{codedescribe}
 
 \tscode*[stdemo]{student:New}[1]
@@ -931,7 +976,7 @@ In many cases, it's desirable to have a ``check list''. What such list could ent
     \tsmacro{\coadvisor}[pre-nom]{last,first}
     \tsmacro{\examiner}[pre-nom]{last,first}
   \end{codesyntax}
-  some text
+  Those are just some auxiliary commands to set the advisor's/coadvisor's/examiner's name. The first optional parameter \tsobj[oarg]{pre-nom} can be used as a title. With each call of those, a new \tsobj[pkg]{starry} term is created for the current student.
 \end{codedescribe}
 
 \tscode*[stdemo]{student:NewAdv}[1]
@@ -945,7 +990,7 @@ In many cases, it's desirable to have a ``check list''. What such list could ent
     \tsmacro{\coadvisorinfo}{institute,title,email}
     \tsmacro{\examinerinfo}{institute,title,email}
   \end{codesyntax}
-  some text
+  Some extra commands to set the advisor's/coadvisor's/examiner's other data. Note, though, it is assumed that these commands will be called after the respective \tsobj[code,sep=or]{\advisor,\coadvisor,\examiner} command call.
 \end{codedescribe}
 
 \tscode*[stdemo]{student:NewAdv}[5]
@@ -958,7 +1003,10 @@ In many cases, it's desirable to have a ``check list''. What such list could ent
 \begin{codesyntax}
   \tsmacro{\examinergrades}[case]{gradeA,gradeB,gradeC,gradeD}
 \end{codesyntax}  
-some text
+Nothing much to be said, this allows to set 4 grades, per examiner. \tsobj[oarg]{case} sets how the average shall be calculated. Note that, this is supposed to be used immediately  after the respective command \tsobj{\examiner}, better said, before another \tsobj{\examiner}, or after having selected a specific reviewer with \tsobj{\studentreviewerselect} (see \ref{student:data-recovery}).
+\begin{tsremark}
+  The \tsobj{\starray_gset_prop:nne} is used to assure the stored grade will be a floating point, and not an expression to be evaluated later on.
+\end{tsremark}
 \end{codedescribe}
 
 \tscode*[stdemo]{student:grades}[1]
@@ -967,22 +1015,28 @@ some text
 
 \begin{codedescribe}{\studentgrade}
 \begin{codesyntax}
-  \tsmacro{\studentgrade}[case]{}
+  \tsmacro{\studentgrade}[case]{min}
 \end{codesyntax}  
-some text
+Similarly, this will set/calculate the student's final grade based on the individual reviewers' grades, and the flag \tsobj[key]{flag-approved} (based on \tsobj[marg]{min}).  The optional parameter \tsobj[oarg]{case} selects how the final grade will be calculated.
+\begin{tsremark}
+  The \tsobj{\starray_gset_prop:nne} is used to assure the stored grade will be a floating point, and not an expression to be evaluated later on.
+\end{tsremark}
+\begin{tsremark}
+  To simplify the logic, it's assumed there are 3 reviewers (even though in some cases only two are needed). Therefore the command \tsobj{\emptytermifnone} (see \ref{student:auxcmds});
+\end{tsremark}
 \end{codedescribe}
 
 \tscode*[stdemo]{student:grades}[2]
 
 
-\subsubsection{Recovering/Selecting a Student's Data}
+\subsubsection{Selecting Student's Data}\label{student:data-recovery}
 
-\begin{codedescribe}{\studentselect,\studentreviewerselect}
+\begin{codedescribe}{\studentselect,\studentReviewerSelect}
 \begin{codesyntax}
   \tsmacro{\studentselect}{student-hash}
-  \tsmacro{\studentreviewerselect}{rev-index}
+  \tsmacro{\studentReviewerSelect}{rev-index}
 \end{codesyntax}
- some text
+ \tsobj{\studentselect} allows to select a given student, given it's hash (note, the student index could also be used). Since the \tsobj{\examiner} command (see \ref{student:new}) doesn't associate a hash with each examiner, one can only select one with it's index number: 1, 2 ...
 \end{codedescribe}
 
 \tscode*[stdemo]{student:select}[1]
@@ -990,13 +1044,16 @@ some text
 
 \begin{codedescribe}{\studentcase,\studentadvcase,\studentcoadvcase,\studentreviewersetcase}
 \begin{codesyntax}
-  \tsmacro{\studentcase}{if-approved,if-not}
-  \tsmacro{\studentadvcase}{if-one,if-many}
-  \tsmacro{\studentcoadvcase}{if-set,if-not}
-  \tsmacro{\studentreviewersetcase}{if-set,if-not}  
+  \tsmacro{\studentCase}{if-approved,if-not}
+  \tsmacro{\studentAdvCase}{if-one,if-many}
+  \tsmacro{\studentCoadvCase}{if-set,if-not}
+  \tsmacro{\studentReviewerSetCase}{if-set,if-not}  
 \end{codesyntax}
- some text
+ Those are auxiliary conditionals. \tsobj{\studentAdvCase} tests if the student has one or more than one advisors assigned. \tsobj{\studentCoadvCase} tests if there is a co-advisor. \tsobj{\studentReviewerSetCase} tests if the current reviewer (better said, student.reviewer) is set (not the default -empty- set). And, finally, \tsobj{\studentCase} verifies the state of the flag flag-approved.
 \end{codedescribe}
+\begin{tsremark}
+  In the code below, one could have used \tsobj{\starray_get_prop:} instead. The construct is meant as an example of how to use one of the few \tsobj{\starray_parsed_} commands, which can be used in an expandable context.
+\end{tsremark}
 
 \tscode*[stdemo]{student:cases}[1]
 \tscode*[stdemo]{student:cases}[2]
@@ -1011,20 +1068,22 @@ some text
     \tsmacro{\studentiterate}{code}
     \tsmacro{\studentadvisoriterate}{code}
   \end{codesyntax}
-  some text
+  As their name implies, they are auxiliary commands to iterate over all students, \tsobj{\studentiterate}, or all advisors of the current student, \tsobj{\studentadvisoriterate}.
 \end{codedescribe}
-
+\begin{tsremark}
+  To retrieve the student's/advisor's data, the end user is supposed to use \tsobj[code,sep=or]{\DataField,\DataGet} (see \ref{generic:datafield}), like \tsverb[verb]{\DataField{student}{name}} (do not use any index/hash) or \tsobj[verb]{\DataField{student.advisor}{name}}.
+\end{tsremark}
 \tscode*[stdemo]{student:iter}[1]
 \tscode*[stdemo]{student:iter}[2]
 
 
-\subsubsection{Auxiliary Commands}
+\subsubsection{Auxiliary Commands}\label{student:auxcmds}
 \begin{codedescribe}{\emptytermifnone,\emptyfields}
   \begin{codesyntax}
     \tsmacro{\emptytermifnone}[count]{struct}\tsargs[oarg]{code}
     \tsmacro{\emptyfields}{}
   \end{codesyntax}
-  some text
+  \tsobj{\emptyfields} creates an ``empty'' student (better said, with a hash: ``empty'') all fields remain at their default value (see \ref{student:DataModel}). \tsobj{\emptytermifnone} assures that there is(are) at least \tsobj[oarg]{count} (defaults to 1) (sub)structures \tsobj[marg]{struct}. Optionally, \tsobj[oarg]{code} will be executer after each instantiation (if needed) of a term defined by \tsobj[marg]{struct}.
 \end{codedescribe}
 
 \tscode*[stdemo]{student:emptyterm}[1]
@@ -1038,8 +1097,13 @@ some text
   \tsmacro{\studentaddtolist}{list}
   \tsmacro{\studentlistsort}[field]{list}
 \end{codesyntax}
-some text
+A \tsobj[pkg]{starry} has an implicit order: it's instantiation sequence, which is ok, but not always. To be able the access/list the terms of it, an option is to have one (or more) associated lists. Note that those commands will just create a sequence associated with \tsobj[marg]{list}
+
+\tsobj{\studentaddtolist} will insert a student (better said, the current student's hash) to a \tsobj[marg]{list}, if the \tsobj[marg]{list} isn't already defined, a new one will be created. \tsobj{\studentlistsort} will sort the elements of \tsobj[marg]{list} based on the value of the field \tsobj[oarg]{field} (defaults to ``name'').
 \end{codedescribe}
+\begin{tsremark}
+  Since \tsobj[marg]{list} will store student's hash, the sort has to first retrieve the associated \tsobj[pkg]{starray} term and the ``sorting field'' which can be, in fact, anything associated with the student. In the example below, only the immediate fields can be used, like name, email, worktitle, but one can easily modify the code below to retried, for instance, the advisor's name.
+\end{tsremark}
 
 \tscode*[stdemo]{student:list}[1]
 
@@ -1049,7 +1113,7 @@ some text
 \begin{codesyntax}
   \tsmacro{\listemptytermsifnone}{list}
 \end{codesyntax}
-some text.  
+This will iterate over all students in \tsobj[marg]{list} assuring that each student has at leas 1 advisor and 3 examiners (reviewers). Note that, in the case of the examiners the \tsobj{\examiner} command (see \ref{student:new}) sets the ``flag-set'' associated with said examiner to true. This, however, keeps the it's default value: false.
 \end{codedescribe}
 
 \tscode*[stdemo]{student:list}[3]
@@ -1057,32 +1121,26 @@ some text.
 
 \begin{codedescribe}{\studentlistiterate}
 \begin{codesyntax}
-  \tsmacro{\studentlistiterate}{list}
+  \tsmacro{\studentlistiterate}{list,code}
 \end{codesyntax}
-some text.  
+As the name implies, it will iterate over all students in \tsobj[marg]{list} executing \tsobj[marg]{code} for each of them. Note that, before starting the iteration, \tsobj{\studentlistiterate} verifies if the list is already sorted (if not, \tsobj{\studentlistsort} will be called, with it's default) and it will make sure all students have an advisor term (and examiners) by calling \tsobj{\listemptytermsifnone}.
 \end{codedescribe}
 
 \tscode*[stdemo]{student:list}[4]
 
-
+\newpage
 \section{Example of Use}
 \subsection{Setting Things up}
 
 \begin{codestore}[demo:datasetting]
-  \NewActivity{FW I}
-  \ActivitySet{Final Work I}{fw0501}
-  \ActivitySetCoord{Prof. Willian S.}
-  \ActivitySetCoordTitle{Final Work Coordinator}
+  \NewActivity{FW I}{fw0501}{Final Work I}
+  \ActivitySetCoord{Prof. Willian S.}{Final Work Coordinator}
 
-  \NewActivity{FW II}
-  \ActivitySetCoord[FW II]{Prof. Karen S.}
-  \ActivitySetCoordTitle[FW II]{Final Work Coordinator}
-  \ActivitySet{Final Work II}{fw0502}
+  \NewActivity{FW II}{fw0502}{Final Work II}
+  \ActivitySetCoord[FW II]{Prof. Karen S.}{Final Work Coordinator}
   
-  \NewActivity{TN A}
-  \ActivitySetCoord{Prof. Samantha S.}
-  \ActivitySetCoordTitle{Trainee Program Coordinator}
-  \ActivitySet{Trainee}{tn0101}  
+  \NewActivity{TN A}{tn0101}{Trainees}
+  \ActivitySetCoord{Prof. Samantha S.}{Trainee Program Coordinator}
 \end{codestore}
 
 \tscode*[stdemo]{demo:datasetting}
@@ -1090,7 +1148,7 @@ some text.
 \tsexec{demo:datasetting}
 
 
-\subsection{Defining a Check List}
+\subsection{Defining per Activity Check List}
 
 
 \begin{codestore}[activity:checklist]
@@ -1283,7 +1341,7 @@ and others likely defined.
 
 \studentlistsort[last]{FW-II}
 \studentlistiterate{FW-II}{
-    \studentgrade[A]
+    \studentgrade[A]{6}
     \par
     student: \DataField{student}{name}\par
     \studentAdvCase

@@ -1563,11 +1563,10 @@
 
 \cs_new_protected:Npn \starray_get_unique_id:nN #1#2
   {
-    \__starray_parser:nnTF {\c__starray_no_idx_ending_bool}{#1}
+    \__starray_parser:nnTF {\c__starray_idx_ending_bool}{#1}
     {
-      \tl_set_eq:Ne
-        #2 
-        { \l__starray_parsed_ref_tl }
+      \tl_set:NV #2 
+        \l__starray_parsed_ref_tl
     }
     {
       \__starray_msg_dispatch:
@@ -1581,9 +1580,8 @@
   {
     \__starray_parser:nnTF {\c__starray_idx_ending_bool}{#1}
     {
-      \tl_set:Ne 
-        #2 
-        { \l__starray_parsed_ref_tl }
+      \tl_set:NV #2 
+        \l__starray_parsed_ref_tl
       \prg_return_true:
     }
     {
