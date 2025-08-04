@@ -45,7 +45,7 @@
 \begin{typesetabstract}
 
 This package implements vector like 'structures', alike 'C' and other programming languages. 
-It's based on \tsobj[pkg]{expl3} and aimed at 'package writers', and not end users. The provided 'functions' are similar the ones provided for property (or sequence, or token) lists. Most of the provided functions have a companion 'branching version'.
+It's based on \tsobj[pkg]{expl3} and aimed at 'package writers', and not end users. The provided commands are similar the ones provided for property (or sequence, or token) lists. Most of the provided functions have a companion ``branching version''.
 
 \end{typesetabstract}
 
@@ -67,7 +67,7 @@ The current implementation, albeit also complex, tries to reach a balance betwee
 \end{tsremark}
 
 \begin{tsremark}[\color{red}Important:]
- \textsl{Expandability}, unfortunately most/all defined functions are not ''fully expandable'', in particular, most conditional/branching functions aren't, with just a few exceptions (marked with a star \ding{72}, as per \tsobj[pkg]{expl3} documentation convention).
+ \textsl{Expandability}, unfortunately most/all defined functions are not ``expandable'', in particular, most conditional/branching functions aren't, with just a few exceptions (marked with a star \ding{72}, as per \tsobj[pkg]{expl3} documentation convention).
  
 \end{tsremark}
 
@@ -98,6 +98,9 @@ The package options (\tsobj[key]{key}\,=\tsobj[value]{value}) are:
 \end{describelist*}
 \end{describelist}
 
+\section{Demo package(s)}
+Given the inherent complexity of this package, one can find at \url{https://github.com/alceu-frigeri/starray/tree/main/demo} an example, \tsobj[pkg]{stdemo.sty}, package with its companion documentation \tsobj[pkg]{stdemo.pdf}. Since the aforementioned package, and documentation, are just an example of use, it doesn't make sense to add them to CTAN.
+
 \section{Creating a starray}\label{pack:new}
 \begin{codedescribe}{\starray_new:n,\starray_new:nTF}
 \begin{codesyntax}%
@@ -121,7 +124,7 @@ Creates a new \tsobj[marg]{starray} or raises a warning  if the name is already 
 \tsobj{\starray_if_exist:nTF} only tests if \tsobj[marg]{starray} (the base property) is defined. It doesn't verifies if it really is a  \tsobj[pkg]{starray}. \tsobj{\starray_if_valid:nTF} is functionally equivalent since release 1.9. See \tsobj{\starray_term_syntax:nTF}, section \ref{conditionals:terms}, for a more reliable validity test.
 \end{codedescribe}
 \begin{tsremark}
-The predicate versions, \tsobj{_p}, expand to either \tsobj{\prg_return_true:} or \tsobj{\prg_return_false:}
+The predicate versions, \tsobj{_p}, expand to either \tsobj{\prg_return_true:} or\break  \tsobj{\prg_return_false:}
 \end{tsremark}
 
 \section{Defining and initialising a starray structure}\label{pack:def}
@@ -201,7 +204,7 @@ The non-branching version raises a warning (see \ref{pack:options}) in case of a
 
 \subsection{Fixing an ill-instantiated starray}\label{pack:def-fix}
 
-When instantiating (see \ref{pack:instantiate}) a \tsobj[pkg]{starray}, the associated structured will be constructed based on it's ``current definition'' (see \ref{pack:def}). A problem that migh arise, when one extends the definition of an already instantiated \tsobj[pkg]{starray}  (better said, if one adds a sub-structure), is a \textsl{quark loop} (from \tsobj[pkg]{l3quark}). To avoid a \textsl{quark loop} it is necessary to ``fix'' the structure of already instantiated terms.
+When instantiating (see \ref{pack:instantiate}) a \tsobj[pkg]{starray}, the associated structured will be constructed based on it's ``current definition'' (see \ref{pack:def}). A problem that might arise, when one extends the definition of an already instantiated \tsobj[pkg]{starray}  (better said, if one adds a sub-structure to it), is that a \textsl{quark loop} will issue (from \tsobj[pkg]{l3quark}). To avoid that  \textsl{quark loop} it is necessary to ``fix'' the structure of the already instantiated terms.
 
 \begin{codedescribe}{\starray_fix_terms:n}
 \begin{codesyntax}%
@@ -407,7 +410,7 @@ Those functions allows to \tsmacro{set}{} an iterator to a given \tsobj[marg]{in
 \end{codedescribe}
 
 \begin{tsremark}[Important:]
-Please observe that, when setting/resetting/incrementing the  iterator of a (sub-)structure, all ''descending'' iterators will be also be reset.
+Please observe that, when setting/resetting/incrementing the  iterator of a (sub-)structure, all ''descending'' iterators will also be reset.
 \end{tsremark}
 \begin{tsremark}
 A warning is raised (see \ref{pack:options}) in case of a \tsobj[marg]{starray-ref} syntax error. The branching version doesn't raise any warning.
@@ -495,7 +498,7 @@ This can be used after any command which 'parses a term', for instance \tsobj{\s
 \tsobj{\starray_parsed_get_iter:} will place in the current iterator's value associated with \tsobj[marg]{parsed-refA,parsed-refB},  using \tsobj{\int_use:N}, in the input stream.
 \end{codedescribe}
 \begin{tsremark}[\color{red}Warning:]
-\tsobj[marg]{parsed-refA,parsed-refB} are the values returned by \tsobj{\starray_term_syntax:nNN}.
+\tsobj[marg]{parsed-refA,parsed-refB} are the values returned by\break  \tsobj{\starray_term_syntax:nNN}.
 \end{tsremark}
 
 
@@ -528,7 +531,7 @@ This can be used after any command which 'parses a term', for instance \tsobj{\s
 \tsobj{\starray_parsed_get_cnt:} will place in the current number of terms associated with \tsobj[marg]{parsed-refA,parsed-refB},  using \tsobj{\int_use:N}, in the input stream.
 \end{codedescribe}
 \begin{tsremark}[\color{red}Warning:]
-\tsobj[marg]{parsed-refA,parsed-refB} are the values returned by \tsobj{\starray_term_syntax:nNN}.
+\tsobj[marg]{parsed-refA,parsed-refB} are the values returned by\break  \tsobj{\starray_term_syntax:nNN}.
 \end{tsremark}
 
 
@@ -631,7 +634,7 @@ Also note that the above example is fully equivalent to:
 \tsmacro{\starray_get_prop:nnN}{starray-ref,key,tl-var}
 \tsmacro{\starray_get_prop:nnNTF}{starray-ref,key,tl-var,if-true,if-false}
 \end{codesyntax}
-\tsmacro{\starray_get_prop:nn}{starray-ref,key} places the value of \tsobj[marg]{key} in the input stream.
+\tsmacro{\starray_get_prop:nn}{starray-ref,key} places the value of \tsobj[marg]{key} in the input stream.\break
 \tsmacro{\starray_get_prop:nnN}{starray-ref,key,tl-var} recovers the value of \tsobj[marg]{key} and places it in \tsobj[marg]{tl-var} (a token list variable), this is specially useful in conjunction with \tsobj{\starray_set_prop:nnV}, whilst the \tsobj{\starray_get_prop:nnNTF} version branches accordly.
 \end{codedescribe}
 \begin{tsremark}
@@ -660,7 +663,7 @@ This can be used after any command which 'parses a term', for instance \tsobj{\s
 \tsobj{\starray_parsed_get_prop:NNn} places the value of \tsobj[marg]{key}, if it exists, associated with \tsobj[marg]{parsed-refA,parsed-refB}.
 \end{codedescribe}
 \begin{tsremark}[\color{red}Warning:]
-\tsobj[marg]{parsed-refA,parsed-refB} should be the values returned by \tsobj{\starray_term_syntax:nNN}.
+\tsobj[marg]{parsed-refA,parsed-refB} should be the values returned by \break \tsobj{\starray_term_syntax:nNN}.
 \end{tsremark}
 
 
@@ -709,7 +712,7 @@ A warning is raised (see \ref{pack:options}) in case of a \tsobj[marg]{starray-r
 This will test if the given \tsobj[key]{key} is present in the "last parsed term". 
 \end{codedescribe}
 \begin{tsremark}
-The predicate version, \tsobj{_p}, expands to either \tsobj{\prg_return_true:} or \tsobj{\prg_return_false:}.
+The predicate version, \tsobj{_p}, expands to either \tsobj{\prg_return_true:} or \break \tsobj{\prg_return_false:}.
 \end{tsremark}
 \begin{tsremark}[\color{red}Warning:]
 This can be used after any command which 'parses a term', for instance \tsobj{\starray_term_syntax:n}, but it only makes sense (and returns a reliable/meaningful result) IF the last parser operation was successfully executed.
@@ -724,10 +727,10 @@ This can be used after any command which 'parses a term', for instance \tsobj{\s
 This will test if the given \tsobj[key]{key} is present/associated with \tsobj[marg]{parsed-refA,parsed-refB}.
 \end{codedescribe}
 \begin{tsremark}
-The predicate version, \tsobj{_p}, expands to either \tsobj{\prg_return_true:} or \tsobj{\prg_return_false:}.
+The predicate version, \tsobj{_p}, expands to either \tsobj{\prg_return_true:} or\break  \tsobj{\prg_return_false:}.
 \end{tsremark}
 \begin{tsremark}[\color{red}Warning:]
-\tsobj[marg]{parsed-refA,parsed-refB} should be the values returned by \tsobj{\starray_term_syntax:nNN}.
+\tsobj[marg]{parsed-refA,parsed-refB} should be the values returned by\break  \tsobj{\starray_term_syntax:nNN}.
 \end{tsremark}
 
 \begin{codedescribe}[code,new=2024/03/10]{\starray_get_unique_id:nN,\starray_get_unique_id:nNTF}

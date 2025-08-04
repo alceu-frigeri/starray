@@ -72,12 +72,12 @@ The Current Maintainer of this work is Alceu Frigeri
 -------------
 
 ## Changelog
-* Version 1.9c (next)
+* Version 1.10 (this)
     - fixing issue [#8](https://github.com/alceu-frigeri/starray/issues/8).
-    - (hopefully) better documentation
-    - example of use added (finally 'fixing' [#5](https://github.com/alceu-frigeri/starray/issues/5)), in [demo](https://github.com/alceu-frigeri/starray/tree/main/demo)
+    - typos in documentation
+    - an example of use added (finally 'fixing' [#5](https://github.com/alceu-frigeri/starray/issues/5)), in [demo](https://github.com/alceu-frigeri/starray/tree/main/demo)
     
-* Version 1.9b (this) 
+* Version 1.9b
     - fixing issue #7 (related to https://github.com/latex3/latex3/issues/1189) and removing the (unneeded) ```predicate``` in variant generation of ``` \starray_(g)set_prop:nnn```.
 
 * Version 1.9 
