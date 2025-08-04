@@ -49,8 +49,7 @@
 The purpose of this is to create an example of how to use a \tsobj[pkg]{starray} in a complete setup. That for, this demo has a few parts:
 \begin{enumerate*}
   \item A companion package \tsobj[pkg]{stdemo.sty},
-  \item this document which documents not just the user level functions/commands, but also how the the companion package was created, and
-  \item a document using the demo package.
+  \item this document which documents not just the user level functions/commands, but also how the the companion package was created, with  a small example (at the end) of how to use it.
 \end{enumerate*}
 \begin{tsremark}
   About the version number, since this is ``part'' of \tsobj[pkg]{starray}, and to keep tracking simple, the same version number (from \tsobj[pkg]{starray}) will be used.
@@ -1215,8 +1214,72 @@ As the name implies, it will iterate over all students in \tsobj[marg]{list} exe
 \tsexec{activity:checklist}[3]
 
 \subsection{Defining per Activity Calendar}
-To be done.
+Setting a set of events related to an activity, and then the relevant dates.
 
+
+\begin{codestore}[activity:calendar]
+\ActivitySelect{FW II}
+
+%%%%%%%%
+\ActivitySetNewEvent{opening}
+    {First class. Activity goals.}
+
+\ActivitySetNewEvent{proposals}
+    {Deadline for proposals submission.}
+
+\ActivitySetNewEvent{middle term}
+    {Students middle term presentation and follow-up.  }
+
+\ActivitySetNewEvent{submission}
+    {Deadline for student's work submission.}
+
+\ActivitySetNewEvent{review}
+    {Work review by examiners.}
+
+\ActivitySetNewEvent{feedback}
+    {Feedback on the work done, per student (private)}
+
+\ActivitySetNewEvent{exam}
+    {Final Exam}
+\end{codestore}
+
+\begin{codestore}[activity:calendar]
+\ActivitySelect{FW II}
+
+%%%%%%%%
+\ActivitySetEventDay {opening}{01/09}{1st week}
+\ActivitySetEventDay {proposals}{15/09}{3rd week}
+\ActivitySetEventDay {middle term}{07/10}{6th week}
+\ActivitySetEventDay {submission}{21/10}{8th week}
+\ActivitySetEventDay {review}{28/10-03/11}{9th week}
+\ActivitySetEventDay {feedback}{06-10/11}{10th week}
+\ActivitySetEventDay {exam}{15/11}{last week}
+\end{codestore}
+
+
+\tscode*[stdemo]{activity:calendar}[1]
+
+Once the events are defined, the associated dates can be set, later on, at any time. There is no need, per-se, to set the dates right away.
+
+\tscode*[stdemo]{activity:calendar}[2]
+\tsexec{activity:calendar}[1]
+\tsexec{activity:calendar}[2]
+
+
+\subsection{Constructing an Activity Calendar}
+Once all set, it is just a matter of using the \tsobj{\ActivityCalendarIterate} to go over all the events. Note that, the sequence is exactly the original one (defined by \tsobj{\ActivitySetNewEvent}).
+
+\begin{codestore}[activity:calendar]
+\ActivitySelect{FW II}
+\begin{center}
+  \sc Calendar for \DataField{activity}{name}
+\end{center}
+  \begin{tabular}{lcl}
+    \ActivityCalendarIterate{ \DataField{activity.calendar}{date} & \DataField{activity.calendar}{week} & \DataField{activity.calendar}{event} \\ }
+  \end{tabular} 
+\end{codestore}
+
+\tsdemo*[stdemo]{activity:calendar}[3]
 
 \subsection{Students}
 
@@ -1321,7 +1384,7 @@ To be done.
   \studentaddtolist{FW-II}
 
 \end{codestore}
-Setting student data (some others, not shown, likely defined).
+Setting student's data (some others, not shown, likely defined).
 
 
 \tscode*[stdemo]{demo:student.data}[1]
@@ -1343,7 +1406,7 @@ Activity: \DataField{activity}{name}
 
 \begingroup
   \scriptsize
-  \begin{tabular}{llllll}
+  \begin{tabular}{lllll}
   \StudentCheckListTable{L1,L2,L3}{C1,C2,C3,C4,C5}
   \end{tabular}
 \endgroup
@@ -1352,7 +1415,7 @@ Activity: \DataField{activity}{name}
 \tsdemo*[stdemo]{demo:student.single-use}
 
 \subsection{Iterating over a list of students}
-Given a student list, one can just iterate over it. Note that no explicit index/hash has been used. Also note that, since the \tsobj{\studentlistiterate} executes \tsobj{\listemptytermsifnone}, there is no explicitly  need to test with the student has 3 examiners.
+Given a student list, one can just iterate over it. Note that no explicit index/hash has been used. Also note that, since the \tsobj{\studentlistiterate} executes \tsobj{\listemptytermsifnone}, there is no explicit  need to test if the student has 3 examiners.
 
 \begin{codestore}[demo:student.list]
 \studentlistsort[last]{FW-II} % sorting the students by their last name.
@@ -1380,12 +1443,12 @@ Given a student list, one can just iterate over it. Note that no explicit index/
     2nd examiner: \DataField{student.reviewer}{name} & grade: \DataField{student.reviewer}{grade} \\
     \studentReviewerSelect{3} 
     3rd examiner: \DataField{student.reviewer}{name} & grade: \DataField{student.reviewer}{grade} \\
-    Average: \DataField{student}{grade}
+    Average: \DataField{student}{grade} - \studentCase{Approved}{Failed}
     \end{tabular}
 
     \begingroup
       \scriptsize
-      \begin{tabular}{llllll}
+      \begin{tabular}{lllll}
       \StudentCheckListTable{L1,L2,L3}{C1,C2,C3,C4,C5}
       \end{tabular}
     \endgroup
