@@ -21,14 +21,18 @@
   {
     received:<<#1>><<#2>><<#3>><<#4>><<5>>\par
   }
-\cs_generate_variant:Nn \__starray_set_from_keyval_parse:nnnn {neenn}
+%MARK:variant
+%\cs_generate_variant:Nn \__starray_set_from_keyval_parse:nnnn {neenn}
+\cs_generate_variant:Nn \__starray_set_from_keyval_parse:nnnn {nee}
 
 \cs_new:Npn \__starray_set_from_keyval_parse:nnnn #1#2#3#4
   {
     received:<<#1>><<#2>><<#3>><<#4>>\par
   }
 
-\cs_generate_variant:Nn \__starray_set_from_keyval_parse:nnnn {neen}
+%MARK:variant
+%\cs_generate_variant:Nn \__starray_set_from_keyval_parse:nnnn {neen}
+\cs_generate_variant:Nn \__starray_set_from_keyval_parse:nnnn {nee}
 
 
 

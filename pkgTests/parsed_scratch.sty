@@ -1,0 +1,159 @@
+
+
+%%%==============================================================================
+%% Copyright 2023-present by Alceu Frigeri
+%%
+%% This work may be distributed and/or modified under the conditions of
+%%
+%% * The [LaTeX Project Public License](http://www.latex-project.org/lppl.txt),
+%%   version 1.3c (or later), and/or
+%% * The [GNU Affero General Public License](https://www.gnu.org/licenses/agpl-3.0.html),
+%%   version 3 (or later)
+%%
+%% This work has the LPPL maintenance status *maintained*.
+%%
+%% The Current Maintainer of this work is Alceu Frigeri
+%%
+%% This is version {1.10} {2025/08/04} 
+%%
+%% The list of files that compose this work can be found in the README.md file at
+%% https://ctan.org/pkg/starray
+%%
+%%%==============================================================================
+\NeedsTeXFormat{LaTeX2e}[2023/11/01]
+
+
+\ProvidesExplPackage
+    {starray}
+    {2025/08/04}
+    {1.10}
+    {A structured array/hash of properties}
+
+
+%%%%%%%
+%%%
+%%% Just an attempt of having my packages info in a regular way
+%%% \pkginfo_set:nn {<pkg-name>} { props} for each and all.
+%%%
+%%%%%%%
+\RequirePackage{pkginfo}
+\pkginfo_set:nn { starray }
+  {
+     name        = {starray} ,
+     prefix      = {starray} ,
+     date        = {2025/08/04},
+     version     = {1.10} ,
+     description = {A~structured~array/hash~of~properties}
+  }
+%%%%%%%
+%%% End of cut-n-paste
+%%%%%%%
+
+
+
+
+
+
+\IfExplAtLeastTF{2024-03-14}{}{\msg_warning:nn {starray} {strict / Expl} }
+
+\cs_new_protected:Npn \starray_set_iter_from_hash:nn #1#2
+
+\prg_new_protected_conditional:Npnn \starray_set_iter_from_hash:nn #1#2 {T, F, TF}
+
+\cs_new_protected:Npn \starray_set_iter:nn #1#2
+
+
+\prg_new_protected_conditional:Npnn \starray_set_iter:nn #1#2 {T, F, TF}
+
+\cs_new_protected:Npn \starray_reset_iter:n #1
+
+
+\prg_new_protected_conditional:Npnn \starray_reset_iter:n #1 {T, F, TF}
+
+\cs_new_protected:Npn \starray_next_iter:n #1
+
+\prg_new_protected_conditional:Npnn \starray_next_iter:n #1 {T, F, TF}
+
+\cs_new_protected:Npn \starray_iterate_over:nn #1#2
+
+\prg_new_protected_conditional:Npnn \starray_iterate_over:nn #1#2 {T, F, TF}
+
+\cs_new_protected:Npn \starray_get_prop:nn #1#2
+
+\cs_new:Npn \starray_parsed_get_prop:n 
+
+\cs_new:Npn \starray_parsed_get_prop:NNn #1#2#3
+
+\cs_new_protected:Npn \starray_get_prop:nnN #1#2#3
+\cs_new_protected:Npn \starray_parsed_get_prop:nN #1#2
+
+\prg_new_protected_conditional:Npnn \starray_get_prop:nnN #1#2#3 {T, F, TF}
+
+
+\prg_new_protected_conditional:Npnn \starray_if_in:nn #1#2 {T, F, TF}
+\prg_new_conditional:Npnn \starray_parsed_if_in:n #1 {p, T, F, TF}
+\prg_new_conditional:Npnn \starray_parsed_if_in:NNn #1#2#3 {p, T, F, TF}
+
+\cs_new_protected:Npn \starray_get_cnt:n #1
+    \cs_new:Npn \starray_parsed_get_cnt:
+
+\cs_new:Npn \starray_parsed_get_cnt:NN #1#2
+
+
+\cs_new_protected:Npn \starray_get_cnt:nN #1#2
+
+    \cs_new_protected:Npn \starray_parsed_get_cnt:N #1
+\prg_new_protected_conditional:Npnn \starray_get_cnt:nN #1#2  {T, F, TF}
+\cs_new_protected:Npn \starray_get_iter:n #1
+    \cs_new:Npn \starray_parsed_get_iter:
+
+
+\cs_new:Npn \starray_parsed_get_iter:NN #1#2
+
+
+\cs_new_protected:Npn \starray_get_iter:nN #1#2
+    \cs_new_protected:Npn \starray_parsed_get_iter:N #1
+
+\prg_new_protected_conditional:Npnn \starray_get_iter:nN #1#2 {T, F, TF}
+
+%%%%%%%%%%
+\prg_new_protected_conditional:Npnn \starray_parsed_get_iter:N #1 {T, F, TF}
+
+\cs_new_protected:Npn \starray_parsed_get_iter:NNN #1#2#3
+
+
+
+\cs_new_protected:Npn \starray_get_unique_id:nN #1#2
+
+
+\prg_new_protected_conditional:Npnn \starray_get_unique_id:nN #1#2 {T, F, TF}
+
+\cs_new_protected:Npn \starray_set_prop:nnn #1#2#3
+
+\cs_new_protected:Npn \starray_gset_prop:nnn #1#2#3
+
+\prg_new_protected_conditional:Npnn \starray_set_prop:nnn #1#2#3 {T, F, TF}
+
+
+\prg_new_protected_conditional:Npnn \starray_gset_prop:nnn #1#2#3 {T, F, TF}
+
+
+\prg_new_protected_conditional:Npnn \starray_term_parser:n #1 {T, F, TF}
+  
+  
+\prg_new_protected_conditional:Npnn \starray_term_parser:nNN #1#2#3 {T, F, TF}
+
+
+\cs_new_protected:Npn \starray_term_parser:n #1
+
+\cs_new_protected:Npn \starray_term_parser:nNN #1#2#3
+\cs_new_protected:Npn \starray_term_syntax:nNN
+
+\cs_new_protected:Npn \starray_show_def:n #1
+
+\cs_new_protected:Npn \starray_show_def_in_text:n #1
+
+\cs_new_protected:Npn \starray_show_terms:n #1
+
+\cs_new_protected:Npn \starray_show_terms_in_text:n #1
+

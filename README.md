@@ -72,6 +72,15 @@ The Current Maintainer of this work is Alceu Frigeri
 -------------
 
 ## Changelog
+* Version 1.11 (next)
+    - code cleanup (variants) and a bit of optimization
+    - removing references to expl scratch variables (like \l_tmpa_tl, \l_tmpa_int...) 
+    - deprecating \starray_term_syntax:* in favour of \starray_term_parser:* (issues  warnings)
+    - added a new set of \starray_parsed_ commands
+    - refactoring the `parsed` commands generation
+    - using <pkginfograb> for package's info
+
+
 * Version 1.10 (this)
     - fixing issue [#8](https://github.com/alceu-frigeri/starray/issues/8).
     - typos in documentation

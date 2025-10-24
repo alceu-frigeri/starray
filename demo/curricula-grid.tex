@@ -1,0 +1,346 @@
+
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%
+%%%%%  Curricula
+%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+
+\currdef{CCA-FEO}{FEO CCA}{Formação Essencial Obrigatória - CCA}
+
+
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%
+%%%%%  Etapa 01
+%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+\semdef{Etp.01}{Etapa 01}{1}
+
+  \addclass{-2}{INF01202}{ob}
+  \addclass{-3}{MAT01353}{ob}
+  \addclass{-10}{FIS01181}{ob}
+  \addclass{-1}{ARQ03317}{ob}
+  \addclass{-8}{CCA99001}{ob}
+  \addclass{-5}{QUI01009}{ob}
+
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%
+%%%%% Etapa 02
+%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+\semdef{Etp.02}{Etapa 02}{2}
+
+  \addclass{-4}{MAT01355}{ob}
+    \depdef{MAT01353}
+  \addclass{-5}{MAT01354}{ob}
+    \depdef{MAT01353}
+  \addclass{-1}{ARQ03319}{ob}
+    \depdef{ARQ03317}
+  \addclass{-10}{FIS01182}{ob}
+    \depdef{FIS01181}
+  \addclass{-8}{ENG03041}{ob}
+    \depdef[A]{MAT01353}
+    \depdef{CCA99001}
+    \depdef[-A]{FIS01181}
+  \addclass{-2}{INF01057}{ob}
+    \depdef{INF01202}
+
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%
+%%%%% Etapa 03
+%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+\semdef{Etp.03}{Etapa 03}{3}
+
+  \addclass{-11}{ENG10001}{ob}
+    \depdef{FIS01182}
+    \depdef{MAT01354}
+  \addclass{-5}{MAT01167}{ob}
+    \depdef{MAT01355}
+    \depdef{MAT01354}
+  \addclass{-10}{FIS01183}{ob}
+    \depdef{FIS01182}
+  \addclass{-7}{ENG03043}{ob}
+    \depdef{QUI01009}
+  \addclass{-8}{ENG03042}{ob}
+    \depdef{ENG03041}
+  \addclass{-3}{MAT02219}{ob}
+    \depdef{MAT01353}
+  \addclass{-12}{ENG10042}{ob}
+    \depdef*{44 cred.ob.}
+
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%
+%%%%% Etapa 04
+%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+\semdef{Etp.04}{Etapa 04}{4}
+
+  \addclass{-4.4}{MAT01169}{ob}
+    \depdef[-30:0]{INF01202}
+    \depdef{MAT01167}
+  \addclass{-11}{ENG10002}{ob}
+   \depdef{ENG10001}
+   \depdef{MAT01167}
+  \addclass{-12}{ENG10043}{ob}
+    \depdef{ENG10042}
+  \addclass{-5.4}{MAT01168}{ob}
+    \depdef[-A]{MAT01167}
+  \addclass{-7}{ENG03092}{ob}
+    \depdef[A]{ENG03043}
+    \depdef[B]{ENG03041}
+  \addclass{-8}{ENG03316}{ob}
+    \depdef{ENG03042}
+  \addclass{-9}{ENG03044}{ob}
+    \depdef{MAT01167}
+    \depdef{FIS01183}
+    \depdef{ENG10001}
+
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%
+%%%%% Etapa 05
+%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+\semdef{Etp.05}{Etapa 05}{5}
+
+  \addclass{-12}{ENG10044}{ob}
+    \depdef{ENG10002}
+  \addclass{-11}{ENG10003}{ob}
+    \depdef{ENG10002}
+  \addclass{-5}{ENG03004}{ob}
+    \depdef{ENG03092}
+    \depdef{MAT01169}
+  \addclass{-4}{ENG10017}{ob}
+    \depdef{MAT01168}
+  \addclass{-10}{ENG07086}{ob}
+    \depdef{FIS01183}
+  \addclass{-6.4}{ENG10026}{alt}
+    \depdef{ENG03316}
+  \addclass{-9}{ENG03380}{alt}
+    \depdef{ENG03316}
+
+
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%
+%%%%% Etapa 06
+%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+\semdef{Etp.06}{Etapa 06}{6}
+
+  \addclass{-11}{ENG10047}{ob}
+    \depdef{ENG10002}
+  \addclass{-10}{ENG10022}{ob}
+    \depdef[A]{MAT02219}
+    \depdef{ENG10044}
+  \addclass{-13}{ENG10045}{ob}
+    \depdef[-A]{ENG10044}
+    \depdef[-A]{ENG10003}
+  \addclass{-8}{ENG07069}{ob}
+    \depdef{ENG07086}
+  \addclass{-12}{ENG10023}{ob}
+    \depdef[B]{INF01057}
+    \depdef[-A]{ENG10043}
+  \addclass{-4}{ENG10004}{ob}
+    \depdef{ENG10017}
+    \depdef[30:-70]{ENG03044}
+
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%
+%%%%% Etapa 07
+%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+\semdef{Etp.07}{Etapa 07}{7}
+
+  \addclass{-13}{ENG10049}{ob}
+    \depdef{ENG10047}
+    \depdef[-A]{ENG10045}
+  \addclass{-2}{ENG10005}{ob}
+    \depdef{ENG10004}
+  \addclass{-14}{ENG04475}{ob}
+    \depdef[-A]{ENG10043}
+    \depdef[-A]{ENG10044}
+  \addclass{-8}{ENG03021}{ob}
+    \depdef[A]{ENG03043}
+  \addclass{-12}{ENG10048}{ob}
+    \depdef{ENG10023}
+  \addclass{-3}{ENG10018}{ob}
+    \depdef{ENG10004}
+  \addclass{-11}{ENG03027}{ob}
+   \depdef{ENG07069}
+
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%
+%%%%% Etapa 08
+%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+\semdef{Etp.08}{Etapa 08}{8}
+
+  \addclass{-7}{ENG03045}{ob}
+    \depdef{ENG03004}
+    \depdef[-A]{ENG03021}
+  \addclass{-4}{ENG07042}{ob}
+    \depdef{ENG07069}
+    \depdef[-A]{ENG10018}
+  \addclass{-5}{ENG10019}{ob}
+    \depdef{ENG10004}
+    \depdef[-A]{ENG04475}
+  \addclass{-6}{ENG03387}{ob}
+    \depdef{ENG03021}
+  \addclass[darkred]{-8}{ENG03386}{el}[Obrigatória na Grade Sistemas Discretos CAD/CAM, eletiva nas demais]
+    \depdef{ENG03021}
+  \addclass[darkgreen]{-1}{ENG03046}{el}[Obrigatória na Grade Controle Avançado de Sistemas Mecânicos, eletiva nas demais]
+    \depdef[B]{ENG03044}
+    \depdef[A]{ENG10018}
+    \depdef{ENG03027}
+  \addclass[darkcyan]{-12}{ENG10027}{el}[Obrigatória na Grade Eletrônica de Potência e Acionamento, eletiva nas demais]
+    \depdef{ENG10002}
+    \depdef[-A]{ENG10044}
+
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%
+%%%%% Etapa 09
+%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+\semdef{Etp.09}{Etapa 09}{9}
+
+  \addclass{-4}{ENG07087}{ob}
+    \depdef{ENG07042}
+  \addclass[darkred]{-10}{ENG10021}{el}[Obrigatória na Grade Sistemas Discretos CAD/CAM, eletiva nas demais]
+    \depdef{ENG10023}
+  \addclass[darkgreen]{-9}{ENG03047}{el}[Obrigatória na Grade Controle Avançado de Sistemas Mecânicos, eletiva nas demais]
+    \depdef{ENG03044}
+  \addclass[darkcyan]{-13}{ENG10050}{el}[Obrigatória na Grade Eletrônica de Potência e Acionamento, eletiva nas demais]
+    \depdef{ENG10049}
+  \addclass[darkcyan]{-14}{ENG10046}{el}[Obrigatória na Grade Eletrônica de Potência e Acionamento, eletiva nas demais]
+    \depdef{ENG10044}
+  \addclass{-8}{TCC/CCA - I}{ob}
+    \depdef{ENG03027}
+    \depdef{ENG10005}
+    \depdef{ENG10048}
+    \depdef{ENG10049}
+
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%
+%%%%% Etapa 10
+%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+\semdef{Etp.10}{Etapa 10}{10}
+
+  %\addclass{-2}{ECO02063}{ob}
+  \addclass{-2}{ENG03048}{ob}
+    \depdef*{180 cred.ob.}  
+  \addclass{-3}{ENG03010}{ob}
+    \depdef*{180 cred.ob.}  
+  \addclass{-5}{TCC/CCA - II}{ob}
+    \depdef[-A]{TCC/CCA - I}
+    \depdef[-A]{ENG03045}
+    \depdef[-A]{ENG07042}
+    \depdef[-A]{ENG10019}
+      %\depdef[-A]{ENG03046}
+      %\depdef[-A]{ENG03047}
+			%\altdep
+      %\depdef[-A]{TCC/CCA - I}
+      %\depdef[-A]{ENG10027}
+      %\depdef[-A]{ENG10050}
+      %\depdef[-A]{ENG10046}
+
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%
+%%%%% Etapa Eletivas
+%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+\semdef{Adicionais}{Adicionais}{11}
+
+  \addclass{-1}{CCA99008}{ad}[Disciplina com 100 Horas CHE]
+    \depdef{ENG03316}
+    \depdef{ENG03044}
+    \depdef{ENG10003}
+    \depdef{ENG10042}
+    \depdef{ENG07086}
+  \addclass{-10}{CCA99009}{ad}[Disciplina com 100 Horas CHE]
+    \depdef{CCA99008}
+    \depdef[-A]{ENG10004}
+    \depdef[-A]{ENG10023}
+    \depdef[-A]{ENG04475}
+    \depdef[-A]{ENG10022}
+    \depdef[-A]{ENG03021}
+    \depdef[-A]{ENG07069}
+  \addclass{-10}{CCA99010}{ad}[Disciplina com 100 Horas CHE]
+    \depdef[A]{CCA99009}
+    
+    
+\semdef{Eletivas}{Eletivas}{12}
+  \addclass{-10}{INF1017}{el}
+    \depdef{INF01057}
+    \depdef*{100 cred.ob.}
+  \addclass{-2}{INF01037}{el}
+    \depdef{INF01057}
+    \depdef*{100 cred.ob.}
+  \addclass{-3}{ADM01135}{el}
+    \depdef{MAT02219}
+  \addclass{-4}{ENG07043}{el}
+    %\depdef{ENG07031-}
+    \depdef{ENG07069}
+    \depdef{ENG10018}
+  \addclass{-5}{ENG07012}{el}
+    \depdef{ENG07042}
+  \addclass{-6}{EDU03071}{el}
+  \addclass{-7}{ENG07062}{el}
+    \depdef{ENG07042}
+  \addclass{-8}{ENG09023}{el}
+    \depdef{ENG03021}
+  \addclass{-11}{CCA99005}{el}
+  \addclass{-12}{CCA99006}{el}
+  \addclass{-13}{CCA99007}{el}
+  \addclass{-15}{ENG10051}{el}
+    \depdef{ENG10004}
+    \depdef{ENG10026}
+  	\altdep
+    \depdef{ENG10004}
+    \depdef{ENG03380}
+  \addclass{-16}{ENG10052}{el}
+    \depdef{ENG10026}
+  	\altdep
+    \depdef{ENG03380}
+  \addclass{-17}{ENG10xxa}{el}
+    \depdef{INF01057}
+    \depdef{MAT02219}
+    \depdef{ENG10017}
+  \addclass{-17}{ENG10xxB}{el}
+    \depdef{ENG04475}
+  \addclass{-18}{ELE223}{el}
+    \depdef{ENG10017}
+  \addclass{}{ELE312}{el}
+    \depdef{ELE223}
+  \addclass{}{ELE216}{el}
+    \depdef{ENG10018}
+	\altdep
+    \depdef{ELE223}
+  \addclass{}{ELExxx}{el}
+    \depdef{ENG10017}
+    \depdef{MAT02219}
+
+

@@ -31,23 +31,18 @@
 %%%%%%%
 %%%
 %%% Just an attempt of having my packages info in a regular way
-%%% Idea being: { <pck-name> / pkg info } for each and all.
+%%% \pkginfo_set:nn {<pkg-name>} { props} for each and all.
 %%%
 %%%%%%%
-\keys_define:nn { stdemo / pkg info}
+\RequirePackage{pkginfograb}
+\pkginfograb_set:nn { stdemo }
   {
-     name        .code:n = {stdemo} ,
-     prefix      .code:n = {stdemo} ,
-     date        .code:n = {2025/08/04},
-     version     .code:n = {1.10} ,
-     description .code:n = {A starray based demo package}
+     name        = {stdemo} ,
+     prefix      = {stdemo} ,
+     date        = {2025/08/04},
+     version     = {1.10} ,
+     description = {A starray based demo package}
   }
-\cs_if_exist:NF \PkgInfo 
-  {
-    \NewDocumentCommand \PkgInfo {mm} { \keys_set:nn {#1 / pkg info}{#2} } 
-    \NewDocumentCommand \PkgDescription {m} 
-      { \noindent Package~ \textbf{\PkgInfo{#1}{name}}~Version:~\PkgInfo{#1}{version}~ -~ \PkgInfo{#1}{date}\par \emph{\PkgInfo{#1}{description}}~\par } 
-  }  
 %%%%%%%
 %%% End of cut-n-paste
 %%%%%%%
@@ -134,7 +129,7 @@
 \starray_new:n {student}
 \starray_def_from_keyval:nn {student}
  {
-  self = , %% this shall be self hash (if any)
+  hash = , %% this shall be self hash (if any)
   first = ,
   last = ,
   name = \rule{\l__stdemo_name_rule_dim}{.1pt} ,
@@ -209,7 +204,7 @@
 
 
 \NewDocumentCommand{\eDataSet}{m}{
-  \starray_term_syntax:n{#1}
+  \starray_term_parser:n{#1}
 }  
 
 \cs_new:Npn \eDataFields #1 
@@ -378,7 +373,7 @@
     {\starray_new_term:nn {student}{#1}}
   \starray_gset_from_keyval:nn {student}
     {
-      self  = {#1} ,
+      hash  = {#1} ,
       first = {#3} ,
       last = {#2} ,
       name = {#3~ #2} ,
@@ -562,21 +557,21 @@
   }
 
 \NewDocumentCommand{\studentAdvCase}{mm} {
-    \starray_term_syntax:n{student.advisor}
+    \starray_term_parser:n{student.advisor}
     \int_compare:nNnTF {\starray_parsed_get_cnt:} > {1}
       {#1}
       {#2}
   }
 
 \NewDocumentCommand{\studentCoadvCase}{+m+m} {
-    \starray_term_syntax:n{student}
+    \starray_term_parser:n{student}
     \bool_if:nTF {\starray_parsed_get_prop:n{flag-coadvisor}}
       {#1}
       {#2}
   }
 
 \NewDocumentCommand{\studentReviewerSetCase}{mmm} {
-    \starray_term_syntax:n{student.reviewer[#1]}
+    \starray_term_parser:n{student.reviewer[#1]}
     \bool_if:nTF {\starray_parsed_get_prop:n{flag-set}}
       {#2}
       {#3}
@@ -584,7 +579,7 @@
 
 
 \NewDocumentCommand{\studentCase}{mm} {
-    \starray_term_syntax:n{student}
+    \starray_term_parser:n{student}
     \bool_if:nTF{\starray_parsed_get_prop:n{flag-approved}}
       {#1}
       {#2}
@@ -650,8 +645,8 @@
         \bool_new:c {l__stdemo_#1_classified_bool}
       }
     \bool_set_false:c {l__stdemo_#1_classified_bool}  
-    \starray_term_syntax:n {student}
-    \seq_gput_right:ce {l__stdemo_#1_list_seq} {\starray_parsed_get_prop:n {self}}
+    \starray_term_parser:n {student}
+    \seq_gput_right:ce {l__stdemo_#1_list_seq} {\starray_parsed_get_prop:n {hash}}
   }
   
 \NewDocumentCommand{\studentlistsort}{O{name}m}
@@ -681,6 +676,7 @@
   {
    \seq_map_inline:cn {l__stdemo_#1_list_seq}
       {
+%        \tl_show:n {and:(##1)}
         \starray_set_iter_from_hash:nn {student}{##1}
      
         \emptytermifnone{student.advisor}
@@ -694,11 +690,13 @@
 
 \NewDocumentCommand{\studentlistiterate}{m+m}
   {
+%    \tl_show:n {Hum:(#1)}
     \bool_if:cF {l__stdemo_#1_classified_bool}
       { \studentlistsort{#1} }
     \listemptytermsifnone{#1}
     \seq_map_inline:cn {l__stdemo_#1_list_seq}
       {
+%        \tl_show:n {what:(##1)}
         \starray_set_iter_from_hash:nn {student}{##1}
         #2
       }

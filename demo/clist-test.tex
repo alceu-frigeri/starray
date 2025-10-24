@@ -1,0 +1,69 @@
+\documentclass{article}
+
+\ExplSyntaxOn
+
+
+\clist_new:N \l_test_tmpa_clist
+
+\clist_put_right:Nn \l_test_tmpa_clist {A~string}
+\clist_put_right:Nn \l_test_tmpa_clist {C~string}
+\clist_put_right:Nn \l_test_tmpa_clist {D~string}
+\clist_put_right:Nn \l_test_tmpa_clist {E~string}
+
+\NewDocumentCommand{\ctest}{}
+  {
+    \clist_if_empty:NTF \l_test_tmpa_clist
+      {
+        empty\par
+      }
+      {
+        not~empty\par
+        \clist_map_inline:Nn \l_test_tmpa_clist
+          {
+            $<$##1$>$~
+          }
+          \par
+      }
+  }
+  
+\prg_new_protected_conditional:Npnn \ctestA:nn #1#2 {T, F, TF}  
+  {
+    \str_if_eq:nnTF {#1} {#2}
+      {
+        they~are~equal\par
+        \prg_return_true:
+      }
+      {
+        they~are~not~equal\par
+        \prg_return_false:
+      }
+  }
+  
+
+\cs_new_protected:Npn \ctestB:nnTF #1#2
+  {
+    \ctestA:nnTF{#1}{#2}
+  }  
+  
+\NewDocumentCommand{\testA}{mmmm}  
+  {
+    \ctestA:nnTF {#1}{#2}{#3}{#4}
+  }
+
+\NewDocumentCommand{\testB}{mmmm}  
+  {
+    \ctestB:nnTF {#1}{#2}{#3}{#4}
+  }
+  
+\ExplSyntaxOff
+
+
+\begin{document}
+
+\ctest
+
+\testB{ab}{ab}{here}{not here}
+
+and
+
+\end{document} 

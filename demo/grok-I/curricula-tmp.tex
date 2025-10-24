@@ -1,0 +1,1841 @@
+%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%
+%%%
+%%%
+%%%
+%% %%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%
+
+%\colorlet{TcolorCiclobasico}{darkgray}
+%\colorlet{TcolorCiclobasicoeng}{darkgray}
+%\colorlet{TcolorCicloprof}{darkgray}
+%\colorlet{TcolorCicloavan}{darkgray}
+%\colorlet{TcolorCiclotransv}{darkgray}
+%\colorlet{TcolorOutros}{darkgray}
+
+%\ifshowind{%
+    \colorlet{TcolorCiclobasico}{black}
+    \colorlet{TcolorCiclobasicoeng}{darkblue}
+    \colorlet{TcolorCicloprof}{darkteal}
+    \colorlet{TcolorCicloavan}{darkgreen}
+    \colorlet{TcolorCiclotransv}{darkmagenta}
+    \colorlet{TcolorOutros}{red}
+%}{%
+%    \colorlet{TcolorCiclobasico}{darkgray}
+%    \colorlet{TcolorCiclobasicoeng}{darkgray}
+%    \colorlet{TcolorCicloprof}{darkgray}
+%    \colorlet{TcolorCicloavan}{darkgray}
+%    \colorlet{TcolorCiclotransv}{darkgray}
+%    \colorlet{TcolorOutros}{darkgray}
+%}
+
+
+\topicdef[TcolorCiclobasico]{BaseAcolhimento}{Ciclo Básico: Acolhimento}
+\topicdef[TcolorCiclobasico]{BaseMatematica}{Ciclo Básico: Matemática, Física e Química}
+\topicdef[TcolorCiclobasico]{BaseGraf}{Ciclo Básico: Expressão Gráfica e Programação}
+\topicdef[TcolorCiclobasicoeng]{BaseMec}{Ciclo Básico Engenharia: Mecanismos e Dinâmica}
+\topicdef[TcolorCiclobasicoeng]{BaseEletro}{Ciclo Básico Engenharia: Eletrônica e Eletrotécnica}
+\topicdef[TcolorCiclobasicoeng]{Base.Admin}{Ciclo Profissionalizante: Administração e Gerenciamento}
+\topicdef[TcolorCiclobasicoeng]{Base.Mat}{Ciclo Básico Engenharia: Ciência dos Materiais e Mecânica Estrutural}
+\topicdef[TcolorCiclobasicoeng]{Base.FenTrans}{Ciclo Básico Engenharia: Fenômenos de Transporte}
+
+%\topicdef[TcolorCicloprof]{Pro.IndTrans}{Ciclo Profissionalizante: Processos da Industria de Transformação}
+\topicdef[TcolorCicloprof]{Pro.Fabricacao}{Ciclo Profissionalizante: Fabricação}
+\topicdef[TcolorCicloprof]{Pro.Projetos}{Ciclo Profissionalizante: Projetos Integrados}
+\topicdef[TcolorCicloprof]{Pro.Maquinas}{Ciclo Profissionalizante: Máquinas e Equipamentos}
+\topicdef[TcolorCicloprof]{Pro.Robotica}{Ciclo Profissionalizante: Robótica}
+\topicdef[TcolorCicloprof]{Pro.Automacao}{Ciclo Profissionalizante: Automação}
+\topicdef[TcolorCicloprof]{Pro.Control}{Ciclo Profissionalizante: Sistemas de Controle}
+%\topicdef[TcolorCicloprof]{Pro.DispMec}{Ciclo Profissionalizante: Dispositivos Mecânicos}
+\topicdef[TcolorCicloprof]{Pro.ContProc}{Ciclo Profissionalizante: Controle de Processos}
+
+
+
+\topicdef[TcolorCiclobasicoeng]{Base.Digit}{Ciclo Básico Engenharia: Sistemas Digitais}
+%\topicdef[TcolorCiclobasicoeng]{Base.Instru}{Ciclo Básico Engenharia: Instrumentação}
+%\topicdef[TcolorCicloprof]{Pro.ProjSis}{Ciclo Profissionalizante: Projeto de Sistemas}
+
+%\topicdef[TcolorCicloavan]{Avan.info}{Ciclo Profissionalizante: Informática Avançada}
+\topicdef[TcolorCicloavan]{Avan.topic}{Ciclo Profissionalizante: Tópicos}
+%\topicdef[TcolorCicloavan]{Avan.control}{Ciclo Profissionalizante: Controle Avançado}
+%\topicdef[TcolorCicloavan]{Avan.robotica}{Ciclo Profissionalizante: Robótica Avançado}
+%\topicdef[TcolorCicloavan]{Avan.SisMec}{Ciclo Profissionalizante: Sistemas Mecânicos}
+
+
+%\topicdef[darkred]{Social.admin}{Ciclo Agente Social e Empreendedorismo: Administração e Gerenciamento}
+\topicdef[TcolorCiclotransv]{Transv.outros}{Temas Transversais: Formação Cidadã}
+\topicdef[TcolorCiclotransv]{Transv.integ}{Temas Transversais: Atividades Integradoras}
+
+
+\topicdef[TcolorOutros]{BaseEng}{Ciclo Básico Engenharia}
+\topicdef[TcolorOutros]{Aplic}{Aplicações de Controle e Automação}
+\topicdef[TcolorOutros]{Advanced}{Tópicos Avançados em Controle e Automação}
+\topicdef[TcolorOutros]{Transv}{Conceitos Transversais}
+
+\defaulttopic{Transv}
+
+
+%\addbibresource{curricula.bib}
+
+
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%
+%%%%% Etapa 01
+%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+
+
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[BaseGraf]{INF01202}{6}{ALGORÍTMOS E PROGRAMAÇÃO - CIC}
+
+     \csummary{Noção de algoritmo, dado, variável, instrução e programa. Construções básicas: atribuição, leitura e escrita. Estruturas de controle: 
+     seqüência, seleção e iteração. Tipos de dados escalares: inteiros, reais, caracteres, intervalos e enumerações. Tipos estruturados básicos: 
+     vetores, matrizes registros e strings. Subprogramas: funções, procedimentos e recursão. Arquivos.}
+
+     \newbibdef{damas2007}
+     \newbibdef{edelweiss2014}
+     \newbibdef{salvetti1998}
+     \newbibdef[basic]{deitel2007}
+     \newbibdef[basic]{goodrich2004}
+     \newbibdef[basic]{harbison2002}
+     \newbibdef[basic]{kernighan1988}
+     \newbibdef[basic]{orth2001}
+     \newbibdef[basic]{senne2009}
+     \newbibdef[basic]{ziviani2004}
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[BaseMatematica]{MAT01353}{6}{CÁLCULO E GEOMETRIA ANALÍTICA I - A}
+
+     \csummary{Estudo da reta e de curvas planas. Cálculo diferencial de uma variável real. Cálculo integral das funções de uma variável real.}
+
+      \newbibdef{anton2014}
+      \newbibdef[basic]{rogawski2009}
+      \newbibdef[compl]{avila2003}
+      \newbibdef[compl]{hughes1997}
+      \newbibdef[compl]{larson1998}
+      \newbibdef[compl]{shenk1984}
+      \newbibdef[compl]{simmons1987}
+      \newbibdef[compl]{stewart2006}
+      \newbibdef[compl]{strang1991}
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[BaseMatematica]{FIS01181}{6}{FÍSICA I-C}
+
+     \csummary{Medidas físicas. Cinemática, estática e dinâmica do ponto e do corpo rígido. Gravitação.}
+
+      \newbibdef{halliday2016}
+      \newbibdef{tipler2009}
+      \newbibdef{young2016}
+      \newbibdef[basic]{chaves2007}
+      \newbibdef[basic]{nussenzveig2002}
+      \newbibdef[basic]{resnick2003}
+      \newbibdef[basic]{serway2004}
+      \newbibdef[compl]{corradi2010}
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[BaseGraf]{ARQ03317}{2}{GEOMETRIA DESCRITIVA II-A}
+
+     \csummary{Fundamentos da expressão gráfica. Métodos atuais de representação. Representação da forma e posição. Deslocamentos. Vistas 
+     auxiliares. Seções.}
+
+      \newbibdef{borges1998}
+
+%%%%%%
+%%%%%%
+%
+\classdef[Transv.integ]{CCA99001}{4}{INTRODUÇÃO À ENGENHARIA DE CONTROLE E AUTOMAÇÃO}
+
+     \csummary{Descrição da área de Engenharia de Controle e Automação e do Perfil dos profissionais atuantes na área. Metodologia Científica 
+     aplicada à Engenharia de Controle e Automação. Organização do curso e compreensão das atividades de ensino, pesquisa e extensão desenvolvidos 
+     nos Departamentos e Laboratórios ligados ao curso. Figura do Engenheiro Cidadão na Sociedade moderna, questões étnico-sociais históricas, 
+     acessibilidade e segurança. Inserção da abordagem científica e soluções de engenharia na resolução de problemas, de forma segura, no contexto 
+     étnico-social atual.}
+
+      \classremark{Muda a Súmula}
+
+      \newbibdef{bazzo2008}
+      \newbibdef{severino}
+      \newbibdef[basic]{creswell}
+      \newbibdef[compl]{moraes2001}
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[BaseMatematica]{QUI01009}{4}{QUIMICA FUNDAMENTAL A}
+
+     \csummary{Estequiometria. Soluções. Cinética Química. Equilíbrio químico e iônico. Colóides. Estrutura atômica. Propriedades periódicas. 
+     Ligação química: covalente, iônica e metálica.}
+
+      \newbibdef{brown2009}
+      \newbibdef{brown2016}
+      \newbibdef{kotz2010}
+
+      \newbibdef[basic]{atkins2012}
+      \newbibdef[basic]{chang2010}
+      \newbibdef[basic]{chang2013}
+      \newbibdef[basic]{russell1994}
+      \newbibdef[basic]{tro2017}
+      \newbibdef[compl]{brady2009}
+      \newbibdef[compl]{brady1990}
+      \newbibdef[compl]{ebbing1988}
+      \newbibdef[compl]{mahan1995}
+      \newbibdef[compl]{masterton1990}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%
+%%%%% Etapa 02
+%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[BaseMatematica]{MAT01355}{4}{ÁLGEBRA LINEAR I - A}
+
+     \csummary{Sistema de equações lineares. Matrizes. Fatoração LU. Vetores. Espaços vetoriais. Ortogonalidade. Valores próprios. Aplicações.}
+
+    	\newbibdef{lay2018}
+
+        \newbibdef[basic]{anton2001}
+    	\newbibdef[basic]{strang2013}
+    	\newbibdef[basic]{nicholson2006}
+
+    	\newbibdef[compl]{boldrini1986}
+    	\newbibdef[compl]{lima2006}
+    	\newbibdef[compl]{lipschutz1994}
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[BaseMatematica]{MAT01354}{6}{CÁLCULO E GEOMETRIA ANALÍTICA II - A}
+
+     \csummary{Geometria analítica espacial. Derivadas parciais. Integrais múltiplas. Séries.}
+
+    	\newbibdef{anton2014v2}
+
+    	\newbibdef[basic]{avila2003v2}
+    	\newbibdef[basic]{rogawski2018v2}
+    	\newbibdef[basic]{simmons1987v}
+    	\newbibdef[basic]{stewart2017}
+
+    	\newbibdef[compl]{anton2007v2}
+    	\newbibdef[compl]{rogawski2009v2}
+
+%%%%%%
+%%%%%%
+%
+\classdef[BaseGraf]{ARQ03319}{4}{DESENHO TÉCNICO II-A}
+
+     \csummary{Extensão do processo de representação em vistas ortogonais. Vistas auxiliares primárias e secundárias. Cortes e secções. 
+     Dimensionamento dos desenhos. Desenho convencional. Aplicação da normalização.}
+
+      \newbibdef{abnt1990}
+      \newbibdef{giesecke2009}
+
+      \newbibdef[basic]{abnt1987a}
+      \newbibdef[basic]{abnt1989}
+      \newbibdef[basic]{abnt1995a}
+      \newbibdef[basic]{abnt2020}
+      \newbibdef[basic]{abnt1994}
+      \newbibdef[basic]{cunha2004}
+      \newbibdef[basic]{french1969}
+
+      \newbibdef[compl]{abnt1999}
+      \newbibdef[compl]{bachmann1969}
+      \newbibdef[compl]{giesecke2002}
+
+%%%%%%
+%%%%%%
+%
+\classdef[BaseMatematica]{FIS01182}{6}{FÍSICA GERAL - ELETROMAGNETISMO}
+
+     \csummary{Eletrostática. Eletrodinâmica. Magnetismo. Eletromagnetismo.}
+
+      \newbibdef{chabay2018}
+      \newbibdef{halliday2009}
+      \newbibdef{serway2004}
+
+      \newbibdef[compl]{tipler2000}
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[BaseMec]{ENG03041}{4}{MECÂNICA APLICADA I}
+
+     \csummary{Estática de pontos materiais. Sistemas equivalentes de forças. Equilíbrio de corpos rígidos. Forças distribuídas, centróides e 
+     baricentros. Treliças. Estruturas. Esforços internos em vigas. Atrito. Momentos de inércia de área e de volume.}
+
+      \newbibdef[basic]{beer2019}
+      \newbibdef[basic]{hibbeler2011}
+      \newbibdef[basic]{plesha2014}
+      \newbibdef[basic]{shames2002}
+
+%%%%%%
+%%%%%%
+%
+\classdef[BaseGraf]{INF01057}{4}{PROGRAMAÇÃO ORIENTADA A OBJETO}
+
+     \csummary{Abstração e encapsulamento de dados. Conceitos de orientação a objeto: classes, instância, herança, polimorfismo. Ferramentas de 
+     desenvolvimento e modelagem, usando orientação a objetos. Aplicação dos conceitos e ferramentas a partir da utilização de uma linguagem de 
+     programação específica.}
+
+      \newbibdef[basic]{santos2003}
+
+      \newbibdef[compl]{arnold2007}
+
+
+%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%
+%%%
+%%%  Etapa 03
+%%%
+%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[BaseEletro]{ENG10001}{4}{CIRCUITOS ELÉTRICOS I - C}
+
+     \csummary{Análise de circuitos resistivos. Quadripolos resistivos. Análise de circuitos de primeira e segunda ordem de domínio do tempo.}
+
+      \newbibdef{alexander}
+      \newbibdef{nilsson}
+
+      \newbibdef[basic]{irwin}
+      \newbibdef[basic]{scott}
+
+      \newbibdef[compl]{desoer}
+      \newbibdef[compl]{dorf}
+      \newbibdef[compl]{foerster}
+
+%%%%%%
+%%%%%%
+%
+\classdef[BaseMatematica]{MAT01167}{6}{EQUAÇÕES DIFERENCIAIS II}
+
+     \csummary{Equações diferenciais ordinárias e lineares. Elementos de séries de Fourier, polinômios de Legendre e funções de Bessel. Equações 
+     diferenciais lineares a derivadas parciais (problemas de contorno: equações da Física Clássica).}
+
+      \newbibdef{edwards}
+      \newbibdef{boyce2015}
+      \newbibdef{zill2003}
+
+      \newbibdef[basic]{brietzke}
+
+      \newbibdef[compl]{asmar2005}
+      \newbibdef[compl]{boyce2006}
+      \newbibdef[compl]{churchill1978}
+      \newbibdef[compl]{figueiredo2003}
+      \newbibdef[compl]{kreyszig2006}
+      \newbibdef[compl]{simmons1972}
+      \newbibdef[compl]{solow1998}
+      \newbibdef[compl]{spiegel1976}
+      \newbibdef[compl]{tenenbaum1963}
+      \newbibdef[compl]{zill2001}
+      \newbibdef[compl]{zill2001dup}
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[BaseMatematica]{FIS01183}{6}{FÍSICA III-C}
+
+     \csummary{Temperatura. Calor. Teoria cinética dos gases. Termodinâmica. Física ondulatória: ondas mecânicas e eletro-magnéticas. Reflexão e 
+     refração.}
+
+      \newbibdef{edwardsdup}
+      \newbibdef{boyce2015dup}
+      \newbibdef{zill2003dup}
+
+      \newbibdef[basic]{alonso1999}
+      \newbibdef[basic]{alonso1967}
+      \newbibdef[basic]{halliday2006}
+      \newbibdef[basic]{mckelvey1979}
+      \newbibdef[basic]{nussenzveig2002dup}
+      \newbibdef[basic]{sears1983}
+      \newbibdef[basic]{tipler2009dup}
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[Base.Mat]{ENG03043}{4}{MATERIAIS PARA ENGENHARIA A}
+
+     \csummary{Estrutura atômica e ligação interatômica. Estrutura dos materiais cristalinos. Imperfeições em sólidos. Mecanismos de endurecimento. 
+     Propriedades mecânicas dos metais. Diagramas de fase. Transformações de fase.}
+
+      \newbibdef{callister2020}
+      \newbibdef[basic]{askeland2019}
+      \newbibdef[compl]{shackelford2008}
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[BaseMec]{ENG03092}{4}{MECÂNICA APLICADA II}
+
+     \csummary{Cinemática do ponto material. Dinâmica do ponto material. Trabalho e energia. Sistemas de partículas. Cinemática do corpo rígido. 
+     Dinâmica do corpo rígido.}
+
+      \newbibdef{beer2019dyn}
+      \newbibdef{hibbeler2017}
+      \newbibdef{meriam2016}
+
+      \newbibdef[basic]{gray2014}
+      \newbibdef[basic]{nelson2013}
+      \newbibdef[basic]{rade2017}
+      \newbibdef[basic]{tenenbaum2016}
+      \newbibdef[basic]{tongue2007}
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[BaseMatematica]{MAT02219}{4}{PROBABILIDADE E ESTATÍSTICA}
+
+     \csummary{Probabilidade. Distribuições discretas e contínuas. Estatística descritiva. Estimação. Testes de hipóteses.}
+
+      \newbibdef{barbetta2008}
+      \newbibdef{devore}
+      \newbibdef{montgomery2009}
+
+      \newbibdef[basic]{costa2002}
+      \newbibdef[basic]{fonseca1996}
+      \newbibdef[basic]{magalhaes2005}
+      \newbibdef[basic]{meyer2000}
+      \newbibdef[basic]{morettin2009}
+      \newbibdef[basic]{spiegel2004}
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[Base.Digit]{ENG10042}{4}{SISTEMAS DIGITAIS I}
+
+     \csummary{Sistemas numéricos. Álgebra de Boole. Circuitos lógicos combinacionais. Circuitos lógicos sequenciais síncronos. Linguagem de 
+     descrição de hardware.}
+
+      \newbibdef{brown2008}
+      \newbibdef{floyd}
+      \newbibdef{wakerly2005}
+
+      \newbibdef[basic]{mano}
+      \newbibdef[basic]{tocci2011}
+      \newbibdef[basic]{tokheim}
+      \newbibdef[basic]{vahid}
+
+      \newbibdef[compl]{fletcher}
+      \newbibdef[compl]{karris}
+      \newbibdef[compl]{sandige}
+      \newbibdef[compl]{wagner}
+
+
+
+
+%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%
+%%%
+%%%  Etapa 04
+%%%
+%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[BaseMatematica]{MAT01169}{4}{CÁLCULO NUMÉRICO A}
+
+     \csummary{Análise de erros numéricos. Aproximação de funções. Solução de equações não lineares. Solução de sistemas lineares. Solução de 
+     sistemas não lineares. Integração numérica. Solução numérica de equações diferenciais ordinárias.}
+
+      \newbibdef{borche2008}
+      \newbibdef{burden2003}
+
+      \newbibdef[basic]{bortoli2001}
+      \newbibdef[basic]{ruggiero1996}
+
+      \newbibdef[compl]{barroso1987}
+      \newbibdef[compl]{conte1965}
+      \newbibdef[compl]{burden2005}
+      \newbibdef[compl]{roque2000}
+      \newbibdef[compl]{sperandio2003}
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[BaseEletro]{ENG10002}{4}{CIRCUITOS ELÉTRICOS II - C}
+
+     \csummary{Análise fasorial. Potência em circuitos elétricos. Sistemas trifásicos. Análise de circuitos de segunda ordem no domínio do tempo.}
+
+      \newbibdef{alexander2003}
+      \newbibdef{irwin2003}
+      \newbibdef{nilsson2003}
+
+      \newbibdef[basic]{bird2009}
+
+      \newbibdef[compl]{desoer1979}
+      \newbibdef[compl]{dorf2003}
+      \newbibdef[compl]{hayt2008}
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[BaseEletro]{ENG10043}{4}{SISTEMAS DIGITAIS II}
+
+     \csummary{Dispositivos lógicos programáveis. Projeto de sistemas digitais. Máquinas de estado finitas.}
+
+      \newbibdef{brown}
+      \newbibdef{floyddup}
+      \newbibdef{wakerly}
+
+      \newbibdef[basic]{manodup}
+      \newbibdef[basic]{tocci}
+      \newbibdef[basic]{vahiddup}
+
+      \newbibdef[compl]{karrisdup}
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[BaseMatematica]{MAT01168}{4}{TRANSFORMADAS INTEGRAIS}
+
+     \csummary{Análise Vetorial. Transformada de Laplace. Transformada de Fourier. Variáveis Complexas.}
+
+      \newbibdef{anton2007}
+      \newbibdef{hsu2011}
+
+      \newbibdef[basic]{hsu1973}
+      \newbibdef[basic]{strauch}
+      \newbibdef[basic]{kreyszig1983}
+      \newbibdef[basic]{spiegel1972}
+      \newbibdef[basic]{spiegelcomplex}
+      \newbibdef[basic]{zill2003dup2}
+
+      \newbibdef[compl]{asmar2005}
+      \newbibdef[compl]{oneil2003}
+      \newbibdef[compl]{spiegel1978}
+      \newbibdef[compl]{strang1991dup}
+      \newbibdef[compl]{stroud2003}
+      \newbibdef[compl]{zill2001dup2}
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[BaseQuimica]{ENG03004}{4}{MECÂNICA DOS SÓLIDOS}
+
+     \csummary{Conceitos fundamentais da mecânica dos sólidos. Tensões e deformações. Propriedades mecânicas dos materiais. Carregamento axial. 
+     Torção. Flexão. Transformação das tensões e deformações. Introdução ao método dos elementos finitos.}
+
+      \newbibdef{beer2013}
+      \newbibdef{popov1978}
+      \newbibdef{hibbeler2010}
+
+      \newbibdef[basic]{gere}
+      \newbibdef[basic]{reddy}
+      \newbibdef[basic]{mendonca2019}
+
+      \newbibdef[compl]{gordon}
+      \newbibdef[compl]{pilkey}
+      \newbibdef[compl]{shames}
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[BaseEletro]{ENG03316}{4}{ELETRÔNICA ANALÓGICA I}
+
+     \csummary{Dispositivos semicondutores. Polarização de transistores. Circuitos amplificadores de pequeno sinal. Análise de resposta em 
+     frequência. Amplificadores diferenciais. Amplificadores operacionais.}
+
+      \newbibdef{sedra2007}
+
+      \newbibdef[basic]{millman2010}
+      \newbibdef[basic]{schilling}
+
+      \newbibdef[compl]{razavi}
+      \newbibdef[compl]{boylestad}
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[BaseControl]{ENG03044}{4}{SINAI E SISTEMAS}
+
+     \csummary{Classificação de sinais e sistemas. Sistemas lineares e invariantes no tempo. Análise no domínio do tempo. Representações no domínio 
+     da frequência. Transformada de Laplace. Transformada de Fourier. Transformada Z. Análise de Sistemas no Espaço de Estados. Introdução ao 
+     Controle de Sistemas.}
+
+      \newbibdef{haykin2001}
+
+      \newbibdef[basic]{franklin2006}
+      \newbibdef[basic]{lathi2007}
+      \newbibdef[basic]{oppenheim1997}
+
+      \newbibdef[compl]{geromel2004}
+      \newbibdef[compl]{hsu2004}
+      \newbibdef[compl]{olivier2019}
+
+
+
+
+%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%
+%%%
+%%%  Etapa 05
+%%%
+%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[BaseEletro]{ENG07086}{4}{ELETRÔNICA ANALÓGICA II}
+
+     \csummary{Resposta em frequência de amplificadores. Realimentação. Estabilidade. Osciladores. Conversores A/D e D/A. Introdução à eletrônica de 
+     potência.}
+
+      \classremark{Muda a Súmula}
+
+      \newbibdef{alexander2008}
+      \newbibdef{nilsson1999}
+      \newbibdef{irwin2003dup}
+
+      \newbibdef[basic]{bird2009}
+
+      \newbibdef[compl]{desoer1979}
+      \newbibdef[compl]{bird2009dup}
+      \newbibdef[compl]{hayt2008dup}
+      \newbibdef[compl]{tsividis2001}
+
+
+%%%%%%
+%%%%%% I'M HERE !!!
+
+%%%%%%
+%%%%%%
+%
+\classdef[BaseControl]{ENG10044}{4}{TEORIA DO CONTROLE I}
+
+     \csummary{Modelagem de Sistemas Dinâmicos. Análise no Domínio do Tempo. Análise no Domínio da Frequência. Projeto de Controladores.}
+
+      \newbibdef{haykin2001}
+
+      \newbibdef[basic]{franklin2006}
+      \newbibdef[basic]{lathi2007}
+      \newbibdef[basic]{oppenheim1997}
+
+      \newbibdef[compl]{geromel2004}
+      \newbibdef[compl]{hsu2004}
+      \newbibdef[compl]{olivier2019}
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[BaseQuimica]{ENG03045}{4}{ENGENHARIA DOS MATERIAIS}
+
+     \csummary{Processamento e aplicação dos materiais metálicos. Materiais cerâmicos. Materiais poliméricos. Materiais compósitos.}
+
+      \newbibdef{borgnakke2009}
+      \newbibdef{smith205}
+
+      \newbibdef[basic]{koretsky2017}
+
+
+%%%%%%
+%%%%%%???
+%
+\classdef[BaseControl]{ENG10003}{4}{CONTROLE E SERVOMECANISMOS I}
+
+     \csummary{Modelagem de sistemas dinâmicos. Análise de desempenho. Controle PID. Projeto no domínio da frequência. Projeto por resposta em 
+     frequência. Projeto por lugar das raízes. Projeto no espaço de estados. Controle digital.}
+
+      \classremark{MUDA: etapa e súmula}
+
+      \newbibdef{close2001}
+      \newbibdef{kluever2015}
+      \newbibdef{palm2013}
+
+      \newbibdef[basic]{kulakowski2012}
+      \newbibdef[basic]{lu2014}
+      \newbibdef[basic]{palm1999}
+      \newbibdef[basic]{rao2008}
+
+      \newbibdef[compl]{das2009}
+      \newbibdef[compl]{franklin2013}
+      \newbibdef[compl]{golnaraghi}
+      \newbibdef[compl]{ogata}
+
+
+%%%%%%
+%%%%%%???
+%
+\classdef[Pro.Robotica]{ENG10017}{4}{CINEMÁTICA E DINÂMICA DE MECANISMOS}
+
+     \csummary{Conceitos básicos. Análise de posição e deslocamento. Análise de velocidade. Análise de aceleração. Forças em mecanismos. Sistemas de 
+     cames. Engrenagens.}
+
+      \classremark{MUDA: etapa e súmula, mantem nome antigo}
+
+      \newbibdef[basic]{norton}
+      \newbibdef[basic]{uicker2011}
+
+      \newbibdef[compl]{mabie1987}
+      \newbibdef[compl]{norton2007}
+
+
+%%%%%%
+%%%%%%???
+%
+\classdef[BaseControl]{ENG07069}{4}{INSTRUMENTAÇÃO E MEDIDAS EM CONTROLE}
+
+     \csummary{Metrologia. Fundamentos de instrumentação. Sensores e transdutores. Acondicionadores de sinal. Conversão analógico-digital e 
+     digital-analógico. Medição de grandezas físicas.}
+
+      \newbibdef{balbinot2011}
+      \newbibdef{balbinot}
+
+      \newbibdef[basic]{doebelin}
+      \newbibdef[basic]{fraden2010}
+      \newbibdef[basic]{pallas}
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[Pro.Robotica]{ENG10026}{4}{INTRODUÇÃO A ROBÓTICA}
+
+     \csummary{Histórico e conceitos básicos de Robótica. Classificação de robôs. Geometria de robôs manipuladores. Cinemática de robôs 
+     manipuladores. Dinâmica de robôs manipuladores. Controle de robôs manipuladores. Sensores e atuadores.}
+
+      \classremark{MUDA ETAPA}
+
+      \newbibdef[basic]{craig2005}
+      \newbibdef[basic]{fu1987}
+
+      \newbibdef[compl]{asada1986}
+      \newbibdef[compl]{goebel2015}
+      \newbibdef[compl]{martinez2013}
+      \newbibdef[compl]{okane2013}
+      \newbibdef[compl]{romano2002}
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[Pro.Robotica]{ENG03380}{4}{LABORATÓRIO DE ROBÓTICA INDUSTRIAL}
+
+     \csummary{Conceitos básicos de robótica. Classificação de robôs. Geometria de robôs manipuladores. Cinemática de robôs manipuladores. Dinâmica 
+     de robôs manipuladores. Controle de robôs manipuladores. Sensores e atuadores.}
+
+      \classremark{MUDA ETAPA}
+
+      \newbibdef[basic]{craig2013}
+      \newbibdef[basic]{niku2013}
+
+      \newbibdef[compl]{siciliano}
+      \newbibdef[compl]{pazos2002}
+      \newbibdef[compl]{rosario2005}
+      \newbibdef[compl]{spong2005}
+      \newbibdef[compl]{groover}
+
+
+
+
+%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%
+%%%
+%%%  Etapa 06
+%%%
+%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%
+
+
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[Pro.EletPot]{ENG10047}{4}{MÁQUINAS ELÉTRICAS}
+
+     \csummary{Princípios de conversão eletromecânica. Transformadores. Máquinas de indução. Máquinas síncronas. Máquinas de corrente contínua.}
+
+      \newbibdef{fitzgerald}
+      \newbibdef{white}
+      \newbibdef{bim}
+
+      \newbibdef[basic]{ivanon1980}
+      \newbibdef[basic]{kostenko1979}
+      \newbibdef[basic]{krause}
+      \newbibdef[basic]{nasar}
+
+      \newbibdef[compl]{gros}
+      \newbibdef[compl]{hameier}
+      \newbibdef[compl]{chapman}
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[Pro.Control]{ENG10022}{4}{INSTRUMENTAÇÃO INDUSTRIAL}
+
+     \csummary{Processos industriais. Controle e instrumentação de processos industriais. Simbologia. Sistemas de controle. Controle de processos.}
+
+      \newbibdef{balbinot}
+      \newbibdef{balbinot2011}
+
+      \newbibdef[basic]{doebelin}
+      \newbibdef[basic]{fraden2010}
+      \newbibdef[basic]{pallas}
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[BaseControl]{ENG10045}{4}{TEORIA DO CONTROLE II}
+
+     \csummary{Análise e Projeto de Sistemas de Controle no Espaço de Estados. Controle Digital.}
+
+      \newbibdef{ogunnaike1994}
+      \newbibdef{campos2006}
+      \newbibdef{seborg2004}
+
+      \newbibdef[basic]{luyben1990}
+      \newbibdef[basic]{levine1996}
+
+      \newbibdef[compl]{foust1980}
+      \newbibdef[compl]{macintyre1997}
+      \newbibdef[compl]{mccabe2005}
+      \newbibdef[compl]{perry2007}
+      \newbibdef[compl]{welty2007}
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[BaseEletro]{ENG07069}{4}{ELETRÔNICA INDUSTRIAL}
+
+     \csummary{Dispositivos semicondutores de potência. Conversores CA/CC. Conversores CC/CC. Conversores CC/CA.}
+
+      \newbibdef{rashid2015}
+      \newbibdef{mohan2003}
+
+      \newbibdef[basic]{bose1997}
+      \newbibdef[basic]{aburub2014}
+      \newbibdef[basic]{murphy1988}
+      \newbibdef[basic]{martins2000}
+      \newbibdef[basic]{martins2005}
+      \newbibdef[basic]{sen1989}
+
+      \newbibdef[compl]{barbi2006}
+      \newbibdef[compl]{elhawary2002}
+      \newbibdef[compl]{bollen2011}
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[BaseControl]{ENG10023}{4}{MODELAGEM E IDENTIFICAÇÃO DE SISTEMAS}
+
+     \csummary{Conceitos de modelagem e identificação. Modelos e sinais. Identificação paramétrica. Identificação não-paramétrica. Identificação de 
+     sistemas não-lineares.}
+
+      \newbibdef{levine1996}
+      \newbibdef{ljung1999}
+
+      \newbibdef[basic]{nelles2001}
+      \newbibdef[basic]{soderstrom1989}
+
+      \newbibdef[compl]{ljung2011}
+      \newbibdef[compl]{ljung2002}
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[BaseMec]{ENG10004}{4}{MECÂNICA DOS FLUIDOS APLICADA}
+
+     \csummary{Conceitos fundamentais. Estática dos fluidos. Equações básicas para volumes de controle. Equações diferenciais para escoamentos. 
+     Análise dimensional. Escoamento em canais fechados. Escoamento em canais abertos. Máquinas hidráulicas.}
+
+      \newbibdef{white2002}
+      \newbibdef{franzini2005}
+
+      \newbibdef[basic]{fox2006}
+      \newbibdef[basic]{brunce2001}
+      \newbibdef[basic]{streeter1997}
+
+      \newbibdef[compl]{mccabe2005}
+      \newbibdef[compl]{welty2007}
+      \newbibdef[compl]{roberson1998}
+      \newbibdef[compl]{shames1992}
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[BaseControl]{ENG07042}{4}{CONTROLE E SERVOMECANISMOS II}
+
+     \csummary{Modelagem matemática de sistemas dinâmicos. Análise de desempenho de sistemas realimentados. Projeto de controladores. Análise e 
+     projeto no domínio da frequência. Projeto por lugar das raízes. Projeto no espaço de estados. Controle digital.}
+
+      \newbibdef{franklin2006}
+      \newbibdef{ogata2009}
+      \newbibdef{nise2002}
+
+      \newbibdef[basic]{dazho2004}
+      \newbibdef[basic]{delfim2000}
+      \newbibdef[basic]{dorf2008}
+      \newbibdef[basic]{kuo1997}
+
+      \newbibdef[compl]{chen1993}
+      \newbibdef[compl]{goodwin2001}
+      \newbibdef[compl]{kailath1980}
+      \newbibdef[compl]{katsuhiko2003}
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[BaseControl]{ENG10019}{4}{LABORATÓRIO DE CONTROLE E SERVOMECANISMOS I}
+
+     \csummary{Experimentos que envolvem os seguintes tópicos: controle em malha aberta, controle em malha fechada, controle PID, controle digital, 
+     controle de posição, controle de velocidade, controle de temperatura, controle de nível e controle de fluxo.}
+
+      \newbibdef{franklin2006}
+      \newbibdef{ogata2009}
+      \newbibdef{nise2002}
+
+      \newbibdef[basic]{dazho2004}
+      \newbibdef[basic]{delfim2000}
+      \newbibdef[basic]{dorf2008}
+      \newbibdef[basic]{kuo1997}
+
+      \newbibdef[compl]{chen1993}
+      \newbibdef[compl]{goodwin2001}
+      \newbibdef[compl]{kailath1980}
+      \newbibdef[compl]{katsuhiko2003}
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[BaseMec]{ENG03387}{4}{TRANSMISSÃO DE CALOR APLICADA}
+
+     \csummary{Condução em regime permanente. Condução em regime transiente. Condução com geração de energia. Convecção forçada. Convecção natural. 
+     Trocadores de calor. Radiação.}
+
+      \newbibdef{incropera2008}
+      \newbibdef{holman2008}
+      \newbibdef{cengel2007}
+
+      \newbibdef[basic]{kreith1999}
+      \newbibdef[basic]{cotta1986}
+      \newbibdef[basic]{ozisik1985}
+
+      \newbibdef[compl]{bejan1993}
+      \newbibdef[compl]{mccabe2005}
+      \newbibdef[compl]{welty2007}
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[Pro.Mecatronica]{ENG03386}{4}{MECATRÔNICA I}
+
+     \csummary{Conceitos de mecatrônica. Integração de componentes de diferentes naturezas. Sistemas de controle.}
+
+      \newbibdef[darkred]{brockman2009}
+      \newbibdef[darkred]{desilva2006}
+      \newbibdef[darkred]{junival2008}
+
+      \newbibdef[basic]{shigley2005}
+      \newbibdef[basic]{bishop2002}
+
+      \newbibdef[compl]{desilva2008}
+      \newbibdef[compl]{onwubolu2005}
+      \newbibdef[compl]{bishop2008}
+      \newbibdef[compl]{norton2004}
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[Pro.Control]{ENG03046}{4}{CONTROLE NÃO LINEAR}
+
+     \csummary{Equilíbrios, ciclos-limite e atratores; definições de estabilidade; caracterização de domínios de atração. Método indireto de 
+     Liapunov. Método direto de Liapunov em sistemas autônomos: funções de Liapunov, princípio de invariância, estimação de domínios de atração. 
+     Estabilidade absoluta: critério do círculo, critério de Popov. Passividade; o lema positivo real.}
+
+      \newbibdef[darkgreen]{khalilk1996}
+      \newbibdef[darkgreen]{sastry1999}
+
+      \newbibdef[compl]{sepulchre1997}
+      \newbibdef[compl]{seydel1994}
+      \newbibdef[compl]{slotine1991}
+      \newbibdef[compl]{davison1971}
+      \newbibdef[compl]{genesio1985}
+      \newbibdef[compl]{chiang1987}
+      \newbibdef[compl]{bazanella2004}
+      \newbibdef[compl]{coutinho2004}
+      \newbibdef[compl]{bazanella1997}
+      \newbibdef[compl]{bazanella1999}
+      \newbibdef[compl]{bazanella2000}
+      \newbibdef[compl]{gomes2002}
+      \newbibdef[compl]{gomes2014}
+      \newbibdef[compl]{larios2003}
+      \newbibdef[compl]{reginatto2001}
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[Pro.EletPot]{ENG10027}{4}{ELETRÔNICA INDUSTRIAL}
+
+     \csummary{Dispositivos semicondutores de potência. Conversores CA/CC. Conversores CC/CC. Conversores CC/CA.}
+
+      \newbibdef[darkcyan]{rashid2015}
+      \newbibdef[darkcyan]{mohan2003}
+
+      \newbibdef[basic]{bose1997}
+      \newbibdef[basic]{aburub2014}
+      \newbibdef[basic]{murphy1988}
+      \newbibdef[basic]{martins2000}
+      \newbibdef[basic]{martins2005}
+      \newbibdef[basic]{sen1989}
+
+      \newbibdef[compl]{barbi2006}
+      \newbibdef[compl]{elhawary2002}
+      \newbibdef[compl]{bollen2011}
+
+
+
+
+%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%
+%%%
+%%%  Etapa 09
+%%%
+%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[BaseEletro]{ENG07087}{4}{LABORATÓRIO DE ELETRÔNICA INDUSTRIAL}
+
+     \csummary{Experimentos envolvendo dispositivos semicondutores de potência, conversores CA/CC, conversores CC/CC e conversores CC/CA.}
+
+      \newbibdef{rashid2015}
+      \newbibdef{mohan2003}
+
+      \newbibdef[basic]{bose1997}
+      \newbibdef[basic]{aburub2014}
+      \newbibdef[basic]{murphy1988}
+      \newbibdef[basic]{martins2000}
+      \newbibdef[basic]{martins2005}
+      \newbibdef[basic]{sen1989}
+
+      \newbibdef[compl]{barbi2006}
+      \newbibdef[compl]{elhawary2002}
+      \newbibdef[compl]{bollen2011}
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[Pro.Mecatronica]{ENG10021}{4}{MECATRÔNICA II}
+
+     \csummary{Modelagem de sistemas mecatrônicos. Simulação e análise de sistemas mecatrônicos.}
+
+      \newbibdef[darkred]{juvinall2008}
+      \newbibdef[darkred]{silva2006}
+
+      \newbibdef[basic]{bishop2002}
+      \newbibdef[basic]{shigley2005}
+
+      \newbibdef[compl]{bishop2008}
+      \newbibdef[compl]{norton2004}
+      \newbibdef[compl]{onwubolu2005}
+      \newbibdef[compl]{silva2008}
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[Pro.Control]{ENG03047}{4}{CONTROLE AVANÇADO}
+
+     \csummary{Controle ótimo. Controle robusto. Controle adaptativo. Controle não linear.}
+
+      \newbibdef[darkgreen]{cetinkunt2015}
+      \newbibdef[darkgreen]{horowitz2015}
+      \newbibdef[darkgreen]{russell2015}
+
+      \newbibdef[basic]{desilva2006}
+      \newbibdef[basic]{junival2008}
+      \newbibdef[basic]{bishop2002}
+
+      \newbibdef[compl]{desilva2008}
+      \newbibdef[compl]{onwubolu2005}
+      \newbibdef[compl]{bishop2008}
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[Pro.EletPot]{ENG10050}{4}{ACIO. ELET. DE MÁQ. ELET.}
+
+     \csummary{Princípios de acionamentos elétricos. Controle de velocidade de máquinas de corrente contínua. Controle de velocidade de máquinas de 
+     indução. Controle de velocidade de máquinas síncronas.}
+
+      \newbibdef[darkcyan]{leonhard1996}
+      \newbibdef[darkcyan]{novotny1996}
+      \newbibdef[darkcyan]{rashid2001}
+
+      \newbibdef[basic]{bose2002}
+      \newbibdef[basic]{dubey2001}
+      \newbibdef[basic]{krause2002}
+      \newbibdef[basic]{ong1998}
+
+      \newbibdef[compl]{bose1986}
+      \newbibdef[compl]{vas1990}
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[Pro.EletPot]{ENG10046}{4}{ELETRÔNICA DE POTÊNCIA}
+
+     \csummary{Dispositivos semicondutores de potência. Conversores CA/CC. Conversores CC/CC. Conversores CC/CA.}
+
+      \newbibdef[darkcyan]{rashid2015}
+      \newbibdef[darkcyan]{mohan2003}
+
+      \newbibdef[basic]{bose1997}
+      \newbibdef[basic]{aburub2014}
+      \newbibdef[basic]{murphy1988}
+      \newbibdef[basic]{martins2000}
+      \newbibdef[basic]{martins2005}
+      \newbibdef[basic]{sen1989}
+
+      \newbibdef[compl]{barbi2006}
+      \newbibdef[compl]{elhawary2002}
+      \newbibdef[compl]{bollen2011}
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[Transv.outros]{TCC/CCA - I}{4}{TRABALHO DE CONCLUSÃO DO CURSO DE CCA I}
+
+     \csummary{Desenvolvimento de projeto de conclusão de curso, envolvendo as áreas de conhecimento do curso de Engenharia de Controle e 
+     Automação.}
+
+      \newbibdef{macedo}
+      \newbibdef{vesilind1991}
+
+      \newbibdef[basic]{lixo2000}
+      \newbibdef[basic]{aisse1982}
+      \newbibdef[basic]{azevedo1977}
+      \newbibdef[basic]{lima1991}
+      \newbibdef[basic]{menegat2006}
+      \newbibdef[basic]{valle1996}
+
+      \newbibdef[compl]{campbell1995}
+      \newbibdef[compl]{ely1990}
+      \newbibdef[compl]{franciss1980}
+      \newbibdef[compl]{jacobi1989}
+      \newbibdef[compl]{knijnik1994}
+      \newbibdef[compl]{mandelli1991}
+      \newbibdef[compl]{mota1981}
+
+
+
+
+%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%
+%%%
+%%%  Etapa 10
+%%%
+%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%
+%%%%%%
+%\Cdef[Transv.outros]<-1>{ENG03010}{3}{ob}
+
+
+
+      \newbibdef{carvalho2008}
+      \newbibdef{pmi2000}
+
+      \newbibdef[basic]{kerzner2006}
+      \newbibdef[basic]{carvalho2006}
+      \newbibdef[basic]{rabechini2009}
+
+
+
+%
+
+
+
+      \classremark{MUDA: etapa e pré-requisitos CH, DISCIPLINA NOVA}
+
+
+
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%
+%%%%%  Etapa Eletivas
+%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%
+%%%%%%
+%
+
+
+
+      \classremark{MUDA súmula, etapa, discipline nova}
+
+      \newbibdef{brockman2009}
+      \newbibdef{desilva2006}
+      \newbibdef{junival2008}
+
+      \newbibdef[basic]{shigley2005}
+      \newbibdef[basic]{bishop2002}
+
+      \newbibdef[compl]{desilva2008}
+      \newbibdef[compl]{onwubolu2005}
+      \newbibdef[compl]{bishop2008}
+      \newbibdef[compl]{norton2004}
+
+
+%%%%%%
+%%%%%%
+%
+
+
+
+      \classremark{MUDA súmula, etapa, discipline nova}
+
+      \newbibdef{juvinall2008}
+      \newbibdef{silva2006}
+
+      \newbibdef[basic]{bishop2002}
+      \newbibdef[basic]{shigley2005}
+
+      \newbibdef[compl]{bishop2008}
+      \newbibdef[compl]{norton2004}
+      \newbibdef[compl]{onwubolu2005}
+      \newbibdef[compl]{silva2008}
+
+
+
+%%%%%%
+%%%%%%
+%
+
+
+
+      \newbibdef{casarotto2007}
+
+      \newbibdef[basic]{blank2008}
+      \newbibdef[basic]{dalzot2008}
+      \newbibdef[basic]{gitman2004}
+      \newbibdef[basic]{hirschfeld1998}
+      \newbibdef[basic]{ross2002}
+
+
+%%%%%%
+%%%%%%
+%
+
+
+
+      \classremark{MUDA pré-requisitos}
+
+      \newbibdef{campos2006}
+      \newbibdef{liptak1995control}
+      \newbibdef{liptak1995meas}
+
+
+%%%%%%
+%%%%%%
+%
+
+
+
+      \newbibdef{ogunnaike1994}
+      \newbibdef{campos2006}
+      \newbibdef{seborg2004}
+
+      \newbibdef[basic]{luyben1990}
+      \newbibdef[basic]{levine1996}
+
+      \newbibdef[compl]{foust1980}
+      \newbibdef[compl]{macintyre1997}
+      \newbibdef[compl]{mccabe2005}
+      \newbibdef[compl]{perry2007}
+      \newbibdef[compl]{welty2007}
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[Avan.topic]{CCA99005}{2}{TÓPICOS ESPECIAIS EM ENGENHARIA DE CONTROLE E AUTOMAÇÃO I}
+
+     \csummary{Disciplina com tema variado sempre dentro da área de Engenharia de Controle a Automação.}
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[Avan.topic]{CCA99006}{4}{TÓPICOS ESPECIAIS EM ENGENHARIA DE CONTROLE E AUTOMAÇÃO II}
+
+     \csummary{Disciplina com tema variado sempre dentro da área de Engenharia de Controle e Automação.}
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[Avan.topic]{CCA99007}{6}{TÓPICOS ESPECIAIS EM ENGENHARIA DE CONTROLE E AUTOMAÇÃO III}
+
+     \csummary{Disciplina com tema variado sempre dentro da área de Engenharia de Controle e Automação.}
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[Pro.Robotica]{ENG10051}{4}{DINÂMICA E CONTROLE DE ROBÔS}
+
+     \csummary{Modelagem dinâmica de robôs: modelos de Lagrange e Newton-Euter. Controle Independente por juntas. Controle de robôs: por toque 
+     calculado, no espaço cartesiano, por realimentação variante no tempo, por realimentação não-suave. Aspectos de implementação.}
+
+      \newbibdef{martinez2013dup}
+      \newbibdef{fu1987dup}
+
+      \newbibdef[basic]{koubaa}
+      \newbibdef[basic]{okane2013dup}
+      \newbibdef[basic]{goebel2013}
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[Pro.Robotica]{ENG10052}{4}{LABORATÓRIO DE ROBÓTICA}
+
+     \csummary{Ambientes de programação e simulação de robôs. Projeto e concepção de células robotizadas. Integração software-hardware do sistema 
+     robótico. Protocolos de comunicação como o robô. Normas de segurança.}
+
+      \newbibdef{craig2012}
+      \newbibdef{nof}
+
+      \newbibdef[basic]{sciavicco}
+
+      \newbibdef[compl]{fu}
+      \newbibdef[compl]{groover}
+
+
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[Pro.Robotica]{ENG10xxa}{4}{ROBÓTICA MÓVEL}
+
+     \csummary{Comportamento não-holonômico, modelagem cinemática e dinâmica de robôs móveis, controle de robôs móveis, localização, mapeamento de 
+     ambiente, localização e mapeamento simultâneos, aspectos de implementação, plataformas para robótica móvel.}
+
+      \newbibdef{latombe1991}
+      \newbibdef{newman2018}
+      \newbibdef{thrun2005}
+
+      \newbibdef[basic]{fu1987dup2}
+      \newbibdef[basic]{murray1994}
+
+      \newbibdef[compl]{brown1983}
+      \newbibdef[compl]{everett1995}
+
+%%%%%%
+%%%%%%
+%
+\classdef[Pro.Robotica]{ENG10xxB}{4}{SISTEMAS DE TEMPO REAL}
+
+     \csummary{Caracterização de sistemas tempo-real. Sistemas operacionais tempo-real: métodos de escalonamento. Linguagens de programação para 
+     sistemas tempo-real.}
+
+      \newbibdef{burns2001}
+      \newbibdef[basic]{tanenbaum2001}
+      \newbibdef[basic]{stevens2005}
+      \newbibdef[compl]{stroustrup1997}
+      \newbibdef[compl]{stroustrup1993}
+      \newbibdef[compl]{benari2006}
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[Pro.Control]{ELE223}{4}{Sistemas Lineares – A}
+
+     \csummary{Fundamentos de álgebra linear. Sistemas dinâmicos lineares de tempo contínuo e de tempo discreto: definições e propriedades. 
+     Representações entrada-saída: equações diferenciais, convolução, função de transferência. Representação por variáveis de estado. Realizações. 
+     Análise de sistemas lineares e invariantes no tempo: estabilidade, controlabilidade e observalidade. Realimentação de estados. Observadores de 
+     estado.}
+
+      \newbibdef[basic]{chen1999}
+      \newbibdef[basic]{lipschutz1978}
+      \newbibdef[basic]{strang1988}
+
+      \newbibdef[compl]{zadeh1979}
+      \newbibdef[compl]{kailath1980}
+      \newbibdef[compl]{haykin2001dup}
+      \newbibdef[compl]{boldrini1984}
+      \newbibdef[compl]{steinbruch1987}
+
+%%%%%%
+%%%%%%
+%
+\classdef[Pro.Control]{ELE312}{4}{Sistemas Não-Lineares – B}
+
+     \csummary{Equilíbrios, ciclos-limite e atratores; definições de estabilidade; caracterização de domínios de atração. Método indireto de 
+     Liapunov. Método direto de Liapunov em sistemas autônomos: funções de Liapunov, princípio de invariância, estimação de domínios de atração. 
+     Estabilidade absoluta: critério do círculo, critério de Popov. Passividade; o lema positivo real.}
+
+      \newbibdef[basic]{khalilk1996}
+      \newbibdef[basic]{sastry1999}
+
+      \newbibdef[compl]{sepulchre1997}
+      \newbibdef[compl]{seydel1994}
+      \newbibdef[compl]{slotine1991}
+      \newbibdef[compl]{davison1971}
+      \newbibdef[compl]{genesio1985}
+      \newbibdef[compl]{chiang1987}
+      \newbibdef[compl]{bazanella2004}
+      \newbibdef[compl]{coutinho2004}
+      \newbibdef[compl]{bazanella1997}
+      \newbibdef[compl]{bazanella1999}
+      \newbibdef[compl]{bazanella2000}
+      \newbibdef[compl]{gomes2002}
+      \newbibdef[compl]{gomes2014}
+      \newbibdef[compl]{larios2003}
+      \newbibdef[compl]{reginatto2001}
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[Pro.Control]{ELE216}{4}{ELE216 – Controle Multivariável}
+
+     \csummary{Realimentação de estados. Realimentação estática e dinâmica de saída. Problema de seguimento de referência e rejeição de 
+     perturbações. Controle linear quadrático. Introdução ao controle robusto.}
+
+      \newbibdef[basic]{chen1984}
+      \newbibdef[basic]{kailath1980dup}
+      \newbibdef[basic]{maciejowski1990}
+      \newbibdef[basic]{kwakernak1972}
+      \newbibdef[basic]{wonham1979}
+      \newbibdef[basic]{dorato1995}
+      \newbibdef[basic]{zhou}
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[Pro.Control]{ELExxx}{4}{Processos Estocásticos}
+
+     \csummary{}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%
+%%%%%  Curricula
+%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+
+\currdef{CCA-FEO}{FEO CCA}{Formação Essencial Obrigatória - CCA}
+
+
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%
+%%%%%  Etapa 01
+%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+\semdef{Etp.01}{Etapa 01}{1}
+
+  \addclass{-2}{INF01202}{ob}
+  \addclass{-3}{MAT01353}{ob}
+  \addclass{-10}{FIS01181}{ob}
+  \addclass{-1}{ARQ03317}{ob}
+  \addclass{-8}{CCA99001}{ob}
+  \addclass{-5}{QUI01009}{ob}
+
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%
+%%%%% Etapa 02
+%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+\semdef{Etp.02}{Etapa 02}{2}
+
+  \addclass{-4}{MAT01355}{ob}
+    \depdef{MAT01353}
+  \addclass{-5}{MAT01354}{ob}
+    \depdef{MAT01353}
+  \addclass{-1}{ARQ03319}{ob}
+    \depdef{ARQ03317}
+  \addclass{-10}{FIS01182}{ob}
+    \depdef{FIS01181}
+  \addclass{-8}{ENG03041}{ob}
+    \depdef[A]{MAT01353}
+    \depdef{CCA99001}
+    \depdef[-A]{FIS01181}
+  \addclass{-2}{INF01057}{ob}
+    \depdef{INF01202}
+
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%
+%%%%% Etapa 03
+%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+\semdef{Etp.03}{Etapa 03}{3}
+
+  \addclass{-11}{ENG10001}{ob}
+    \depdef{FIS01182}
+    \depdef{MAT01354}
+  \addclass{-5}{MAT01167}{ob}
+    \depdef{MAT01355}
+    \depdef{MAT01354}
+  \addclass{-10}{FIS01183}{ob}
+    \depdef{FIS01182}
+  \addclass{-7}{ENG03043}{ob}
+    \depdef{QUI01009}
+  \addclass{-8}{ENG03042}{ob}
+    \depdef{ENG03041}
+  \addclass{-3}{MAT02219}{ob}
+    \depdef{MAT01353}
+  \addclass{-12}{ENG10042}{ob}
+    \depdef*{44 cred.ob.}
+
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%
+%%%%% Etapa 04
+%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+\semdef{Etp.04}{Etapa 04}{4}
+
+  \addclass{-4.4}{MAT01169}{ob}
+    \depdef[-30:0]{INF01202}
+    \depdef{MAT01167}
+  \addclass{-11}{ENG10002}{ob}
+   \depdef{ENG10001}
+   \depdef{MAT01167}
+  \addclass{-12}{ENG10043}{ob}
+    \depdef{ENG10042}
+  \addclass{-5.4}{MAT01168}{ob}
+    \depdef[-A]{MAT01167}
+  \addclass{-7}{ENG03092}{ob}
+    \depdef[A]{ENG03043}
+    \depdef[B]{ENG03041}
+  \addclass{-8}{ENG03316}{ob}
+    \depdef{ENG03042}
+  \addclass{-9}{ENG03044}{ob}
+    \depdef{MAT01167}
+    \depdef{FIS01183}
+    \depdef{ENG10001}
+
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%
+%%%%% Etapa 05
+%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+\semdef{Etp.05}{Etapa 05}{5}
+
+  \addclass{-12}{ENG10044}{ob}
+    \depdef{ENG10002}
+  \addclass{-11}{ENG10003}{ob}
+    \depdef{ENG10002}
+  \addclass{-5}{ENG03004}{ob}
+    \depdef{ENG03092}
+    \depdef{MAT01169}
+  \addclass{-4}{ENG10017}{ob}
+    \depdef{MAT01168}
+  \addclass{-10}{ENG07086}{ob}
+    \depdef{FIS01183}
+  \addclass{-6.4}{ENG10026}{alt}
+    \depdef{ENG03316}
+  \addclass{-9}{ENG03380}{alt}
+    \depdef{ENG03316}
+
+
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%
+%%%%% Etapa 06
+%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+\semdef{Etp.06}{Etapa 06}{6}
+
+  \addclass{-11}{ENG10047}{ob}
+    \depdef{ENG10002}
+  \addclass{-10}{ENG10022}{ob}
+    \depdef[A]{MAT02219}
+    \depdef{ENG10044}
+  \addclass{-13}{ENG10045}{ob}
+    \depdef[-A]{ENG10044}
+    \depdef[-A]{ENG10003}
+  \addclass{-8}{ENG07069}{ob}
+    \depdef{ENG07086}
+  \addclass{-12}{ENG10023}{ob}
+    \depdef[B]{INF01057}
+    \depdef[-A]{ENG10043}
+  \addclass{-4}{ENG10004}{ob}
+    \depdef{ENG10017}
+    \depdef[30:-70]{ENG03044}
+
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%
+%%%%% Etapa 07
+%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+\semdef{Etp.07}{Etapa 07}{7}
+
+  \addclass{-13}{ENG10049}{ob}
+    \depdef{ENG10047}
+    \depdef[-A]{ENG10045}
+  \addclass{-2}{ENG10005}{ob}
+    \depdef{ENG10004}
+  \addclass{-14}{ENG04475}{ob}
+    \depdef[-A]{ENG10043}
+    \depdef[-A]{ENG10044}
+  \addclass{-8}{ENG03021}{ob}
+    \depdef[A]{ENG03043}
+  \addclass{-12}{ENG10048}{ob}
+    \depdef{ENG10023}
+  \addclass{-3}{ENG10018}{ob}
+    \depdef{ENG10004}
+  \addclass{-11}{ENG03027}{ob}
+   \depdef{ENG07069}
+
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%
+%%%%% Etapa 08
+%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+\semdef{Etp.08}{Etapa 08}{8}
+
+  \addclass{-7}{ENG03045}{ob}
+    \depdef{ENG03004}
+    \depdef[-A]{ENG03021}
+  \addclass{-4}{ENG07042}{ob}
+    \depdef{ENG07069}
+    \depdef[-A]{ENG10018}
+  \addclass{-5}{ENG10019}{ob}
+    \depdef{ENG10004}
+    \depdef[-A]{ENG04475}
+  \addclass{-6}{ENG03387}{ob}
+    \depdef{ENG03021}
+  \addclass[darkred]{-8}{ENG03386}{el}[Obrigatória na Grade Sistemas Discretos CAD/CAM, eletiva nas demais]
+    \depdef{ENG03021}
+  \addclass[darkgreen]{-1}{ENG03046}{el}[Obrigatória na Grade Controle Avançado de Sistemas Mecânicos, eletiva nas demais]
+    \depdef[B]{ENG03044}
+    \depdef[A]{ENG10018}
+    \depdef{ENG03027}
+  \addclass[darkcyan]{-12}{ENG10027}{el}[Obrigatória na Grade Eletrônica de Potência e Acionamento, eletiva nas demais]
+    \depdef{ENG10002}
+    \depdef[-A]{ENG10044}
+
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%
+%%%%% Etapa 09
+%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+\semdef{Etp.09}{Etapa 09}{9}
+
+  \addclass{-4}{ENG07087}{ob}
+    \depdef{ENG07042}
+  \addclass[darkred]{-10}{ENG10021}{el}[Obrigatória na Grade Sistemas Discretos CAD/CAM, eletiva nas demais]
+    \depdef{ENG10023}
+  \addclass[darkgreen]{-9}{ENG03047}{el}[Obrigatória na Grade Controle Avançado de Sistemas Mecânicos, eletiva nas demais]
+    \depdef{ENG03044}
+  \addclass[darkcyan]{-13}{ENG10050}{el}[Obrigatória na Grade Eletrônica de Potência e Acionamento, eletiva nas demais]
+    \depdef{ENG10049}
+  \addclass[darkcyan]{-14}{ENG10046}{el}[Obrigatória na Grade Eletrônica de Potência e Acionamento, eletiva nas demais]
+    \depdef{ENG10044}
+  \addclass{-8}{TCC/CCA - I}{ob}
+    \depdef{ENG03027}
+    \depdef{ENG10005}
+    \depdef{ENG10048}
+    \depdef{ENG10049}
+
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%
+%%%%% Etapa 10
+%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+\semdef{Etp.10}{Etapa 10}{10}
+
+  %\addclass{-2}{ECO02063}{ob}
+  \addclass{-2}{ENG03048}{ob}
+    \depdef*{180 cred.ob.}  
+  \addclass{-3}{ENG03010}{ob}
+    \depdef*{180 cred.ob.}  
+  \addclass{-5}{TCC/CCA - II}{ob}
+    \depdef[-A]{TCC/CCA - I}
+    \depdef[-A]{ENG03045}
+    \depdef[-A]{ENG07042}
+    \depdef[-A]{ENG10019}
+      %\depdef[-A]{ENG03046}
+      %\depdef[-A]{ENG03047}
+			%\altdep
+      %\depdef[-A]{TCC/CCA - I}
+      %\depdef[-A]{ENG10027}
+      %\depdef[-A]{ENG10050}
+      %\depdef[-A]{ENG10046}
+
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%
+%%%%% Etapa Eletivas
+%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+\semdef{Adicionais}{Adicionais}{11}
+
+  \addclass{-1}{CCA99008}{ad}[Disciplina com 100 Horas CHE]
+    \depdef{ENG03316}
+    \depdef{ENG03044}
+    \depdef{ENG10003}
+    \depdef{ENG10042}
+    \depdef{ENG07086}
+  \addclass{-10}{CCA99009}{ad}[Disciplina com 100 Horas CHE]
+    \depdef{CCA99008}
+    \depdef[-A]{ENG10004}
+    \depdef[-A]{ENG10023}
+    \depdef[-A]{ENG04475}
+    \depdef[-A]{ENG10022}
+    \depdef[-A]{ENG03021}
+    \depdef[-A]{ENG07069}
+  \addclass{-10}{CCA99010}{ad}[Disciplina com 100 Horas CHE]
+    \depdef[A]{CCA99009}
+    
+    
+\semdef{Eletivas}{Eletivas}{12}
+  \addclass{-10}{INF1017}{el}
+    \depdef{INF01057}
+    \depdef*{100 cred.ob.}
+  \addclass{-2}{INF01037}{el}
+    \depdef{INF01057}
+    \depdef*{100 cred.ob.}
+  \addclass{-3}{ADM01135}{el}
+    \depdef{MAT02219}
+  \addclass{-4}{ENG07043}{el}
+    %\depdef{ENG07031-}
+    \depdef{ENG07069}
+    \depdef{ENG10018}
+  \addclass{-5}{ENG07012}{el}
+    \depdef{ENG07042}
+  \addclass{-6}{EDU03071}{el}
+  \addclass{-7}{ENG07062}{el}
+    \depdef{ENG07042}
+  \addclass{-8}{ENG09023}{el}
+    \depdef{ENG03021}
+  \addclass{-11}{CCA99005}{el}
+  \addclass{-12}{CCA99006}{el}
+  \addclass{-13}{CCA99007}{el}
+  \addclass{-15}{ENG10051}{el}
+    \depdef{ENG10004}
+    \depdef{ENG10026}
+  	\altdep
+    \depdef{ENG10004}
+    \depdef{ENG03380}
+  \addclass{-16}{ENG10052}{el}
+    \depdef{ENG10026}
+  	\altdep
+    \depdef{ENG03380}
+  \addclass{-17}{ENG10xxa}{el}
+    \depdef{INF01057}
+    \depdef{MAT02219}
+    \depdef{ENG10017}
+  \addclass{-17}{ENG10xxB}{el}
+    \depdef{ENG04475}
+  \addclass{-18}{ELE223}{el}
+    \depdef{ENG10017}
+  \addclass{}{ELE312}{el}
+    \depdef{ELE223}
+  \addclass{}{ELE216}{el}
+    \depdef{ENG10018}
+	\altdep
+    \depdef{ELE223}
+  \addclass{}{ELExxx}{el}
+    \depdef{ENG10017}
+    \depdef{MAT02219}
+
+

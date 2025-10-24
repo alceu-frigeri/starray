@@ -93,7 +93,7 @@
 %\starray_set_from_keyval:nnTF
 %\starray_gset_from_keyval:nn
 %\starray_gset_from_keyval:nnTF
-%**\starray_term_syntax:nTF
+%**\starray_term_parser:nTF
 %**\starray_show_def:n
 %**\starray_show_def_in_text:n
 %**\starray_show_terms:n
@@ -232,16 +232,16 @@
 
 \sttests_par:
 
-\sttests_work_in:n {testing~term_syntax~function}
+\sttests_work_in:n {testing~term_parser~function}
 STtest.TT.ZXx~(err)~
-\starray_term_syntax:nTF {STtest.TT.ZXx}
+\starray_term_parser:nTF {STtest.TT.ZXx}
   {\sttests_fail:n{err~not~detected}}
   {\sttests_pass:n{err~detected}}
 
 \sttests_par:
 
 STtest.TT.ZX~(correct)~
-\starray_term_syntax:nTF {STtest.TT.ZX}
+\starray_term_parser:nTF {STtest.TT.ZX}
   {\sttests_pass:}
   {\sttests_fail:}
 
@@ -304,7 +304,7 @@ STtest.TT.ZX~(correct)~
 \sttests_par:
 
 executing~term~syntax:n ~(no~output)\\
-\starray_term_syntax:n {STtest.TT.ZX}
+\starray_term_parser:n {STtest.TT.ZX}
 
 \sttests_par:
 This~ is~ ZXa:<<\starray_parsed_get_prop:n{ZXa}>>~(using~'parsed'~one)
@@ -319,6 +319,8 @@ The~current~cnt:\starray_parsed_get_cnt:~(using~'parsed'~one)\\
   
 \sttests_par:
 The~current~iter:\starray_parsed_get_iter:~(using~'parsed'~one)\\
+
+%\starray_get_iter:n {STtest.TT.ZX}
 
 \int_compare:nNnTF {\starray_parsed_get_iter:} = {2}
   {\sttests_pass:n{iter~is~2}} 
@@ -366,10 +368,10 @@ The~current~iter:\starray_parsed_get_iter:~(using~'parsed'~one)\\
 %%%%%%%%%%
 
 executing~term~syntax:nNN ~(no~output~refA)\\
-\starray_term_syntax:nNN {STtest.TT.ZX} \__refAa_tl \__refBa_tl
+\starray_term_parser:nNN {STtest.TT.ZX} \__refAa_tl \__refBa_tl
 
 executing~term~syntax:nNN ~(no~output~refB)\\
-\starray_term_syntax:nNN {STtest.TT} \__refAb_tl \__refBb_tl
+\starray_term_parser:nNN {STtest.TT} \__refAb_tl \__refBb_tl
 
 
 \sttests_par:
@@ -564,6 +566,19 @@ Current~STtest~cnt:
 \sttests_remark:n {using~a~tmp~var: \starray_get_cnt:nN{STtest} \l_tmpa_int \int_use:N \l_tmpa_int}
 
 \sttests_work_in:n {Testing~cnt~function~with~branching}
+
+%\cs_show:N\__starray_parser:nnTF
+%\cs_show:N \starray_get_cnt:nNTF
+%\cs_show:N \starray_parsed_get_cnt:NNNTF
+
+%\cs_show:N \starray_if_in:nnTF
+%\cs_show:N \starray_parsed_if_in:NNnTF
+
+%\cs_show:N \starray_parsed_get_cnt_p:NNN
+%\cs_show:N \starray_parsed_get_cnt_p:N
+%\cs_show:N \__starray_parsed_nocheck_get_cnt_p:N
+%\cs_show:N \__starray_parsed_checked_get_cnt_p:N
+
 Current~STtest~cnt: 
 \starray_get_cnt:nNTF {STtest} \l_tmpa_int 
   {\sttests_pass:n {got:~\int_use:N \l_tmpa_int}}
@@ -572,7 +587,8 @@ Current~STtest~cnt:
 Current~STtestX~cnt: 
 \starray_get_cnt:nNTF {STtestX} \l_tmpa_int 
   {\sttests_pass:n {got:~\int_use:N \l_tmpa_int}}
-  {\sttests_fail:n {get_cnt failed}}
+  {\sttests_fail:n {get_cnt~ failed}}
+
 
 Current~STtestY~cnt: 
 \starray_get_cnt:nNTF {STtestY} \l_tmpa_int 
@@ -589,17 +605,17 @@ Current~STtestY~cnt:
   {\sttests_fail:n {G ~found}}
   {\sttests_pass:n {G ~not~found}}
 
-\sttests_work_in:n {Testing~_term_syntax ~function}
+\sttests_work_in:n {Testing~_term_parser ~function}
 STtest[2].TT~is:
-\starray_term_syntax:nTF {STtest[2].TT}
+\starray_term_parser:nTF {STtest[2].TT}
   {\sttests_pass:n {~correct}}
   {\sttests_fail:n {~should~be~correct}}
 STtest[1].TT~is:
-\starray_term_syntax:nTF {STtest[1].TT}
+\starray_term_parser:nTF {STtest[1].TT}
   {\sttests_fail:n {~shouldn't~be}}
   {\sttests_pass:n {~wasn't~instantiated}}
 STtest[1].GG~is:
-\starray_term_syntax:nTF {STtest[1].GG}
+\starray_term_parser:nTF {STtest[1].GG}
   {\sttests_fail:n {~shouldn't~be~correct}}
   {\sttests_pass:n {~not~correct}}
 
@@ -835,6 +851,9 @@ student~current~terms:
 \starray_show_terms_in_text:n {student}
 
 %\tl_show:N \l__starray_student_def_prop
+
+
+%\cs_show:N \tl_use:N
 
 \ExplSyntaxOff
 \end{document}

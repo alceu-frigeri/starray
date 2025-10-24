@@ -1,4 +1,12 @@
 %%%==============================================================================
+% WinEdt pragmas
+% !Mode:: "TeX:EN"
+% Default Compile engines:
+% !TEX program = pdflatex
+% !PDFTeXify ext =  --enable-etex  --restrict-write18
+% !PDFLaTeX ext  =  --enable-etex  --restrict-write18
+% !BIB program = biber --validate_datamodel
+%%%==============================================================================
 %% Copyright 2023-present by Alceu Frigeri
 %%
 %% This work may be distributed and/or modified under the conditions of
@@ -26,24 +34,94 @@
 \usepackage[utf8]{inputenc}
 \usepackage{lmodern}
 \usepackage[infograb]{codedescribe}
-\usepackage{stdemo}
+
+\usepackage{stcurrdemo}
+
+\usepackage{tikz}
+	\usetikzlibrary{shapes.multipart}
+
 \RequirePackage[inline]{enumitem}
 \SetEnumitemKey{miditemsep}{parsep=0ex,itemsep=0.4ex}
 
-\RequirePackage{amsfonts} % for those check marks: \checkmark and \square
+\RequirePackage[backend=biber,style=abnt,pretty,extrayear,repeatfields]{biblatex}
+
+\addbibresource{curricula-xg1-part1.tex}
+\addbibresource{curricula-xg2-part1.tex}
+\addbibresource{curricula-xg3-part1.tex}
+\addbibresource{curricula-xg4b-part1.tex}
+\addbibresource{curricula-xg5-part1.tex}
+\addbibresource{curricula-xg6d-part1.tex}
+\addbibresource{curricula-xg7-part1.tex}
+
+\NewDocumentCommand{\defcolorpair}{m}
+  {
+    \colorlet{light#1}{white!85!#1}
+    \colorlet{dark#1}{#1!70!black!100}
+    \colorlet{darker#1}{#1!40!black!100}
+  }
+
+\defcolorpair{red}
+\defcolorpair{green}
+\defcolorpair{blue}
+\defcolorpair{magenta}
+\defcolorpair{teal}
+\defcolorpair{yellow}
+\defcolorpair{cyan}
+
+
+
+\RequirePackage{array}
+%\RequirePackage{nicematrix}
+%\NiceMatrixOptions{cell-space-limits = 1pt}
+
+\newcolumntype{P}[1]{>{\raggedleft\arraybackslash}p{#1}}
+\newcolumntype{B}[1]{>{\raggedleft\arraybackslash\bfseries}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\arraybackslash}p{#1}}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{J}[1]{>{\arraybackslash}p{#1}}
+\RequirePackage{longtable}
+
+%\NewDocumentEnvironment{tocless}{}
+%   {
+%     \setcounter{secnumdepth}{-1}
+%     \addtocontents{toc}{\protect\setcounter{tocdepth}{-1}\ignorespaces}
+%   }
+%   {
+%     \setcounter{secnumdepth}{\l__ufrgscca_secdepth_tl}
+%     \addtocontents{toc}{\protect\setcounter{tocdepth}{\l__ufrgscca_tocdepth_tl}\ignorespaces}
+%   }
+%   
+%\def\notoc#1#2{\begin{tocless}#1{#2}\end{tocless}}
+%\def\notoc\relax
+
+
+\usepackage{relsize}
 
 \RequirePackage[hidelinks,hypertexnames=false]{hyperref}
 \begin{document}
 
+\include{curricula-topics.tex}
+\include{curricula-xg1-part2.tex}
+\include{curricula-xg2-part2.tex}
+\include{curricula-xg3-part2.tex}
+\include{curricula-xg4b-part2.tex}
+\include{curricula-xg5-part2.tex}
+\include{curricula-xg6d-part2.tex}
+\include{curricula-xg7-part2.tex}
+\include{curricula-grid.tex}
+
 \tstitle{
   author={Alceu Frigeri\footnote{\tsverb{https://github.com/alceu-frigeri/starray/tree/main/demo}}},
   date={\tsdate},
-  title={The stdemo Package\break for starray version \PkgInfo{starray}{version}}
+  title={The stcurrdemo Package\break for starray version \PkgInfo{starray}{version}}
   }
  
- 
+
+
+
 \begin{tsabstract}
-  As an example of how a package writer could use the \tsobj[pkg]{starray} package, this documents a demo package, \tsobj[pkg]{stdemo}, which defines a set of commands aiming to describe a set of activities and students' work associated with them. An example of how to use these commands is presented at the end of this document.
+  As an example of how a package writer could use the \tsobj[pkg]{starray} package, this documents a demo package, \tsobj[pkg]{stcurrdemo}, which defines a set of commands aiming at describing a course curricula.
 \end{tsabstract}
 
 \tableofcontents
@@ -51,8 +129,8 @@
 \section{Introduction}
 The purpose of this is to create an example of how to use a \tsobj[pkg]{starray} in a complete setup. That for, this demo has a few parts:
 \begin{enumerate*}
-  \item A companion package \tsobj[pkg]{stdemo.sty},
-  \item this document which documents not just the user level functions/commands, but also how the the companion package was created, with  a small example (at the end) of how to use it.
+  \item A companion package \tsobj[pkg]{stcurrdemo.sty},
+  \item this document which documents not just the user level functions/commands, but also the companion package, with  a small example (at the end) of how to use it.
 \end{enumerate*}
 \begin{tsremark}
   About the version number, since this is ``part'' of \tsobj[pkg]{starray}, and to keep tracking simple, the same version number (from \tsobj[pkg]{starray}) will be used.
@@ -62,7 +140,7 @@ The purpose of this is to create an example of how to use a \tsobj[pkg]{starray}
   keywd2={
     starray_new,starray_def_from_keyval,
     starray_new_term,starray_get_unique_id,starray_gset_prop,starray_set_prop,
-    starray_get_cnt,starray_term_syntax,starray_set_iter,
+    starray_get_cnt,starray_term_parser,starray_set_iter,
     starray_set_iter_from_hash,starray_get_prop,starray_gset_from_keyval,
     starray_iterate_over,starray_parsed_get_prop,starray_parsed_get_cnt
     },
@@ -79,671 +157,267 @@ The purpose of this is to create an example of how to use a \tsobj[pkg]{starray}
     listemptytermsifnone,studentlistiterate,checklist
     },
   emph={
-    __stdemo.set_prof_info,__stdemo.set_prof,__stdemo.emptyterm_if_none,__stdemo.student.emptyfields_if_none,
-    __stdemo.seq_sort,__stdemo.emptyfields,
+    __stcurrdemo_set_prof_info,__stcurrdemo_set_prof,__stcurrdemo_emptyterm_if_none,__stcurrdemo_student_emptyfields_if_none,
+    __stcurrdemo_seq_sort,__stcurrdemo_emptyfields,
   },
+  emph3={starray_term_syntax},
   }
 
-\begin{codestore}[{activity.def}]
-\starray_new:n {activity}
-\starray_def_from_keyval:nn {activity} {
-    name = Activity's~ name ,
-    acronym = ACRO ,
-    coord . struct =  {
-        name = Coordinator's~ name,
-        title = Coordinator's~ title ,
-      } ,
-    calendar . struct = {
-        date = {-day-} ,
-        week = {-week-} ,
-        event = {-event-} ,
-      } ,
-    chkID = ,        %%% 'unique ID' for checklists
-    chkmarked = ,    %%% This shall be a prop list of   marked itens
-    chkunmarked = ,  %%% This shall be a prop list of unmarked itens
-    chkref = ,       %%% This shall be a prop list of ref      itens
-  }
+%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%
+
+
+\begin{codestore}[datamodel]
+nothing
 \end{codestore}
 
-
-\begin{codestore}[student.def]
-\starray_new:n {student}
-\starray_def_from_keyval:nn {student}
- {
-  hash = , %% this shall be self hash (if any)
-  first = ,
-  last = ,
-  name = \rule{\l__stdemo.name_rule_dim}{.1pt} ,
-  ID    = \rule{\l__stdemo.ID_rule_dim}{.1pt} , 
-  email = \rule{\l__stdemo.email_rule_dim}{.1pt} ,
-  worktitle = \rule{\l__stdemo.worktitle_rule_dim}{.1pt} ,
-  remarks = ,
-  board-local = {~local/place~} ,
-  board-date   = {~date~} ,
-  board-time  = {~time~} ,
-  grade = 0 ,
-  flag-graded = \c_false_bool , %%% IF grade already calculated (or defined)
-  flag-approved = \c_false_bool ,
-  flag-coadvisor = \c_false_bool ,
-  advisor . struct = {
-    first = ,
-    last =  ,
-    name = \rule{\l__stdemo.name_rule_dim}{.1pt},
-    institution = \rule{\l__stdemo.name_rule_dim}{.1pt},
-    title = \rule{\l__stdemo.title_rule_dim}{.1pt} ,
-    email = \rule{\l__stdemo.email_rule_dim}{.1pt} ,
-  } ,
-  coadvisor . struct = {
-    first = ,
-    last =  ,
-    name = \rule{\l__stdemo.name_rule_dim}{.1pt},
-    institution = \rule{\l__stdemo.name_rule_dim}{.1pt},
-    title = \rule{\l__stdemo.title_rule_dim}{.1pt} ,
-    email = \rule{\l__stdemo.email_rule_dim}{.1pt} ,
-  } ,
-  reviewer . struct = {
-    first = ,
-    last =  ,
-    name = \rule{\l__stdemo.name_rule_dim}{.1pt},
-    institution = \rule{\l__stdemo.name_rule_dim}{.1pt},
-    title = \rule{\l__stdemo.title_rule_dim}{.1pt} ,
-    email = \rule{\l__stdemo.email_rule_dim}{.1pt} ,
-    pointA = ,
-    pointB = ,
-    pointC = ,
-    pointD = ,
-    grade = 0 ,
-    flag-set = \c_false_bool , 
-  } ,
- }
-\end{codestore}
-
-\begin{codestore}[DataRecovery]
-\NewDocumentCommand{\eDataSet}{m}{
-  \starray_term_parser:n{#1}
-}  
-\end{codestore}
-
-\begin{codestore}[DataRecovery]
-\cs_new:Npn \eDataField #1 
-  { \starray_parsed_get_prop:n{#1} }
-\end{codestore}
-
-
-\begin{codestore}[DataRecovery]
-\NewDocumentCommand{\DataField }{mm}{
-  \starray_get_prop:nn{#1}{#2}
-}  
-\end{codestore}
-
-\begin{codestore}[DataRecovery]
-\NewDocumentCommand{\DataGet}{mmm}{
-  \starray_get_prop:nnN{#1}{#2}{#3}
-}  
-\end{codestore}
-
-\begin{codestore}[ActCmd.New]
-\NewDocumentCommand{\NewActivity}{mmm} {
-    \starray_new_term:nn  {activity}{#1}
-    \starray_set_prop:nnn {activity}{acronym}{#2}
-    \starray_set_prop:nnn {activity}{name}{#3}
-    \starray_new_term:nn  {activity.coord}{}
-    \starray_get_unique_id:nN {activity} \l__stdemo.tmpID_tl
-    \starray_gset_prop:nnV {activity}{chkID} \l__stdemo.tmpID_tl
-    \prop_new_linked:c {l__stdemo. \l__stdemo.tmpID_tl _chkmarked_prop}
-    \prop_new_linked:c {l__stdemo. \l__stdemo.tmpID_tl _chkunmarked_prop}
-    \prop_new_linked:c {l__stdemo. \l__stdemo.tmpID_tl _chkref_prop}
-}
-\end{codestore}
-
-\begin{codestore}[ActCmd.SetCoord]
-\NewDocumentCommand{\ActivitySetCoord}{O{}mm}{
-  \tl_if_blank:nTF {#1}
-    {
-      \starray_gset_prop:nnn {activity.coord}{title}{#2}
-      \starray_gset_prop:nnn {activity.coord}{name}{#3}
-    }
-    {
-      \starray_gset_prop:nnn {activity[#1].coord}{title}{#2}
-      \starray_gset_prop:nnn {activity[#1].coord}{name}{#3}
-    }
-}
-\end{codestore}
-
-
-\begin{codestore}[ActCmd.SetEvent] 
-\NewDocumentCommand{\ActivitySetNewEvent}{O{}mm}{
-  \tl_if_blank:nTF {#1}
-    {
-      \starray_new_term:nn {activity.calendar}{#2}
-      \starray_gset_prop:nnn {activity.calendar}{event}{#3}
-    }
-    {
-      \starray_new_term:nn {activity[#1].calendar}{#2}
-      \starray_gset_prop:nnn {activity[#1].calendar}{event}{#3}
-    }
-}
-\end{codestore}
-
-\begin{codestore}[ActCmd.SetEvent] 
-\NewDocumentCommand{\ActivitySetEventDay}{O{}mmm}{
-  \tl_if_blank:nTF {#1}
-    {
-      \starray_gset_from_keyval:nn {activity.calendar[#2]}
-        {
-            date = {#3} ,
-            week = {#4} ,
-        }
-    }
-    {
-      \starray_gset_from_keyval:nn {activity[#1].calendar[#2]}
-        {
-            date = {#3} ,
-            week = {#4} ,
-        }
-    }
-}
-\end{codestore}
-
-\begin{codestore}[ActCmd.CheckList]
-\NewDocumentCommand{\checkdef}{mmm}{
-    \starray_get_prop:nnN {activity}{chkID}\l__stdemo.chkID_tl
-    \prop_gput:cnn {l__stdemo. \l__stdemo.chkID_tl _chkmarked_prop} {#1}{\__stdemo.checkedbox:~\ #3}
-    \prop_gput:cnn {l__stdemo. \l__stdemo.chkID_tl _chkunmarked_prop} {#1}{\__stdemo.uncheckedbox:~\ #3}
-    \prop_gput:cnn {l__stdemo. \l__stdemo.chkID_tl _chkref_prop} {#2}{#1}
-  }
-\end{codestore}
-
-\begin{codestore}[ActCmd.CheckList]
-\NewDocumentCommand{\checklist}{O{}m}{
-    \tl_if_blank:nF {#1}
-      {  \starray_set_iter_from_hash:nn {activity}{#1}  }
-  
-    \starray_get_prop:nnN {student}  {chkID} \l__stdemo.chkIDa_tl
-    \starray_get_prop:nnN {activity} {chkID} \l__stdemo.chkIDb_tl
-  
-    \clist_map_inline:nn {#2}
-      {
-        \prop_get:cnNT {l__stdemo. \l__stdemo.chkIDb_tl _chkref_prop} {##1} \l__stdemo.checkref_tl
-          {
-            \prop_get:ceN {l__stdemo. \l__stdemo.chkIDb_tl _chkmarked_prop} {\l__stdemo.checkref_tl} \l__stdemo.checkB_tl
-            \prop_gput:cee {l__stdemo. \l__stdemo.chkIDa_tl _checklist_prop} {\l__stdemo.checkref_tl} {\l__stdemo.checkB_tl}
-          }
-      }
-  }
-\end{codestore}
-
-
-\begin{codestore}[ActCmd.CheckList]
-\NewDocumentCommand{\StudentCheckListTable}{mm}
+\begin{codestore}[datamodel]
+\starray_new:n {topics}
+\starray_def_from_keyval:nn {topics}
   {
-    \starray_get_prop:nnN {student}  {chkID} \l__stdemo.chkIDa_tl
-    \starray_get_prop:nnN {activity} {chkID} \l__stdemo.chkIDb_tl
-%    \tl_show:N \l__stdemo.chkIDa_tl
-%    \tl_show:N \l__stdemo.chkIDb_tl
-    {
-      \prop_map_inline:cn {l__stdemo. \l__stdemo.chkIDa_tl _checklist_prop}
-        { \prop_put:cnn {l__stdemo. \l__stdemo.chkIDb_tl _chkunmarked_prop} {##1}{##2}  }  
+    topichash  = ,
+    name = ,
+    color = ,
+    class . struct = {
+      classcode = ,
+    }
+  }
+\end{codestore}
+
+\begin{codestore}[datamodel]
+\starray_new:n {classes}
+\starray_def_from_keyval:nn {classes}
+  {
+   cred = ,
+   classcode = ,
+   name = ,
+   summary = ,
+   topic = ,
+   remark = ,
+   uniqueID = , 
+   ref . struct = {
+     currhash = ,
+     semhash = ,
+     kind = ,
+   } ,
+  }
+\end{codestore}
+
+\begin{codestore}[datamodel]
+\starray_new:n {curricula}
+\starray_def_from_keyval:nn {curricula}
+  {
+    currhash = ,
+    name = ,
+    text = ,
+    sem.struct = {
+      pos = ,
+      semhash = ,
+      name = ,
+      class . struct = {
+        classcode = ,
+        kind = ,
+        obs = ,
+        pos = ,
+        color = ,
+        prereqset . struct = {
+          prereq . struct = {
+            starred = ,
+            classcode = ,
+            ang = ,
+          }
+        } ,
+      } ,
+    } ,
+  }
+\end{codestore}
+
+
+
+\begin{codestore}[topicdef]
+\NewDocumentCommand\topicdef{O{}mm}
+  {
+    \starray_new_term:nn {topics}{#2}
+    \starray_set_from_keyval:nn {topics}
+      {
+        topichash = {#2} ,
+        name = {#3} ,
+        color = {#1} ,
+      }
+    \starray_get_unique_id:nNTF {topics}\l__stcurrdemo_uniqueID_tmpa_tl
+      {}
+      {\tl_set:Nn \l__stcurrdemo_uniqueID_tmpa_tl {}}
+    \starray_set_prop:nnV {topics}{uniqueID} \l__stcurrdemo_uniqueID_tmpa_tl
+    \seq_new:c {l__stcurrdemo_curr_ \l__stcurrdemo_uniqueID_tmpa_tl _seq}
     
-      \tl_gclear:N \l__stdemo.table_tl
-      \clist_map_inline:nn {#1}    
-        { 
-          \tl_gclear:N \l_tmpa_tl    
-          \clist_map_inline:nn {#2}
-            {       
-             \tl_gset:Nn \l__stdemo.tmpx_tl {##1####1} 
-             \prop_get:ceNTF {l__stdemo. \l__stdemo.chkIDb_tl _chkunmarked_prop} {\l__stdemo.tmpx_tl} \l__stdemo.tmpy_tl
-               {\tl_gput_right:Ne \l__stdemo.table_tl {\l_tmpa_tl~ \l__stdemo.tmpy_tl}}
-               {\tl_gput_right:Ne \l__stdemo.table_tl {\l_tmpa_tl~ }}
-             \tl_gset:Nn \l_tmpa_tl {~&~}
-            }
-          \tl_gput_right:Nn \l__stdemo.table_tl {\\*}
-        }
-      }
-      \l__stdemo.table_tl   
   }
 \end{codestore}
 
-
-\begin{codestore}[ActCmd.Select]
-\NewDocumentCommand{\ActivitySelect}{m}
-  { 
-    \starray_set_iter_from_hash:nn {activity}{#1} 
-  }
-\end{codestore}
-
-
-\begin{codestore}[ActCmd.CalIterate]
-\NewDocumentCommand{\ActivityCalendarIterate}{m}{
-    \starray_iterate_over:nn{activity.calendar}{#1}
-}
-\end{codestore}
-
-\begin{codestore}[student.New]
-\NewDocumentCommand{\student}{O{}mmmm}{%
-  \tl_if_blank:nTF {#1}
-    {\starray_new_term:nn {student}{}}
-    {\starray_new_term:nn {student}{#1}}
-  \starray_gset_from_keyval:nn {student}
-    {
-      hash  = {#1} ,
-      first = {#3} ,
-      last = {#2} ,
-      name = {#3~ #2} ,
-      ID   = {#4} ,
-      email   = {\tl_to_str:n{#5}} 
-    }
-
-  \starray_get_unique_id:nNTF {student}\l__stdemo.tmpID_tl
-    {}
-    {}
-  \starray_gset_prop:nnV {student}{chkID} \l__stdemo.tmpID_tl
-  \prop_new:c {l__stdemo. \l__stdemo.tmpID_tl _checklist_prop}
-}%
-\end{codestore}
-
-\begin{codestore}[student.New]
-\NewDocumentCommand{\studentremark}{m}{
-  \starray_gset_prop:nnn {student}{remarks}{#1}
-}
-\end{codestore}
-
-\begin{codestore}[student.New]
-\NewDocumentCommand{\worktitle}{m}{%%
-  \starray_gset_prop:nnn {student}{worktitle}{#1}
-}
-\end{codestore}
-
-\begin{codestore}[student.NewAdv]
-\NewDocumentCommand{\advisor}{O{}mm}{%%
-  \starray_new_term:nn {student.advisor}{}
-  \__stdemo.set_prof:nnnn {advisor}{#1}{#2}{#3}
-}
-\end{codestore}
-
-
-\begin{codestore}[student.NewAdv]
-\NewDocumentCommand{\coadvisor}{O{}mm}{%%
-  \starray_new_term:nn {student.coadvisor}{}
-  \starray_gset_prop:nnn {student}{flag-coadvisor}{\c_true_bool}
-  \__stdemo.set_prof:nnnn {coadvisor}{#1}{#2}{#3}
-}
+\begin{codestore}[topicdef]
+\tl_new:N \l__stcurrdemo_default_topic_tl
+\NewDocumentCommand\defaulttopic{m}
+  { \tl_set:Ne \l__stcurrdemo_default_topic_tl{#1} }
 \end{codestore}
 
 
 
-\begin{codestore}[student.NewAdv]
-\NewDocumentCommand{\examiner}{O{}mm}{%%
-  \starray_new_term:nn {student.reviewer}{}
-  \starray_gset_prop:nnn {student.reviewer}{flag-set}{\c_true_bool}
-  \__stdemo.set_prof:nnnn {reviewer}{#1}{#2}{#3}
-}%
-\end{codestore}
 
-\begin{codestore}[student.NewAdv]
-\cs_new_protected:Npn \__stdemo.set_prof:nnnn #1#2#3#4 
+\begin{codestore}[classdef]
+\NewDocumentCommand{\classdef}{O{\l__stcurrdemo_default_topic_tl}mmm}
   {
-    \tl_if_blank:nTF {#2}
+    \starray_new_term:nn {classes}{#2}
+    \starray_set_from_keyval:nn {classes}
       {
-        \starray_gset_from_keyval:nn {student.#1}
-          {
-            last = {#3} ,
-            first = {#4} ,
-            name = {#4~ #3} ,
-          }
+        classcode = {#2} ,
+        cred = {#3} ,
+        name = {#4} ,
+        topichash = {#1} ,
       }
-      {
-        \starray_gset_from_keyval:nn {student.#1}
-          {
-            last = {#3} ,
-            first = {#4} ,
-            name = {#2~ #4~ #3} ,
-          }
-      }
+    \starray_get_unique_id:nNTF {classes}\l__stcurrdemo_uniqueID_tmpb_tl
+      {}
+      {\tl_set:Nn \l__stcurrdemo_uniqueID_tmpb_tl {}}
+    \starray_set_prop:nnV {classes}{uniqueID} \l__stcurrdemo_uniqueID_tmpb_tl
+    \seq_new:c {l__stcurrdemo_curr_ \l__stcurrdemo_uniqueID_tmpb_tl _bib _seq}
+    \seq_new:c {l__stcurrdemo_curr_ \l__stcurrdemo_uniqueID_tmpb_tl _bib basic _seq}
+    \seq_new:c {l__stcurrdemo_curr_ \l__stcurrdemo_uniqueID_tmpb_tl _bib compl _seq}
+    
+
+    \starray_set_iter_from_hash:nn {topics}{#1}
+    \starray_get_prop:nnN {topics}{uniqueID} \l__stcurrdemo_uniqueID_tmpa_tl
+    \seq_put_right:cn {l__stcurrdemo_curr_ \l__stcurrdemo_uniqueID_tmpa_tl _seq} {#2}    
   }
 \end{codestore}
-
-\begin{codestore}[student.NewAdv]
-\NewDocumentCommand{\advisorinfo}{mmm}{%%
-  \__stdemo.set_prof_info:nnnn {advisor}{#1}{#2}{#3}
-}%
-\end{codestore}
-
-\begin{codestore}[student.NewAdv]
-\NewDocumentCommand{\coadvisorinfo}{mmm}{%%
-  \__stdemo.set_prof_info:nnnn {coadvisor}{#1}{#2}{#3}
-}%
-\end{codestore}
-
-\begin{codestore}[student.NewAdv]
-\NewDocumentCommand{\examinerinfo}{mmm}{%%
-  \__stdemo.set_prof_info:nnnn {reviewer}{#1}{#2}{#3}
-}%
-\end{codestore}
-
-
-\begin{codestore}[student.NewAdv]
-\cs_new_protected:Npn \__stdemo.set_prof_info:nnnn #1#2#3#4
+  
+\begin{codestore}[classdef]
+\NewDocumentCommand{\csummary}{m}
   {
-    \starray_gset_from_keyval:nn {student.#1}
-      {
-        institution = {#2} ,
-        title = {#3} ,
-        email = {\tl_to_str:n{#4}} ,
-      }
+    \starray_set_prop:nnn {classes}{summary}{#1}
   }
 \end{codestore}
-
-
-
-
-\begin{codestore}[student.grades]
-\NewDocumentCommand{\examinergrades}{O{A}mmmm} {
-  \tl_if_blank:nTF {#2}
-    { \starray_gset_prop:nnn {student.reviewer}{grade}{0} }
-    {
-      \starray_gset_from_keyval:nn {student.reviewer}
-        {
-          pointA = #2 ,
-          pointB = #3 ,
-          pointC = #4 ,
-          pointD = #5 ,
-        }
-      \str_case:nnF {#1}
-        {
-          {A} 
-            {
-              \starray_gset_prop:nne {student.reviewer}{grade}
-                { \fp_eval:n{round((#2  + #3 + #4 + #5) / 4 , 2 , 1) } }    
-            }
-          {B} 
-            {
-              \starray_gset_prop:nne {student.reviewer}{grade}
-                { \fp_eval:n{round((#2  + #3 + #4) / 3 , 2 , 1) } }    
-            }
-        }
-        {
-          \starray_gset_prop:nne {student.reviewer}{grade}
-            { \fp_eval:n{round((#2  + #3 + #4 + #5) / 4 , 2 , 1) } }    
-        }
-      
-    }
+  
+\begin{codestore}[classdef]
+\NewDocumentCommand{\classremark}{m}
+  {
+    \starray_set_prop:nnn {classes}{remark}{#1}
   }
 \end{codestore}
-
-
-\begin{codestore}[student.grades]
-\NewDocumentCommand{\studentgrade}{O{A}m}
-  { %assuming there are 3 of them...
-    \starray_get_prop:nnN {student.reviewer[1]}{grade} \l__stdemo.A_tl
-    \starray_get_prop:nnN {student.reviewer[2]}{grade} \l__stdemo.B_tl
-    \starray_get_prop:nnN {student.reviewer[3]}{grade} \l__stdemo.C_tl
+  
+\begin{codestore}[classdef]
+\NewDocumentCommand{\Orgbibdef}{O{main}m}
+  {
+    \starray_get_prop:nnN {classes}{uniqueID} \l__stcurrdemo_uniqueID_tmpb_tl
+    
     \str_case:nnF {#1}
       {
-        {A} 
+        {main}
           {
-            \starray_gset_prop:nne {student}{grade}
-              {
-                \fp_eval:n{round((\l__stdemo.A_tl + \l__stdemo.B_tl + \l__stdemo.C_tl) / 3 , 2 , 1) }
-              }    
+            \seq_gput_right:cn {l__stcurrdemo_curr_ \l__stcurrdemo_uniqueID_tmpb_tl _bib _seq} {#2}
           }
-        {B} 
+        {basic}
           {
-            \starray_gset_prop:nne {student}{grade}
-              {
-                \fp_eval:n{round((\l__stdemo.A_tl + \l__stdemo.B_tl) / 2 , 2 , 1) }
-              }    
+            \seq_gput_right:cn {l__stcurrdemo_curr_ \l__stcurrdemo_uniqueID_tmpb_tl _bib basic _seq} {#2}
           }
-        {C} 
+        {compl}
           {
-            \starray_gset_prop:nne {student}{grade}
-              {
-                \fp_eval:n{round(3 / (1/\l__stdemo.A_tl + 1/\l__stdemo.B_tl + 1/\l__stdemo.C_tl) , 2 , 1) }
-              }    
+            \seq_gput_right:cn {l__stcurrdemo_curr_ \l__stcurrdemo_uniqueID_tmpb_tl _bib compl _seq} {#2}
           }
       }
       {
-        \starray_gset_prop:nne {student}{grade}
-          {
-            \fp_eval:n{round((\l__stdemo.A_tl + \l__stdemo.B_tl + \l__stdemo.C_tl) / 3 , 2 , 1) }
-          }    
-      }
-    \starray_get_prop:nnN {student}{grade} \l__stdemo.tmp_fp
-    \fp_compare:nNnTF {\l__stdemo.tmp_fp} < {#2}
-      {
-        \starray_gset_prop:nnn {student}{flag-approved}{\c_false_bool}
-      }
-      {
-        \starray_gset_prop:nnn {student}{flag-approved}{\c_true_bool}
-      }
-    \starray_gset_prop:nnn {student}{flag-graded}{\c_true_bool}
-  }
-\end{codestore}
-
-
-\begin{codestore}[student.select]
-\NewDocumentCommand{\studentselect}{m} { 
-    \starray_set_iter_from_hash:nn {student}{#1} 
-  }
-\end{codestore}
-
-\begin{codestore}[student.select]
-\NewDocumentCommand{\studentReviewerSelect}{m} {
-    \starray_set_iter:nn {student.reviewer}{#1}
-  }
-\end{codestore}
-
-\begin{codestore}[student.cases]
-\NewDocumentCommand{\studentAdvCase}{mm} {
-    \starray_term_parser:n{student.advisor}
-    \int_compare:nNnTF {\starray_parsed_get_cnt:} > {1}
-      {#1}
-      {#2}
-  }
-\end{codestore}
-
-\begin{codestore}[student.cases]
-\NewDocumentCommand{\studentCoadvCase}{+m+m} {
-    \starray_term_parser:n{student}
-    \bool_if:nTF {\starray_parsed_get_prop:n{flag-coadvisor}}
-      {#1}
-      {#2}
-  }
-\end{codestore}
-
-\begin{codestore}[student.cases]
-\NewDocumentCommand{\studentReviewerSetCase}{mmm} {
-    \starray_term_parser:n{student.reviewer[#1]}
-    \bool_if:nTF {\starray_parsed_get_prop:n{flag-set}}
-      {#2}
-      {#3}
-}
-\end{codestore}
-
-\begin{codestore}[student.cases]
-\NewDocumentCommand{\studentCase}{mm} {
-    \starray_term_parser:n{student}
-    \bool_if:nTF{\starray_parsed_get_prop:n{flag-approved}}
-      {#1}
-      {#2}
-}
-\end{codestore}
-
-
-
-\begin{codestore}[student.iter]
-\NewDocumentCommand{\studentiterate}{+m} {
-    \starray_iterate_over:nn{student}{#1}
-}
-\end{codestore}
-
-\begin{codestore}[student.iter]
-\NewDocumentCommand{\studentadvisoriterate}{+m} {
-    \starray_iterate_over:nn{student.advisor}{#1}
-}
-\end{codestore}
-
-
-\begin{codestore}[student.emptyterm]
-\NewDocumentCommand{\emptytermifnone}{O{1}mO{}}
-  {
-    \__stdemo.emptyterm_if_none:nnn {#1}{#2}{#3}
-  }
-
-\cs_new_protected:Npn \__stdemo.emptyterm_if_none:nnn #1#2#3
-  {
-    \starray_get_cnt:nN {#2} \l_tmpa_int
-    \int_while_do:nNnn {\l_tmpa_int} < {#1}
-      { 
-        \starray_new_term:nn {#2}{} 
-        #3
-        \starray_get_cnt:nN {#2} \l_tmpa_int
+            \seq_put_right:cn {l__stcurrdemo_curr_ \l__stcurrdemo_uniqueID_tmpb_tl _bib _seq} {#2}
       }
   }
 \end{codestore}
-
-
-\begin{codestore}[student.emptyterm]
-\NewDocumentCommand{\emptyfields}{} {
-    \__stdemo.emptyfields:
-  }
-
-
-\cs_new_protected:Npn \__stdemo.emptyfields:
-  {
-    \starray_new_term:nn {student}{empty}
-    \starray_new_term:nn {student.advisor}{}
-    \starray_new_term:nn {student.coadvisor}{}
-    \starray_new_term:nn {student.reviewer}{}
-    \starray_new_term:nn {student.reviewer}{}
-    \starray_new_term:nn {student.reviewer}{}
-  }
-\end{codestore}
-
-
-\begin{codestore}[student.list]
-\NewDocumentCommand{\studentaddtolist}{m}
-  {
-    \seq_if_exist:cF {l__stdemo.#1_list_seq}
-      {
-        \seq_new:c {l__stdemo.#1_list_seq}
-
-        \bool_new:c {l__stdemo.#1_classified_bool}
-      }
-    \bool_set_false:c {l__stdemo.#1_classified_bool}  
-    \starray_term_parser:n {student}
-    \seq_gput_right:ce {l__stdemo.#1_list_seq} {\starray_parsed_get_prop:n {hash}}
-  }
-\end{codestore}
-
-\begin{codestore}[student.list]
-\NewDocumentCommand{\studentlistsort}{O{name}m}
-  {
-    \bool_set_true:c {l__stdemo.#1_classified_bool}
-    \__stdemo.seq_sort:nn {#2}{#1} 
-  }
-
-\cs_new_protected:Npn \__stdemo.seq_sort:nn #1#2
-  {
-    \seq_gsort:cn {l__stdemo.#1_list_seq }
-      {
-        \starray_set_iter_from_hash:nn {student}{##1}
-        \starray_get_prop:nnN {student}{#2} \l__stdemo.sortA_tl
-        \starray_set_iter_from_hash:nn {student}{##2}
-        \starray_get_prop:nnN {student}{#2} \l__stdemo.sortB_tl          
-        \str_compare:eNeTF { \l__stdemo.sortA_tl } > { \l__stdemo.sortB_tl }
-          { \sort_return_swapped: }
-          { \sort_return_same: }
-      }  
-  }
-\end{codestore}  
-
-\begin{codestore}[student.list]
-\NewDocumentCommand{\listemptytermsifnone}{m}
-  {
-   \seq_map_inline:cn {l__stdemo.#1_list_seq}
-      {
-        \starray_set_iter_from_hash:nn {student}{##1}
-     
-        \emptytermifnone{student.advisor}
-        \emptytermifnone[3]{student.reviewer}
-%        % those could be, instead
-%        \__stdemo.emptyterm_if_none:nnn {1}{ student.advisor } {}
-%        \__stdemo.emptyterm_if_none:nnn {3}{ student.reviewer } {}
-      }       
-  }
-\end{codestore}
-
-
-
-\begin{codestore}[student.list]
-\NewDocumentCommand{\studentlistiterate}{m+m}
-  {
-    \bool_if:cF {l__stdemo.#1_classified_bool}
-      { \studentlistsort{#1} }
-    \listemptytermsifnone{#1}
-    \seq_map_inline:cn {l__stdemo.#1_list_seq}
-      {
-        \starray_set_iter_from_hash:nn {student}{##1}
-        #2
-      }
-  }
-\end{codestore}
-
-
-
-\begin{codestore}[ActivityUseDemo]
-  \NewActivity{FinalWork I}
-  \ActivitySet{Final Work I}{FW001}
   
-  \NewActivity{FinalWork II}
-  
-  \NewActivity{InternShip B}
-  \ActivitySet{Final Intership}{IN099}
-  
-  \ActivitySet[FinalWork II]{Final Work II}{FW002}
-\end{codestore}
-
-
-\begin{codestore}[ActivityUseDemo]
-  \ActivitySetCoordTitle[FinalWork I]{Prof. }
-  \ActivitySetCoord[FinalWork I]{Willian S.}
-   
-  \ActivitySetCoordTitle[FinalWork II]{Prof. }
-  \ActivitySetCoord[FinalWork II]{James S.}
-
-  \ActivitySetCoordTitle[InternShip B]{Dr. }
-  \ActivitySetCoord[InternShip B]{Samuel J. }
-  
+\begin{codestore}[classdef]
+\NewDocumentCommand{\classset}{m}
+  {
+    \starray_set_iter_from_hash:nn {classes}{#1}
+  }
+\let\setclass\classset
 \end{codestore}
 
 
 
+\begin{codestore}[currdef]
+\NewDocumentCommand{\currdef}{mmm}
+  {
+    \starray_new_term:nn {curricula}{#1}
+    \starray_set_from_keyval:nn {curricula}
+      {
+        currhash = {#1} ,
+        name = {#2} ,
+        text = {#3} ,
+      }
+  }
+\end{codestore}
 
+\begin{codestore}[currdef]
+\NewDocumentCommand{\semdef}{mmm}
+  {
+    \starray_new_term:nn {curricula.sem}{#1}
+    \starray_set_from_keyval:nn {curricula.sem}
+      {
+        semhash       = {#1} ,
+        name       = {#2} ,
+        pos        = {#3} ,
+      }
+  }
+\end{codestore}
+
+\begin{codestore}[currdef]
+\NewDocumentCommand{\addclass}{O{}D<>{}mmO{}}
+  {
+    \starray_new_term:nn {curricula.sem.class}{#3}
+    \starray_set_from_keyval:nn {curricula.sem.class}
+      {
+        color = {#1} ,
+        pos   = {#2} ,
+        classcode  = {#3} ,
+        kind  = {#4} ,
+        obs   = {#5} ,
+      }
+    \starray_new_term:nn {curricula.sem.class.prereqset}{}
+    \starray_set_iter_from_hash:nn {classes}{#3}
+
+    \starray_new_term:nn {classes.ref}{}
+    \starray_get_prop:nnN {curricula}{currhash} \l_tmpa_tl
+    \starray_set_prop:nnV {classes.ref}{currhash} \l_tmpa_tl
+    \starray_get_prop:nnN {curricula.sem}{semhash} \l_tmpa_tl
+    \starray_set_prop:nnV {classes.ref}{semhash} \l_tmpa_tl
+    \starray_set_prop:nnn {classes.ref}{kind}{#4}
+  }
+\end{codestore}
+
+\begin{codestore}[currdef]
+\NewDocumentCommand{\depdef}{sD<>{}m}
+  {
+    \starray_new_term:nn {curricula.sem.class.prereqset.prereq}{#3}
+    \starray_set_from_keyval:nn {curricula.sem.class.prereqset.prereq}
+      {
+        starred = {#1} ,
+        name = {#3} ,
+        ang  = {#2}
+      }
+  }
+\end{codestore}
+
+\begin{codestore}[currdef]
+\NewDocumentCommand{\altdep}{}
+  {
+    \starray_new_term:nn {curricula.sem.class.prereqset}{}
+  }
+\end{codestore}
+
+%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%
 
 
 \section{Data Model}\label{DataModel}
-As an example, let's define two structures:
-\begin{enumerate}
-  \item ``Activities'' (like a term project, course project, etc.)  with associated 
-elements: 
-\begin{enumerate}
-  \item name, acronym
-  \item coordinator
-  \item calendar events (presentation dates, exams...)
-  \item a check list.
-\end{enumerate}
-
-  \item Students, with associated date:
-\begin{enumerate}
-  \item name, IDs, etc.
-  \item advisor and (perhaps) co-advisor.
-  \item reviewer(s).
-  \item flags, etc.
-\end{enumerate}
-  
-  
-\end{enumerate}
+In the following example, a ``curricula'' is defined as a set of ``terms'', each ``term'' composed of a set of ``classes'', each ``class'' having it's own set of pre-requisites. Moreover, each ``class'' belongs to a given ``topic''. To lessen redundancy, topics, classes and curricula are separated structures, pointing to each other as needed.
 
 \begin{tsremark}
 As in any ``procedural language'', it is advisable to  carefully design the data model, since this will shape the functions which will set and use said data.
@@ -753,18 +427,81 @@ As in any ``procedural language'', it is advisable to  carefully design the data
   Pay attention to the use of the tildes,  \~{} , since those definitions will be made, most likely, in an \tsobj[pkg]{expl3} code régime, remember that spaces are ignored, therefore, if needed, use a tilde instead of a space.
 \end{tsremark}
 
+\begin{enumerate}
+  \item ``topics'' with associated:
+\begin{enumerate}
+  \item ID (hash), name, color
+\end{enumerate}
+\tscode*[stdemo]{datamodel}[2]
+  
+  \item ``classes'' with associated:
+\begin{enumerate}
+  \item name, acronym (hash)
+  \item summary, kind/type
+  \item related topic (see below)
+  \item list of curricula (see below) it's part of
+\end{enumerate}
+\tscode*[stdemo]{datamodel}[3]
 
-\subsection{Activity Set}\label{Activity:DataModel}
-For the activities one could set an ``starray'' as follow:
+  \item ``curricula'' with associated:
+\begin{enumerate}
+  \item name, (short) description
+  \item list of semesters each with
+  \begin{enumerate}
+    \item name, position
+    \item list of classes, each with a list of requisites (ref. to other classes)
+  \end{enumerate}
+\end{enumerate}
+\tscode*[stdemo]{datamodel}[4]
+  
+\end{enumerate}
 
 
 
+\subsection{Topic Set}\label{topic}
+Just a pair of commands, to define topics and select one as default.
+\begin{codedescribe}{\topicdef,\defaulttopic}
+\begin{codesyntax}
+  \tsmacro{\topicdef}[color]{topic-ID,name}
+  \tsmacro{\defaulttopic}{topic-ID}
+\end{codesyntax}
+  \tsobj{\topicdef} defines a given topic. \tsobj[marg]{name} is it long name. \tsobj[marg]{topic-ID} is just an identifier to reference it (it is used as the \tsobj[pkg]{starray} hash of that topic). \tsobj[oarg]{color} associates a color with it.
+  
+  \tsobj{\defaulttopic} sets the default topic hash (stored in a token list variable).
+\end{codedescribe}
+
+\tscode*[stdemo]{topicdef}[1]
+
+\tscode*[stdemo]{topicdef}[2]
 
 
+\subsection{Class Set}\label{classdef}
+
+%%\tscode*[stcurrdemo]{activity-def}
 
 
-\tscode*[stdemo]{activity.def}
+\tscode*[stdemo]{classdef}[1]
 
+\tscode*[stdemo]{classdef}[2]
+
+\tscode*[stdemo]{classdef}[3]
+
+\tscode*[stdemo]{classdef}[4]
+
+\tscode*[stdemo]{classdef}[5]
+
+\subsection{Curricula Set}\label{curriculadef}
+
+
+\tscode*[stdemo]{currdef}[1]
+
+\tscode*[stdemo]{currdef}[2]
+
+\tscode*[stdemo]{currdef}[3]
+
+\tscode*[stdemo]{currdef}[4]
+
+\tscode*[stdemo]{currdef}[5]
 
 Whereas, the ``coord'' sub-structure is for the activity's coordinator, whilst ``calendar'' shall (for instance) contains a list of calendar events, and, finally, the many ``chk* '' will be used for a ``check list''.
 
@@ -779,7 +516,7 @@ The ``chkID'' (and checklists). In many cases it's handy to have an unique ident
 
 
 
-\subsection{Student Set}\label{student:DataModel}
+\subsection{Student Set}\label{student.DataModel}
 A student's structure might contain, besides student's name, work title, some flags, an advisor (and co-advisor, if needed), reviewer's list (with a provision for reviewer's grade, if needed).
 
 Of course, one doesn't need to define a \tsobj[pkg]{starray} structure using \tsobj{\starray_def_from_keyval:nn}, but, as in this,  if the set of properties is known, it always makes for a cleaner definition.
@@ -788,7 +525,7 @@ Of course, one doesn't need to define a \tsobj[pkg]{starray} structure using \ts
   The fields/properties defaults can be anything, including usual \LaTeXe\  commands, like a \tsobj{\rule} which is handy, for instance, when generating forms, e.g., if the fields are all set, a form can be created with the proper values, otherwise, it will be  created with ``rules'' in place (no need to test if the properties were set).
 \end{tsremark}
 
-\tscode*[stdemo]{student.def}
+%\tscode*[stcurrdemo]{student-def}
 
 
 
@@ -814,8 +551,8 @@ Once the data layout is set (see \ref{DataModel}) the next step is to define a s
 \end{codedescribe}
 
 
-\tscode*[stdemo]{DataRecovery}[3]
-\tscode*[stdemo]{DataRecovery}[4]
+%\tscode*[stcurrdemo]{DataRecovery}[3]
+%\tscode*[stcurrdemo]{DataRecovery}[4]
 
 \subsection{Activity's Functions}
 
@@ -835,11 +572,13 @@ One could define a single function to initialize all fields (using a key=val int
   Every time a \tsobj[pkg]{starray} is instantiated, up to two hashes are created: a numerical one (starting at one) and an ``user defined one''. In the \tsobj{\NewActivity} function above, \tsobj[marg]{act-ID} is that hash, so that instance can be later referenced by it. Of course, it must be an unique ID/hash.
 \end{tsremark}
 \begin{tsremark}
-  One thing to be noticed about \tsobj[pkg]{starrays}: every structure has an associated internal index (iterator). When you create a new instance, this iterator always points to the newly created one, therefore, sparing the use of an explicit index in the subsequent commands.
+  One thing to be noticed about \tsobj[pkg]{starray}: every structure has an associated internal index (iterator). When you create a new instance, this iterator always points to the newly created one, therefore, sparing the use of an explicit index in the subsequent commands.
 \end{tsremark}
 
-\tscode*[stdemo]{ActCmd.New}[1]
-%\tscode*[stdemo]{ActCmd.New}[2]
+%\tscode*[stcurrdemo]{ActCmd.New}[1]
+%%\tscode*[stcurrdemo]{ActCmd.New}[2]
+
+here
 
 ~
 
@@ -852,8 +591,8 @@ Similarly, one can define some functions to set the activity's coordinator. Of c
 The optional argument \tsobj[oarg]{act-ID} should refer to an already create activity, and, if not given, will use the current one.
 \end{codedescribe}
 
-\tscode*[stdemo]{ActCmd.SetCoord}[1]
-%\tscode*[stdemo]{ActCmd.SetCoord}[2]
+%\tscode*[stcurrdemo]{ActCmd.SetCoord}[1]
+%%\tscode*[stcurrdemo]{ActCmd.SetCoord}[2]
 
 
 And the associated ``Calendar Events'', assuming there will be a fixed set of events (each semester/year), leaving the date to be set later on. 
@@ -867,11 +606,11 @@ The optional argument \tsobj[oarg]{act-ID} refers to an already create activity,
 \end{codedescribe}
 
 
-\tscode*[stdemo]{ActCmd.SetEvent}[1]
+%\tscode*[stcurrdemo]{ActCmd.SetEvent}[1]
 
 
 
-\tscode*[stdemo]{ActCmd.SetEvent}[2]
+%\tscode*[stcurrdemo]{ActCmd.SetEvent}[2]
 
 
 
@@ -892,7 +631,7 @@ It's often desirable to have a ``check list''. What such list could entice is al
 
 
 
-\tscode*[stdemo]{ActCmd.CheckList}[1]
+%\tscode*[stcurrdemo]{ActCmd.CheckList}[1]
 
 \begin{codedescribe}{\checklist}
 \begin{codesyntax}
@@ -904,7 +643,7 @@ It's often desirable to have a ``check list''. What such list could entice is al
   In the implementation below, the property list, associated with the student unique ID, will use as keys the \tsobj[marg]{chkPost} from \tsobj{\checkdef} and as associated value the ones from the activity's marked property list.
 \end{tsremark}
 
-\tscode*[stdemo]{ActCmd.CheckList}[2]
+%\tscode*[stcurrdemo]{ActCmd.CheckList}[2]
 
 
 \begin{codedescribe}{\StudentCheckListTable}
@@ -917,11 +656,11 @@ It's often desirable to have a ``check list''. What such list could entice is al
   Better said, this will produces the inner part of a table, sans the table begin/end. Also note, in the code example below, that each table line is finished with a \tsobj[verb]{\\*}.
 \end{tsremark}
 
-\tscode*[stdemo]{ActCmd.CheckList}[3]
+%\tscode*[stcurrdemo]{ActCmd.CheckList}[3]
 
 
 
-%\tsmergedcode*[stdemo]{{ActCmd.CheckList}[1-2]}
+%\tsmergedcode*[stcurrdemo]{{ActCmd.CheckList}[1-2]}
 
 ~
 
@@ -935,7 +674,7 @@ It's often desirable to have a ``check list''. What such list could entice is al
 \end{codedescribe}
 
 
-\tscode*[stdemo]{ActCmd.Select}
+%\tscode*[stcurrdemo]{ActCmd.Select}
 
 
 
@@ -952,12 +691,12 @@ It's often desirable to have a ``check list''. What such list could entice is al
   \end{enumerate*}. The user is supposed to use (in \tsobj[marg]{code}) \tsobj[code,sep=or]{\DataField,\DataGet} to retrieve and use the calendar's data.
 \end{codedescribe}
 
-\tscode*[stdemo]{ActCmd.CalIterate}
+%\tscode*[stcurrdemo]{ActCmd.CalIterate}
 
 
 \subsection{Student's Functions}
 
-\subsubsection{Creating and Setting Student's Data}\label{student:new}
+\subsubsection{Creating and Setting Student's Data}\label{student.new}
 
 \begin{codedescribe}{\student,\studentremark,\worktitle}
   \begin{codesyntax}
@@ -968,9 +707,9 @@ It's often desirable to have a ``check list''. What such list could entice is al
   As always, there are many ways to achieve this. The \tsobj{\student} ``creates'' a new student entry, the (not so) optional parameter \tsobj[oarg]{student-hash} associates it with the given hash (otherwise one would have to keep track 'which index' correspond to a student). An auxiliary property list, for a checklist (see \ref{Activity-checklist} and \tsobj{\StudentCheckListTable} ), is created using  the student unique identifier, \tsobj{\starray_get_unique_id}.
 \end{codedescribe}
 
-\tscode*[stdemo]{student.New}[1]
-\tscode*[stdemo]{student.New}[2]
-\tscode*[stdemo]{student.New}[3]
+%\tscode*[stcurrdemo]{student.New}[1]
+%\tscode*[stcurrdemo]{student.New}[2]
+%\tscode*[stcurrdemo]{student.New}[3]
 
 \begin{codedescribe}{\advisor,\coadvisor,\examiner}
   \begin{codesyntax}
@@ -981,10 +720,10 @@ It's often desirable to have a ``check list''. What such list could entice is al
   Those are just some auxiliary commands to set the advisor's/coadvisor's/examiner's name. The first optional parameter \tsobj[oarg]{pre-nom} can be used as a title. With each call of those, a new \tsobj[pkg]{starry} term is created for the current student.
 \end{codedescribe}
 
-\tscode*[stdemo]{student.NewAdv}[1]
-\tscode*[stdemo]{student.NewAdv}[2]
-\tscode*[stdemo]{student.NewAdv}[3]
-\tscode*[stdemo]{student.NewAdv}[4]
+%\tscode*[stcurrdemo]{student.NewAdv}[1]
+%\tscode*[stcurrdemo]{student.NewAdv}[2]
+%\tscode*[stcurrdemo]{student.NewAdv}[3]
+%\tscode*[stcurrdemo]{student.NewAdv}[4]
 
 \begin{codedescribe}{\advisorinfo,\coadvisorinfo,\examinerinfo}
   \begin{codesyntax}
@@ -995,23 +734,23 @@ It's often desirable to have a ``check list''. What such list could entice is al
   Some extra commands to set the advisor's/coadvisor's/examiner's other data. Note, though, it is assumed that these commands will be called after the respective \tsobj[code,sep=or]{\advisor,\coadvisor,\examiner} command call.
 \end{codedescribe}
 
-\tscode*[stdemo]{student.NewAdv}[5]
-\tscode*[stdemo]{student.NewAdv}[6]
-\tscode*[stdemo]{student.NewAdv}[7]
-\tscode*[stdemo]{student.NewAdv}[8]
+%\tscode*[stcurrdemo]{student.NewAdv}[5]
+%\tscode*[stcurrdemo]{student.NewAdv}[6]
+%\tscode*[stcurrdemo]{student.NewAdv}[7]
+%\tscode*[stcurrdemo]{student.NewAdv}[8]
 
 
 \begin{codedescribe}{\examinergrades}
 \begin{codesyntax}
   \tsmacro{\examinergrades}[case]{gradeA,gradeB,gradeC,gradeD}
 \end{codesyntax}  
-Nothing much to be said, this allows to set 4 grades, per examiner. \tsobj[oarg]{case} sets how the average shall be calculated. Note that, this is supposed to be used immediately  after the respective command \tsobj{\examiner}, better said, before another \tsobj{\examiner}, or after having selected a specific reviewer with \tsobj{\studentreviewerselect} (see \ref{student:data-recovery}).
+Nothing much to be said, this allows to set 4 grades, per examiner. \tsobj[oarg]{case} sets how the average shall be calculated. Note that, this is supposed to be used immediately  after the respective command \tsobj{\examiner}, better said, before another \tsobj{\examiner}, or after having selected a specific reviewer with \tsobj{\studentreviewerselect} (see \ref{student.data-recovery}).
 \begin{tsremark}
   The \tsobj{\starray_gset_prop:nne} is used to assure the stored grade will be a floating point, and not an expression to be evaluated later on.
 \end{tsremark}
 \end{codedescribe}
 
-\tscode*[stdemo]{student.grades}[1]
+%\tscode*[stcurrdemo]{student.grades}[1]
 
 
 
@@ -1024,25 +763,25 @@ Similarly, this will set/calculate the student's final grade based on the indivi
   The \tsobj{\starray_gset_prop:nne} is used to assure the stored grade will be a floating point, and not an expression to be evaluated later on.
 \end{tsremark}
 \begin{tsremark}
-  To simplify the logic, it's assumed there are 3 reviewers (even though in some cases only two are needed). Therefore the command \tsobj{\emptytermifnone} (see \ref{student:auxcmds});
+  To simplify the logic, it's assumed there are 3 reviewers (even though in some cases only two are needed). Therefore the command \tsobj{\emptytermifnone} (see \ref{student.auxcmds});
 \end{tsremark}
 \end{codedescribe}
 
-\tscode*[stdemo]{student.grades}[2]
+%\tscode*[stcurrdemo]{student.grades}[2]
 
 
-\subsubsection{Selecting Student's Data}\label{student:data-recovery}
+\subsubsection{Selecting Student's Data}\label{student.data-recovery}
 
 \begin{codedescribe}{\studentselect,\studentReviewerSelect}
 \begin{codesyntax}
   \tsmacro{\studentselect}{student-hash}
   \tsmacro{\studentReviewerSelect}{rev-index}
 \end{codesyntax}
- \tsobj{\studentselect} allows to select a given student, given it's hash (note, the student index could also be used). Since the \tsobj{\examiner} command (see \ref{student:new}) doesn't associate a hash with each examiner, one can only select one with it's index number: 1, 2 ...
+ \tsobj{\studentselect} allows to select a given student, given it's hash (note, the student index could also be used). Since the \tsobj{\examiner} command (see \ref{student.new}) doesn't associate a hash with each examiner, one can only select one with it's index number: 1, 2 ...
 \end{codedescribe}
 
-\tscode*[stdemo]{student.select}[1]
-\tscode*[stdemo]{student.select}[2]
+%\tscode*[stcurrdemo]{student.select}[1]
+%\tscode*[stcurrdemo]{student.select}[2]
 
 \begin{codedescribe}{\studentcase,\studentadvcase,\studentcoadvcase,\studentreviewersetcase}
 \begin{codesyntax}
@@ -1057,10 +796,10 @@ Similarly, this will set/calculate the student's final grade based on the indivi
   In the code below, one could have used \tsobj{\starray_get_prop:} instead. The construct is meant as an example of how to use one of the few \tsobj{\starray_parsed_} commands, which can be used in an expandable context.
 \end{tsremark}
 
-\tscode*[stdemo]{student.cases}[1]
-\tscode*[stdemo]{student.cases}[2]
-\tscode*[stdemo]{student.cases}[3]
-\tscode*[stdemo]{student.cases}[4]
+%\tscode*[stcurrdemo]{student.cases}[1]
+%\tscode*[stcurrdemo]{student.cases}[2]
+%\tscode*[stcurrdemo]{student.cases}[3]
+%\tscode*[stcurrdemo]{student.cases}[4]
 
 
 \subsubsection{Iterating over Students}
@@ -1075,21 +814,21 @@ Similarly, this will set/calculate the student's final grade based on the indivi
 \begin{tsremark}
   To retrieve the student's/advisor's data, the end user is supposed to use \tsobj[code,sep=or]{\DataField,\DataGet} (see \ref{generic:datafield}), like \tsverb[verb]{\DataField{student}{name}} (do not use any index/hash) or \tsobj[verb]{\DataField{student.advisor}{name}}.
 \end{tsremark}
-\tscode*[stdemo]{student.iter}[1]
-\tscode*[stdemo]{student.iter}[2]
+%\tscode*[stcurrdemo]{student.iter}[1]
+%\tscode*[stcurrdemo]{student.iter}[2]
 
 
-\subsubsection{Auxiliary Commands}\label{student:auxcmds}
+\subsubsection{Auxiliary Commands}\label{student.auxcmds}
 \begin{codedescribe}{\emptytermifnone,\emptyfields}
   \begin{codesyntax}
     \tsmacro{\emptytermifnone}[count]{struct}\tsargs[oarg]{code}
     \tsmacro{\emptyfields}{}
   \end{codesyntax}
-  \tsobj{\emptyfields} creates an ``empty'' student (better said, with a hash: ``empty'') all fields remain at their default value (see \ref{student:DataModel}). \tsobj{\emptytermifnone} assures that there is(are) at least \tsobj[oarg]{count} (defaults to 1) (sub)structures \tsobj[marg]{struct}. Optionally, \tsobj[oarg]{code} will be executer after each instantiation (if needed) of a term defined by \tsobj[marg]{struct}.
+  \tsobj{\emptyfields} creates an ``empty'' student (better said, with a hash: ``empty'') all fields remain at their default value (see \ref{student.DataModel}). \tsobj{\emptytermifnone} assures that there is(are) at least \tsobj[oarg]{count} (defaults to 1) (sub)structures \tsobj[marg]{struct}. Optionally, \tsobj[oarg]{code} will be executer after each instantiation (if needed) of a term defined by \tsobj[marg]{struct}.
 \end{codedescribe}
 
-\tscode*[stdemo]{student.emptyterm}[1]
-\tscode*[stdemo]{student.emptyterm}[2]
+%\tscode*[stcurrdemo]{student.emptyterm}[1]
+%\tscode*[stcurrdemo]{student.emptyterm}[2]
 
 
 
@@ -1107,18 +846,18 @@ A \tsobj[pkg]{starray} has an implicit order: it's instantiation sequence, which
   Since \tsobj[marg]{list} will store student's hash, the sort has to first retrieve the associated \tsobj[pkg]{starray} term and the ``sorting field'' which can be, in fact, anything associated with the student. In the example below, only the immediate fields can be used, like name, email, worktitle, but one can easily modify the code below to retried, for instance, the advisor's name.
 \end{tsremark}
 
-\tscode*[stdemo]{student.list}[1]
+%\tscode*[stcurrdemo]{student.list}[1]
 
-\tscode*[stdemo]{student.list}[2]
+%\tscode*[stcurrdemo]{student.list}[2]
 
 \begin{codedescribe}{\listemptytermsifnone}
 \begin{codesyntax}
   \tsmacro{\listemptytermsifnone}{list}
 \end{codesyntax}
-This will iterate over all students in \tsobj[marg]{list} assuring that each student has at leas 1 advisor and 3 examiners (reviewers). Note that, in the case of the examiners the \tsobj{\examiner} command (see \ref{student:new}) sets the ``flag-set'' associated with said examiner to true. This, however, keeps the it's default value: false.
+This will iterate over all students in \tsobj[marg]{list} assuring that each student has at leas 1 advisor and 3 examiners (reviewers). Note that, in the case of the examiners the \tsobj{\examiner} command (see \ref{student.new}) sets the ``flag-set'' associated with said examiner to true. This, however, keeps the it's default value: false.
 \end{codedescribe}
 
-\tscode*[stdemo]{student.list}[3]
+%\tscode*[stcurrdemo]{student.list}[3]
 
 
 \begin{codedescribe}{\studentlistiterate}
@@ -1128,7 +867,7 @@ This will iterate over all students in \tsobj[marg]{list} assuring that each stu
 As the name implies, it will iterate over all students in \tsobj[marg]{list} executing \tsobj[marg]{code} for each of them. Note that, before starting the iteration, \tsobj{\studentlistiterate} verifies if the list is already sorted (if not, \tsobj{\studentlistsort} will be called, with it's default) and it will make sure all students have an advisor term (and examiners) by calling \tsobj{\listemptytermsifnone}.
 \end{codedescribe}
 
-\tscode*[stdemo]{student.list}[4]
+%\tscode*[stcurrdemo]{student.list}[4]
 
 \newpage
 \section{Example of Use}
@@ -1145,9 +884,9 @@ As the name implies, it will iterate over all students in \tsobj[marg]{list} exe
   \ActivitySetCoord{Prof. Samantha S.}{Trainee Program Coordinator}
 \end{codestore}
 
-\tscode*[stdemo]{demo.datasetting}
+%\tscode*[stcurrdemo]{demo.datasetting}
 
-\tsexec{demo.datasetting}
+%%\tsexec{demo.datasetting}
 
 
 \subsection{Defining per Activity Check List}
@@ -1209,12 +948,12 @@ As the name implies, it will iterate over all students in \tsobj[marg]{list} exe
 \checkdef{L3C5}{library}{Report Catalogued}
 \end{codestore}
 
-\tscode*[stdemo]{activity.checklist}[1]
-\tscode*[stdemo]{activity.checklist}[2]
-\tscode*[stdemo]{activity.checklist}[3]
-\tsexec{activity.checklist}[1]
-\tsexec{activity.checklist}[2]
-\tsexec{activity.checklist}[3]
+%\tscode*[stcurrdemo]{activity.checklist}[1]
+%\tscode*[stcurrdemo]{activity.checklist}[2]
+%\tscode*[stcurrdemo]{activity.checklist}[3]
+%%\tsexec{activity.checklist}[1]
+%%\tsexec{activity.checklist}[2]
+%%\tsexec{activity.checklist}[3]
 
 \subsection{Defining per Activity Calendar}
 Setting a set of events related to an activity, and then the relevant dates.
@@ -1260,13 +999,13 @@ Setting a set of events related to an activity, and then the relevant dates.
 \end{codestore}
 
 
-\tscode*[stdemo]{activity.calendar}[1]
+%\tscode*[stcurrdemo]{activity.calendar}[1]
 
 Once the events are defined, the associated dates can be set, later on, at any time. There is no need, per-se, to set the dates right away.
 
-\tscode*[stdemo]{activity.calendar}[2]
-\tsexec{activity.calendar}[1]
-\tsexec{activity.calendar}[2]
+%\tscode*[stcurrdemo]{activity.calendar}[2]
+%%\tsexec{activity.calendar}[1]
+%%\tsexec{activity.calendar}[2]
 
 
 \subsection{Constructing an Activity Calendar}
@@ -1282,7 +1021,7 @@ Once all set, it is just a matter of using the \tsobj{\ActivityCalendarIterate} 
   \end{tabular} 
 \end{codestore}
 
-\tsdemo*[stdemo]{activity.calendar}[3]
+%%\tsdemo*[stcurrdemo]{activity.calendar}[3]
 
 \subsection{Students}
 
@@ -1390,11 +1129,11 @@ Once all set, it is just a matter of using the \tsobj{\ActivityCalendarIterate} 
 Setting student's data (some others, not shown, likely defined).
 
 
-\tscode*[stdemo]{demo.student.data}[1]
-\tscode*[stdemo]{demo.student.data}[2]
-\tsexec{demo.student.data}[1]
-\tsexec{demo.student.data}[2]
-\tsexec{demo.student.data}[3]
+%\tscode*[stcurrdemo]{demo.student.data}[1]
+%\tscode*[stcurrdemo]{demo.student.data}[2]
+%%\tsexec{demo.student.data}[1]
+%%\tsexec{demo.student.data}[2]
+%%\tsexec{demo.student.data}[3]
 
 
 \subsection{Accessing a single student data}
@@ -1415,7 +1154,7 @@ Activity: \DataField{activity}{name}
 \endgroup
 \end{codestore}
 
-\tsdemo*[stdemo]{demo.student.single-use}
+%%\tsdemo*[stcurrdemo]{demo.student.single-use}
 
 \subsection{Iterating over a list of students}
 Given a student list, one can just iterate over it. Note that no explicit index/hash has been used. Also note that, since the \tsobj{\studentlistiterate} executes \tsobj{\listemptytermsifnone}, there is no explicit  need to test if there are 3 examiners.
@@ -1459,8 +1198,62 @@ Given a student list, one can just iterate over it. Note that no explicit index/
   }
 \end{codestore}
 
-\tsdemo*[stdemo]{demo.student.list}
-%\tsexec{demo.student.list}
+%%\tsdemo*[stcurrdemo]{demo.student.list}
 
+
+
+
+
+\newpage
+\TabTopic{BaseMatematica}
+
+\TabEtp[\subsubsection]{Etp.01}
+
+\TabEtp[\subsubsection]{Etp.02}
+
+\TabEtp[\subsubsection]{Etp.03}
+
+\TabEtp[\subsubsection]{Etp.04}
+
+\TabEtp[\subsubsection]{Etp.05}
+
+\TabEtp[\subsubsection]{Etp.06}
+
+\TabEtp[\subsubsection]{Etp.07}
+
+\TabEtp[\subsubsection]{Etp.08}
+
+\TabEtp[\subsubsection]{Etp.09}
+
+
+\TabEtp[\subsubsection]{Etp.10}
+
+\TabEtp[\subsubsection]{Eletivas}
+
+
+\noindent\hspace*{-7mm}\resizebox{150mm}{115mm}{
+  \begin{tikzGraphSem}[graph title={Dependency's Graph Example},default color=gray,colors=both,deltaX=6.3,deltaY=2.5,maxX=10,maxY=-16]
+   \GraphEtp{Etp.01}
+
+ \GraphEtp{Etp.02}
+
+ \GraphEtp{Etp.03}
+
+ \GraphEtp{Etp.04}
+
+ \GraphEtp{Etp.05}
+
+ \GraphEtp{Etp.06}
+
+ \GraphEtp{Etp.07}
+
+ \GraphEtp{Etp.08}
+
+ \GraphEtp{Etp.09}
+
+ \GraphEtp{Etp.10}
+
+  \end{tikzGraphSem}
+  }
 
 \end{document} 

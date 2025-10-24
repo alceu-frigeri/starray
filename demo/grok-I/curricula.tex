@@ -1,0 +1,2038 @@
+%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%
+%%%
+%%%
+%%%
+%% %%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%
+
+%\colorlet{TcolorCiclobasico}{darkgray}
+%\colorlet{TcolorCiclobasicoeng}{darkgray}
+%\colorlet{TcolorCicloprof}{darkgray}
+%\colorlet{TcolorCicloavan}{darkgray}
+%\colorlet{TcolorCiclotransv}{darkgray}
+%\colorlet{TcolorOutros}{darkgray}
+
+%\ifshowind{%
+    \colorlet{TcolorCiclobasico}{black}
+    \colorlet{TcolorCiclobasicoeng}{darkblue}
+    \colorlet{TcolorCicloprof}{darkteal}
+    \colorlet{TcolorCicloavan}{darkgreen}
+    \colorlet{TcolorCiclotransv}{darkmagenta}
+    \colorlet{TcolorOutros}{red}
+%}{%
+%    \colorlet{TcolorCiclobasico}{darkgray}
+%    \colorlet{TcolorCiclobasicoeng}{darkgray}
+%    \colorlet{TcolorCicloprof}{darkgray}
+%    \colorlet{TcolorCicloavan}{darkgray}
+%    \colorlet{TcolorCiclotransv}{darkgray}
+%    \colorlet{TcolorOutros}{darkgray}
+%}
+
+
+\topicdef[TcolorCiclobasico]{BaseAcolhimento}{Ciclo Básico: Acolhimento}
+\topicdef[TcolorCiclobasico]{BaseMatematica}{Ciclo Básico: Matemática, Física e Química}
+\topicdef[TcolorCiclobasico]{BaseGraf}{Ciclo Básico: Expressão Gráfica e Programação}
+\topicdef[TcolorCiclobasicoeng]{BaseMec}{Ciclo Básico Engenharia: Mecanismos e Dinâmica}
+\topicdef[TcolorCiclobasicoeng]{BaseEletro}{Ciclo Básico Engenharia: Eletrônica e Eletrotécnica}
+\topicdef[TcolorCiclobasicoeng]{Base.Admin}{Ciclo Profissionalizante: Administração e Gerenciamento}
+\topicdef[TcolorCiclobasicoeng]{Base.Mat}{Ciclo Básico Engenharia: Ciência dos Materiais e Mecânica Estrutural}
+\topicdef[TcolorCiclobasicoeng]{Base.FenTrans}{Ciclo Básico Engenharia: Fenômenos de Transporte}
+
+%\topicdef[TcolorCicloprof]{Pro.IndTrans}{Ciclo Profissionalizante: Processos da Industria de Transformação}
+\topicdef[TcolorCicloprof]{Pro.Fabricacao}{Ciclo Profissionalizante: Fabricação}
+\topicdef[TcolorCicloprof]{Pro.Projetos}{Ciclo Profissionalizante: Projetos Integrados}
+\topicdef[TcolorCicloprof]{Pro.Maquinas}{Ciclo Profissionalizante: Máquinas e Equipamentos}
+\topicdef[TcolorCicloprof]{Pro.Robotica}{Ciclo Profissionalizante: Robótica}
+\topicdef[TcolorCicloprof]{Pro.Automacao}{Ciclo Profissionalizante: Automação}
+\topicdef[TcolorCicloprof]{Pro.Control}{Ciclo Profissionalizante: Sistemas de Controle}
+%\topicdef[TcolorCicloprof]{Pro.DispMec}{Ciclo Profissionalizante: Dispositivos Mecânicos}
+\topicdef[TcolorCicloprof]{Pro.ContProc}{Ciclo Profissionalizante: Controle de Processos}
+
+
+
+\topicdef[TcolorCiclobasicoeng]{Base.Digit}{Ciclo Básico Engenharia: Sistemas Digitais}
+%\topicdef[TcolorCiclobasicoeng]{Base.Instru}{Ciclo Básico Engenharia: Instrumentação}
+%\topicdef[TcolorCicloprof]{Pro.ProjSis}{Ciclo Profissionalizante: Projeto de Sistemas}
+
+%\topicdef[TcolorCicloavan]{Avan.info}{Ciclo Profissionalizante: Informática Avançada}
+\topicdef[TcolorCicloavan]{Avan.topic}{Ciclo Profissionalizante: Tópicos}
+%\topicdef[TcolorCicloavan]{Avan.control}{Ciclo Profissionalizante: Controle Avançado}
+%\topicdef[TcolorCicloavan]{Avan.robotica}{Ciclo Profissionalizante: Robótica Avançado}
+%\topicdef[TcolorCicloavan]{Avan.SisMec}{Ciclo Profissionalizante: Sistemas Mecânicos}
+
+
+%\topicdef[darkred]{Social.admin}{Ciclo Agente Social e Empreendedorismo: Administração e Gerenciamento}
+\topicdef[TcolorCiclotransv]{Transv.outros}{Temas Transversais: Formação Cidadã}
+\topicdef[TcolorCiclotransv]{Transv.integ}{Temas Transversais: Atividades Integradoras}
+
+
+\topicdef[TcolorOutros]{BaseEng}{Ciclo Básico Engenharia}
+\topicdef[TcolorOutros]{Aplic}{Aplicações de Controle e Automação}
+\topicdef[TcolorOutros]{Advanced}{Tópicos Avançados em Controle e Automação}
+\topicdef[TcolorOutros]{Transv}{Conceitos Transversais}
+
+\defaulttopic{Transv}
+
+
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%
+%%%%% Etapa 01
+%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+
+
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[BaseGraf]{INF01202}{6}{ALGORÍTMOS E PROGRAMAÇÃO - CIC}
+
+     \csummary{Noção de algoritmo, dado, variável, instrução e programa. Construções básicas: atribuição, leitura e escrita. Estruturas de controle: seqüência, seleção e iteração. Tipos de dados escalares: inteiros, reais, caracteres, intervalos e enumerações. Tipos estruturados básicos: vetores, matrizes registros e strings. Subprogramas: funções, procedimentos e recursão. Arquivos.}
+
+     \newbibdef{damas2007}
+     \newbibdef{edelweiss2014}
+     \newbibdef{salvetti1998}
+     \newbibdef[basic]{deitel2007}
+     \newbibdef[basic]{goodrich2004}
+     \newbibdef[basic]{harbison2002}
+     \newbibdef[basic]{kernighan1988}
+     \newbibdef[basic]{orth2001}
+     \newbibdef[basic]{senne2009}
+     \newbibdef[basic]{ziviani2004}
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[BaseMatematica]{MAT01353}{6}{CÁLCULO E GEOMETRIA ANALÍTICA I - A}
+
+     \csummary{Estudo da reta e de curvas planas. Cálculo diferencial de uma variável real. Cálculo integral das funções de uma variável real.}
+
+      \newbibdef{anton2014}
+      \newbibdef[basic]{rogawski2009}
+      \newbibdef[compl]{avila2003}
+      \newbibdef[compl]{hughes1997}
+      \newbibdef[compl]{larson1998}
+      \newbibdef[compl]{shenk1984}
+      \newbibdef[compl]{simmons1987}
+      \newbibdef[compl]{stewart2006}
+      \newbibdef[compl]{strang1991}
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[BaseMatematica]{FIS01181}{6}{FÍSICA I-C}
+
+     \csummary{Medidas físicas. Cinemática, estática e dinâmica do ponto e do corpo rígido. Gravitação.}
+
+      \newbibdef{halliday2016}
+      \newbibdef{tipler2009}
+      \newbibdef{young2016}
+      \newbibdef[basic]{chaves2007}
+      \newbibdef[basic]{nussenzveig2002}
+      \newbibdef[basic]{resnick2003}
+      \newbibdef[basic]{serway2004}
+      \newbibdef[compl]{corradi2010}
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[BaseGraf]{ARQ03317}{2}{GEOMETRIA DESCRITIVA II-A}
+
+     \csummary{Fundamentos da expressão gráfica. Métodos atuais de representação. Representação da forma e posição. Deslocamentos. Vistas auxiliares. Seções.}
+
+      \newbibdef{borges1998}
+
+%%%%%%
+%%%%%%
+%
+\classdef[Transv.integ]{CCA99001}{4}{INTRODUÇÃO À ENGENHARIA DE CONTROLE E AUTOMAÇÃO}
+
+     \csummary{Descrição da área de Engenharia de Controle e Automação e do Perfil dos profissionais atuantes na área. Metodologia Científica aplicada à Engenharia de Controle e Automação. Organização do curso e compreensão das atividades de ensino, pesquisa e extensão desenvolvidos nos Departamentos e Laboratórios ligados ao curso. Figura do Engenheiro Cidadão na Sociedade moderna, questões étnico-sociais históricas, acessibilidade e segurança. Inserção da abordagem científica e soluções de engenharia na resolução de problemas, de forma segura, no contexto étnico-social atual.}
+
+      \classremark{Muda a Súmula}
+
+      \newbibdef{bazzo2008}
+      \newbibdef{severino}
+      \newbibdef[basic]{creswell}
+      \newbibdef[compl]{moraes2001}
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[BaseMatematica]{QUI01009}{4}{QUIMICA FUNDAMENTAL A}
+
+     \csummary{Estequiometria. Soluções. Cinética Química. Equilíbrio químico e iônico. Colóides. Estrutura atômica. Propriedades periódicas. Ligação química: covalente, iônica e metálica.}
+
+      \newbibdef{brown2009}
+      \newbibdef{brown2016}
+      \newbibdef{kotz2010}
+
+      \newbibdef[basic]{atkins2012}
+      \newbibdef[basic]{chang2010}
+      \newbibdef[basic]{chang2013}
+      \newbibdef[basic]{russell1994}
+      \newbibdef[basic]{tro2017}
+      \newbibdef[compl]{brady2009}
+      \newbibdef[compl]{brady1990}
+      \newbibdef[compl]{ebbing1988}
+      \newbibdef[compl]{mahan1995}
+      \newbibdef[compl]{masterton1990}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%
+%%%%% Etapa 02
+%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[BaseMatematica]{MAT01355}{4}{ÁLGEBRA LINEAR I - A}
+
+     \csummary{Sistema de equações lineares. Matrizes. Fatoração LU. Vetores. Espaços vetoriais. Ortogonalidade. Valores próprios. Aplicações.}
+
+    	\newbibdef{lay2018}
+
+      \newbibdef[basic]{anton2001}
+    	\newbibdef[basic]{strang2013}
+    	\newbibdef[basic]{nicholson2006}
+
+    	\newbibdef[compl]{boldrini1986}
+    	\newbibdef[compl]{lima2006}
+    	\newbibdef[compl]{lipschutz1994}
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[BaseMatematica]{MAT01354}{6}{CÁLCULO E GEOMETRIA ANALÍTICA II - A}
+
+     \csummary{Geometria analítica espacial. Derivadas parciais. Integrais múltiplas. Séries.}
+
+    	\newbibdef{anton2014v2}
+
+    	\newbibdef[basic]{avila2003v2}
+    	\newbibdef[basic]{rogawski2018v2}
+    	\newbibdef[basic]{simmons1987v}
+    	\newbibdef[basic]{stewart2017}
+
+    	\newbibdef[compl]{anton2007v2}
+    	\newbibdef[compl]{rogawski2009v2}
+
+%%%%%%
+%%%%%%
+%
+\classdef[BaseGraf]{ARQ03319}{4}{DESENHO TÉCNICO II-A}
+
+     \csummary{Extensão do processo de representação em vistas ortogonais. Vistas auxiliares primárias e secundárias. Cortes e secções. Dimensionamento dos desenhos. Desenho convencional. Aplicação da normalização.}
+
+      \newbibdef{abnt1990}
+      \newbibdef{giesecke2009}
+
+      \newbibdef[basic]{abnt1987a}
+      \newbibdef[basic]{abnt1989}
+      \newbibdef[basic]{abnt1995a}
+      \newbibdef[basic]{abnt2020}
+      \newbibdef[basic]{abnt1994}
+      \newbibdef[basic]{cunha2004}
+      \newbibdef[basic]{french1969}
+
+      \newbibdef[compl]{abnt1999}
+      \newbibdef[compl]{bachmann1969}
+      \newbibdef[compl]{giesecke2002}
+
+%%%%%%
+%%%%%%
+%
+\classdef[BaseMatematica]{FIS01182}{6}{FÍSICA GERAL - ELETROMAGNETISMO}
+
+     \csummary{Eletrostática. Eletrodinâmica. Magnetismo. Eletromagnetismo.}
+
+      \newbibdef{chabay2018}
+      \newbibdef{halliday2009}
+      \newbibdef{serway2004}
+
+      \newbibdef[compl]{tipler2000}
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[BaseMec]{ENG03041}{4}{MECÂNICA APLICADA I}
+
+     \csummary{Estática de pontos materiais. Sistemas equivalentes de forças. Equilíbrio de corpos rígidos. Forças distribuídas, centróides e baricentros. Treliças. Estruturas. Esforços internos em vigas. Atrito. Momentos de inércia de área e de volume.}
+
+      \newbibdef[basic]{beer2019}
+      \newbibdef[basic]{hibbeler2011}
+      \newbibdef[basic]{plesha2014}
+      \newbibdef[basic]{shames2002}
+
+%%%%%%
+%%%%%%
+%
+\classdef[BaseGraf]{INF01057}{4}{PROGRAMAÇÃO ORIENTADA A OBJETO}
+
+     \csummary{Abstração e encapsulamento de dados. Conceitos de orientação a objeto: classes, instância, herança, polimorfismo. Ferramentas de desenvolvimento e modelagem, usando orientação a objetos. Aplicação dos conceitos e ferramentas a partir da utilização de uma linguagem de programação específica.}
+
+      \newbibdef[basic]{santos2003}
+
+      \newbibdef[compl]{arnold2007}
+
+
+%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%
+%%%
+%%%  Etapa 03
+%%%
+%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[BaseEletro]{ENG10001}{4}{CIRCUITOS ELÉTRICOS I - C}
+
+     \csummary{Análise de circuitos resistivos. Quadripolos resistivos. Análise de circuitos de primeira e segunda ordem de domínio do tempo.}
+
+      \newbibdef{alexander}
+      \newbibdef{nilsson}
+
+      \newbibdef[basic]{irwin}
+      \newbibdef[basic]{scott}
+
+      \newbibdef[compl]{desoer}
+      \newbibdef[compl]{dorf}
+      \newbibdef[compl]{foerster}
+
+%%%%%%
+%%%%%%
+%
+\classdef[BaseMatematica]{MAT01167}{6}{EQUAÇÕES DIFERENCIAIS II}
+
+     \csummary{Equações diferenciais ordinárias e lineares. Elementos de séries de Fourier, polinômios de Legendre e funções de Bessel. Equações diferenciais lineares a derivadas parciais (problemas de contorno: equações da Física Clássica).}
+
+      \newbibdef{edwards}
+      \newbibdef{boyce2015}
+      \newbibdef{zill2003}
+
+      \newbibdef[basic]{brietzke}
+
+      \newbibdef[compl]{asmar2005}
+      \newbibdef[compl]{boyce2006}
+      \newbibdef[compl]{churchill1978}
+      \newbibdef[compl]{figueiredo2003}
+      \newbibdef[compl]{kreyszig2006}
+      \newbibdef[compl]{simmons1972}
+      \newbibdef[compl]{solow1998}
+      \newbibdef[compl]{spiegel1976}
+      \newbibdef[compl]{tenenbaum1963}
+      \newbibdef[compl]{zill2001}
+      \newbibdef[compl]{zill2001dup}
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[BaseMatematica]{FIS01183}{6}{FÍSICA III-C}
+
+     \csummary{Temperatura. Calor. Teoria cinética dos gases. Termodinâmica. Física ondulatória: ondas mecânicas e eletro-magnéticas. Reflexão e refração.}
+
+      \newbibdef{edwardsdup}
+      \newbibdef{boyce2015dup}
+      \newbibdef{zill2003dup}
+
+      \newbibdef[basic]{alonso1999}
+      \newbibdef[basic]{alonso1967}
+      \newbibdef[basic]{halliday2006}
+      \newbibdef[basic]{mckelvey1979}
+      \newbibdef[basic]{nussenzveig2002dup}
+      \newbibdef[basic]{sears1983}
+      \newbibdef[basic]{tipler2009dup}
+
+%%%%%%
+%%%%%%
+%
+\classdef[Base.Mat]{ENG03043}{4}{MATERIAIS PARA ENGENHARIA A}
+
+     \csummary{Materiais e aplicações principais em engenharia. Correlação entre estrutura e propriedades dos materiais. Microestrutura e suas relações com o comportamento mecânico. Materiais metálicos: classificação e aplicações específicas, metalografia, tratamentos térmicos e termoquímicos. Influência da microestrutura no comportamento mecânico. Processamento, microestrutura e comportamento mecânico dos materiais cerâmicos, poliméricos e conjugados.}
+
+      \newbibdef{callister2020}
+      \newbibdef[basic]{askeland2019}
+      \newbibdef[compl]{shackelford2008}
+
+%%%%%%
+%%%%%%
+%
+\classdef[BaseMec]{ENG03042}{4}{MECÂNICA APLICADA II}
+
+     \csummary{Cinemática do ponto material. 2ª. Lei de Newton. Energia e quantidade de movimento. Sistemas de pontos materiais. Cinemática de corpos rígidos. Princípios de conservação de energia e quantidade de movimento. Movimento de corpos rígidos em duas e três dimensões.}
+
+      \newbibdef{beer2019dyn}
+      \newbibdef{hibbeler2017}
+      \newbibdef{meriam2016}
+
+      \newbibdef[basic]{gray2014}
+      \newbibdef[basic]{nelson2013}
+      \newbibdef[basic]{rade2017}
+      \newbibdef[basic]{tenenbaum2016}
+      \newbibdef[basic]{tongue2007}
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[BaseMatematica]{MAT02219}{4}{PROBABILIDADE E ESTATÍSTICA}
+
+     \csummary{Probabilidade: Conceito e teoremas fundamentais. Variáveis aleatórias. Distribuições de probabilidade. Estatística descritiva. Noções de amostragem. Inferência estatística: Teoria da estimação e Testes de hipóteses. Regressão linear simples. Correlação.}
+
+      \newbibdef{barbetta2008}
+      \newbibdef{devore}
+      \newbibdef{montgomery2009}
+
+      \newbibdef[basic]{costa2002}
+      \newbibdef[basic]{fonseca1996}
+      \newbibdef[basic]{magalhaes2005}
+      \newbibdef[basic]{meyer2000}
+      \newbibdef[basic]{morettin2009}
+      \newbibdef[basic]{spiegel2004}
+
+%%%%%%
+%%%%%%
+%
+\classdef[Base.Digit]{ENG10042}{4}{SISTEMAS DIGITAIS}
+
+     \csummary{Fundamentos. Sistemas de numeração e códigos binários. Aritmética binária. Álgebra booleana. Circuitos combinacionais. Flip-Flops, registradores, memórias e contadores. Relógios. Circuitos sequenciais. Arranjos lógicos programáveis.}
+
+      \newbibdef{brown2008}
+      \newbibdef{floyd}
+      \newbibdef{wakerly2005}
+
+      \newbibdef[basic]{mano}
+      \newbibdef[basic]{tocci2011}
+      \newbibdef[basic]{tokheim}
+      \newbibdef[basic]{vahid}
+
+      \newbibdef[compl]{fletcher}
+      \newbibdef[compl]{karris}
+      \newbibdef[compl]{sandige}
+      \newbibdef[compl]{wagner}
+
+
+%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%
+%%%
+%%%  Etapa 04
+%%%
+%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[BaseMatematica]{MAT01169}{6}{CÁLCULO NUMÉRICO}
+
+     \csummary{Sistemas de numeração. Zeros de funções. Métodos numéricos de Álgebra Linear. Interpolação. Derivação e integração numérica. Aproximação de funções, ajustamento de dados. Solução numérica de equações diferenciais ordinárias.}
+
+      \newbibdef{borche2008}
+      \newbibdef{burden2003}
+
+      \newbibdef[basic]{bortoli2001}
+      \newbibdef[basic]{ruggiero1996}
+
+      \newbibdef[compl]{barroso1987}
+      \newbibdef[compl]{conte1965}
+      \newbibdef[compl]{burden2005}
+      \newbibdef[compl]{roque2000}
+      \newbibdef[compl]{sperandio2003}
+
+%%%%%%
+%%%%%%
+%
+\classdef[BaseEletro]{ENG10002}{4}{CIRCUITOS ELÉTRICOS II - C}
+
+     \csummary{Análise fasorial. Potência. Acoplamento magnético e transformadores. Circuitos polifásicos. introdução básica de Fourier e Laplace. Análise de circuitos no domínio da frequência. Aplicação de Transformadas de Fourier e de Laplace em circuitos.}
+
+      \newbibdef{alexander2003}
+      \newbibdef{irwin2003}
+      \newbibdef{nilsson2003}
+
+      \newbibdef[basic]{bird2009}
+
+      \newbibdef[compl]{desoer1979}
+      \newbibdef[compl]{dorf2003}
+      \newbibdef[compl]{hayt2008}
+
+%%%%%%
+%%%%%%
+%
+\classdef[Base.Digit]{ENG10043}{2}{LABORATÓRIO DE SISTEMAS DIGITIAIS}
+
+     \csummary{Síntese de circuitos digitais: circuitos aritméticos, contadores, registradores e máquinas de estados. Ferramentas computacionais de projeto e simulação. Circuitos integrados Digitais. Arranjos lógicos programáveis.}
+
+      \newbibdef{brown}
+      \newbibdef{floyddup}
+      \newbibdef{wakerly}
+
+      \newbibdef[basic]{manodup}
+      \newbibdef[basic]{tocci}
+      \newbibdef[basic]{vahiddup}
+
+      \newbibdef[compl]{karrisdup}
+
+%%%%%%
+%%%%%%
+%
+\classdef[BaseMatematica]{MAT01168}{6}{MATEMÁTICA APLICADA II}
+
+     \csummary{Séries de Fourier. Integral de Fourier. Transformadas de Fourier e de Laplace. Análise vetorial.}
+
+      \newbibdef{anton2007}
+      \newbibdef{hsu2011}
+
+      \newbibdef[basic]{hsu1973}
+      \newbibdef[basic]{strauch}
+      \newbibdef[basic]{kreyszig1983}
+      \newbibdef[basic]{spiegel1972}
+      \newbibdef[basic]{spiegelcomplex}
+      \newbibdef[basic]{zill2003dup2}
+
+      \newbibdef[compl]{asmar2005}
+      \newbibdef[compl]{oneil2003}
+      \newbibdef[compl]{spiegel1978}
+      \newbibdef[compl]{strang1991dup}
+      \newbibdef[compl]{stroud2003}
+      \newbibdef[compl]{zill2001dup2}
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[Base.Mat]{ENG03092}{4}{MECÂNICA DOS SÓLIDOS I-A}
+
+     \csummary{Introdução à Mecânica dos Sólidos. Solicitações internas. Tensões e deformações. Esforço axial. Torção. Flexão simples. Cisalhamento em vigas. Solicitações compostas. Análise e transformação de tensões. Análise e transformação de deformações. Critérios de falha. Noções de coeficiente de segurança.}
+
+      \newbibdef{beer2013}
+      \newbibdef{popov1978}
+      \newbibdef{hibbeler2010}
+
+      \newbibdef[basic]{gere}
+      \newbibdef[basic]{reddy}
+      \newbibdef[basic]{mendonca2019}
+
+      \newbibdef[compl]{gordon}
+      \newbibdef[compl]{pilkey}
+      \newbibdef[compl]{shames}
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[BaseMec]{ENG03316}{4}{MECANISMOS I}
+
+     \csummary{Introdução a análise de mecanismos: Conceito e classificação de mecanismos. Cadeias Cinemáticas. Análise cinemática dos mecanismos. Cames. Teoria das engrenagens. Forças de inércia em máquinas. Balanceamento estático e dinâmico. Aplicações Industriais ou em Equipamentos.}
+
+      \classremark{MUDA: etapa e súmula, mantem nome antigo}
+
+      \newbibdef[basic]{norton}
+      \newbibdef[basic]{uicker2011}
+
+      \newbibdef[compl]{mabie1987}
+      \newbibdef[compl]{norton2007}
+
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[BaseMec]{ENG03044}{4}{MODELAGEM DE SISTEMAS MECÂNICOS}
+
+     \csummary{Modelagem e modelos. Tipos de modelos. Modelagem em computador. Estimativas e aproximações. Modelagem sistemática de sistemas mecânicos, elétricos, fluídicos e térmicos. Analogias elétricas. Sistemas híbridos. Técnicas de representação de modelos matemáticos. Respostas transitória e permanente de sistemas dinâmicos. Análise no domínio frequência. Simulação de resposta de sistemas dinâmicos a excitações típicas.}
+
+      \classremark{MUDA seriação e súmula}
+			\classremark{MUDA: etapa e súmula}
+      
+      \newbibdef{close2001}
+      \newbibdef{kluever2015}
+      \newbibdef{palm2013}
+      
+      \newbibdef[basic]{kulakowski2012}
+      \newbibdef[basic]{lu2014}
+      \newbibdef[basic]{palm1999}
+      \newbibdef[basic]{rao2008}
+
+
+
+%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%
+%%%
+%%%  Etapa 05
+%%%
+%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[BaseEletro]{ENG10044}{4}{ELETRÔNICA FUNDAMENTAL I-B}
+
+     \csummary{Amplificadores operacionais, diodos, circuitos conformadores, transistores de junção e efeito de campo: características, polarização, estabilidade térmica e resposta em frequência. Amplificadores de um ou mais estágios, realimentação e o teorema do elemento extra: princípios de análise de estabilidade e resposta em frequência.}
+
+      \classremark{MUDA: etapa e súmula}
+
+      \newbibdef{sedra2007}
+
+      \newbibdef[basic]{millman2010}
+      \newbibdef[basic]{schilling}
+
+      \newbibdef[compl]{razavi}
+      \newbibdef[compl]{boylestad}
+
+%%%%%%
+%%%%%%
+%
+\classdef[BaseEletro]{ENG10003}{2}{LABORATÓRIO DE CIRCUITOS ELÉTRICOS}
+
+     \csummary{Instrumentos de medida e conceitos fundamentais de medição. Ferramentas Computacionais de análise, e simulação. Aplicação de análise de circuitos resistivos. Aplicação de análise de circuitos de 1ª e 2ª ordem. Resposta em frequência de circuitos. Análise fasorial. Medição de potência em Circuitos Trifásicos. Transformadores.}
+
+      \newbibdef{alexander2008}
+      \newbibdef{nilsson1999}
+      \newbibdef{irwin2003dup}
+
+      \newbibdef[basic]{bird2009}
+
+      \newbibdef[compl]{desoer1979}
+      \newbibdef[compl]{bird2009dup}
+      \newbibdef[compl]{hayt2008dup}
+      \newbibdef[compl]{tsividis2001}
+
+%%%%%%??
+%%%%%% I'M HERE !!!
+%
+\classdef[Base.Mat]{ENG03004}{4}{MECÂNICA DOS SÓLIDOS II}
+
+     \csummary{Análise de tensões. Teorias estruturais. Análise de flexão de vigas. Métodos clássicos de análise de vigas. Métodos de solução de problemas estaticamente indeterminados. Introdução à análise limite em vigas. Princípios energéticos. Flambagem de colunas. Introdução à elasticidade.}
+
+      \bibdef{Hibeller. Análise de Estruturas. Brasil: Pearson, 2017. Disponível em: ps://www.amazon.com.br/AnÃ¡lise-das-Estruturas-R-C-Hibbeler/dp/8581431275?tag=goog0ef-20}
+
+      \bibdef[basic]{Beer, Ferdinand Pierre; Johnston, E. Russell, Jr.; DeWolf, John T.. Resistência dos materiais :mecânica dos materiais. São Paulo: McGraw-Hill, c2006. ISBN 8586804835; 9788586804830}
+      \bibdef[basic]{Salvadori, Mario G.; Heller, Robert. Estructuras para arquitectos. Buenos Aires: Cp67, 1987. ISBN 9509575143}
+      \bibdef[basic]{Steffen, Julio Cezar; Tamagna, Alberto. Prática de sistemas estruturais. São Leopoldo: UNISINOS, 1982}
+      \bibdef[basic]{Sussekind, Jose Carlos. Curso de analise estrutural. Sao Paulo: Globo, 1994. ISBN 8525002267}
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[Pro.Control]{ENG10017}{6}{SISTEMAS E SINAIS}
+
+     \csummary{Técnicas de modelagem e análise de sistemas lineares e sistemas amostrados. Introdução a sistemas não lineares.}
+
+      \newbibdef{haykin2001}
+
+      \newbibdef[basic]{franklin2006}
+      \newbibdef[basic]{lathi2007}
+      \newbibdef[basic]{oppenheim1997}
+
+      \newbibdef[compl]{geromel2004}
+      \newbibdef[compl]{hsu2004}
+      \newbibdef[compl]{olivier2019}
+
+%%%%%%
+%%%%%%
+%
+\classdef[Base.FenTrans]{ENG07086}{5}{TERMODINÂMICA E TRANSFERÊNCIA DE CALOR}
+
+     \csummary{Propriedades termodinâmicas de substâncias puras e misturas. Energia, trabalho e calor e as Leis da Termodinâmica. Termodinâmica dos sistemas abertos. Eficiência de processos térmicos. Mecanismos de transferência de calor. Condução de calor em regime estacionário e transiente.}
+
+      \classremark{DISCIPLINA NOVA}
+
+      \newbibdef{borgnakke2009}
+      \newbibdef{smith205}
+
+      \newbibdef[basic]{koretsky2017}
+
+%%%%%%
+%%%%%%
+%
+\classdef[Pro.Robotica]{ENG10026}{4}{ROBÓTICA-A}
+
+     \csummary{Estrutura de robô: características, acionamento, controle, manipuladores e sensores. Capacidade do robô. Aplicações do robô. Noções de cinemática e dinâmica. Programação do robô. Sistemas de programação. Sistema controlador - periféricos-robô.}
+
+      \classremark{MUDA ETAPA}
+
+      \newbibdef[basic]{craig2005}
+      \newbibdef[basic]{fu1987}
+
+      \newbibdef[compl]{asada1986}
+      \newbibdef[compl]{goebel2015}
+      \newbibdef[compl]{martinez2013}
+      \newbibdef[compl]{okane2013}
+      \newbibdef[compl]{romano2002}
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[Pro.Robotica]{ENG03380}{4}{ROBÓTICA}
+
+     \csummary{Configurações físicas de robôs, movimentos básicos, características técnicas, programação elementar, tipos de linguagens, efetuadores finais, controle da célula de trabalho. Aplicação, dados de projeto.}
+
+      \classremark{MUDA ETAPA}
+
+      \newbibdef[basic]{craig2013}
+      \newbibdef[basic]{niku2013}
+
+      \newbibdef[compl]{siciliano}
+      \newbibdef[compl]{pazos2002}
+      \newbibdef[compl]{rosario2005}
+      \newbibdef[compl]{spong2005}
+      \newbibdef[compl]{groover}
+
+
+
+%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%
+%%%
+%%%  Etapa 06
+%%%
+%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%
+
+
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[Pro.Maquinas]{ENG10047}{4}{FUNDAMENTOS DE MÁQUINAS ELÉTRICAS}
+
+     \csummary{Princípios de conversão eletromecânica de energia. Dispositivos eletromagnéticos. Máquinas de corrente contínua. Máquinas de corrente alternada. Modelos de dispositivos em regime permanente. Características operacionais em regime permanente.}
+
+      \newbibdef{fitzgerald}
+      \newbibdef{white}
+      \newbibdef{bim}
+
+      \newbibdef[basic]{ivanon1980}
+      \newbibdef[basic]{kostenko1979}
+      \newbibdef[basic]{krause}
+      \newbibdef[basic]{nasar}
+
+      \newbibdef[compl]{gros}
+      \newbibdef[compl]{hameier}
+      \newbibdef[compl]{chapman}
+
+
+%%%%%%
+%%%%%%??
+%
+\classdef[Pro.Maquinas]{ENG10022}{4}{INSTRUMENTAÇÃO FUNDAMENTAL PARA CONTROLE E AUTOMAÇÃO}
+
+     \csummary{Medidas em processos industriais. Precisão, erros e sua propagação. Transdutores para medição de grandezas físicas. Condicionamento de sinais e interfaceamento. Métodos indiretos de medida.}
+
+      \classremark{MUDA: pré-requisitos}
+
+      \newbibdef{balbinot}
+      \newbibdef{balbinot2011}
+
+      \newbibdef[basic]{doebelin}
+      \newbibdef[basic]{fraden2010}
+      \newbibdef[basic]{pallas}
+
+      \bibdef[compl]{CONSIDINE, D. A.. Process Instruments and Controls Handbook.. Mc Graw-Hill Book Company, ISBN 0070125821}
+      \bibdef[compl]{HOLMAN J. P.. Experimental Methods for Engineers. McGraw-Hill, Inc, ISBN 9780073660554}
+
+%%%%%%
+%%%%%%??
+%
+\classdef[BaseEletro]{ENG10045}{2}{LABORATÓRIO DE ELETRÔNICA}
+
+     \csummary{Instrumentos de medida e conceitos fundamentais de medição. Ferramentas computacionais de análise e simulação de circuitos não-lineares: diodos, transistores de junção e efeito de campo. Resposta em frequência de circuitos ativos. Circuitos conformadores, amplificadores de um e de diversos estágios realimentados. Amplificadores operacionais.}
+
+      \bibdef{Sedra, Adel S.; Smith, Kenneth C.. Microeletrônica. Editora Pearson Prentice Hall, ISBN (ISBN: 9788576050223)}
+      \bibdef{Silva, Manuel de Medeiros da. Circuitos com Transitores Bipolares e MOS. Lisboa: Fundação Calouste Gulbenkian, 2008. ISBN 978-972-31-0840-8}
+
+      \bibdef[basic]{Desoer, Charles A.; Kuh, Ernest S.. Basic Circuit Theory.. Érica, 2006. ISBN 0-07-085183-2}
+
+      \bibdef[compl]{Cordell, Bob. Designing Audio Power Amplifiers.. McGraw-Hill/TAB, ISBN 978-0071640244}
+
+%%%%%%
+%%%%%%??
+%
+\classdef[Base.FenTrans]{ENG07069}{2}{PRINCÍPIOS DA MECÂNICA DE FLUIDOS}
+
+     \csummary{Princípios de transferência de quantidade de movimento. Equações de conservação nas formas integral e diferencial. Estática dos fluidos. Camada limite. Equações de projeto para sistemas de transporte de fluidos.}
+
+      \classremark{MUDA  pré-requisitos}
+
+      \bibdef{Merle C. Potter, David C. Wiggert. Mecânica dos fluidos. Rio de Janeiro: Cengage, 2013. ISBN 8522103097}
+      \bibdef{Robert W. Fox, Alan T. McDonald, John C. Leylegian. Introdução à mecânica dos Fluidos. Rio de Janeiro: LTC, 2017}
+      \bibdef{Welty, James R.. Fundamentos de transferência de momento, de calor e de massa. Rio de Janeiro: LTC, 2017}
+
+      \bibdef[basic]{Bird, R. Byron; Stewart, Warren E.; Lightfoot, Edwin N. Fenômenos de Transporte. Rio de Janeiro: LTC, 2004. ISBN 8521613938}
+
+%%%%%%
+%%%%%%
+%
+\classdef[Pro.Automacao]{ENG10023}{4}{SISTEMAS DE AUTOMAÇÃO}
+
+     \csummary{Sistemas de automação industrial e de controle de processos. Técnicas de Modelagem e Metodologia de Desenvolvimento de Sistemas de Automação Industrial (Clássica e Orientada a objetos), Sistemas de Tempo Real (Linguagens de Programação, Sistemas Operacionais).}
+
+      \bibdef{Paul T. Ward. Structured Development for Real-Time Systems, Vol. III: Implementation Modeling Techniques. Prentice Hall, ISBN 9780138548032}
+      \bibdef{Selic, Bran; Gullekson, Garth; Ward, Paul T.. Real-time object-oriented modeling. John Wiley, ISBN 0471599174}
+
+      \bibdef[compl]{Awad, Maher; Kuusela, Juha; Ziegler, Jurgen. Object-oriented technology for real-time systems :a practical approach using omt and fusion. Prentice Hall, ISBN 0132279436}
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[Pro.Control]{ENG10004}{4}{SISTEMAS DE CONTROLE I - B}
+
+     \csummary{Modelagem e identificação de sistemas dinâmicos. Conceitos básicos e problemas fundamentais em sistemas de controle. Controladores PID: Teoria e ajuste. Projeto de controladores para sistemas monovariáveis via método do lugar das raízes. Aspectos não-lineares em sistemas de controle.}
+
+      \classremark{MUDA pré-requisitos}
+
+      \bibdef{Bazanella, Alexandre Sanfelice; Gomes da Silva Junior, Joao Manoel. Sistemas de controle: princípios e métodos de projeto. UFRGS, 2005. ISBN 8570258496}
+
+      \bibdef[basic]{Astrom, Karl Johan; Hagglund, Tore. Pid controllers: theory, design, and tuning. ISA, 1995. ISBN 978-1556175169}
+      \bibdef[basic]{Franklin, Gene F.; Powell, J. David; Emami-Naeini, Abbas. Feedback control of dynamic systems. Prentice Hall, ISBN 0131499300}
+      \bibdef[basic]{Ogata, Katsuhiko. Engenharia de controle moderno. Prentice Hall do Brasil, ISBN 8587918230}
+
+      \bibdef[compl]{Dorf, Richard. Modern control systems. Prentice Hall, ISBN 0131457330}
+      \bibdef[compl]{Kuo, Benjamin C.. Automatic control systems. Wiley, ISBN 0471134767}
+
+
+
+%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%
+%%%
+%%%  Etapa 07
+%%%
+%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[Pro.Maquinas]{ENG10049}{4}{ACIONAMENTO DE MÁQUINAS ELÉTRICAS}
+
+     \csummary{Seleção de motores elétricos. Comportamento e modelos dinâmicos de máquinas elétricas. Controle de velocidade e torque. Princípios de eletrônica potência, operação e componentes básicos de conversores estáticos. Acionamento de máquinas com conversores estáticos.}
+
+      \classremark{MUDA pré-requisitos e súmula}
+
+      \bibdef{B. K. Bose. Power electronics and variable frequency drives : technology and applications.. IEEE Press, 1997. ISBN 0780310845}
+      \bibdef{Edson Bin. Máquinas Elétricas e Acionamento. Campus/Elsevier, 2009. ISBN 9788535230291}
+      \bibdef{P. C. Krause. Analysis of electric machinery and drive systems.. Wiley, 2013. ISBN 9781118024294}
+
+      \bibdef[basic]{Austin Hughes. Electric motors and drives : fundamentals, types and applications. Elsevier, 2006. ISBN 9780750647182}
+      \bibdef[basic]{Ion Boldea. Electrical Drives. CRC Press, 1999. ISBN 0849325218}
+      \bibdef[basic]{S. K. Pillai. A First Course in Electrical Drives. John Willey, 1989. ISBN 047021399X}
+      \bibdef[basic]{W. Leonhard. Control of Electrical Drives. Springer Verlag, 1990. ISBN 3540136509}
+
+      \bibdef[compl]{D. C. White, H. H. Woodson. Electromechanical Energy Conversion. John Wiley, 1959. ISBN 978-0262230292}
+      \bibdef[compl]{Gordon R. Slemon. Electrical Machines and Drives. Addison-Wesley, 1992. ISBN 0201578859}
+      \bibdef[compl]{J. J. Cathey. Electrical Machines: Analysis and Design Applying Matlab. MCGraw-Hill, 2000. ISBN 0072423706}
+      \bibdef[compl]{J. M. D. Murphy. Power Electronics of AC Motors. Pergamon, 1988. ISBN 0080226833}
+
+%%%%%%
+%%%%%%
+%
+\classdef[Pro.Control]{ENG10005}{2}{LABORATÓRIO DE CONTROLE}
+
+     \csummary{Métodos experimentais para ajuste de controladores PID (Ziegler-Nichols e similares). Verificação experimental de desempenho de malhas de controle. Projeto de controladores por métodos de controle clássico. Projeto prático de controladores para: processo térmico, processo mecânico, controle de velocidade de motor elétrico, controle de posição de motor elétrico.}
+
+      \bibdef{Bazanella, Alexandre Sanfelice; Gomes da Silva Junior, Joao Manoel. Sistemas de controle: princípios e métodos de projeto. UFRGS, 2005. ISBN 8570258496}
+
+      \bibdef[basic]{Ogata, Katsuhiko. Engenharia de controle moderno. Prentice Hall do Brasil, ISBN 8587918230}
+
+      \bibdef[compl]{Astrom, Karl Johan; Hagglund, Tore. Pid controllers: theory, design, and tuning. ISA, ISBN 978-1556175169}
+      \bibdef[compl]{Franklin, Gene F.; Powell, J. David; Emami-Naeini, Abbas. Feedback control of dynamic systems. Prentice Hall, ISBN 0131499300}
+
+%%%%%%
+%%%%%%
+%
+\classdef[Pro.Automacao]{ENG04475}{5}{MICROPROCESSADORES I}
+
+     \csummary{Arquitetura de microprocessadores. Endereçamento e conjunto de instruções. Memória e adaptadores de interface de entrada e saída. Projeto lógico e elétrico de sistemas microprocessados. Sistemas supervisores. Programação e algoritmos.}
+
+      \classremark{MUDA etapa... e CH/súmula}
+
+      \bibdef{Cady, Fredrick M... Microcontrollers and Microcomputers: Principles of Software and Hardware Engineering.. New York.: Oxford University Press., 2010. ISBN 9780195371611}
+      \bibdef{Pont, Michael J... Embedded C.. Boston.: Addison-Wesley Professional., 2002. ISBN 9780201795233}
+      \bibdef{Susnea, Ioan; Mitescu, Marian.. Microcontrollers in Practice.. Berlin.: Springer-Verlag Berlin Heidelberg., 2005. ISBN 9783540283089}
+
+      \bibdef[basic]{Balch, Mark.. Complete Digital Design: A Comprehensive Guide to Digital Electronics and Computer System Architecture.. New York.: McGraw-Hill., 2003. ISBN 9780071409278}
+      \bibdef[basic]{McFarland, Grant.. Microprocessor Design: A Practical Guide from Design Planning to Manufacturing.. New York.: McGraw-Hill Education., 2006. ISBN 9780071459518}
+      \bibdef[basic]{Nicolosi, Denys Emílio Campion.. Microcontrolador 8051 detalhado.. São Paulo.: Erica., 2013. ISBN 9788571947214}
+      \bibdef[basic]{Nicolosi, Denys Emílio Campion; Silva, Caio Mario Da.. Laboratório de Microcontroladores Família 8051 : Treino de Instruções, Hardware e Software.. São Paulo.: Erica., 2014. ISBN 9788571948716}
+      \bibdef[basic]{Sen Gupta, Gourab.. Embedded Microcontroller Interfacing: Designing Integrated Projects.. Berlin.: Springer-Verlag Berlin Heidelberg., 2010. ISBN 9783642136368}
+      \bibdef[basic]{Silva Junior, Vidal Pereira da.. Aplicações práticas do microcontrolador 8051.. São Paulo.: Erica., 2004. ISBN 8571949395}
+      \bibdef[basic]{Silva Junior, Vidal Pereira da.. Microcontrolador 8051 : hardware e software.. São Paulo.: Erica., 1990. ISBN 8571940363}
+
+      \bibdef[compl]{Hennessy, John L.; Patterson, David A... Arquitetura de Computadores : Uma Abordagem Quantitativa.. Rio de Janeiro.: Elsevier Brasil., 2013. ISBN 9788535261226}
+      \bibdef[compl]{Hennessy, John L.; Patterson, David A... Computer Architecture : A Quantitative Approach.. Waltham, Mass.: Elsevier Morgan Kaufmann., 2012. ISBN 9780123838728}
+      \bibdef[compl]{Patterson, David A.; Hennessy, John L... Computer Organization and Design : The Hardware/Software Interface.. Amsterdam.: Elsevier Morgan Kaufmann., 2013. ISBN 9780124077263}
+      \bibdef[compl]{Patterson, David A.; Hennessy, John L... Organização e Projeto de Computadores : A Interface Hardware/Software.. Rio de Janeiro.: Elsevier Brasil., 2013. ISBN 9788535235852}
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[Pro.Fabricacao]{ENG03021}{4}{PROCESSOS DISCRETOS DE PRODUÇÃO}
+
+     \csummary{Introdução aos Materiais Empregados em Engenharia e Seleção de materiais. Fundição: princípios; principais tipos de moldes utilizados e processos de fabricação empregados, tais como fornos elétricos, por indução, etc. Conformação Mecânica: princípios; principais processos empregados, tais como laminação, forjamento, etc., `a quente' e `a frio'. Usinagem: princípios; principais métodos empregados, tais como torno, retífica, etc. Soldagem e Técnicas Conexas: princípios; principais processos empregados, tais como eletrodo revestido, MIG/MAG, etc. Introdução ao Planejamento das Operações de Manufatura, considerações econômicas e comparações de custos entre os processos descritos.}
+
+      \bibdef{GROOVER, Mikell P.. Fundamentals of Modern Manufacturing: Materials, Processes, and Systems. New York: John Wiley, 2012. ISBN 1118231465}
+
+      \bibdef[basic]{A. E. Diniz, F. C. Marcondes, N. L. Coppini. Tecnologia da usinagem dos materiais. São Paulo: Artliber, 2006. ISBN 8587296019}
+      \bibdef[basic]{J. M. G. de Carvalho Ferreira. Tecnologia da fundição. Lisboa: Fundação Calouste Gulbenkian, 1999. ISBN 9723108372}
+      \bibdef[basic]{P. R. Cetlin, H. Helman. Fundamentos da conformação mecânica dos metais. São Paulo: Artliber, 2005. ISBN 8588098288}
+      \bibdef[basic]{P. V. Marques, P. J. Modenesi, A. Q. Bracarense. Soldagem - fundamentos e tecnologia. Belo Horizonte: UFMG, 2009. ISBN 8570417489}
+
+      \bibdef[compl]{C. Lefteri. Como se faz: 82 técnicas de fabricação para design de produtos. Blucher, 2009. ISBN 978-85-212-0506-7}
+      \bibdef[compl]{G. E. Dieter. Metalurgia Mecânica. Rio de Janeiro: Guanabara Dois, 1981}
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[Pro.Automacao]{ENG10048}{4}{PROTOCOLOS DE COMUNICAÇÃO}
+
+     \csummary{Conceitos básicos de redes de computadores. Definição de sistemas abertos (modelo ISO/OSI). Nível físico, enlace de dados; algoritmos de detecção e correção de erro, redes, transporte e aplicação. Barramentos industriais para automação e instrumentação: IEEE448, Profibus, Fieldbus, CAN-BUS e outros protocolos de chão-de-fábrica.}
+
+      \bibdef{Tanembaum, Andrew S. Redes de Computadores. Campus, ISBN 8535211853}
+
+      \bibdef[basic]{Soares, L.F.G., Lemos, G. e Colcher, S. Redes de Computadores - Das LANs, MANs e WANs as Redes ATM. Campus, ISBN 857001998X}
+
+%%%%%%
+%%%%%%
+%
+\classdef[Pro.Control]{ENG10018}{4}{SISTEMAS DE CONTROLE II}
+
+     \csummary{Análise e projeto de sistemas de controle por métodos freqüenciais. Sensibilidade e robustez de sistemas de controle. Análise de ciclo-limite em sistemas não-lineares. Modelagem, análise e projeto de sistemas de controle por variáveis de estado.}
+
+      \bibdef{A.S. Bazanella, J.M. Gomes da Silva Jr.. Sistemas de Controle: Princípios e Métodos de Projeto.. UFRGS, 2005. ISBN 85-7025-849-6}
+      \bibdef{Ogata, Katsuhiko; Maya, Paulo Alvaro. Engenharia de controle moderno. Rio de Janeiro: Prentice-Hall do Brasil, 2003. ISBN 8587918230; 9788597918239}
+
+      \bibdef[basic]{G.F. Franklin, J.D. Powell, A.Emami-Naeini. Feedback Control of Dynamic Systems. Prentice Hall, 2002. ISBN 0130323934}
+
+      \bibdef[compl]{Boldrini; Costa; Figueiredo; Wetzler. Álgebra Linear. Harbra, 1986. ISBN 8529402022}
+      \bibdef[compl]{Chen, C.T.. Linear System Theory.. Oxford University Press, 1998. ISBN 0195117778}
+      \bibdef[compl]{Lucíola Campestrini. Sintonia de controladores PID descentralizados baseada no método do ponto crítico. 2006}
+      \bibdef[compl]{Volnei Zanchin. Projetos de controladores para sistemas de potência utilizando LMI'S. 2003}
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[Pro.Maquinas]{ENG03027}{4}{SISTEMAS HIDRÁULICOS E PNEUMÁTICOS}
+
+     \csummary{Introdução à hidráulica e pneumática industrial. descrição de componentes para circuitos de comando e controle: atuadores, válvulas, cilindros, bombas e compressores. Características e propriedades dos fluidos hidráulicos. Elementos de mecatrônica.}
+
+      \classremark{MUDA pré-requisitos}
+
+      \bibdef{Prudente, F.. Automação Industrial Pneumática: Teoria e Aplicações. LTC, 2013. ISBN 9788521621195}
+      \bibdef{Rabie, M.. Fluid Power Engineering. McGraw-Hill, 2009. ISBN 0071622462}
+      \bibdef{Watton, J.. Fundamentos de Controle em Sistemas Fluidomecânicos. LTC, ISBN 9788521620259}
+
+      \bibdef[basic]{Capuamo, F. G., Idoeta, I. V. Elementos de Eletrônica Digital. Erica, ISBN 9788571940192}
+      \bibdef[basic]{Cundiff, J. S. Buckmaster, D. R.. Fluid Power Circuits and Controls: Fundamentals and Applications. Taylor and Francis, 2011. ISBN 9781439827819}
+      \bibdef[basic]{Linsingen, I. V.. Fundamentos de Sistemas Hidráulicos. UFSC, 2001. ISBN 9788532803986}
+
+      \bibdef[compl]{Bollmann, A. Fundamentos da automação Industrial Pneutrônica, Projetos de Comandos Binários Eletropneumáticos. São Paulo: ABHP ? Associação Brasileira de Hidráulica e Pneumática, 1996}
+      \bibdef[compl]{Bolton, W.. Pneumatic and Hydraulic Systems. Butterworth-Heinemann}
+      \bibdef[compl]{Martin, H.. The Design of Hydraulic Components and Systems. Elis Horwood Limited}
+      \bibdef[compl]{Merritt, Herbert E.. Hydraulic control systems. John Wiley, 1967. ISBN 0471596175}
+      \bibdef[compl]{Parr, A.. Hydraulics and Pneumatics ? A Technician?s and Engineer?s Guide. New York: Elsevier Ltd., 2007. ISBN 0750644192}
+      \bibdef[compl]{Yeaple, F.. Fluid Power Design Handbook. New York: Marcel Dekker, Inc., 1996. ISBN 0824795628}
+
+
+%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%
+%%%
+%%%  Etapa 08
+%%%
+%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[Pro.Fabricacao]{ENG03045}{4}{ELEMENTOS DE MÁQUINAS}
+
+     \csummary{Noções básicas sobre projeto mecânico. Fadiga dos materiais. Eixos de transmissão. Dimensionamento, seleção e aplicação de molas, rolamentos, mancais de escorregamento, engrenagens, freios e embreagens, elementos flexíveis, parafusos de fixação, acoplamentos elásticos, elementos de transmissão de movimento.}
+
+      \bibdef{JUVINAL R. C., MARSHEK, K. M.. Fundamentos do Projeto de Componentes de Máquinas. 978-85-216-1578-1, 2008. ISBN 978-85-216-1578-1}
+
+      \bibdef[basic]{NORTON, R. L.. Projeto de Máquinas - Uma abordagem integrada. Porto Alegre: Bookman, 2004. ISBN 8582600224}
+      \bibdef[basic]{SHIGLEY, Joseph Edward; MISCHKE, Charles R.; BUDYNAS, Richard G.. Projeto de engenharia mecânica. Porto Alegre: Bookman, 2004. ISBN 85-363-0562-2}
+
+      \bibdef[compl]{HIBBELER, R. C.. Resistência dos Materiais. Pearson, 2010. ISBN 9788576053736}
+
+%%%%%%
+%%%%%%
+%
+\classdef[Pro.ContProc]{ENG07042}{4}{MODELAGEM E CONTROLE DE PROCESSOS INDUSTRIAIS}
+
+     \csummary{Introdução à modelagem matemática de processos industriais. Aplicação das leis de conservação em regime estacionário e dinâmico. Equações constitutivas. Simulação estática e dinâmica de processos. Malhas de controle típicas da indústria de processos. Projeto de controladores aplicados na indústria de processos.}
+
+      \bibdef{Bequette, B.W.. Process Dynamics: Modeling, Analysis, and Simulation. Oxford University Press, 1998. ISBN 0132068893}
+      \bibdef{Campos, M.; Teixeira, H.. Controles Típicos de Equipamentos e Processos Industriais. Rio de Janeiro: Edgar Blücher, 2006. ISBN 9788521205524}
+      \bibdef{Seborg, D. E.; Edgar, T. F.; Mellichamp, D. A.. Process Dynamics and Control. Wiley, 2003. ISBN 0470128674}
+
+      \bibdef[basic]{Edgar, T.F.. Optimization of Chemical Processes. McGraw-Hill, 2001. ISBN 0070393591}
+      \bibdef[basic]{Luyben, W. L.. Process Modeling, Simulation and Control for Chemical Engineers. McGraw-Hill, 1990. ISBN 0070391599}
+      \bibdef[basic]{Rice, R.G.. Applied Mathematics and Modeling for Chemical Engineers. John Wiley, 1995. ISBN 9781118024720}
+
+      \bibdef[compl]{Hangos, K.; Cameron, I.. Process Modelling and Model Analysis. London: Academic Press, 2001. ISBN 0121569314}
+      \bibdef[compl]{Ogunnaike, B. A.; Ray, W. H.. Process Dynamics, Modeling, and Control. Oxford: Oxford University Press, 1994. ISBN 9780195091199}
+
+%%%%%%
+%%%%%%
+%
+\classdef[Pro.Control]{ENG10019}{4}{SISTEMAS DE CONTROLE DIGITAIS}
+
+     \csummary{Análise de Sistemas de Controle amostrados através da transformada Z. Digitalização de controladores analógicos. Identificação de sistemas pelo método dos mínimos quadrados. Projeto de controladores digitais para sistemas monovariáveis. Implementação de controladores digitais.}
+
+      \bibdef{A.S. Bazanella, L. Campestrini, D. Eckhard. Data-Driven Controller Design - the H2 Approach. Holanda: Springer, 2012. ISBN 978-94-007-2300-9}
+      \bibdef{Astrom, Karl Johan; Wittenmark, Bjorn. Computer-controlled systems :theory and design. London: Prentice-Hall International, 1997. ISBN 0137367872}
+      \bibdef{Franklin, Gene F.; Powell, J. David; Emami-Naeini, Abbas. Feedback control of dynamic systems. Upper Saddle River, N.J.: Pearson Prentice Hall, c2006. ISBN 0131499300}
+
+      \bibdef[basic]{Aguirre, Luis Antonio. Introdução à identificação de sistemas:técnicas lineares e não-lineares aplicadas a sistemas reais. Belo Horizonte: Editora UFMG, 2007. ISBN 9788570415844}
+      \bibdef[basic]{Kuo, Benjamin C.. Automatic control systems. Englewood Cliffs: Wiley, 2002. ISBN 0471134767}
+      \bibdef[basic]{Ogata, Katsuhiko. Discrete-time control systems. Upper Saddle River, N.J.: Prentice Hall, c1995. ISBN 0130342815}
+
+      \bibdef[compl]{Bazanella, Alexandre Sanfelice; Silva Junior, Joao Manoel Gomes da. Sistemas de controle:princípios e métodos de projeto. Porto Alegre: Editora da Universidade/UFRGS, 2005. ISBN 8570258496}
+      \bibdef[compl]{Constantine H. Houpis and Gary B. Lamont. Digital Control Systems. McGraw-Hill, 1991. ISBN 0070305005}
+      \bibdef[compl]{Elder M. Hemerly. Controle por Computador de Sistemas Dinâmicos. São Paulo: Edgard Blücher, 2000. ISBN 8521202660}
+      \bibdef[compl]{Geromel, José Claudio; Palhares, Alvaro Geraldo Badan. Análise linear de sistemas dinâmicos :teoria, ensaios práticos e exercícios. São Paulo: Edgard Blücher, 2004. ISBN 8521203357; 9788521203353}
+
+%%%%%%
+%%%%%%
+%
+\classdef[Pro.Fabricacao]{ENG03387}{4}{SISTEMAS DE FABRICAÇÃO}
+
+     \csummary{Modos de produção e arranjo físico industrial. Modelos e métricas de produção. Análise de sistemas de produção: estações de trabalho operadas manualmente e automatizadas, análise de grupos de máquinas, linhas de montagem. Tecnologia de grupo: sistemas de codificação e classificação, métodos para formação de famílias de peças e de células de manufatura. Manufatura celular. Movimentação interna de materiais e armazenamento. Introdução à fabricação CNC.}
+
+      \classremark{MUDA súmula}
+
+      \bibdef{Groover, Mikell P.. AUTOMAÇAO INDUSTRIAL E SISTEMAS DE MANUFATURA. Pearson Brasil, 2010. ISBN 8576058715}
+
+      \bibdef[basic]{Black, T.. O Projeto da Fábrica com Futuro. Porto Alegre: Bookman, 2000}
+
+      \bibdef[compl]{Groover, Mikell P.. Automation Production Systems and Computer integrated Manufacturing. Prentice-Hall, 2007. ISBN 0132393212}
+      \bibdef[compl]{Liker, Jeffrey K.. O modelo Toyota :14 princípios de gestão do maior fabricante do mundo. Porto Alegre: Bookman, 2005. ISBN 9788536304953}
+      \bibdef[compl]{Lorino, F. V.. Tecnologia de grupo e organização da manufatura}
+
+%%%%%% GRADE FDC A
+%%%%%%
+%
+\classdef[Pro.Fabricacao]{ENG03386}{4}{FABRICAÇÃO AUXILIADA POR COMPUTADOR}
+
+     \csummary{Processos de fabricação por usinagem: torneamento, furação e fresamento. Planejamento de processo e CAPP. Projeto orientado à manufatura e montagem (DFM/A). Fundamentos da usinagem CNC. Arquitetura de sistemas CNC: hardware e software. Linguagem ISSO. Programação manual de centros de usinagem CNC. Programação manual de tornos CNC. CAD/CAM.}
+
+      \classremark{MUDA natureza EL e súmula..=> voltando para 8a}
+
+      \bibdef{GROOVER, Mikell P.. AUTOMAÇAO INDUSTRIAL E SISTEMAS DE MANUFATURA. Pearson Brasil, 2010. ISBN 8576058715}
+
+      \bibdef[basic]{CHANG, Tien-C.; WYSK, Richard A.; WANG, Hsu-P.. Computer-aided manufacturing. London: Prentice-Hall, 2005. ISBN 978-0131429192}
+      \bibdef[basic]{SAWHNEY, G. S.. Fundamentals of computer aided manufacturing. I K International Publishing House, 2007. ISBN 978-8189866372}
+
+      \bibdef[compl]{Amorim, H.J.. Furação - (Material desenvolvido para a disciplina ENG03386). 2012}
+      \bibdef[compl]{Amorim, H.J.. Torneamento (Material desenvolvido para a disciplina ENG03386). 2012}
+      \bibdef[compl]{Amorim. H.J.. Fresamento (Material desenvolvido para a disciplina ENG03386). 2013}
+      \bibdef[compl]{CORNELIUS, Leondes T.. Computer aided and integrated manufacturing systems: manufacturing processes. World Scientific Publishing Company, 2003. ISBN 978-9812389794}
+      \bibdef[compl]{GROOVER, Mikell P.. Automation, production systems, and computer-integrated manufacturing. London: Prentice Hall, 2007. ISBN 978-0132393218}
+
+%%%%%%  GRADE FDC B
+%%%%%%
+%
+\classdef[Pro.Control]{ENG03046}{4}{CONTROLE DE SISTEMAS FLUÍDO-MECÂNICOS}
+
+     \csummary{Modelagem dinâmica de sistemas hidráulicos, pneumáticos e híbridos. Características não lineares de sistemas hidráulicos e pneumáticos: aspectos construtivos e análise por aproximações lineares. Servoatuadores hidráulicos e pneumáticos: análise, controle e aplicações.}
+
+      \classremark{MUDA natureza EL..=> indo para 8a}
+
+      \bibdef{Manring, N.. Hydraulic Control Systems. Wiley, 2005. ISBN 9780471693116}
+      \bibdef{Slotine, J.-J; Li, W.. Applied Nonlinear Control. USA: Prentice-Hall, 1991. ISBN 9780130408907}
+      \bibdef{WATTON, John. Fundamentos de controle em sistemas fluidomecânicos. Rio de Janeiro: LTC, 2012. ISBN 9788521624516}
+
+      \bibdef[basic]{Costa, G. K., Sepehri, N.. Hydrostatic Transmissions and Actuators: Operation, Modelling and Applications. New York, USA: Wiley, 2015}
+      \bibdef[basic]{Cundiff, J. S., Buckmaster, D. R.. Fluid Power Circuits and Controls: Fundamentals and Applications. Boca Raton, FL, USA: CRC Press, 2013. ISBN 978-1439827819}
+      \bibdef[basic]{Linsingen, I. V.. Fundamentos de Sistemas Hidráulicos. UFSC, ISBN 9788532806468}
+      \bibdef[basic]{Merritt, H.E.. Hydraulic Control Systems. New York, USA: John Wiley, 1991. ISBN 978-0471596172}
+      \bibdef[basic]{Watton, J.. Fundamentos de Controle em Sistemas Fluidomecânicos. LTC-GEN, ISBN 9788521620259}
+
+      \bibdef[compl]{Akers, A., Gassman, M., Smith, R.. Hydraulic Power System Analysis. CRC - Taylor, 2006. ISBN 9780824799564}
+      \bibdef[compl]{Dorf, R. C., Bishop, R. H.. Modern control systems. Pearson Prentice Hall, ISBN 9780136024583}
+      \bibdef[compl]{Franklin, G. F., Powell, J. D., Emami-Naeini, A.. Sistemas de Controle para Engenharia. Bookman, 2013. ISBN 9788582600672}
+      \bibdef[compl]{Ogata, K.. Engenharia de Controle Moderno. Pearson - Prentice Hall, ISBN 9788576058106}
+      \bibdef[compl]{Parr, A.. Hydraulics and Pneumatics: A Technicians and Engineers Guide. Butterworth - Heinemann, ISBN 9780080966748, 0080966748}
+      \bibdef[compl]{Rabie, M.. Fluid Power Engineering. USA: McGraw-Hill, 2009. ISBN 0071622462}
+      \bibdef[compl]{Watton, J.. Modelling, Monitoring and Diagnostic Techniques for Fluid Power Systems. Springer-Verlag, 2007. ISBN 9781846283734}
+
+%%%%%%  GRADE FDC C
+%%%%%%
+%
+\classdef[Pro.Maquinas]{ENG10027}{4}{ELETRÔNICA FUNDAMENTAL II - B}
+
+     \csummary{Amplificador operacional: modelamento e características. Circuitos não-lineares com amplificadores operacionais: conformadores, comparadores, detectores de pico, amostradores, conversores tensão-frequência, amplificadores logarítmicos, mono-estáveis, estáveis. Circuitos integrados especiais e aplicações. Conceitos básicos de comportamento em frequência de amplificadores.}
+
+      \classremark{MUDA natureza EL..=> voltando para 8a}
+
+      \bibdef{Sedra, Adel S.. Microeletrônica. Pearson Prentice Hall, 2007. ISBN 9788576050223}
+
+      \bibdef[basic]{Graeme, Jerald G.; Tobey, Gene E.; Huelsman, Laurence P.. Operational amplifiers :design and aplications. Auckland: Mcgraw-Hill International Book., [c1981]}
+      \bibdef[basic]{Razavi, Behzad. Fundamentos em microeletrônica. LTC, 2010. ISBN 9788521617327}
+      \bibdef[basic]{Sérgio Franco. Design with operational amplifiers and analog integrated circuits. WCB/McGraw-Hill, 1998. ISBN 0070218579}
+      \bibdef[basic]{Wait, John V.. Introduction to operational amplifier :theory and applications. --: Mcgraw-Hill, 1991}
+      \bibdef[basic]{Walt Jung. Op Amp Applications Handbook. USA: Newnes (Elsevier), 2004. ISBN 9780750678445}
+      \bibdef[basic]{Wong, Yu Jen. Function Circuits: Design and Applications. Mcgraw-Hill, ISBN 007071570X}
+
+      \bibdef[compl]{Don Lancaster. Active-Filter Cookbook. Howard Sams, ISBN 0-672-21168-8}
+      \bibdef[compl]{Ott, Henry W. Noise Reduction Techniques in Electronics Systems. John Wiley, ISBN 0471850683}
+
+
+
+%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%
+%%%
+%%%  Etapa 09
+%%%
+%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[Pro.ContProc]{ENG07087}{3}{CONTROLE AVANÇADO DE PROCESSOS}
+
+     \csummary{Introdução à análise e controle de sistemas MIMO. Técnicas de controle avançado de processos: Controle preditivo baseado em modelo (MPC). Estimadores de estados: Filtro de Kalman e Filtro de Kalman Estendido.}
+
+      \classremark{NOVA, sem bibliografia}
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[Transv.integ]{TCC/CCA - I}{2}{TRABALHO DE CONCLUSÃO DE CURSO / CCA - I}
+
+     \csummary{Tema de livre escolha do aluno dentro do ramo da Engenharia de Controle e Automação. Cada aluno terá um professor orientador e o trabalho final será examinado por  professores que atuam na parte profissionalizante e específica do curso. O trabalho consistirá de uma monografia preliminar, propondo, contextualizando e delineando um plano de solução para um problema de Engenharia de Controle e Automação, a ser completado até o final da atividade de TCC/CCA - II, e deverá consistir minimamente da pesquisa bibliográfica e estado da arte do problema proposto, bem como a análise de viabilidade técnica/econômica da solução pretendida.}
+
+      \classremark{MUDA: súmula, seriação CH, .. vai mudar ???}
+
+
+
+%%%%%%   GRADE FDC A
+%%%%%%
+%
+\classdef[Pro.Automacao]{ENG10021}{4}{SISTEMAS A EVENTOS DISCRETOS}
+
+     \csummary{Sistemas a eventos discretos: conceituação, propriedades. Redes de Petri: conceitos básicos e aplicações na modelagem e controle de sistemas a eventos discretos. Teoria de autômatos: modelos de autômatos e aplicações ao controle de sistemas a eventos discretos. Sistemas de supervisão: conceituação aplicações em sistemas de automação.}
+
+      \classremark{MUDA natureza: EL..=> indo para 9a}
+
+      \bibdef{CARDOSO, J.; VALETTE, R.;. Redes de Petri}
+      \bibdef{Christos G. Cassandras, Stéphane Lafortune.. Introduction to Discrete Event Systems. Springer, 2010. ISBN 978-1441941190}
+      \bibdef{Paulo Eigi Miyagi. Controle Programável: fundamentos do controle de sistemas a eventos discretos. Blucher, 1996. ISBN 852120079x}
+
+      \bibdef[basic]{Introduction to Discrete Event Systems. Discrete Event Systems: modeling and performance analysis. Irwin, 1993. ISBN 0-256-11212-6}
+      \bibdef[basic]{Luis Antonio Aguirre. Enciclopédia de Automática - Vol.1. Blucher, 2007. ISBN 9788521204084}
+      \bibdef[basic]{Reisig, Wolfgang. Understanding Petri Nets : Modeling Techniques, Analysis Methods, Case Studies. Heidelberg: Springer Berlin, 2013. ISBN 9783642332784, 9783642332777}
+      \bibdef[basic]{Seatzu, Carla. Control of Discrete-Event Systems : Automata and Petri Net Perspectives. London: Springer, 2013. ISBN 9781447142768}
+      \bibdef[basic]{Zhou, MengChu. Modeling and Control of Discrete-event Dynamic Systems : with Petri Nets and Other Tools. London: Springer-Verlag, 2007. ISBN 9781846288777}
+
+      \bibdef[compl]{James L. Hein. Discrete Structures, Logic and Computability. Jones and Bartlett, 2010. ISBN 9780763772062}
+      \bibdef[compl]{Jarry Banks,. Discrete-event System Simulation. Prentice Hall, ISBN 978-0131446793}
+      \bibdef[compl]{Jensen, Kurt. Coloured Petri Nets : Modelling and Validation of Concurrent Systems. Heidelberg: Springer-Verlag Berlin, 2009. ISBN 9783642002847}
+      \bibdef[compl]{Popova-Zeugmann, Louchka. Time and Petri Nets. Heidelberg: Springer Berlin, 2013. ISBN 9783642411151, 9783642411144}
+
+
+%%%%%%  GRADE FDC B
+%%%%%%   [Pro.ProjSis]
+%
+\classdef[Pro.Maquinas]{ENG03047}{4}{PROJETOS DE SISTEMAS MECÂNICOS}
+
+     \csummary{Princípios de projeto de um sistema mecânico. Estudo de problemas do projeto mecânico em geral. Aplicações em diversas áreas com ênfase em: controle e supressão de vibrações; avaliação e seleção de atuadores e sensoriamento para robôs; cinemática e controle de trajetória de robôs.}
+
+      \classremark{MUDA natureza EL..=> voltando para 9a}
+
+      \bibdef{Bruno Siciliano, Lorenzo Sciavicco, Luigi Villani, Giuseppe Oriolo. Robotics: Modelling, Planning and Control. London: Springer-Verlag, 2009. ISBN 978-1-84628-642-1}
+      \bibdef{PAHL, G.; BEITZ, W. ; FELDHUSEN, J.; GROTE K.-H.. Engineering Design: A Systematic Approach. Springer, 2007. ISBN 9781846283185}
+
+      \bibdef[basic]{NWOKAH, O. D. I.; HURMUZLU, Y.. The Mechanical System Design Handbook: Modeling, Measurement and Control. Boca Raton: CRC Press, 2002. ISBN 0849385962}
+
+      \bibdef[compl]{DORF, R. C.; KUSIAC, A.. HANDBOOK OF DESIGN, MANUFACTURING AND AUTOMATION. Wiley-Interscience, 1994. ISBN 0471552186}
+      \bibdef[compl]{RAO, S.. Vibrações Mecânicas. Pearson Prentice Hall, 2008. ISBN 978-85-7605-200-5}
+      \bibdef[compl]{SPONG, M. W.; HUTCHINSON, S.; VIDYASAGAR, M.. Robot Modeling and Control. Wiley, 2005. ISBN 978-0-471-64990-8}
+
+%%%%%% GRADE FDC C
+%%%%%%
+%
+\classdef[Pro.Maquinas]{ENG10050}{2}{LABORATÓRIO DE MÁQUINAS E ACIONAMENTOS}
+
+     \csummary{Ferramentas de análise de campos elétricos e magnéticos. Características operacionais da máquina CC. Características operacionais de máquina CA. Controle de velocidade de máquinas elétricas. Acionamentos usando conversores estáticos.}
+
+      \classremark{MUDA natureza EL..=> indo para a 9a}
+
+      \bibdef{A. E. Fitzgerald, C . Kingsley Jr, S. D. Umans. Máquinas Elétricas. Porto Alegre: Bookman, 2014. ISBN 9788580553741}
+      \bibdef{Edson Bim. Máquinas Elétricas e Acionamento. Brasil: Elsevier - Campus, 2014. ISBN 85-352-7713-7}
+      \bibdef{M. Kostenko, L. Piotrovski. Máquinas Elétricas. Portugal: Lopes da Silva, 1979}
+
+      \bibdef[basic]{ANGELO JOSE JUNQUEIRA REZEK. FUNDAMENTOS BASICOS DE MAQUINAS ELETRICAS: TEORIA E ENSAIOS. Brasil: Synergia, 2011. ISBN 8561325690}
+      \bibdef[basic]{D. C . White, H. H. Woodson. Electromechanical Energy Conversion. EUA: Wiley, 1959}
+      \bibdef[basic]{Ned Moham. Máquinas Elétricas E Acionamentos: Curso Introdutório. Brasil: LTC, 2015. ISBN 8521627629}
+
+%%%%%% GRADE FDC C
+%%%%%%
+%
+\classdef[Pro.Maquinas]{ENG10046}{2}{PRINCÍPIOS DE ELETRÔNICA DE POTÊNCIA}
+
+     \csummary{Princípios de operação e componentes básicos de conversores estáticos. Conversores CA-CC (retificadores controlados e não-controlados), CA-CA, CC-CC, CC-CA (inversores, tipos de modulação). Aplicação de conversores para acionamento de máquinas elétricas.}
+
+      \classremark{MUDA natureza EL..=> indo para a 9a}
+
+      \bibdef{Joseph Vithayathil. Power electronics : principles and applications.. McGraw-Hill, 1995. ISBN 0070675554}
+      \bibdef{M. H. Rashid. Eletrônica de potência : dispositivos, circuitos e aplicações.. Pearson Education do Brasil, 2015. ISBN 9788543005942}
+      \bibdef{Ned Mohan. Power electronics : converters, applications, and design.. John Wiley, 2003. ISBN 9780471226932}
+
+      \bibdef[basic]{B. K. Bose. Power electronics and variable frequency drives : technology and applications.. IEEE Press, 1997. ISBN 0780310845}
+      \bibdef[basic]{Haitham Abu-Rub, Mariusz Malinowski, Kamal Al-Haddad. Power Electronics for Renewable Energy Systems, Transportation and Industrial Applications. New York: Wiley-IEEE Press, 2014. ISBN 978-1-118-63403-5}
+      \bibdef[basic]{J. M. D. Murphy. Power electronic control of AC motors.. Pergamon, 1988. ISBN 0080226833}
+      \bibdef[basic]{Martins, D. C.; Barbi, Ivo. Eletrônica de potência : conversores CC-CC básicos não isolados. Florianópolis: Florianópolis Ed. do Autor 2000., 2000. ISBN 859010463X}
+      \bibdef[basic]{Martins, D. C.; Barbi, Ivo. Introdução ao Estudo dos Conversores CC-CA. Florianópolis: INEP, 2005. ISBN 9788590520313}
+      \bibdef[basic]{P. C. Sen. Principles of electric machines and power electronics.. John Wiley, 1989. ISBN 047185845}
+
+      \bibdef[compl]{Barbi, Ivo. Eletrônica de Potência. Florianópolis: Do autor, 2006}
+      \bibdef[compl]{M. E. El-Hawary. Principles of electric machines with power electronic applications.. IEEE Press, 2002. ISBN 0471208124}
+      \bibdef[compl]{Math H. J. Bollen,? Fainan Hassan. Integration of Distributed Generation in the Power System. New York: IEEE Computer Society Press, 2011. ISBN 978-0470643372}
+
+
+%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%
+%%%
+%%%  Etapa 10
+%%%
+%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%
+%%%%%%
+%\Cdef[Transv.outros]<-1>{ENG03010}{3}{ob}
+\classdef[Transv.outros]{ENG03010}{3}{CIÊNCIA, TECNOLOGIA E AMBIENTE}
+
+     \csummary{Ecologia: conceitos básicos. A biosfera e seu equilíbrio, desenvolvimento sustentável. Ciência e tecnologia: conceitos básicos, efeitos da tecnologia sobre o equilíbrio ambiental, tecnologia e desenvolvimento sócio-econômico. O ambiente industrial, legislação ambiental brasileira, a preservação dos recursos naturais, aspectos internos e externos do ambiente industrial, geração e o impacto de resíduos (sólidos, líquidos e pastosos) industriais, o tratamento e disposição final dos resíduos industriais, planejamento ambiental da atividade industrial.}
+
+      \bibdef{Ricardo Kohn de Macedo. Gestão Ambiental. rio de janeiro: ABES, ISBN 8570221169}
+      \bibdef{Vesilind, P. Aarne/ Morgan, Susan M.. Introdução a Engenharia Ambiental. São Paulo: Cengage Learning, 1991. ISBN 978-85-221-0718-6}
+
+      \bibdef[basic]{Lixo municipal :manual de gerenciamento integrado. São Paulo: IPT, 2000. ISBN 8509001138}
+      \bibdef[basic]{Aisse, Miguel Mansur; Obladen, Nicolau Leopoldo. Tratamento de esgotos por biodigestão anaeróbia. [Curitiba: CNPq, 1982?]}
+      \bibdef[basic]{Azevedo Netto, Jose Martiniano de. Sistemas de esgotos sanitários. São Paulo: Companhia de Tecnologia de Saneamento Ambiental, 1977}
+      \bibdef[basic]{Lima, Luiz Mario Queiroz. Tratamento de lixo. Sao Paulo: Hemus, 1991}
+      \bibdef[basic]{Menegat, Rualdo; Porto, Maria Luiza; Carraro, Clóvis Carlos; Fernandes, Luís Alberto D'Ávila. Atlas ambiental de Porto Alegre. Porto Alegre: Editora da Universidade/UFRGS, 2006. ISBN 8570259123}
+      \bibdef[basic]{Valle, Cyro Eyer do. Como se preparar para as normas iso 14000 :qualidade ambiental. Sao Paulo: Pioneira, 1996. ISBN 8522100101}
+
+      \bibdef[compl]{Campbell, Stu. Manual de compostagem para hortas e jardins :como aproveitar o lixo organico domestico. Sao Paulo: Nobel, 1995. ISBN 8521308868}
+      \bibdef[compl]{Ely, Aloisio. Economia do meio ambiente :uma apreciação introdutória interdisciplinar da poluição, ecologia e qualidade ambiental. Porto Alegre: FEE, 1990}
+      \bibdef[compl]{Franciss, Fernando Olavo. Hidráulica de meios permeáveis :escoamento em meios porosos. Rio de Janeiro: Interciência, 1980}
+      \bibdef[compl]{Jacobi, Pedro Roberto. Movimentos sociais e políticas públicas :demandas por saneamento básico e saúde, São Paulo 1974-84. São Paulo: Cortez, 1989. ISBN 8524901713 (broch.)}
+      \bibdef[compl]{Knijnik, Roberto. Energia e meio ambiente em Porto Alegre :bases para o desenvolvimento. Porto Alegre: Dmae, 1994}
+      \bibdef[compl]{Mandelli, Suzana Maria de Conto; Lima, Luiz Mario Queiroz; Ojima, Mário K.. Tratamento de resíduos sólidos:compêndio de publicações. Caxias do Sul: Ed. do Autor, 1991}
+      \bibdef[compl]{Mota, Suetonio. Planejamento urbano e preservacao ambiental. Fortaleza: Ufc, 1981}
+
+%%%%%%
+%%%%%%
+%
+\classdef[Transv.outros]{ENG03048}{4}{GERÊNCIA E ADMINISTRAÇÃO DE PROJETOS}
+
+     \csummary{Idéias, técnicas e metodologias avançadas para o planejamento, controle e desenvolvimento de projetos de sistemas. Apresentação de um processo disciplinado e estruturado de administração de projetos de sistemas, segundo uma visão de negócio, de forma a cumprir prazos, orçamentos e requisitos. Exploração dos principais componentes do processo de gerenciamento de projetos nas organizações, fornecendo ferramental para projetar, avaliar e medir a efetividade e os fatores de risco da implementação de projetos. Técnicas de elaboração de estimativas de custos, prazos e recursos nos projetos de desenvolvimento de sistemas. Controle e garantia da qualidade no desenvolvimento de sistemas.}
+
+      \classremark{MUDA: etapa e pré-requisitos}
+      
+      \bibdef{Marly Monteiro de Carvalho e Roque Rabechini Jr.. - CONSTRUINDO COMPETÊNCIAS PARA GERENCIAR PROJETOS: Teoria e Casos. São Paulo, SP: Editora Atlas, 2008. ISBN 9788522449248}
+      \bibdef{Project Management Institute. A Guide to the Project Management Body of Knowledge (PMBOK Guide). Pensilvania, EUA: Project Management Institute, 2000. ISBN 1880410230}
+
+      \bibdef[basic]{Harold Kerzner. Gestão de Projetos: as Melhores Práticas. BOOKMAN, 2006. ISBN 8536306181}
+      \bibdef[basic]{Marly Monteiro de Carvalho e Roque Rabechini Jr.. GERENCIAMENTO DE PROJETOS NA PRÁTICA: Casos Brasileiros - v. 1. Atlas, 2006. ISBN 9788522445233}
+      \bibdef[basic]{Roque Rabechini Jr. e Marly Monteiro de Carvalho. GERENCIAMENTO DE PROJETOS NA PRÁTICA: Casos Brasileiros - v. 2. Atlas, 2009. ISBN 9788522456987}
+
+
+
+%
+\classdef[Transv.integ]{TCC/CCA - II}{2}{TRABALHO DE CONCLUSÃO DE CURSO / CCA - II}
+
+     \csummary{Tema de livre escolha do aluno dentro do ramo da Engenharia de Controle e Automação, continuação do trabalho iniciado em TCC/CCA - I. Cada aluno, sob orientação de um professor, deverá concluir a análise iniciada em TCC/CCA - I, desenvolvendo e implementando a solução do problema proposto. A solução será documentada sob a forma de monografia, a ser apresentada perante uma banca de professores que atuam na parte profissionalizante e específica do curso.}
+
+      \classremark{MUDA: súmula, seriação CH, DISCIPLINA NOVA}
+
+
+
+%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%
+%%%
+%%%  Etapa Eletivas
+%%%
+%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[Transv.integ]{CCA99008}{9}{PROJETO INTEGRADO I}
+
+     \csummary{Atuação em equipes para analisar, propor e desenvolver soluções para problemas de Engenharia de interesse da sociedade, contemplando seus aspectos técnicos, econômicos, socioambientais, de acessibilidade e de prevenção de desastres, entre outros. Os problemas serão colhidos junto à sociedade via ação de extensão vinculada, sendo de natureza inerentemente aberta, prática e integradora, oportunizando que os estudantes trabalhem simultaneamente os conteúdos aprendidos múltiplas disciplinas diferentes e em contextos realistas. Desenvolvimento de habilidades de trabalho autônomo, comunicação, convívio social e respeito à diversidade através da atuação em grupos e do contato com questões e/ou indivíduos externos à Universidade. Dada a natureza integradora desta atividade, espera-se que os alunos de Projeto Integrado I, interajam com os alunos de Projeto Integrado II e III no processo, permitindo a troca de experiência de alunos em diversos momentos na parte profissionalizante do curso.}
+
+      \classremark{MUDA súmula, etapa, disciplina nova}
+
+      \bibdef{Brockman, J.. Introduction to engineering modeling and problem solving. USA: Wiley, 2009}
+      \bibdef{Clarence W. de Silva. Mechatronics: an integrated Approach. Boca Raton: CRC, 2006. ISBN 0-8493-1274-4}
+      \bibdef{Robert C. Junival e Kurt M. Marshek. Fundamentos do Projeto de Componentes de Máquinas. Rio de Janeiro: LTC, 2008. ISBN 978-85-216-1578-1}
+
+      \bibdef[basic]{Joseph E. Shigley, Charles R. Mischke e Richard G. Budynas. Projeto de Engenharia Mecânica. Porto Alegre: Bookman, 2005. ISBN 85-363-0562-2}
+      \bibdef[basic]{Robert H. Bishop. The Mechatronics Handbook. Boca Raton: CRC, 2002. ISBN 0-8493-0066-5}
+
+      \bibdef[compl]{Clarence W. de Silva. Mechatronic Systems: devices, design, control, operation and monitoring. Boca Raton: CRC, 2008. ISBN 978-0-8496-0775-1}
+      \bibdef[compl]{Godfrey C. Onwubolu. Mechatronics: principles and applications. Oxford: Elsevier, 2005. ISBN 0-7506-6379-0}
+      \bibdef[compl]{Robert H. Bishop. Mechatronic System Control, Logic, and Data Acquisition. Boca Raton: CRC, 2008. ISBN 978-0-8493-9260-3}
+      \bibdef[compl]{Robert L. Norton. Projeto de Máquinas: uma abordagem integrada. Porto Alegre: Bookman, 2004. ISBN 85-363-0273-9}
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[Transv.integ]{CCA99009}{9}{PROJETO INTEGRADO II}
+
+     \csummary{Atuação em equipes para analisar, propor e desenvolver soluções para problemas de Engenharia de interesse da sociedade, contemplando seus aspectos técnicos, econômicos, socioambientais, de acessibilidade e de prevenção de desastres, entre outros. Os problemas serão colhidos junto à sociedade via ação de extensão vinculada, sendo de natureza inerentemente aberta, prática e integradora, oportunizando que os estudantes trabalhem simultaneamente os conteúdos aprendidos múltiplas disciplinas diferentes e em contextos realistas. Desenvolvimento de habilidades de trabalho autônomo, comunicação, convívio social e respeito à diversidade através da atuação em grupos e do contato com questões e/ou indivíduos externos à Universidade.  Dada a natureza integradora desta atividade, espera-se que os alunos de Projeto Integrado II, interajam com os alunos de Projeto Integrado I e III no processo, permitindo a troca de experiência de alunos em diversos momentos na parte profissionalizante do curso.}
+
+      \classremark{MUDA súmula, etapa, disciplina nova}
+
+      \bibdef{Juvinall, Robert C.; Marshek, Kurt M.. Fundamentos do Projeto de Componentes de Máquinas. Rio de Janeiro: LTC, 2008. ISBN 9780849312748}
+      \bibdef{Silva, Clarence W. de. Mechatronics: an integrated Approach. Boca Raton: CRC, 2006. ISBN 9780849312748}
+
+      \bibdef[basic]{Bishop, Robert H.. The Mechatronics Handbook. Boca Raton: CRC, 2002. ISBN 9780849392573}
+      \bibdef[basic]{Shigley, Joseph E.; Mischke, Charles R.; Budynas, Richard G.. Projeto de Engenharia Mecânica. Porto Alegre: Bookman, 2005. ISBN 9780849392573}
+
+      \bibdef[compl]{Bishop, Robert H.. Mechatronic System Control, Logic, and Data Acquisition. Boca Raton: CRC, 2008. ISBN 978-0-8493-9260-3}
+      \bibdef[compl]{Norton, Robert L.. Projeto de Máquinas: uma abordagem integrada. Porto Alegre: Bookman, 2004. ISBN 9788582600221}
+      \bibdef[compl]{Onwubolu, Godfrey C.. Mechatronics: principles and applications. Oxford: Elsevier, 2005. ISBN 9780750663793}
+      \bibdef[compl]{Silva, Clarence W. de. Mechatronic Systems: devices, design, control, operation and monitoring. Boca Raton: CRC, 2008. ISBN 9780849607751}
+
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[Transv.integ]{CCA99010}{9}{PROJETO INTEGRADO III}
+
+     \csummary{Atuação em equipes para analisar, propor e desenvolver soluções para problemas de Engenharia de interesse da sociedade, contemplando seus aspectos técnicos, econômicos, socioambientais, de acessibilidade e de prevenção de desastres, entre outros. Os problemas serão colhidos junto à sociedade via ação de extensão vinculada, sendo de natureza inerentemente aberta, prática e integradora, oportunizando que os estudantes trabalhem simultaneamente os conteúdos aprendidos múltiplas disciplinas diferentes e em contextos realistas. Desenvolvimento de habilidades de trabalho autônomo, comunicação, convívio social e respeito à diversidade através da atuação em grupos e do contato com questões e/ou indivíduos externos à Universidade.  Dada a natureza integradora desta atividade, espera-se que os alunos de Projeto Integrado III, interajam com os alunos de Projeto Integrado I e II no processo, permitindo a troca de experiência de alunos em diversos momentos na parte profissionalizante do curso.}
+
+      \classremark{MUDA súmula, etapa, disciplina nova}
+
+      \bibdef{Cetinkunt S.. Mechatronics with Experiments. New Delhi, India: Wiley, 2015. ISBN 9781118802465}
+      \bibdef{Horowitz P., Hill W.. The Art of Electronics. New York, USA: Cambridge, 2015. ISBN 9780521809269}
+      \bibdef{Russell K., Shen Q., Sodhi R.S.. Kinematics and Dynamics of Mechanical Systems: Implementation in MATLAB® and SimMechanics®. Boca Raton, FL, USA: CRC Press, 2015. ISBN 9781498724937}
+
+      \bibdef[basic]{Clarence W. de Silva. Mechatronics: an integrated Approach. Boca Raton: CRC, 2006. ISBN 0849312744}
+      \bibdef[basic]{Robert C. Junival e Kurt M. Marshek. Fundamentos do Projeto de Componentes de Máquinas. Rio de Janeiro: LTC, 2008}
+      \bibdef[basic]{Robert H. Bishop. The Mechatronics Handbook. Boca Raton: CRC, 2002. ISBN 0-8493-0066-5}
+
+      \bibdef[compl]{Clarence W. de Silva. Mechatronic Systems: devices, design, control, operation and monitoring. Boca Raton: CRC, 2008. ISBN 978-0-8496-0775-1}
+      \bibdef[compl]{Godfrey C. Onwubolu. Mechatronics: principles and applications. Oxford: Elsevier, 2005. ISBN 0-7506-6379-0}
+      \bibdef[compl]{Robert H. Bishop. Mechatronic System Control, Logic, and Data Acquisition. Boca Raton: CRC, 2008. ISBN 978-0-8493-9260-3}
+
+%%%%%%
+%%%%%%
+%
+\classdef[Pro.Automacao]{INF1017}{4}{APRENDIZADO DE MÁQUINA}
+
+     \csummary{Fundamentos da área de aprendizado de máquina e algoritmos baseados em redes neurais e em abordagens estatísticas. Aplicações para a resolução de problemas de aprendizado supervisionado, não-supervisionado, e por reforço.}
+
+      \bibdef{Faceli, Katti; Lorena, Ana C.; Gama, João; Carvalho, Andre C.P. Inteligêcia Artificial: Uma Abordagem de Aprendizado de Máquina. Rio de Janeiro: LTC, 2011}
+      \bibdef{Russell, Stuart Jonathan; Norvig, Peter. Artificial intelligence: a modern approach. EUA: Prentice-Hall, 2010. ISBN 0136042597}
+      \bibdef{Sutton, Richard; Barto, Andrew. Reinforcement Learning: An Introduction. Cambridge: MIT Press, 1999. ISBN 0262193981}
+
+      \bibdef[basic]{Haykin, Simon; Engel, Paulo Martins. Redes neurais :princípios e prática. Porto Alegre: Bookman, 2001. ISBN 8573077182}
+
+      \bibdef[compl]{Aurélien Géron. Hands-On Machine Learning with Scikit-Learn, Keras, and Tensorflow. USA: O'Reilly Media, 2022. ISBN 9781098122485}
+      \bibdef[compl]{Haykin, Simon. Neural networks and learning machines. New York: Prentice Hall, c2009. ISBN 9780131471399}
+
+%%%%%%
+%%%%%%
+%
+\classdef[Pro.Automacao]{INF01037}{4}{COMPUTAÇÃO EVOLUTIVA}
+
+     \csummary{Conceitos básicos sobre Vida Artificial. Introdução ao Paradigma de Algoritmos Genéticos. Aplicações de Algoritmos Genéticos. Programação evolutiva.}
+
+      \bibdef{Eiben, Agoston E.; Smith, James E.. Introduction to evolutionary computing. Berlin: Springer, c 2003. ISBN 97835401841}
+      \bibdef{Michalewicz, Zbigniew. Genetic algorithms data structures = evolution programs. Berlin: Springer-Verlag, 1999. ISBN 3540606769}
+      \bibdef{Peitgen, Heinz-Otto; Jurgens, Hartmut; Saupe, Dietmar. Chaos and fractals: new frontiers of science. New York: Springer-Verlag, c1992. ISBN 0387979034}
+
+      \bibdef[basic]{Barone,Dante. Sociedades Artificiais - A nova fronteira da Inteligência nas Máquinas. Porto Alegre: Bookman, 2003. ISBN 8536301244}
+      \bibdef[basic]{Fogel, David B.. Evolutionary computation :toward a new philosophy of machine intelligence. New York: IEEE, c2000. ISBN 078035379X}
+      \bibdef[basic]{Jones, M. Tim. Artificial Intelligence :a systems approach. Usa: Jones and Bartlett Publishers, 2008. ISBN 9780763773373}
+      \bibdef[basic]{Mitchell,Melanie. An Introduction to genetic algorithms. Cambridge: Mit Press, c1996. ISBN 3540606769}
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[Transv.outros]{ADM01135}{2}{ENGENHARIA ECONÔMICA E AVALIAÇÕES}
+
+     \csummary{Introdução à engenharia econômica. Engenharia de avaliações. Projetos econômicos.}
+
+      \bibdef{Casarotto Filho, Nelson; Kopittke, Bruno Hartmut. Análise de investimentos :matemática financeira, engenharia econômica, tomada de decisão, estratégia empresarial. São Paulo: Atlas, 2007. ISBN 9788522448012}
+
+      \bibdef[basic]{Blank, Leland T.; Tarquin, Anthony. Engenharia econômica. [S.l.]: McGrawHill, 2008. ISBN 8577260267; 9788577260263}
+      \bibdef[basic]{Dal Zot, Wili Alberto Brancks. Matemática financeira. [Porto Alegre]: Ed. da UFRGS, [2008]. ISBN 9788570259943; 9788570259950 (CD)}
+      \bibdef[basic]{Gitman, Lawrence J.; Sanvicente, Antonio Zoratto. Princípios de administração financeira. São Paulo: Pearson/Addison Wesley, 2004. ISBN 8588639122; 9788588639126}
+      \bibdef[basic]{Hirschfeld, Henrique. Engenharia econômica e análise de custos. São Paulo: Atlas, 1998. ISBN 8522417970}
+      \bibdef[basic]{Ross, Stephen A.; Westerfield, Randolph W.; Jaffe, Jeffrey F.; Sanvicente, Antonio Zoratto. Administração financeira. São Paulo: Atlas, 2002. ISBN 8522429421; 9788522429424}
+
+%%%%%%
+%%%%%%
+%
+\classdef[Pro.ContProc]{ENG07043}{2}{INSTRUMENTAÇÃO DE PROCESSOS INDUSTRIAIS}
+
+     \csummary{Fluxograma de engenharia, normas para descrever estratégias de controle de processos industriais. Principais estratégias de controle utilizadas para controlar colunas de destilação, reatores químicos, trocadores de calor, fornos, biorreatores e demais processos usados nas indústrias de processos. Utilização industrial de malhas de controle feedback, cascata e feedforward. Dimensionamento de válvulas de controle e atuadores. Apresentação dos principais instrumentos de medição utilizados no cenário industrial. Medidores de temperatura, pressão, vazão, nível e composição/analisadores. Descrição e quantificação dos erros de medição. Desenvolvimento de inferidores para acompanhar variáveis de difícil medição.}
+
+      \classremark{MUDA pré-requisitos}
+
+      \bibdef{Mário Campos e Herbert Teixeira. Controles Típicos de Equipamentos e Processos Indsutriais. São Paulo, SP: Editora Edgar Blücher, 2006. ISBN 85-212-0398-5}
+
+      \bibdef[basic]{Bela G. Lipták. Instrument Engineers' Handbook : Process Control. USA: Chilton Book Co, 1995. ISBN 0-8019-8242-1}
+      \bibdef[basic]{Bela G. Lipták (Ed.). Instrument Engineers' Handbook : Process Measurement and Analysis. USA: Chilton, 1995. ISBN 0-8019-8197-2}
+
+%%%%%%
+%%%%%%
+%
+\classdef[Pro.ContProc]{ENG07012}{3}{LABORATÓRIO DE CONTROLE E OPERAÇÃO DE PROCESSOS}
+
+     \csummary{Aulas práticas de laboratório, contemplando experimentos, coleta de dados e interpretação de resultados, em assuntos abordados nas disciplinas instrumentação da indústria química, cálculo de reatores e controle de processos.}
+
+      \bibdef{B.A. Ogunnaike, W. H. Ray. Process Dynamics, Modeling, and Control. New York, Oxford: Oxford University Press, 1994. ISBN 0195091191}
+      \bibdef{Campos, Mario Cesar M. Massa de; Teixeira, Herbert C.G.. Controles típicos de equipamentos e processos industriais. São Paulo: Edgard Blücher, 2006. ISBN 8521203985}
+      \bibdef{D.E. Seborg, T.F. Edgar, D.A. Mellichamp. Process Dynamics and Control. John Wiley, 2004. ISBN ISBN: 978-0-471-00077-8}
+
+      \bibdef[basic]{Luyben, William L.. Process modeling, simulation, and control for chemical engineers. Boston, Mass.: Mcgraw-Hill, c1990. ISBN 0070391599}
+      \bibdef[basic]{W.S. Levine (Ed.). The Control Handbook. CRC Press, 1996}
+
+      \bibdef[compl]{Foust, Alan S.; Wenzel, Leonard A.; Clump, Curtis W.; Maus, Louis; Andersen, L. Bryce. Princípios das operações unitárias. Rio de Janeiro: Guanabara Dois, c1980, 1982. ISBN 8521610386, 9788521610380}
+      \bibdef[compl]{Macintyre, Archibald Joseph. Bombas e instalações de bombeamento. Rio de Janeiro: LTC, c1997. ISBN 8521610866; 9788521610861}
+      \bibdef[compl]{Mccabe, Warren L.; Smith, Julian C.; Harriott, Peter. Unit operations of chemical engineering. New York, N.Y.: McGraw-Hill, c2005. ISBN 0072848235}
+      \bibdef[compl]{Perry, Robert H.; Green, Don W.. Perry's chemical engineers handbook. New York: McGraw-Hill, 2007. ISBN 0071422943}
+      \bibdef[compl]{Welty, James R.; Wicks, Charles E.. Fundamentals of momentum, heat and mass transfer. New York: John Wiley, 2007. ISBN 0470128682}
+
+%%%%%%
+%%%%%%
+%
+\classdef[Transv.outros]{EDU03071}{2}{LÍNGUA BRASILEIRA DE SINAIS (LIBRAS)}
+
+     \csummary{Aspectos linguísticos da Língua Brasileira de Sinais (LIBRAS). História das comunidades surdas, da cultura e das identidades surdas. Ensino básico da LIBRAS. Políticas linguísticas e educacionais para surdos.}
+
+      \bibdef{CAMPELLO, Ana Regina, REZENDE, Patrícia Luiza Ferreira. Em defesa da escola bilíngue para surdos: a história de lutas do movimento surdo brasileiro. Curitiba: Educ. rev. [online], 2014}
+      \bibdef{GESSER, Audrei. Libras? Que língua é essa?:Crenças e preconceitos em torno da língua de sinais e da realidade surda. São Paulo: Parábola, 2009. ISBN 9788579340017}
+      \bibdef{QUADROS, Ronice Muller; KARNOPP, Lodenir Becker. Língua de Sinais Brasileira. Porto Alegre: Artmed, 2004. ISBN 9788536303086}
+
+      \bibdef[basic]{BRASIL. Decreto nº 5.626, de 22 de dezembro de 2005. Regulamenta a Lei nº 10.436, de 24 de abril de 2002, que dispõe sobre a Língua Brasileira de Sinais - Libras, e o art. 18 da Lei nº 10.098, de 19 de dezembro de 2000. Brasília: Diário Oficial da União, 2005}
+      \bibdef[basic]{BRASIL. Lei Federal 12.319, de 1º de setembro de 2010 - Regulamenta a profissão de Tradutor e Intérprete da Língua Brasileira de Sinais - LIBRAS. Brasília: Diário Oficial da União, 2010}
+      \bibdef[basic]{BRASIL. Lei nº 10.436, de 24 de abril de 2002. Dispõe sobre a Língua Brasileira de Sinais-Libras e dá outras providências. Brasília: Diário Oficial da União, 2002}
+      \bibdef[basic]{BRASIL. Lei nº 13.146, de 6 de julho de 2015. Institui a Lei Brasileira de Inclusão da Pessoa com Deficiência (Estatuto da Pessoa com Deficiência). Brasília: Diário Oficial da União, 2015}
+      \bibdef[basic]{KARNOPP, Lodenir Becker. Língua de sinais brasileira: aspectos linguísticos. Porto Alegre: Moodle, 2014}
+      \bibdef[basic]{PONTIN, Bianca Ribeiro; ROSA, Emiliana Faria. Movimento, história e Educação de Surdos. Porto Alegre: Moodle, 2014}
+      \bibdef[basic]{PONTIN, Bianca Ribeiro; ROSA, Emiliana Faria. Surdos. Porto Alegre: Moodle, 2014}
+
+      \bibdef[compl]{GOMES, Anie Pereira Goularte. O que significa essa tal de `cultura surda'? In: GOMES, Anie Pereira Goularte; HEINZELMANN, Renata Ohlson (orgs.). Cadernos Conecta Libras. Rio de Janeiro: Editora Arara Azul, 2015}
+      \bibdef[compl]{KARNOPP, Lodenir Becker. Produções culturais de surdos: análise da literatura surda. In: Cadernos de Educação | FaE/PPGE/UFPel. Pelotas: UFPel, 2010}
+      \bibdef[compl]{THOMA, Adriana da Silva; KLEIN, Madalena. Experiências educacionais, movimentos e lutas surdas como condições de possibilidade para uma educação de surdos no Brasil. Cadernos de Educação. FaE/PPGE/UFPel. Pelotas: UFPel, 2010}
+      \bibdef[compl]{THOMA, Adriana da Silva; LOPES, Maura Corcini (Org). A invenção da surdez:cultura, identidade, identidades e diferença no campo da educação. Santa Cruz do Sul (RS): EDUNISC, 2004. ISBN 8575780794}
+
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[Pro.Control]{ENG07062}{3}{OTIMIZAÇÃO APLICADA}
+
+     \csummary{Os métodos de programação matemática (métodos de otimização) são apresentados aplicados à solução de diferentes classes de problemas, tais como: síntese de processos, programação de produção e logística, estimação de parâmetros, otimização em tempo real, controle preditivo, entre outras aplicações encontradas comumente na engenharia. O curso inicia com a revisão de conceitos básicos de otimização, tais como: critérios de optimalidade, convexidade, linearidade, continuidade, etc. A seguir as diversas técnicas empregadas para resolver as diferentes formulações de problemas de otimização são apresentadas, segundo a seguinte classificação comumente adotada: a) programação não linear (NLP) com e sem restrições; b) programação linear (LP); c) programação quadrática (QP); d) Programação inteira mista linear (MILP); e) programação inteira mista não linear (MINLP); f) programação dinâmica e g) otimização global. Cada uma dessas técnicas é apresentada tendo como ponto de partida uma aplicação real.}
+
+      \bibdef{Edwin K.P. Chong e Stanislaw H. Zak. An Introduction to Optimization. Wiley, 2001. ISBN 0-471-39126-3}
+      \bibdef{Michael Bartholomew - Biggs. Nonlinear Optimization with Engineering Applications. Springer, 2008. ISBN 978-0-387-78722-0}
+      \bibdef{Nocedal, Jorge, Wright, Stephen. Numerical Optimization. Springer, 2006. ISBN 978-0-387-40065-5}
+
+      \bibdef[basic]{Andreas Antoniou e Wu-Sheng Lu. Pratical Optimization -- Algorithms and Engineering Applications. Springer, 2007. ISBN 0-387-71106-6}
+      \bibdef[basic]{Edgar, Himmelblau. Optimization of Chemical Processes. McGraw-Hill, 2001. ISBN 0-07-039359-1}
+      \bibdef[basic]{Eligius M.T. Hendrix e Boglárka G. Tóth. Introduction to Nonliear and Global Optimization. Springer, 2010. ISBN 978-0-387-88669-5}
+      \bibdef[basic]{Lorenz T. Biegler. Nonlinear Programming: Concepts, Algorithms, and Applications to Chemical Processes. SIAM, 2010. ISBN 978-0-898717-02-0}
+
+      \bibdef[compl]{Frank Neumann e Carsten Witt. Bioinspired Computation in Combinatorial Optimization. Springer, 2010. ISBN 978-3-642-16543-6}
+      \bibdef[compl]{Stefan Schäffler. Global Optimization: A Stochastic Approach. Springer, 2012. ISBN 978-1-4614-3926-4}
+
+%%%%%%
+%%%%%%
+%
+\classdef[Transv.outros]{ENG09023}{2}{PLANEJAMENTO ESTRATÉGICO DA PRODUÇÃO}
+
+     \csummary{Administrar estrategicamente é um processo contínuo e interativo que visa manter a organização como um conjunto apropriadamente integrado ao seu ambiente. Não é mais suficiente gerenciar a organização como um objeto específico; é preciso gerenciar o negócio da organização, envolvendo fatores, influências, recursos e variáveis externas e internas, buscando competitividade. Com o planejamento estratégico, não se pretende adivinhar o futuro. O intuito é traçar objetivos futuros viáveis e propor ações para alcançá-los. Na disciplina são discutidos Negócio, Missão e Princípios organizacionais, Análise do Ambiente e identificação de oportunidades e ameaças, Definição de Visão e objetivos a serem alcançados, além da Definição de Estratégias para atingir os objetivos, com ênfase na discussão de estratégias de produção.}
+
+      \bibdef{Müller, Cláudio J.. Modelo de Gestão Integrando Planejamento Estratégico, Sistemas de Avaliação de Desempenho e Gerenciamento de Processos (MEIO: Modelo de Estratégia, Indicadores e Operações). 2003}
+
+      \bibdef[compl]{Ansoff, H. Igor; Declerck, Roger P.; Hayes, Robert L.. Do planejamento estratégico a administração estratégica. São Paulo: Atlas, 1990, c1985}
+      \bibdef[compl]{Ansoff, H. Igor; Mcdonnell, Edward J.. Implantando a administração estratégica. São Paulo: Atlas, 1993. ISBN 8522409544}
+      \bibdef[compl]{Campos, Vicente Falconi. Gerenciamento pelas diretrizes :(Hoshin Karin) : o que todo membro da alta administração precisa saber para entrar no terceiro milênio. Nova Lima: INDG, 2004. ISBN 8598254150}
+      \bibdef[compl]{Certo, Samuel C.; Peter, J. Paul; Marcondes, Reynaldo Cavalheiro; Cesar, Ana Maria Roux. Administração estratégica :planejamento e implantação da estratégia. São Paulo: Pearson Prentice Hall, 2005. ISBN 8576050250; 9788576050254}
+      \bibdef[compl]{Kaplan, Robert S.; Norton, David P.. A estratégia em ação. Rio de Janeiro: Campus/Elsevier, 1997. ISBN 8535201491; 9788535201499}
+      \bibdef[compl]{Kaplan, Robert S.; Norton, David P.. Organização orientada para estratégia :como as empresas que adotam o Balanced Scorecard prosperam no novo ambiente de negócios. Rio de Janeiro: Campus, c2001. ISBN 8535207090; 9788535207095}
+      \bibdef[compl]{Mintzberg, Henry; Ahlstrand, Bruce; Lampel, Joseph; Montingelli Júnior, Nivaldo; Rossi, Carlos Alberto Vargas. Safári de estratégia :um roteiro pela selva do planejamento estratégico. Porto Alegre: Bookman, 2000. ISBN 8573075414; 9788573075410}
+      \bibdef[compl]{Naisbitt, John. Megatendencias, asia :oito megatendencias asiaticas que estao transformando o mundo. Rio de Janeiro: Campus, 1997. ISBN 853520119X}
+      \bibdef[compl]{Oliveira, Djalma de Pinho Reboucas de. Excelência na administração estratégica :a competitividade para administrar o futuro das empresas : com depoimentos de executivos. São Paulo: Atlas, 1999. ISBN 8522423903}
+      \bibdef[compl]{Paiva, Ely Laureano; Carvalho Junior, Jose Mario de; Fensterseifer, Jaime Evaldo; Hayes, Robert H.. Estratégia de produção e de operações :conceitos, melhores práticas, visão de futuro. Porto Alegre: Bookman, 2009. ISBN 9788577804948}
+      \bibdef[compl]{Popcorn, Faith; Marigold, Lys. Click :16 tendências que irão transformar sua vida, seu trabalho e seus negócios no futuro. Rio de Janeiro: Campus, 1997. ISBN 8535201084}
+      \bibdef[compl]{Porter, Michael E.. Vantagem competitiva :criando e sustentando um desempenho superior. Rio de Janeiro: Campus, c1989. ISBN 8570015585; 9788570015587}
+      \bibdef[compl]{Porter, Michael E.; Braga, Elizabeth Maria de Pinho; Gomez, Jorge A. Garcia. Estratégia competitiva. Rio de Janeiro: Elsevier/Campus, c2004. ISBN 8535215263; 9788535215267}
+      \bibdef[compl]{Prahalad, C. K.; Hamel, Gary. Competindo pelo futuro :estratégias inovadoras para obter o controle do seu setor e criar os mercados de amanhã. Rio de Janeiro: Elsevier, c2005. ISBN 9788535215441; 8535215441}
+      \bibdef[compl]{Scott, Cynthia D.. Visão, valores e missão organizacional :construindo a organização do futuro. Rio de Janeiro: Qualitymark, 1998. ISBN 8573031891}
+      \bibdef[compl]{Slack, Nigel; Corrêa, Sônia Maria; Correa, Henrique Luiz. Vantagem competitiva em manufatura :atingindo competitividade nas operações industriais. São Paulo, SP: Atlas, 2002. ISBN 8522432600}
+      \bibdef[compl]{Thompson Jr., Artur A.. Administração estratégica. São Paulo: McGraw-Hill, 2008. ISBN 8586804908}
+      \bibdef[compl]{Valadares, Maurício C.B.. Planejamento estratégico empresarial: foco em clientes e pessoas. Rio de Janeiro: Qualitymark, 2002. ISBN 8573033274}
+      \bibdef[compl]{Vasconcellos Filho, Paulo de; Pagnoncelli, Dernizo. Construindo estratégias para vencer! :um método prático, objetivo e testado para o sucesso da sua empresa. Rio de Janeiro: Elsevier, 2001. ISBN 8535207678; 9788535207675}
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[Avan.topic]{CCA99005}{2}{TÓPICOS ESPECIAIS EM ENGENHARIA DE CONTROLE E AUTOMAÇÃO I}
+
+     \csummary{Disciplina com tema variado sempre dentro da área de Engenharia de Controle a Automação.}
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[Avan.topic]{CCA99006}{4}{TÓPICOS ESPECIAIS EM ENGENHARIA DE CONTROLE E AUTOMAÇÃO II}
+
+     \csummary{Disciplina com tema variado sempre dentro da área de Engenharia de Controle e Automação.}
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[Avan.topic]{CCA99007}{6}{TÓPICOS ESPECIAIS EM ENGENHARIA DE CONTROLE E AUTOMAÇÃO III}
+
+     \csummary{Disciplina com tema variado sempre dentro da área de Engenharia de Controle e Automação.}
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[Pro.Robotica]{ENG10051}{4}{DINÂMICA E CONTROLE DE ROBÔS}
+
+     \csummary{Modelagem dinâmica de robôs: modelos de Lagrange e Newton-Euter. Controle Independente por juntas. Controle de robôs: por toque calculado, no espaço cartesiano, por realimentação variante no tempo, por realimentação não-suave. Aspectos de implementação.}
+
+      \bibdef{Aaron Martinez and Enrique Fernández. Learning ROS for Robotics Programming. Birmingham, UK: Packt Publishing, 2013. ISBN 978-1-78216-144-8}
+      \bibdef{King Sun Fu and R. C. Gonzales and C. S. George Lee. Robotics Control, Sensing, Vision and Intelligence. McGraw-Hill, 1987. ISBN 0-07-022625-3}
+
+      \bibdef[basic]{Anis Koubaa. Robot Operating System (ROS): The Complete Reference. Switzerland: Springer International Publishing, ISBN 978-3-319-26052-5}
+      \bibdef[basic]{Jason M. O'Kane. A Gentle Introduction to ROS. CreateSpace Independent Publishing Platform, 2013. ISBN 978-1492143239}
+      \bibdef[basic]{Patrick Goebel. ROS by Example. Raleigh, NC: Lulu, 2013}
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[Pro.Robotica]{ENG10052}{4}{LABORATÓRIO DE ROBÓTICA}
+
+     \csummary{Ambientes de programação e simulação de robôs. Projeto e concepção de células robotizadas. Integração software-hardware do sistema robótico. Protocolos de comunicação como o robô. Normas de segurança.}
+
+      \bibdef{John J. Craig. Robótica. São Paulo: Pearson, 2012. ISBN 978-85-8143-128-4}
+      \bibdef{NOF, S. Y. Handbook of Industrial Robotics. John Wyley, ISBN 0-471-17783-0}
+
+      \bibdef[basic]{Sciavicco, L; Siciliano, B. Modelling and Control of Robot Manipulators. Springer, ISBN 1852332212}
+
+      \bibdef[compl]{Fu, K.S.; Gonzalez, R. C.; Lee, C.S.G.. Robotics Control, Sensing, Vision an Intelligence. McGraw-Hill, ISBN 0-07-022625-3}
+      \bibdef[compl]{Groover, M. P, Weiss, M., Nagel, R. N.; Odrey, N. G.. Industrial Robotics Technology, Programming and Applications. McGraw- Hill Inc, ISBN 0-07-024989}
+
+
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[Pro.Robotica]{ENG10xxa}{4}{ROBÓTICA MÓVEL}
+
+     \csummary{Comportamento não-holonômico, modelagem cinemática e dinâmica de robôs móveis, controle de robôs móveis, localização, mapeamento de ambiente, localização e mapeamento simultâneos, aspectos de implementação, plataformas para robótica móvel.}
+
+      \bibdef{LATOMBE, J.-C. Robot Motion Planning. Boston, MA: Kluwer Academic Publishers, 1991. n.124. (Kluwer International Series in Engineering and Computer Science).}
+      \bibdef{NEWMAN, W. A Systematic Approach to Learning Robot Programming with ROS. Boca Raton, FL: CRC Press, 2018.}
+      \bibdef{THRUN, S.; BURGARD, W.; FOX, D. Probabilistic Robotics. Cambridge, MA: MIT Press, 2005. (Intelligent Robotics and Autonomous Agents Series).}
+
+      \bibdef[basic]{FU, K. S.; GONZALES, R. C.; LEE, C. S. G. Robotics Control, Sensing, Vision and Intelligence. New York: McGraw-Hill, 1987. (Industrial Engineering Series).}
+      \bibdef[basic]{MURRAY, R. M.; LI, Z.; SASTRY, S. S. Mathematical Introduction to Robotic Manipulation.Boca Raton, FL: CRC Press, 1994.}
+
+      \bibdef[compl]{BROWN, R. G. Introduction to Random Signal Analysis and Kalman Filtering. New York: John Wiley \& Sons, 1983.}
+      \bibdef[compl]{EVERETT, H. R. Sensors for Mobile Robots: theory and application. Natick, MA: A. K. Peters, 1995.}
+
+%%%%%%
+%%%%%%
+%
+\classdef[Pro.Robotica]{ENG10xxB}{4}{SISTEMAS DE TEMPO REAL}
+
+     \csummary{Caracterização de sistemas tempo-real. Sistemas operacionais tempo-real: métodos de escalonamento. Linguagens de programação para sistemas tempo-real.}
+
+      \bibdef{A. Burns and A. Wellings. Real-Time Systems and Programming Languages. Reading, MA: Addison-Wesley, 2001. ISBN 0201729881.}
+      \bibdef[basic]{Andrew S. Tanenbaum. Modern Operating Systems. Englewood-Clifs, NJ: Prentice-Hall, 2001. ISBN 0130313580.}
+      \bibdef[basic]{W. Richard Stevens , Stephen A. Rago. Advanced Programming in the UNIX Environment. Reading, MA: Addison-Wesley, 2005. ISBN 0201433079.}
+      \bibdef[compl]{Bjarne Stroustrup. The C Programming Language. Reading, MA: Addison-Wesley, 1997. ISBN 0-201-32755-4.}
+      \bibdef[compl]{Bjarne Stroustrup. The Design and Evolution of C. Reading, MA: Addision-Wesley, 1993. ISBN 0201543303.}
+      \bibdef[compl]{M. Ben-ari. Principles of Concurrent Programming. Reading, MA: Addison-Wesley, 2006. ISBN 0-321-31283-X.}
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[Pro.Control]{ELE223}{4}{Sistemas Lineares – A}
+
+     \csummary{Fundamentos de álgebra linear. Sistemas dinâmicos lineares de tempo contínuo e de tempo discreto: definições e propriedades. Representações entrada-saída: equações diferenciais, convolução, função de transferência. Representação por variáveis de estado. Realizações. Análise de sistemas lineares e invariantes no tempo: estabilidade, controlabilidade e observalidade. Realimentação de estados. Observadores de estado.}
+
+      \bibdef[basic]{Chen, C.T. - Linear System Theory and Design. 3ª edição, Oxford University Press, 1999}
+      \bibdef[basic]{Lipschutz, S. - Álgebra Linear. 2ª Edição, McGraw-Hill, 1978}
+      \bibdef[basic]{Strang, G. ? Linear Álgebra and its Applications, 3a edição, Harcourt Brace Jovanovich College Publishers, 1988}
+
+      \bibdef[compl]{Zadeh, L.A; Desoer, C.A. - Linear Systems Theory. Springer-Verlag, 1979}
+      \bibdef[compl]{Kailath, T. ? Linear Systems. Prentice Hall, Rnglewood Cliffs, N.J., 1980}
+      \bibdef[compl]{Haykin, S.; Van Veen, B. - Sinais e Sistemas. Bookman, Porto Alegre, 2001}
+      \bibdef[compl]{Boldrini, J.L.; Costa, S.I.R.; Figueiredo, V.L.; Wetzler, H.G. - Álbebra Linear. 3ª Edição, Harbra, 1984}
+      \bibdef[compl]{Steinbruch, A.; Winterle, P. - Álgebra Linear. McGraw-Hill, 1987}
+
+%%%%%%
+%%%%%%
+%
+\classdef[Pro.Control]{ELE312}{4}{Sistemas Não-Lineares – B}
+
+     \csummary{Equilíbrios, ciclos-limite e atratores; definições de estabilidade; caracterização de domínios de atração. Método indireto de Liapunov. Método direto de Liapunov em sistemas autônomos: funções de Liapunov, princípio de invariância, estimação de domínios de atração. Estabilidade absoluta: critério do círculo, critério de Popov. Passividade; o lema positivo real.}
+
+      \bibdef[basic]{H. K. Khalilk. Nonlinear Systems. 2ª Edição, Prentice-Hall, 1996}
+      \bibdef[basic]{S. Sastry. Nonlinear Systems. Springer, 1999}
+
+      \bibdef[compl]{R. Sepulchre ans M. Jankovic and P. Kokotovic. Constructive Nonlinear Control. Springer, 1997}
+      \bibdef[compl]{R. Seydel. Practical bifurcation and stability analysis. Springer, 1994}
+      \bibdef[compl]{J. J. Slotine and W. Li. Applied Nonlinear Control. Prentice-Hall, 1991}
+      \bibdef[compl]{E. J. Davison and E. M. Kurak. A computacional method for determining quadratic Lyapunov functions for nonlinear systems. Automatica, 7:627-636, 1971}
+      \bibdef[compl]{R. Genesio and M. Tartaglia and A. Vicino. On the estimation of asymptotic stability regions: state of the art and nem proposals. IEEE Transactions on Automatic Control, 30:747-755, 1985}
+      \bibdef[compl]{H.-D. Chiang and IF.F Wu and P.P Varaya. Foundations of direct methods for power system transiente stability analysis. IEEE Transactions on Circuits and Systems, 34, 1987}
+      \bibdef[compl]{A. S. Bazanella and C. L. Conceicao. Transient stability improvement through excitation control. International Journal of Robust and Nonlinear Control, 14:891-910, 2004}
+      \bibdef[compl]{D. F. Coutinho and A. S. Bazanella amnd A. Trofino and A. Silveira e Silva. Stability analisys and controlo f a class of a differential-algebraiic nonlinear systems. International Journal of Robust and Nonlinear Control, 14:1301-1326, 2004}
+      \bibdef[compl]{A. S. Bazanella, A. S. e Silva, and P. V. Kokotovic. Lyapunov design of excitation control for synchronous machines. Decision and Control, 1997. Proceedings of the 36th IEEE Conference on, 1:211-216 vol. 1, 10-12 Dec 1997}
+      \bibdef[compl]{A. S. Bazanella, P. Kokotovic, and A.S. e Silva. A dynamics extension for LgV controllers. IEEE Transaction on Automatic Control, 44:588-592, 1999}
+      \bibdef[compl]{A. S. Bazanella and R. Reginatto. Robustness margins for indirect field oriented controlo f induction motors. IEEE Transactions on Automatic Control, 45:1226-1231, 2000}
+      \bibdef[compl]{Jr. Gomes da Silva, J. M., S. Tarbouriech, and R. Reginatto. Analysis of regions of
+stability for linear systems with saturating inputs through na anti-windup scheme. Control Applications, 2002. Proceedings of the 2002 International Conference on, 2:1106-1111 vol. 2, 2002}
+      \bibdef[compl]{J. M. Gomes da Silva Jr. And M. Z. Oliveira and D. F. Coutinho and S. Tarbouriech. Static anti-windup design for a classe of nonlinear systems. International Journal of Robust and Nonlinear Control, 24:793:810, 2014}
+      \bibdef[compl]{M. G . LArios, R. Ortega, and A. S. Bazanella. An energy-shaping approach to the design of excitation controlo f synchronous generators. Automatica, 39:111-119, 2003}
+      \bibdef[compl]{R. Reginatto and A. S. Bazanella. Robust tuning of the speed loop in indirect field oriented control of induction motors. Automatic, 37:1811-1818, 2001}
+
+
+%%%%%%
+%%%%%%
+%
+\classdef[Pro.Control]{ELE216}{4}{ELE216 – Controle Multivariável}
+
+     \csummary{Realimentação de estados. Realimentação estática e dinâmica de saída. Problema de seguimento de referência e rejeição de perturbações. Controle linear quadrático. Introdução ao controle robusto.}
+
+      \bibdef[basic]{C.T. Chen. Linear Systems Theory and Design. Holt, Rinehart and Wiston, 1984}
+      \bibdef[basic]{T. Kailath. Linear Systems. Prentice-Hall-Inc., 1980}
+      \bibdef[basic]{J.M. Maciejowski. Multivariable Feedback Design. Adison-Wesley, 1990}
+      \bibdef[basic]{H. Kwakernak, R. Sivan. Linear Optimal Control. Wiley, N.Y., 1972}
+      \bibdef[basic]{W.M. Wonham. Linear Multivariable Control, a geometric Approach. Springer-Verlag, 1979}
+      \bibdef[basic]{P. Dorato, C. Abdallah, V. Cerone. Linear-Quadratic Control - An Introduction. Prentice-Hall, 1995}
+      \bibdef[basic]{K. Zhou, J. Doyle, K. Glover. Robust and Optimal Control. Prentice-Hall-Inc}
+
+%%%%%%
+%%%%%%
+%
+\classdef[Pro.Control]{ELExxx}{4}{Processos Estocásticos}
+
+     \csummary{}
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%
+%%%%%  Curricula
+%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+
+\currdef{CCA-FEO}{FEO CCA}{Formação Essencial Obrigatória - CCA}
+
+
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%
+%%%%%  Etapa 01
+%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+\semdef{Etp.01}{Etapa 01}{1}
+
+  \addclass{-2}{INF01202}{ob}
+  \addclass{-3}{MAT01353}{ob}
+  \addclass{-10}{FIS01181}{ob}
+  \addclass{-1}{ARQ03317}{ob}
+  \addclass{-8}{CCA99001}{ob}
+  \addclass{-5}{QUI01009}{ob}
+
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%
+%%%%% Etapa 02
+%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+\semdef{Etp.02}{Etapa 02}{2}
+
+  \addclass{-4}{MAT01355}{ob}
+    \depdef{MAT01353}
+  \addclass{-5}{MAT01354}{ob}
+    \depdef{MAT01353}
+  \addclass{-1}{ARQ03319}{ob}
+    \depdef{ARQ03317}
+  \addclass{-10}{FIS01182}{ob}
+    \depdef{FIS01181}
+  \addclass{-8}{ENG03041}{ob}
+    \depdef[A]{MAT01353}
+    \depdef{CCA99001}
+    \depdef[-A]{FIS01181}
+  \addclass{-2}{INF01057}{ob}
+    \depdef{INF01202}
+
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%
+%%%%% Etapa 03
+%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+\semdef{Etp.03}{Etapa 03}{3}
+
+  \addclass{-11}{ENG10001}{ob}
+    \depdef{FIS01182}
+    \depdef{MAT01354}
+  \addclass{-5}{MAT01167}{ob}
+    \depdef{MAT01355}
+    \depdef{MAT01354}
+  \addclass{-10}{FIS01183}{ob}
+    \depdef{FIS01182}
+  \addclass{-7}{ENG03043}{ob}
+    \depdef{QUI01009}
+  \addclass{-8}{ENG03042}{ob}
+    \depdef{ENG03041}
+  \addclass{-3}{MAT02219}{ob}
+    \depdef{MAT01353}
+  \addclass{-12}{ENG10042}{ob}
+    \depdef*{44 cred.ob.}
+
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%
+%%%%% Etapa 04
+%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+\semdef{Etp.04}{Etapa 04}{4}
+
+  \addclass{-4.4}{MAT01169}{ob}
+    \depdef[-30:0]{INF01202}
+    \depdef{MAT01167}
+  \addclass{-11}{ENG10002}{ob}
+   \depdef{ENG10001}
+   \depdef{MAT01167}
+  \addclass{-12}{ENG10043}{ob}
+    \depdef{ENG10042}
+  \addclass{-5.4}{MAT01168}{ob}
+    \depdef[-A]{MAT01167}
+  \addclass{-7}{ENG03092}{ob}
+    \depdef[A]{ENG03043}
+    \depdef[B]{ENG03041}
+  \addclass{-8}{ENG03316}{ob}
+    \depdef{ENG03042}
+  \addclass{-9}{ENG03044}{ob}
+    \depdef{MAT01167}
+    \depdef{FIS01183}
+    \depdef{ENG10001}
+
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%
+%%%%% Etapa 05
+%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+\semdef{Etp.05}{Etapa 05}{5}
+
+  \addclass{-12}{ENG10044}{ob}
+    \depdef{ENG10002}
+  \addclass{-11}{ENG10003}{ob}
+    \depdef{ENG10002}
+  \addclass{-5}{ENG03004}{ob}
+    \depdef{ENG03092}
+    \depdef{MAT01169}
+  \addclass{-4}{ENG10017}{ob}
+    \depdef{MAT01168}
+  \addclass{-10}{ENG07086}{ob}
+    \depdef{FIS01183}
+  \addclass{-6.4}{ENG10026}{alt}
+    \depdef{ENG03316}
+  \addclass{-9}{ENG03380}{alt}
+    \depdef{ENG03316}
+
+
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%
+%%%%% Etapa 06
+%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+\semdef{Etp.06}{Etapa 06}{6}
+
+  \addclass{-11}{ENG10047}{ob}
+    \depdef{ENG10002}
+  \addclass{-10}{ENG10022}{ob}
+    \depdef[A]{MAT02219}
+    \depdef{ENG10044}
+  \addclass{-13}{ENG10045}{ob}
+    \depdef[-A]{ENG10044}
+    \depdef[-A]{ENG10003}
+  \addclass{-8}{ENG07069}{ob}
+    \depdef{ENG07086}
+  \addclass{-12}{ENG10023}{ob}
+    \depdef[B]{INF01057}
+    \depdef[-A]{ENG10043}
+  \addclass{-4}{ENG10004}{ob}
+    \depdef{ENG10017}
+    \depdef[30:-70]{ENG03044}
+
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%
+%%%%% Etapa 07
+%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+\semdef{Etp.07}{Etapa 07}{7}
+
+  \addclass{-13}{ENG10049}{ob}
+    \depdef{ENG10047}
+    \depdef[-A]{ENG10045}
+  \addclass{-2}{ENG10005}{ob}
+    \depdef{ENG10004}
+  \addclass{-14}{ENG04475}{ob}
+    \depdef[-A]{ENG10043}
+    \depdef[-A]{ENG10044}
+  \addclass{-8}{ENG03021}{ob}
+    \depdef[A]{ENG03043}
+  \addclass{-12}{ENG10048}{ob}
+    \depdef{ENG10023}
+  \addclass{-3}{ENG10018}{ob}
+    \depdef{ENG10004}
+  \addclass{-11}{ENG03027}{ob}
+   \depdef{ENG07069}
+
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%
+%%%%% Etapa 08
+%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+\semdef{Etp.08}{Etapa 08}{8}
+
+  \addclass{-7}{ENG03045}{ob}
+    \depdef{ENG03004}
+    \depdef[-A]{ENG03021}
+  \addclass{-4}{ENG07042}{ob}
+    \depdef{ENG07069}
+    \depdef[-A]{ENG10018}
+  \addclass{-5}{ENG10019}{ob}
+    \depdef{ENG10004}
+    \depdef[-A]{ENG04475}
+  \addclass{-6}{ENG03387}{ob}
+    \depdef{ENG03021}
+  \addclass[darkred]{-8}{ENG03386}{el}[Obrigatória na Grade Sistemas Discretos CAD/CAM, eletiva nas demais]
+    \depdef{ENG03021}
+  \addclass[darkgreen]{-1}{ENG03046}{el}[Obrigatória na Grade Controle Avançado de Sistemas Mecânicos, eletiva nas demais]
+    \depdef[B]{ENG03044}
+    \depdef[A]{ENG10018}
+    \depdef{ENG03027}
+  \addclass[darkcyan]{-12}{ENG10027}{el}[Obrigatória na Grade Eletrônica de Potência e Acionamento, eletiva nas demais]
+    \depdef{ENG10002}
+    \depdef[-A]{ENG10044}
+
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%
+%%%%% Etapa 09
+%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+\semdef{Etp.09}{Etapa 09}{9}
+
+  \addclass{-4}{ENG07087}{ob}
+    \depdef{ENG07042}
+  \addclass[darkred]{-10}{ENG10021}{el}[Obrigatória na Grade Sistemas Discretos CAD/CAM, eletiva nas demais]
+    \depdef{ENG10023}
+  \addclass[darkgreen]{-9}{ENG03047}{el}[Obrigatória na Grade Controle Avançado de Sistemas Mecânicos, eletiva nas demais]
+    \depdef{ENG03044}
+  \addclass[darkcyan]{-13}{ENG10050}{el}[Obrigatória na Grade Eletrônica de Potência e Acionamento, eletiva nas demais]
+    \depdef{ENG10049}
+  \addclass[darkcyan]{-14}{ENG10046}{el}[Obrigatória na Grade Eletrônica de Potência e Acionamento, eletiva nas demais]
+    \depdef{ENG10044}
+  \addclass{-8}{TCC/CCA - I}{ob}
+    \depdef{ENG03027}
+    \depdef{ENG10005}
+    \depdef{ENG10048}
+    \depdef{ENG10049}
+
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%
+%%%%% Etapa 10
+%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+\semdef{Etp.10}{Etapa 10}{10}
+
+  %\addclass{-2}{ECO02063}{ob}
+  \addclass{-2}{ENG03048}{ob}
+    \depdef*{180 cred.ob.}  
+  \addclass{-3}{ENG03010}{ob}
+    \depdef*{180 cred.ob.}  
+  \addclass{-5}{TCC/CCA - II}{ob}
+    \depdef[-A]{TCC/CCA - I}
+    \depdef[-A]{ENG03045}
+    \depdef[-A]{ENG07042}
+    \depdef[-A]{ENG10019}
+      %\depdef[-A]{ENG03046}
+      %\depdef[-A]{ENG03047}
+			%\altdep
+      %\depdef[-A]{TCC/CCA - I}
+      %\depdef[-A]{ENG10027}
+      %\depdef[-A]{ENG10050}
+      %\depdef[-A]{ENG10046}
+
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%
+%%%%% Etapa Eletivas
+%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+\semdef{Adicionais}{Adicionais}{11}
+
+  \addclass{-1}{CCA99008}{ad}[Disciplina com 100 Horas CHE]
+    \depdef{ENG03316}
+    \depdef{ENG03044}
+    \depdef{ENG10003}
+    \depdef{ENG10042}
+    \depdef{ENG07086}
+  \addclass{-10}{CCA99009}{ad}[Disciplina com 100 Horas CHE]
+    \depdef{CCA99008}
+    \depdef[-A]{ENG10004}
+    \depdef[-A]{ENG10023}
+    \depdef[-A]{ENG04475}
+    \depdef[-A]{ENG10022}
+    \depdef[-A]{ENG03021}
+    \depdef[-A]{ENG07069}
+  \addclass{-10}{CCA99010}{ad}[Disciplina com 100 Horas CHE]
+    \depdef[A]{CCA99009}
+    
+    
+\semdef{Eletivas}{Eletivas}{12}
+  \addclass{-10}{INF1017}{el}
+    \depdef{INF01057}
+    \depdef*{100 cred.ob.}
+  \addclass{-2}{INF01037}{el}
+    \depdef{INF01057}
+    \depdef*{100 cred.ob.}
+  \addclass{-3}{ADM01135}{el}
+    \depdef{MAT02219}
+  \addclass{-4}{ENG07043}{el}
+    %\depdef{ENG07031-}
+    \depdef{ENG07069}
+    \depdef{ENG10018}
+  \addclass{-5}{ENG07012}{el}
+    \depdef{ENG07042}
+  \addclass{-6}{EDU03071}{el}
+  \addclass{-7}{ENG07062}{el}
+    \depdef{ENG07042}
+  \addclass{-8}{ENG09023}{el}
+    \depdef{ENG03021}
+  \addclass{-11}{CCA99005}{el}
+  \addclass{-12}{CCA99006}{el}
+  \addclass{-13}{CCA99007}{el}
+  \addclass{-15}{ENG10051}{el}
+    \depdef{ENG10004}
+    \depdef{ENG10026}
+  	\altdep
+    \depdef{ENG10004}
+    \depdef{ENG03380}
+  \addclass{-16}{ENG10052}{el}
+    \depdef{ENG10026}
+  	\altdep
+    \depdef{ENG03380}
+  \addclass{-17}{ENG10xxa}{el}
+    \depdef{INF01057}
+    \depdef{MAT02219}
+    \depdef{ENG10017}
+  \addclass{-17}{ENG10xxB}{el}
+    \depdef{ENG04475}
+  \addclass{-18}{ELE223}{el}
+    \depdef{ENG10017}
+  \addclass{}{ELE312}{el}
+    \depdef{ELE223}
+  \addclass{}{ELE216}{el}
+    \depdef{ENG10018}
+	\altdep
+    \depdef{ELE223}
+  \addclass{}{ELExxx}{el}
+    \depdef{ENG10017}
+    \depdef{MAT02219}
+
+
