@@ -74,11 +74,11 @@ The Current Maintainer of this work is Alceu Frigeri
 ## Changelog
 * Version 1.11 (this)
     - code cleanup (variants) and a bit of optimization
-    - removing references to expl scratch variables (like \l_tmpa_tl, \l_tmpa_int...) 
-    - deprecating \starray_term_syntax:* in favour of \starray_term_parser:* (issues  warnings)
+    - removing references to expl scratch variables (like `\l_tmpa_tl`, `\l_tmpa_int`...) 
+    - deprecating `\starray_term_syntax:` in favour of `\starray_term_parser:` (issues  warnings)
     - added a new set of \starray_parsed_ commands
     - refactoring the `parsed` commands generation
-    - using <pkginfograb> for package's info
+    - using `pkginfograb` for package's info
 
 
 * Version 1.10
@@ -87,7 +87,7 @@ The Current Maintainer of this work is Alceu Frigeri
     - an example of use added (finally 'fixing' [#5](https://github.com/alceu-frigeri/starray/issues/5)), in [demo](https://github.com/alceu-frigeri/starray/tree/main/demo)
     
 * Version 1.9b
-    - fixing issue #7 (related to https://github.com/latex3/latex3/issues/1189) and removing the (unneeded) ```predicate``` in variant generation of ``` \starray_(g)set_prop:nnn```.
+    - fixing issue [#7](https://github.com/alceu-frigeri/starray/issues/7) (related to https://github.com/latex3/latex3/issues/1189) and removing the (unneeded) ```predicate``` in variant generation of ``` \starray_(g)set_prop:nnn```.
 
 * Version 1.9 
     - Removing some internal structures (_base_prop, _def_prop) deprecated by the last three updates.
@@ -96,12 +96,12 @@ The Current Maintainer of this work is Alceu Frigeri
     - code speedup thanks to 'linked' property lists. Code now relies on a more recent l3kernel.
 
 * Version 1.7
-    - code cleanup. Still related to issues: #6, https://github.com/latex3/latex3/issues/1460 and https://github.com/latex3/latex3/issues/1466
+    - code cleanup. Still related to issues: [#6](https://github.com/alceu-frigeri/starray/issues/6), https://github.com/latex3/latex3/issues/1460 and https://github.com/latex3/latex3/issues/1466
     - documented \starray_get_uniqueID (helper function, see documentation)
 
 * Version 1.6
     - removing all V-expansion of property/sequence lists to avoid further issues with l3kernel 
-      issues: #6, https://github.com/latex3/latex3/issues/1460 and https://github.com/latex3/latex3/issues/1466
+      issues: [#6](https://github.com/alceu-frigeri/starray/issues/6), https://github.com/latex3/latex3/issues/1460 and https://github.com/latex3/latex3/issues/1466
     - Remarks: code is operational but needs further cleanup!
 
 * Version 1.5
@@ -111,15 +111,15 @@ The Current Maintainer of this work is Alceu Frigeri
     - added a few functions _set_iter_from_hash:nn and _iterate_over:n.
 
 * Version 1.3 
-    - Fixed issue #4, where (in some instances) _set_from_keyval could render a quark loop.
+    - Fixed issue [#4](https://github.com/alceu-frigeri/starray/issues/4), where (in some instances) _set_from_keyval could render a quark loop.
 
 * Version 1.2
-    - Issues #3
+    - Issues [#3](https://github.com/alceu-frigeri/starray/issues/3)
     - added expandable versions of some commands (see manual)
     - documentation
 
 * Version 1.1
-    - Issues #1/#2
+    - Issues [#1](https://github.com/alceu-frigeri/starray/issues/1)/[#2](https://github.com/alceu-frigeri/starray/issues/2)
     - most/all commands are protected now
     - removed predicate version of conditionals
     - documentation
