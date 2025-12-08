@@ -71,11 +71,12 @@ The Current Maintainer of this work is Alceu Frigeri
 
 -------------
 ## Change log
-* Version 1.12 (this)
+* Version 1.12a (this)
     - using ```\pkginfograbProvidesExplPackage```
     - Internals: better expansion  control. Reduced dependency on internal variables context
     - Deprecation: all commands related to user saved references renamed, to avoid name crashing
     - New package option to easy the commands `migration`
+    - Removed an package option: prefix
 
 * Version 1.11
     - code cleanup (variants) and a bit of optimization
