@@ -70,9 +70,14 @@ The Current Maintainer of this work is Alceu Frigeri
     - documentation in PDF format
 
 -------------
+## Change log
+* Version 1.12 (this)
+    - using ```\pkginfograbProvidesExplPackage```
+    - Internals: better expansion  control. Reduced dependency on internal variables context
+    - Deprecation: all commands related to user saved references renamed, to avoid name crashing
+    - New package option to easy the commands `migration`
 
-## Changelog
-* Version 1.11 (this)
+* Version 1.11
     - code cleanup (variants) and a bit of optimization
     - removing references to expl scratch variables (like `\l_tmpa_tl`, `\l_tmpa_int`...) 
     - deprecating `\starray_term_syntax:` in favour of `\starray_term_parser:` (issues  warnings)
