@@ -12,7 +12,7 @@
 %%
 %% The Current Maintainer of this work is Alceu Frigeri
 %%
-%% This is version {1.12a} {2025/12/08} 
+%% This is version {2.0} {2026/02/02} 
 %%
 %% The list of files that compose this work can be found in the README.md file at
 %% https://ctan.org/pkg/starray
@@ -36,8 +36,8 @@
   {
      name        = {stdemo} ,
      prefix      = {stdemo} ,
-     date        = {2025/12/08},
-     version     = {1.12a} ,
+     date        = {2026/02/02},
+     version     = {2.0} ,
      description = {A starray based demo package}
   }
 %%%%%%%
@@ -645,6 +645,11 @@
     \bool_set_false:c {l__stdemo_#1_classified_bool}  
     \starray_term_parser:n {student}
     \seq_gput_right:ce {l__stdemo_#1_list_seq} {\starray_parsed_get_prop:n {hash}}
+%    \seq_show:c {l__stdemo_#1_list_seq}
+%    \cs_show:N \starray_parsed_get_prop:n
+%    \cs_show:N \__starray_parsed_get_prop:NNn
+%    \cs_show:N \l__starray_parsed_saved_term_st
+%    \cs_show:N \__starray_term_st:NnnnNw
   }
   
 \NewDocumentCommand{\studentlistsort}{O{name}m}

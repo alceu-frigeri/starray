@@ -20,7 +20,7 @@
 %%
 %% The Current Maintainer of this work is Alceu Frigeri
 %%
-%% This is version {1.12a} {2025/12/08} 
+%% This is version {2.0} {2026/02/02} 
 %%
 %% The list of files that compose this work can be found in the README.md file at
 %% https://ctan.org/pkg/starray
@@ -98,6 +98,10 @@
 
 \usepackage{relsize}
 
+\ExplSyntaxOn
+\benchmark_tic:
+\ExplSyntaxOff
+
 \RequirePackage[hidelinks,hypertexnames=false]{hyperref}
 \begin{document}
 
@@ -136,15 +140,15 @@ The purpose of this is to create an example of how to use a \tsobj[pkg]{starray}
   About the version number, since this is ``part'' of \tsobj[pkg]{starray}, and to keep tracking simple, the same version number (from \tsobj[pkg]{starray}) will be used.
 \end{tsremark}
 
-\setnewcodekey{stdemo}{codeprefix={},resultprefix={},letter={@,_},
-  keywd2={
+\newcodekey{stdemo}{codeprefix={},resultprefix={},letter={@,_},
+  keywd=[2]{
     starray_new,starray_def_from_keyval,
     starray_new_term,starray_get_unique_id,starray_gset_prop,starray_set_prop,
     starray_get_cnt,starray_term_parser,starray_set_iter,
     starray_set_iter_from_hash,starray_get_prop,starray_gset_from_keyval,
     starray_iterate_over,starray_parsed_get_prop,starray_parsed_get_cnt
     },
-  texcs2={
+  texcs=[2]{
     NewActivity,ActivitySet,ActivitySetCoord,ActivitySetCoordTitle,
     ActivitySelect,Activity,ActivityCoord,
     ActivityCalendarIterate,
@@ -160,7 +164,7 @@ The purpose of this is to create an example of how to use a \tsobj[pkg]{starray}
     __stcurrdemo_set_prof_info,__stcurrdemo_set_prof,__stcurrdemo_emptyterm_if_none,__stcurrdemo_student_emptyfields_if_none,
     __stcurrdemo_seq_sort,__stcurrdemo_emptyfields,
   },
-  emph3={starray_term_syntax},
+  emph=[3]{starray_term_syntax},
   }
 
 %%%%%%%%%%%%%%%%
@@ -1207,6 +1211,7 @@ Given a student list, one can just iterate over it. Note that no explicit index/
 \newpage
 \TabTopic{BaseMatematica}
 
+
 \TabEtp[\subsubsection]{Etp.01}
 
 \TabEtp[\subsubsection]{Etp.02}
@@ -1255,5 +1260,9 @@ Given a student list, one can just iterate over it. Note that no explicit index/
 
   \end{tikzGraphSem}
   }
+
+\ExplSyntaxOn
+\benchmark_toc:
+\ExplSyntaxOff
 
 \end{document} 

@@ -71,19 +71,27 @@ The Current Maintainer of this work is Alceu Frigeri
 
 -------------
 ## Change log
-* Version 1.12a (this)
+
+* Version 2.0 (this)
+    - full re-factoring, based on _base_st, _term_st and _ref_st (better context control, lesser use of cs-names)
+    - new package option: iter cascade
+    - added series of _iparsed_ commands (alike _uparsed_ ones) for iterate_over
+    - code cleanup: removing redundant tmp variables and no longer need lkernel3 variants.
+    - documentation update
+    
+* Version 1.12a
     - using ```\pkginfograbProvidesExplPackage```
-    - Internals: better expansion  control. Reduced dependency on internal variables context
-    - Deprecation: all commands related to user saved references renamed, to avoid name crashing
-    - New package option to easy the commands `migration`
-    - Removed an package option: prefix
+    - internals: better expansion  control. Reduced dependency on internal variables context
+    - deprecation: all commands related to user saved references renamed, to avoid name crashing
+    - new package option to easy the commands `migration`
+    - removed a package option: prefix
 
 * Version 1.11
     - code cleanup (variants) and a bit of optimization
     - removing references to expl scratch variables (like `\l_tmpa_tl`, `\l_tmpa_int`...) 
     - deprecating `\starray_term_syntax:` in favour of `\starray_term_parser:` (issues  warnings)
     - added a new set of \starray_parsed_ commands
-    - refactoring the `parsed` commands generation
+    - re-factoring the `parsed` commands generation
     - using `pkginfograb` for package's info
 
 

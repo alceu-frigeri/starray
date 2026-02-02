@@ -20,7 +20,7 @@
 %%
 %% The Current Maintainer of this work is Alceu Frigeri
 %%
-%% This is version {1.12a} {2025/12/08}
+%% This is version {2.0} {2026/02/02}
 %%
 %% The list of files that compose this work can be found in the README.md file at
 %% https://ctan.org/pkg/starray
@@ -36,6 +36,24 @@
 \usepackage{starray}
 \RequirePackage[inline]{enumitem}
 \SetEnumitemKey{miditemsep}{parsep=0ex,itemsep=0.4ex}
+
+
+\newcodekey{starray}{
+  codeprefix={},resultprefix={},letter={@,_},
+  texcs=[2]{starray_new,starray_if_exist,starray_if_valid,starray_def_prop,starray_def_struct,starray_def_from_keyval,starray_fix_terms,starray_new_term},
+  texcs=[2]{starray_set_iter,starray_reset_iter,starray_next_iter,starray_set_iter_from_hash},
+  texcs=[2]{starray_iterate_over},
+  texcs=[2]{starray_set_prop,starray_gset_prop,starray_set_from_keyval,starray_gset_from_keyval},
+  texcs=[2]{starray_get_prop,starray_if_in,starray_get_unique_id,starray_get_iter,starray_get_cnt},
+  texcs=[2]{starray_term_parser},
+  texcs=[2]{starray_parsed_get_prop,starray_parsed_if_in,starray_parsed_get_unique_id,starray_parsed_get_iter,starray_parsed_get_cnt},
+  texcs=[2]{starray_uparsed_get_prop,starray_uparsed_if_in,starray_uparsed_get_unique_id,starray_uparsed_get_iter,starray_uparsed_get_cnt},
+  texcs=[2]{starray_iparsed_get_prop,starray_iparsed_if_in,starray_iparsed_get_unique_id,starray_iparsed_get_iter,starray_iparsed_get_cnt},
+%  keywd=[2]{oarg,arg,parg,xarg,meta,color},
+%  keywd={codedescribe,codesyntax,codestore,tsremark},
+  emph=[2]{struct}
+  }
+
 
 \RequirePackage[hidelinks,hypertexnames=false]{hyperref}
 \begin{document}
@@ -66,11 +84,11 @@ Finally, almost all defined functions have a branching version, as per \tsobj[pk
 \begin{tsremark}[Note:]
  Could it be implemented with a single property list? It sure could, but at a cost: 
 \begin{enumerate*}   \item complexity;    \item access time.   \end{enumerate*}
-The current implementation, albeit also complex, tries to reach a balance between inherent structure complexity, number of used/defined auxiliary property lists and access time.
+The current implementation, albeit also complex, tries to reach a balance between an inherent structure complexity, number of used/defined auxiliary property lists and access time.
 \end{tsremark}
 
 \begin{tsremark}[\color{red}Important:]
- \textsl{Expandability}, unfortunately most/all defined functions are not ``expandable'', in particular, most conditional/branching functions aren't, with just a few exceptions (marked with a star \ding{72}, as per \tsobj[pkg]{expl3} documentation convention).
+ \textsl{Expandability}, unfortunately most/all defined functions are not ``expandable'', in particular, most conditional/branching functions aren't, with just a few exceptions (marked with a star \ding{72}).
  
 \end{tsremark}
 
@@ -113,6 +131,7 @@ The package options (\tsobj[key]{key}\,=\tsobj[value]{value}) are:
   \describe{no warnings}{The old \tsobj{...parsed..:NN..} functions will be defined. No warnings will be issued}
   \describe{strict}{The old \tsobj{...parsed..:NN..} functions will be defined, issuing a deprecation warning at each use.}
 \end{describelist*}
+\describe{iter cascade}{By default, since version 2.0, when setting the value of an iterator, none of the substructure's iterators will be affected. With this option set, all substructure's iterators will be reset to 1 (or zero), see \ref{pack:iter}.}
 \end{describelist}
 
 \section{Demo package(s)}
@@ -211,7 +230,7 @@ the construction \tsobj[key]{\tsobj[marg]{key} . struct} denotes a nested struct
   }
 \end{codestore}
 
-\tscode*[codeprefix=~]{keyval.demo}
+\tscode*[starray]{keyval.demo}
 
 The definitions/assignments  to \tsobj[marg]{starray-ref} are all global.
 
@@ -227,7 +246,7 @@ When instantiating (see \ref{pack:instantiate}) a \tsobj[pkg]{starray}, the asso
 \begin{codesyntax}%
 \tsmacro{\starray_fix_terms:n}{starray-ref}
 \end{codesyntax}
-The sole purpose of this function is to ``fix'' the already instantiated terms of a \tsobj[pkg]{starray}. Note, this is an expensive operation, it has to craw over all the terms of an instantiated \tsobj[pkg]{starray} adding any missing sub-structure references, but one doesn't need to run it ``right away'' it is possible to add a bunch of sub-structures and then run this just once.
+The sole purpose of this function is to ``fix'' the already instantiated terms of a \tsobj[pkg]{starray}. Note, the reason this isn't automatically executed when adding a sub-structure, is that this is an expensive operation, because it has to craw over all the terms of an instantiated \tsobj[pkg]{starray} adding any missing sub-structure reference, but one doesn't need to run it ``right away'' it is possible to add a bunch of sub-structures and then run this just once.
 \end{codedescribe}
 
 
@@ -275,7 +294,7 @@ This create a new \textsl{term} (in fact a property list) of the (sub-)struture 
 \starray_new_term:n {st-root.subZ}
 \end{codestore}
 
-\tscode*[codeprefix=~]{keyval.demo2}
+\tscode*[starray]{keyval.demo2}
 
 One will have created 6 \textsl{terms}:
 \begin{enumerate}[miditemsep]
@@ -293,7 +312,7 @@ One will have created 6 \textsl{terms}:
   \end{enumerate}
 \end{enumerate}
 
-Note that, in the above example, it was used the ``implicit'' indexing (aka. iterator, see \ref{pack:ref}). Also note that no \textsl{term} of kind \tsobj[marg]{subYYY} was created.
+Note that, in the above example, it was used the ``implicit'' indexing (aka. iterator, see \ref{pack:ref}). Also note that no \textsl{term}  \tsobj[marg]{subYYY} was created.
 \begin{tsremark}
 A warning is raised (see \ref{pack:options}) in case of a \tsobj[marg]{starray-ref} syntax error. The branching version doesn't raise any warning.
 \end{tsremark}
@@ -331,7 +350,7 @@ For example, an equivalent construct to the one shown in \ref{pack:instantiate} 
   
 \end{codestore}
 
-\tscode*[codeprefix=~]{demo3}
+\tscode*[starray]{demo3}
 
 Note that, all it's needed in order to be able to use \tsobj[marg]{starray-root}.\tsobj[marg]{sub-A} is that \tsobj[marg]{sub-A} is an already declared sub-structure of \tsobj[marg]{starray-root}. The property definitions can be made in any order.
 
@@ -365,7 +384,7 @@ So, for example:
 \starray_new_term:n {st-root.subY}
 \end{codestore}
 
-\tscode*[codeprefix=~]{demo4}
+\tscode*[starray]{demo4}
 
 One has a single \tsobj[marg]{st-root} iterator (pointing to one of the 3 \tsobj[marg]{st-root} terms), then 3 ``\tsobj[marg]{subZ} iterators'', in fact, one \tsobj[marg]{subZ} iterator for each \tsobj[marg]{st-root} term.
 Likewise there are 3 ``\tsobj[marg]{subY} iterators'' and 4 (four) ``\tsobj[marg]{subYYY} iterators'' one for each instance of \tsobj[marg]{subY}.
@@ -392,7 +411,7 @@ Every time a new term is created/instantiated, the corresponding iterator will p
 \starray_new_term:n {st-root[2].subY}
 \end{codestore}
 
-\tscode*[codeprefix=~]{demo5}
+\tscode*[starray]{demo5}
 
 Finally, observe that, when creating a new term, one has the option to assign a ``hash'' to it, in which case that term can be referred to using an iterator, the explicit index or the hash:
 
@@ -407,39 +426,44 @@ Finally, observe that, when creating a new term, one has the option to assign a 
 \starray_new_term:n {st-root[1].subZ}
 \starray_new_term:n {st-root[hash-A].subZ}
 \end{codestore}
-\tscode*[codeprefix=~]{demo6}
+\tscode*[starray]{demo6}
  
-Will create 3 \tsobj[marg]{subZ} terms associated with the first (index = 1) \tsobj[marg]{st-root}.
+Will create 3 \tsobj[marg]{subZ} terms associated with the first  \tsobj[marg]{st-root} term (index = 1).
 
 
 \subsection{Iterators}\label{pack:iter}
+In the following commands, since version 2.0, when setting/resetting/incrementing the  iterator of a (sub-)structure, only the given (sub-)structure iterator will be affected. With the package option \tsobj[option]{iter cascade} (see \ref{pack:options}) all ``descending'' iterators will also be reset to \tsobj[value,or]{1,0}.  All assignments to a structure's iterator are global.
 
-\begin{codedescribe}{\starray_set_iter:nn,\starray_set_iter:nnTF,\starray_reset_iter:nn,\starray_reset_iter:nnTF,\starray_next_iter:nn,\starray_next_iter:nnTF}
+
+\begin{codedescribe}[code,update=2026/02/01]{\starray_set_iter:nn,\starray_set_iter:nnTF,\starray_reset_iter:nn,\starray_reset_iter:nTF,\starray_next_iter:n,\starray_next_iter:nnTF}
 \begin{codesyntax}%
 \tsmacro{\starray_set_iter:nn}{starray-ref,int-val}
 \tsmacro{\starray_set_iter:nTF}{starray-ref,int-val,if-true,if-false}
-\tsmacro{\starray_reset_iter:nn}{starray-ref}
+\tsmacro{\starray_reset_iter:n}{starray-ref}
 \tsmacro{\starray_reset_iter:nTF}{starray-ref,if-true,if-false}
-\tsmacro{\starray_next_iter:nn}{starray-ref}
+\tsmacro{\starray_next_iter:n}{starray-ref}
 \tsmacro{\starray_next_iter:nTF}{starray-ref,if-true,if-false}
 \end{codesyntax}
-Those functions allows to \tsmacro{set}{} an iterator to a given \tsobj[marg]{int-val}, \tsmacro{reset}{} it (i.e. assign 1 to the iterator), or increase the iterator by one. An iterator might have a value between 1 and the number of instantiated terms (if the given (sub-)structure was already instantiated). If the (sub-)structure hasn't been instantiated yet, the iterator will always end being set to 0. The branching versions allows to catch those cases, like trying to set a value past its maximum, or a value smaller than one.
+Those functions allows to \tsmacro{set}{} an iterator to a given value, \tsobj[marg]{int-val}, \tsmacro{reset}{} it (i.e. assign 1 to it), or increase the iterator by one. An iterator might have a value between 1 and the number of instantiated terms. If the (sub-)structure wasn't instantiated, the iterator will be set to 0. The branching versions allows to catch those cases, like trying to set a value past its maximum, or a value smaller than one, otherwise values outside the valid range won't raise any warning/error.
 \end{codedescribe}
 
-\begin{tsremark}[Important:]
-Please observe that, when setting/resetting/incrementing the  iterator of a (sub-)structure, all ``descending'' iterators will also be reset.
-\end{tsremark}
+%\begin{tsremark}[\color{red}Important:]
+%Please observe that, when setting/resetting/incrementing the  iterator of a (sub-)structure, all ``descending'' iterators will also be reset.
+%\end{tsremark}
 \begin{tsremark}
 A warning is raised (see \ref{pack:options}) in case of a \tsobj[marg]{starray-ref} syntax error. The branching version doesn't raise any warning.
 \end{tsremark}
 
+In the following example, given:
 
-\begin{codestore}[store-env=demo7]
+\begin{codestore}[demo7]
 \starray_new:n {st-root}
 \starray_def_struct:nn {st-root}{subZ}
 \starray_def_struct:nn {st-root}{subY}
 \starray_def_struct:nn {st-root.subY}{subYYY}
+\end{codestore}
 
+\begin{codestore}[demo7]
 \starray_new_term:n {st-root}
 \starray_new_term:n {st-root.subZ}
 \starray_new_term:n {st-root.subZ}
@@ -458,7 +482,9 @@ A warning is raised (see \ref{pack:options}) in case of a \tsobj[marg]{starray-r
 \starray_new_term:n {st-root.subY}
 \starray_new_term:n {st-root.subY.subYYY}
 \starray_new_term:n {st-root.subY.subYYY}
+\end{codestore}
 
+\begin{codestore}[demo7]
 \starray_set_prop:nnn {st-root.subY.subYYY}{key}{val}
 \starray_set_prop:nnn {st-root[2].subY[2].subYYY[2]}{key}{val}
 
@@ -468,9 +494,14 @@ A warning is raised (see \ref{pack:options}) in case of a \tsobj[marg]{starray-r
 \starray_set_prop:nnn {st-root[2].subY[1].subYYY[1]}{key}{val}
 \end{codestore}
 
-\tscode*[codeprefix=~]{demo7}
+\tscode*[starray,emph=[3]{starray_reset_iter},emph={starray_set_prop}]{demo7}
+\tscode*[starray,emph=[3]{starray_reset_iter},emph={starray_set_prop}]{demo7}[2]
+\tscode*[starray,emph=[3]{starray_reset_iter},emph={starray_set_prop}]{demo7}[3]
 
-Before the reset \tsobj[marg]{st-root.subY.subYYY} was equivalent to \tsobj[marg]{st-root[2].subY[2].subYYY[2]}, given that each iterator was pointing to the ``last term'', since the reset was of the \tsobj[marg]{subY} iterator, only it and the descending ones (in this example just \tsobj[marg]{subYYY}) where reseted, and therefore \tsobj[marg]{st-root.subY.subYYY} was then equivalent to \tsobj[marg]{st-root[2].subY[1].subYYY[1]}
+Before the reset \tsobj[marg]{st-root.subY.subYYY} was equivalent to \tsobj[marg]{st-root[2].subY[2].subYYY[2]}, given that each iterator was pointing to the ``last term'', since the reset was of the \tsobj[marg]{subY} iterator, only it  reset, and therefore \tsobj[marg]{st-root.subY.subYYY} was then equivalent to \tsobj[marg]{st-root[2].subY[1].subYYY[2]}.
+\begin{tsremark}
+  With the package option \tsobj[option]{iter cascade} all sub-structure's iterators will also be set/reset, meaning, in the above example, that after resetting the \tsobj[marg]{subY}, the iterator of \tsobj[marg]{subYYY} (it's only descendant) will also be reset, therefore \tsobj[marg]{st-root.subY.subYYY} would be equivalent to \tsobj[marg]{st-root[2].subY[1].subYYY[1]} in this case.
+\end{tsremark}
 
 
 
@@ -492,7 +523,8 @@ A warning is raised (see \ref{pack:options}) in case of a \tsobj[marg]{starray-r
 \tsmacro{\starray_get_iter:nN}{starray-ref,int-var}
 \tsmacro{\starray_get_iter:nNTF}{starray-ref,int-var,if-true,if-false}
 \end{codesyntax}
-\tsmacro{\starray_get_iter:n}{starray-ref} will type in the current value of a given iterator, whilst the other two functions will save it's value in a integer variable (\tsobj[pkg]{expl3}).
+\tsmacro{\starray_get_iter:n}{starray-ref} will type in the current value of a given iterator, whilst the other two functions will save it's value in a integer variable (\tsobj[pkg]{expl3}).  The assignment is local.
+
 \end{codedescribe}
 \begin{tsremark}
 A warning is raised (see \ref{pack:options}) in case of a \tsobj[marg]{starray-ref} syntax error. The branching version doesn't raise any warning.
@@ -507,23 +539,23 @@ A warning is raised (see \ref{pack:options}) in case of a \tsobj[marg]{starray-r
 \tsmacro{\starray_get_cnt:nN}{starray-ref,integer}
 \tsmacro{\starray_get_cnt:nNTF}{starray-ref,integer,if-true,if-false}
 \end{codesyntax}
-\tsmacro{\starray_get_cnt:n}{starray-ref} will type in the current number of terms of a given (sub-)structure, whilst the other two functions will save it's value in a integer variable (\tsobj[pkg]{expl3}).
+\tsmacro{\starray_get_cnt:n}{starray-ref} will type in the current number of terms of a given (sub-)structure, whilst the other two functions will save it's value in a integer variable (\tsobj[pkg]{expl3}).  The assignment is local.
+
 \end{codedescribe}
 \begin{tsremark}
 A warning is raised (see \ref{pack:options}) in case of a \tsobj[marg]{starray-ref} syntax error. The branching version doesn't raise any warning.
 \end{tsremark}
 
-
-\begin{codedescribe}[code,new=2023/11/04]{\starray_iterate_over:nn,\starray_iterate_over:nnTF}
+\subsubsection{Iterating Over}
+\begin{codedescribe}[code,new=2023/11/04,update=2026/02/01]{\starray_iterate_over:nn,\starray_iterate_over:nnTF}
 \begin{codesyntax}%
 \tsmacro{\starray_iterate_over:nn}{starray-ref,code}
 \tsmacro{\starray_iterate_over:nnTF}{starray-ref,code,if-true,if-false}
 \end{codesyntax}
-\tsobj{\starray_iterate_over:nn} will reset the \tsobj[marg]{starray-ref} iterator, and then execute \tsobj[marg]{code} for each valid value of \tsobj{iter}. At the loop's end, the \tsobj[marg]{starray-ref} iterator will point to the last element of it. The \tsobj[marg]{if-true} is executed, at the loop's end if there is no syntax error, and the referenced structure was properly instantiated. Similarly \tsobj[marg]{if-false} is only execute if a syntax error is detected or the referenced structure wasn't properly instantiated
-\end{codedescribe}
+\tsobj{\starray_iterate_over:nn} will reset the \tsobj[marg]{starray-ref} iterator, and then execute \tsobj[marg]{code} for each valid value of \tsobj{iter}. At the loop's end, the \tsobj[marg]{starray-ref} iterator will point to the last element of it. The \tsobj[marg]{if-true} is executed, at the loop's end if there is no syntax error, and the referenced structure was properly instantiated. Similarly \tsobj[marg]{if-false} is only execute if a syntax error is detected or the referenced structure wasn't properly instantiated. See \ref{parsed:iter-over} for a series of helper/companion commands when writing \tsobj[marg]{code}.
+\end{codedescribe} \label{iterate-over}
 \begin{tsremark}
-\tsobj{\starray_iterate_over:nn} Creates a local group, so that one can recurse over sub-structures. Be aware, then, that \tsobj[marg]{code} is executed in said local group.
-\end{tsremark}
+\tsobj{\starray_iterate_over:nn} is recurse aware, and can be nested to recurse over sub-structures. Be aware, though,  that all iterators assignments are global. \end{tsremark}
 \begin{tsremark}
 A warning is raised (see \ref{pack:options}) in case of a \tsobj[marg]{starray-ref} syntax error or the structure wasn't yet instantiated. The branching version doesn't raise any warning.
 \end{tsremark}
@@ -543,7 +575,7 @@ A warning is raised (see \ref{pack:options}) in case of a \tsobj[marg]{starray-r
 \tsmacro{\starray_gset_prop:nnnTF}{starray-ref,prop-key,value,if-true,if-false}
 \tsmacro{\starray_gset_prop:nnVTF}{starray-ref,prop-key,value,if-true,if-false}
 \end{codesyntax}
-Those are the functions that allow to (g)set (change) the value of a term's property. If the \tsobj[marg]{prop-key} isn't already present it will be added just for that term \tsobj[marg]{starray-ref}. The \tsobj[parg]{nnV} variants allow to save the value of a variable like a token list, clist list, etc...
+Those are the functions that allow to (g)set (change) the value of a term's property. If the \tsobj[marg]{prop-key} isn't already present it will be added to that term, \tsobj[marg]{starray-ref}, only. The \tsobj[parg]{nnV} variants allow to save the value of a variable like a token list, clist list, etc...
 \end{codedescribe}
 
 \begin{tsremark}
@@ -591,7 +623,7 @@ it is possible to set a collection of properties using a key/val syntax, similar
   }  
 \end{codestore}
 
-\tscode*[codeprefix=~]{keyval.demo8}
+\tscode*[starray]{keyval.demo8}
 
 Also note that the above example is fully equivalent to:
 
@@ -606,7 +638,7 @@ Also note that the above example is fully equivalent to:
 \starray_set_prop:nnn {st-root.subY.subYYY[1} {keyYYYb} {valYYYb}
 \end{codestore}
 
-\tscode*[codeprefix=~]{keyval.demo9}
+\tscode*[starray]{keyval.demo9}
 
 \begin{codedescribe}{\starray_get_prop:nn,\starray_get_prop:nnN,\starray_get_prop:nnNTF}
 \begin{codesyntax}%
@@ -639,7 +671,8 @@ The \tsmacro{\starray_if_in:nnTF}{starray-ref,key,\ldots,\ldots} tests if a give
 \tsmacro{\starray_get_unique_id:nN}{starray-ref,tl-var}
 \tsmacro{\starray_get_unique_id:nNTF}{starray-ref,tl-var,if-true,if-false}
 \end{codesyntax}
-Gets an `unique ID' for a given \tsobj[marg]{starray-ref} \emph{term}, it should help defining/creating uniquely identified auxiliary structures, like auxiliary property or sequence lists, since one can't (better said shouldn't, as per l3kernel) store an anonymous property/sequence list using V-expansion. 
+Gets an `unique ID' for a given \tsobj[marg]{starray-ref} \emph{term}, it should help defining/creating uniquely identified auxiliary structures, like auxiliary property or sequence lists, since one can't (better said shouldn't, as per l3kernel) store an anonymous property/sequence list using V-expansion.  The assignment is local.
+
 \end{codedescribe}
 \begin{tsremark}
 A warning is raised (see \ref{pack:options}) in case of a \tsobj[marg]{starray-ref} syntax error. The branching version doesn't raise any warning.
@@ -650,7 +683,7 @@ Since the parsing of a \tsobj[marg]{starray-ref} is a non-expandable and expensi
 
 The use pattern would be (1) to first parse the \tsobj[marg]{starray-ref} with either \tsobj[code,sep=or]{\starray_term_parser:n,\starray_term_parser:nN} and thereafter (2) use the many \tsobj[code,or]{\starray_parsed_,\starray_uparsed_} commands. 
 
-Note that, there are two sets of  commands, one associated with \tsobj[code,sep=or]{\starray_term_parser:n,\starray_term_parser:nTF}{} (which relies on internal variables) and another set associated with \tsobj[code,sep=or]{\starray_term_parser:nN,\starray_term_parser:nNTF}  (which allows to save many \tsobj[marg]{starray-ref} parsed terms)
+Note that, there are three sets of  commands, one associated with \tsobj[code,sep=or]{\starray_term_parser:n,\starray_term_parser:nTF}{} (which relies on internal variables), another set associated with \tsobj[code,sep=or]{\starray_term_parser:nN,\starray_term_parser:nNTF}  (which allows to save many \tsobj[marg]{starray-ref} parsed terms), and lastly one associated with \tsobj[code,or]{\starray_iterate_over:nn} (see \ref{iterate-over}).
 
 
 \subsection{Parsed Commands Based on Internal Variables}\label{parsed:internal}
@@ -888,7 +921,7 @@ Gets an `unique ID' from the last parsed term.   The  \tsobj{\starray_uparsed_ge
 \end{tsremark}
 
 \subsubsection{Deprecation Equivalence List}
-Bellow follows a complete list of all deprecated names and their corresponding new names. Note each command signature (one less N).
+Bellow follows a complete list of all deprecated names and their corresponding new names. Note each command signature (one N shorter).
 \begin{describelist*}[60mm]{code}
   \describe{Deprecated}{\tsobj{New}}
   \describe{\starray_term_parser:nNN}            {\tsobj{\starray_term_parser:nN}}
@@ -907,6 +940,117 @@ Bellow follows a complete list of all deprecated names and their corresponding n
   \describe{\starray_parsed_get_unique_id:NNN}   {\tsobj{\starray_uparsed_get_unique_id:NN}}
   \describe{\starray_parsed_get_unique_id:NNNTF} {\tsobj{\starray_uparsed_get_unique_id:NNTF}}
 \end{describelist*}
+
+
+\subsection{Parsed Commands on Iterate Over}\label{parsed:iter-over}
+When iterating over a \tsobj[marg]{starray-ref}, see \ref{iterate-over}, internal variables are set pointing the current (iterated over) starray term: This removes the need, for instance, to execute \tsobj{\starray_term_parser:n} before using some `parsed' commands (previous sections). The following commands can be used in combination with the ones from \ref{parsed:internal} and \ref{parsed:user-var}.
+
+Observe that, in case of nested \tsobj{\starray_iterate_over:nn}, the \tsobj{_iparsed_} commands always refer to the immediate \tsobj{\starray_iterate_over:nn}, meaning that, in `case A' below, \tsobj[key]{key-Aa} is a key of the starray \tsobj[marg]{st-A} (\tsobj[marg]{st-A[iter st-A]}), whilst (case B), \tsobj[key]{key-Xa} is a key of the starray \tsobj[marg]{st-A.sub-X} (better said: \tsobj[marg]{st-A[iter st-A].sub-X[iter sub-X]}
+
+\begin{codestore}[nested-iter]
+  \starray_iterate_over:nn {st-A}
+    {
+      ... \starray_iparsed_get_prop:n {key-Aa}  %% case A
+      
+      \starray_iterate_over:NN {st-A.sub-X}
+        {
+          ... \starray_iparsed_get_prop:n {key-Xa}  %% case B
+        }
+    }
+\end{codestore}
+\tscode*[starray]{nested-iter}
+
+\begin{codedescribe}[code,EXP,new=2026/02/01]{\starray_iparsed_if_in_p:n,\starray_iparsed_if_in:nTF}
+\begin{codesyntax}%
+\tsmacro{\starray_iparsed_if_in_p:nTF}{key}
+\tsmacro{\starray_iparsed_if_in:nTF}{key,if-true,if-false}
+\end{codesyntax}
+This will test if the given \tsobj[key]{key} is present in the current, iterated over, term. 
+\end{codedescribe}
+\begin{tsremark}
+The predicate version, \tsobj{_p}, expands to either \tsobj{\c_true_bool} or \break \tsobj{\c_false_bool}.
+\end{tsremark}
+\begin{tsremark}[\color{red}Warning:]
+This should only be used in the \tsobj[marg]{code} part of \tsobj[code,or]{\starray_iterate_over:nn,\starray_iterate_over:nnTF}.
+\end{tsremark}
+
+
+\begin{codedescribe}[code,EXP,new=2026/02/01]{\starray_iparsed_get_iter:}
+\begin{codesyntax}%
+\tsobj{\starray_iparsed_get_iter:}{}
+\end{codesyntax}
+\tsobj{\starray_iparsed_get_iter:} will place in the current iterator's value,  using \tsobj{\int_use:N}, of the current, iterated over, term in the input stream.
+\end{codedescribe}
+\begin{tsremark}[\color{red}Warning:]
+This should only be used in the \tsobj[marg]{code} part of \tsobj[code,or]{\starray_iterate_over:nn,\starray_iterate_over:nnTF}.
+\end{tsremark}
+
+\begin{codedescribe}[code,new=2026/02/01]{\starray_iparsed_get_iter:N,\starray_iparsed_get_iter:NTF}
+\begin{codesyntax}%
+\tsmacro{\starray_iparsed_get_iter:N}{int-var}
+\tsmacro{\starray_iparsed_get_iter:NTF}{int-var,if-true,if-false}
+\end{codesyntax}
+These will save the iterator’s value (of a parsed term) in a integer variable (\tsobj[pkg]{expl3}). The \tsobj[marg]{if-true,if-false} regards the status of the last \tsobj{\starray_term_parser:} command, iff the option \tsobj[option]{parsed check} (see \ref{pack:options}) is enable, otherwise it will always execute the \tsobj[marg]{if-true} branch.
+\end{codedescribe}
+\begin{tsremark}[\color{red}Warning:]
+This should only be used in the \tsobj[marg]{code} part of \tsobj[code,or]{\starray_iterate_over:nn,\starray_iterate_over:nnTF}.
+\end{tsremark}
+
+\begin{codedescribe}[code,EXP,new=2026/02/01]{\starray_iparsed_get_cnt:}
+\begin{codesyntax}%
+\tsobj{\starray_iparsed_get_cnt:}{}
+\end{codesyntax}
+\tsobj{\starray_iparsed_get_cnt:} will place the current number of terms, using \tsobj{\int_use:N}, of the current, iterated over, term, in the input stream.
+\end{codedescribe}
+\begin{tsremark}[\color{red}Warning:]
+This should only be used in the \tsobj[marg]{code} part of \tsobj[code,or]{\starray_iterate_over:nn,\starray_iterate_over:nnTF}.
+\end{tsremark}
+
+\begin{codedescribe}[code,new=2026/02/01]{\starray_iparsed_get_cnt:N,\starray_iparsed_get_cnt:NTF}
+\begin{codesyntax}%
+\tsmacro{\starray_get_cnt:N}{integer}
+\tsmacro{\starray_get_cnt:NTF}{integer,if-true,if-false}
+\end{codesyntax}
+Similarly to \tsobj{\starray_get_cnt:nN,\starray_get_cnt:nNTF} these will save  the number of terms (of the current, iterated over, term) in a integer variable (\tsobj[pkg]{expl3}). The \tsobj[marg]{if-true,if-false} regards the status of the last \tsobj{\starray_term_parser:} command, iff the option \tsobj[option]{parsed check} (see \ref{pack:options}) is enable, otherwise it will always execute the \tsobj[marg]{if-true} branch.
+\end{codedescribe}
+\begin{tsremark}[\color{red}Warning:]
+This should only be used in the \tsobj[marg]{code} part of \tsobj[code,or]{\starray_iterate_over:nn,\starray_iterate_over:nnTF}.
+\end{tsremark}
+
+
+
+
+\begin{codedescribe}[code,EXP,new=2026/02/01]{\starray_iparsed_get_prop:n}
+\begin{codesyntax}%
+\tsmacro{\starray_iparsed_get_prop:n}{key}
+\end{codesyntax}
+\tsmacro{\starray_iparsed_get_prop:n}{key} places the value of \tsobj[marg]{key}, if it exists, from the current, iterated over, term, in the input stream. 
+\end{codedescribe}
+\begin{tsremark}[\color{red}Warning:]
+This should only be used in the \tsobj[marg]{code} part of \tsobj[code,or]{\starray_iterate_over:nn,\starray_iterate_over:nnTF}.
+\end{tsremark}
+
+\begin{codedescribe}[code,new=2026/02/01]{\starray_iparsed_get_prop:nN,\starray_iparsed_get_prop:nNTF}
+\begin{codesyntax}%
+\tsmacro{\starray_iparsed_get_prop:nN}{key,tl-var}
+\tsmacro{\starray_iparsed_get_prop:nNTF}{key,tl-var,if-true,if-false}
+\end{codesyntax}
+\tsmacro{\starray_iparsed_get_prop:nN}{key,tl-val} stores the value of \tsobj[marg]{key}, if it exists, from the current, iterated over, term. The \tsobj[marg]{if-false} branch is executed if \tsobj[marg]{key} doesn't exist or (if the option \tsobj[option]{parsed check}, see \ref{pack:options},  is enabled) if the last parser operation has failed.
+\end{codedescribe}
+\begin{tsremark}[\color{red}Warning:]
+This should only be used in the \tsobj[marg]{code} part of \tsobj[code,or]{\starray_iterate_over:nn,\starray_iterate_over:nnTF}.
+\end{tsremark}
+
+\begin{codedescribe}[code,new=2026/02/01]{\starray_iparsed_get_unique_id:nN,\starray_iparsed_get_unique_id:nNTF}
+\begin{codesyntax}%
+\tsmacro{\starray_iparsed_get_unique_id:nN}{tl-var}
+\tsmacro{\starray_iparsed_get_unique_id:nNTF}{tl-var,if-true,if-false}
+\end{codesyntax}
+Gets an `unique ID' from the current, iterated over, term. The \tsobj[marg]{if-true,if-false} regards the status of the last \tsobj{\starray_term_parser:} command, iff the option \tsobj[option]{parsed check} (see \ref{pack:options}) is enable, otherwise it will always execute the \tsobj[marg]{if-true} branch.
+\end{codedescribe}
+\begin{tsremark}[\color{red}Warning:]
+This should only be used in the \tsobj[marg]{code} part of \tsobj[code,or]{\starray_iterate_over:nn,\starray_iterate_over:nnTF}.
+\end{tsremark}
 
 
 

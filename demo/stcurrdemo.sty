@@ -12,7 +12,7 @@
 %%
 %% The Current Maintainer of this work is Alceu Frigeri
 %%
-%% This is version {1.12a} {2025/12/08} 
+%% This is version {2.0} {2026/02/02} 
 %%
 %% The list of files that compose this work can be found in the README.md file at
 %% https://ctan.org/pkg/starray
@@ -35,8 +35,8 @@
   {
      name        = {stcurrdemo} ,
      prefix      = {stcurrdemo} ,
-     date        = {2025/12/08},
-     version     = {1.12a} ,
+     date        = {2026/02/02},
+     version     = {2.0} ,
      description = {A starray based demo package}
   }
 %%%%%%%
@@ -380,6 +380,7 @@
 \clist_new:N \l__stcurrdemo_tmpa_clist 
 \NewDocumentCommand\TabEtp{sO{\section}mO{\footnotesize}}{%
     \starray_set_iter_from_hash:nn {curricula.sem}{#3}
+       
     \bool_if:nTF {#1}
       {
         #4
@@ -396,9 +397,14 @@
 
     \starray_iterate_over:nn {curricula.sem.class}
       {
-        \starray_get_prop:nnN {curricula.sem.class}{classcode} \l__stcurrdemo_tmp_class_tl
-        \starray_get_prop:nnN {curricula.sem.class}{kind} \l__stcurrdemo_tmp_kind_tl
-        \starray_get_prop:nnN {curricula.sem.class}{color} \l__stcurrdemo_tmp_color_tl
+%        \starray_get_prop:nnN {curricula.sem.class}{classcode} \l__stcurrdemo_tmp_class_tl
+%        \starray_get_prop:nnN {curricula.sem.class}{kind} \l__stcurrdemo_tmp_kind_tl
+%        \starray_get_prop:nnN {curricula.sem.class}{color} \l__stcurrdemo_tmp_color_tl
+
+        \starray_iparsed_get_prop:nN {classcode} \l__stcurrdemo_tmp_class_tl
+        \starray_iparsed_get_prop:nN {kind} \l__stcurrdemo_tmp_kind_tl
+        \starray_iparsed_get_prop:nN {color} \l__stcurrdemo_tmp_color_tl
+
         \starray_set_iter_from_hash:neTF {classes}{\l__stcurrdemo_tmp_class_tl}
           {}
           {\color{red}MISSING}
@@ -479,6 +485,7 @@
 
         \starray_get_prop:nnN {classes}{summary} \l__stcurrdemo_tmp_summary_tl
         \use:e   { &  &  &   &  & \exp_not:N \smaller \l__stcurrdemo_tmp_summary_tl\\*}
+          
 
          %% bibliography I  
         \starray_get_prop:nnN {classes}{bib} \l_tmpa_clist 
@@ -721,7 +728,8 @@
             \fp_eval:n {\l__stcurrdemo_tmp_pos_tl * \l__stcurrdemo_graph_deltaY_fp - 1.25 * \l__stcurrdemo_graph_deltaY_fp} 
           )
           node[disc,\l__stcurrdemo_graph_color_tl](\l__stcurrdemo_tmp_name_tl) 
-            { \l__stcurrdemo_tmp_name_tl \nodepart{lower} \l__stcurrdemo_tmp_cred_tl ~\ ~créd. } ;
+            { \l__stcurrdemo_tmp_name_tl \nodepart{lower} \l__stcurrdemo_tmp_cred_tl ~\ ~créd. } ;    
+            
         \starray_iterate_over:nnTF {curricula.sem.class.prereqset}
           {
             \starray_iterate_over:nnTF {curricula.sem.class.prereqset.prereq}

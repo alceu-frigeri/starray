@@ -12,7 +12,7 @@
 %%
 %% The Current Maintainer of this work is Alceu Frigeri
 %%
-%% This is version {1.12a} {2025/12/08} 
+%% This is version {2.0} {2026/02/02} 
 %%
 %% The list of files that compose this work can be found in the README.md file at
 %% https://ctan.org/pkg/starray
@@ -58,15 +58,15 @@ The purpose of this is to create an example of how to use a \tsobj[pkg]{starray}
   About the version number, since this is ``part'' of \tsobj[pkg]{starray}, and to keep tracking simple, the same version number (from \tsobj[pkg]{starray}) will be used.
 \end{tsremark}
 
-\setnewcodekey{stdemo}{codeprefix={},resultprefix={},letter={@,_},
-  keywd2={
+\newcodekey{stdemo}{codeprefix={},resultprefix={},letter={@,_},
+  keywd=[2]{
     starray_new,starray_def_from_keyval,
     starray_new_term,starray_get_unique_id,starray_gset_prop,starray_set_prop,
     starray_get_cnt,starray_term_syntax,starray_set_iter,
     starray_set_iter_from_hash,starray_get_prop,starray_gset_from_keyval,
     starray_iterate_over,starray_parsed_get_prop,starray_parsed_get_cnt
     },
-  texcs2={
+  texcs=[2]{
     NewActivity,ActivitySet,ActivitySetCoord,ActivitySetCoordTitle,
     ActivitySelect,Activity,ActivityCoord,
     ActivityCalendarIterate,
@@ -817,6 +817,8 @@ Once the data layout is set (see \ref{DataModel}) the next step is to define a s
 \tscode*[stdemo]{DataRecovery}[3]
 \tscode*[stdemo]{DataRecovery}[4]
 
+%\tsmergedcode*[stdemo]{{DataRecovery}[3-4]}
+
 \subsection{Activity's Functions}
 
 One could define a single function to initialize all fields (using a key=val interface), but, in a more traditional approach  one can set two functions to start the initialization process \tsobj{\NewActivity,\ActivitySet}. 
@@ -1279,6 +1281,7 @@ Once all set, it is just a matter of using the \tsobj{\ActivityCalendarIterate} 
 \end{center}
   \begin{tabular}{lcl}
     \ActivityCalendarIterate{ \DataField{activity.calendar}{date} & \DataField{activity.calendar}{week} & \DataField{activity.calendar}{event} \\ }
+%    \ActivityCalendarIterate{ {date} & {week} & {event} \\ }
   \end{tabular} 
 \end{codestore}
 
