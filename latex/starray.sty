@@ -12,7 +12,7 @@
 %%
 %% The Current Maintainer of this work is Alceu Frigeri
 %%
-%% This is version {2.0} {2026/02/02} 
+%% This is version {2.0} {2026/02/03} 
 %%
 %% The list of files that compose this work can be found in the README.md file at
 %% https://ctan.org/pkg/starray
@@ -34,7 +34,7 @@
   {
      name        = {starray} ,
      prefix      = {starray} ,
-     date        = {2026/02/02},
+     date        = {2026/02/03},
      version     = {2.0} ,
      description = {A NEW structured array/hash of properties}
   }
@@ -1623,7 +1623,7 @@
     \tl_set:Nn #5 {#3} 
   }
 
-\cs_new:Npn \__starray_set_iter_aux:nN #1#2
+\cs_new:Npn \__starray_cascade_aux:nN #1#2
   {
     \seq_map_inline:Nn #2
       {
@@ -1632,21 +1632,25 @@
           {} {}
       }
   }
-\cs_generate_variant:Nn  \__starray_set_iter_aux:nN {o}
+\cs_generate_variant:Nn  \__starray_cascade_aux:nN {o}
 
 
 \bool_if:NTF \l__starray_cascade_bool
   {
-    \cs_new:Npn \__starray_basest_cascade:NNN #1#2#3
+    \cs_new:Npn \__starray_iter_cascade:NNN #1#2#3
       {
-        \prop_get:NeN #1 {\int_use:N #2} \l__starray_tmp_term_st
+        \prop_get:NeN #1 
+          {\int_use:N #2} \l__starray_tmp_term_st
+        
         \__starray_termst_get_infix:NN
           \l__starray_tmp_term_st \l__starray_tmp_infix_tl 
-        \__starray_set_iter_aux:oN \l__starray_tmp_infix_tl #3
+          
+        \__starray_cascade_aux:oN 
+          \l__starray_tmp_infix_tl #3
       }
   }
   {
-    \cs_new:Npn \__starray_basest_cascade:NNN #1#2#3
+    \cs_new:Npn \__starray_iter_cascade:NNN #1#2#3
       { }
   }
 
@@ -1673,7 +1677,7 @@
         \int_compare:nNnTF #2 = \c_zero_int
           { }
           {
-            \__starray_basest_cascade:NNN #1 #2 #5
+            \__starray_iter_cascade:NNN #1 #2 #5
           }
 
         \prg_return_false:
@@ -1681,7 +1685,7 @@
       {
         \int_gset:Nn #2 {#7}
 
-        \__starray_basest_cascade:NNN #1 #2 #5
+        \__starray_iter_cascade:NNN #1 #2 #5
 
         \prg_return_true:
       }    
@@ -1702,7 +1706,7 @@
       {
         \int_gincr:N #2
 
-        \__starray_basest_cascade:NNN #1 #2 #5
+        \__starray_iter_cascade:NNN #1 #2 #5
 
         \prg_return_true:
       }    
@@ -1723,7 +1727,7 @@
           \l__starray_tmpb_tl
         \int_gset:Nn #2 \l__starray_tmpb_tl
 
-        \__starray_basest_cascade:NNN #1 #2 #5
+        \__starray_iter_cascade:NNN #1 #2 #5
         
         \prg_return_true:
       }

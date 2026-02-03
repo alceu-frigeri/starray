@@ -9,7 +9,7 @@ For more details,  see the documentation,
 --------------
 
 ## Requirements
-* none besides a fairly recent LaTeX distribution as recent as 2023/11/01
+* none besides a fairly recent LaTeX distribution as recent as 2025/06/01
 (with the new in kernel *\ProcessKeyOptions* and *\NewDocumentCommand* and *\prop_new_linked:*)
 
 ## Installation
@@ -77,6 +77,7 @@ The Current Maintainer of this work is Alceu Frigeri
     - new package option: iter cascade
     - added series of _iparsed_ commands (alike _uparsed_ ones) for iterate_over
     - code cleanup: removing redundant tmp variables and no longer need lkernel3 variants.
+    - readme fix (hash marks).
     - documentation update
     
 * Version 1.12a
@@ -96,12 +97,12 @@ The Current Maintainer of this work is Alceu Frigeri
 
 
 * Version 1.10
-    - fixing issue [#8](https://github.com/alceu-frigeri/starray/issues/8).
+    - fixing issue [\#8](https://github.com/alceu-frigeri/starray/issues/8).
     - typos in documentation
-    - an example of use added (finally 'fixing' [#5](https://github.com/alceu-frigeri/starray/issues/5)), in [demo](https://github.com/alceu-frigeri/starray/tree/main/demo)
+    - an example of use added (finally 'fixing' [\#5](https://github.com/alceu-frigeri/starray/issues/5)), in [demo](https://github.com/alceu-frigeri/starray/tree/main/demo)
     
 * Version 1.9b
-    - fixing issue [#7](https://github.com/alceu-frigeri/starray/issues/7) (related to https://github.com/latex3/latex3/issues/1189) and removing the (unneeded) ```predicate``` in variant generation of ``` \starray_(g)set_prop:nnn```.
+    - fixing issue [\#7](https://github.com/alceu-frigeri/starray/issues/7) (related to https://github.com/latex3/latex3/issues/1189) and removing the (unneeded) ```predicate``` in variant generation of ``` \starray_(g)set_prop:nnn```.
 
 * Version 1.9 
     - Removing some internal structures (_base_prop, _def_prop) deprecated by the last three updates.
@@ -110,12 +111,12 @@ The Current Maintainer of this work is Alceu Frigeri
     - code speedup thanks to 'linked' property lists. Code now relies on a more recent l3kernel.
 
 * Version 1.7
-    - code cleanup. Still related to issues: [#6](https://github.com/alceu-frigeri/starray/issues/6), https://github.com/latex3/latex3/issues/1460 and https://github.com/latex3/latex3/issues/1466
+    - code cleanup. Still related to issues: [\#6](https://github.com/alceu-frigeri/starray/issues/6), https://github.com/latex3/latex3/issues/1460 and https://github.com/latex3/latex3/issues/1466
     - documented \starray_get_uniqueID (helper function, see documentation)
 
 * Version 1.6
     - removing all V-expansion of property/sequence lists to avoid further issues with l3kernel 
-      issues: [#6](https://github.com/alceu-frigeri/starray/issues/6), https://github.com/latex3/latex3/issues/1460 and https://github.com/latex3/latex3/issues/1466
+      issues: [\#6](https://github.com/alceu-frigeri/starray/issues/6), https://github.com/latex3/latex3/issues/1460 and https://github.com/latex3/latex3/issues/1466
     - Remarks: code is operational but needs further cleanup!
 
 * Version 1.5
@@ -125,15 +126,15 @@ The Current Maintainer of this work is Alceu Frigeri
     - added a few functions _set_iter_from_hash:nn and _iterate_over:n.
 
 * Version 1.3 
-    - Fixed issue [#4](https://github.com/alceu-frigeri/starray/issues/4), where (in some instances) _set_from_keyval could render a quark loop.
+    - Fixed issue [\#4](https://github.com/alceu-frigeri/starray/issues/4), where (in some instances) _set_from_keyval could render a quark loop.
 
 * Version 1.2
-    - Issues [#3](https://github.com/alceu-frigeri/starray/issues/3)
+    - Issues [\#3](https://github.com/alceu-frigeri/starray/issues/3)
     - added expandable versions of some commands (see manual)
     - documentation
 
 * Version 1.1
-    - Issues [#1](https://github.com/alceu-frigeri/starray/issues/1)/[#2](https://github.com/alceu-frigeri/starray/issues/2)
+    - Issues [\#1](https://github.com/alceu-frigeri/starray/issues/1)/[\#2](https://github.com/alceu-frigeri/starray/issues/2)
     - most/all commands are protected now
     - removed predicate version of conditionals
     - documentation
