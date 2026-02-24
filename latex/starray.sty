@@ -12,7 +12,7 @@
 %%
 %% The Current Maintainer of this work is Alceu Frigeri
 %%
-%% This is version {2.0} {2026/02/03} 
+%% This is version {2.1} {2026/02/24} 
 %%
 %% The list of files that compose this work can be found in the README.md file at
 %% https://ctan.org/pkg/starray
@@ -34,8 +34,8 @@
   {
      name        = {starray} ,
      prefix      = {starray} ,
-     date        = {2026/02/03},
-     version     = {2.0} ,
+     date        = {2026/02/24},
+     version     = {2.1} ,
      description = {A NEW structured array/hash of properties}
   }
 %%%%%%%
@@ -144,7 +144,6 @@
 %%%%
 %%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%
-\cs_generate_variant:Nn \int_to_Alph:n {e}
 \cs_generate_variant:Nn \keyval_parse:nnn {ee}
 \cs_generate_variant:Nn \prg_new_conditional:Nnn { c }
 \cs_generate_variant:Nn \prg_new_conditional:Npnn {c}
@@ -172,83 +171,91 @@
 
 \msg_new:nnnn {starray} {strict / (re)define}
   {
-    (ID:#1)~'#2'~already~defined!
+    (#1)~'#2'~already~defined!
   }
   {
     You~tried~to~(re)define~'#2'.
-    ~Error~Code~ ID:<#1>.
+    ~Error~Code: (#1).
   }
 
+\msg_new:nnnn {starray} {strict / not defined}
+  {
+    (#1)~'#2'~isn't~defined!
+  }
+  {
+    You~tried~to~use~a~non~defined~'#2'.
+    ~Error~Code: (#1).
+  }
 
 \msg_new:nnnn {starray} {syntax / ref-syntax-err}
   {
-    (ID:#1)~term~reference~'#2'~--~'#3'.
+    (#1)~term~reference~'#2'~--~'#3'.
   }
   {
     Your~term~'#2'~contains~a~syntax~error:~'#3'.
-    ~Error~ Code~ ID:<#1>.
+    ~Error~ Code: (#1).
   }
 
 \msg_new:nnnn {starray} {syntax / keyval-term}
   {
-    (ID:#1)~term~reference~'#2'~error~'#3'.
+    (#1)~term~reference~'#2'~error~'#3'.
   }
   {
     Your~term~'#2'~contains~a~syntax~error:~'#3'.
-    ~Error~ Code~ ID:<#1>.
+    ~Error~ Code: (#1).
   }
 
 \msg_new:nnnn {starray} {syntax /  term}
   {
-    (ID:#1)~'#2'~isn't~a~valid~term~ref.
+    (#1)~'#2'~isn't~a~valid~term~ref.
   }
   {
     Invalid~term~reference:~'#2'.
-    ~Error~ Code~ ID:<#1>.
+    ~Error~ Code: (#1).
   }
 
 \msg_new:nnnn {starray} {syntax /  parsed}
   {
-    (ID:#1)~Can't~ call~ #2~ after~a~ failed~ \starray_term_parser:
+    (#1)~Can't~ call~ #2~ after~a~ failed~ \starray_term_parser:
   }
   {
     You~ called~ #2~ after~ a~ failed~ call~ to~ \starray_term_parser:
-    ~Error~ Code~ ID:<#1>.
+    ~Error~ Code: (#1).
   }
   
 
 \msg_new:nnnn {starray} {syntax /  structure-ref}
   {
-    (ID:#1)~'#3'~isn't~a~sub-structure~of~'#2'.
+    (#1)~'#3'~isn't~a~sub-structure~of~'#2'.
   }
   {
     '#2' ~doesn't~have~a~sub-structure~named:~'#3'.
-    ~Error~ Code~ ID:<#1>.
+    ~Error~ Code: (#1).
   }
 
 \msg_new:nnnn {starray} {syntax /  iter}
   {
-    (ID:#1)~cannot~set~iter. ~invalid~'#2'. 
+    (#1)~cannot~set~iter. ~invalid~'#2'. 
   }
   {
     cannot~set~iter.~ invalid '#2'.
-    ~Error~ Code~ ID:<#1>.
+    ~Error~ Code: (#1).
   }
 
 
 \msg_new:nnnn {starray} {syntax /  prop}
   {
-    (ID:#1)~cannot~get/set~property~from~'#2'.
+    (#1)~cannot~get/set~property~from~'#2'.
   }
   {
     You~have~referenced~an~invalid~structure~'#2'.
-    ~Error~ Code~ ID:<#1>.
+    ~Error~ Code: (#1).
   }
 
 
 \msg_new:nnnn {starray} {reference /  keyval}
   {
-    (ID:#1)~key~'#2'~ignored.
+    (#1)~key~'#2'~ignored.
   }
   {
     You~referenced~a~key~without~setting~it's~value. ~Key~ignored.
@@ -256,7 +263,7 @@
 
 \msg_new:nnnn {starray} {reference / invalid-starray}  %%%$$
   {
-    (ID:#1)~'#2'~invalid~starray.
+    (#1)~'#2'~invalid~starray.
     \tl_if_blank:nTF {#3}
       {~#3}
       {}
@@ -266,12 +273,12 @@
     \tl_if_blank:nTF {#3}
       {~#3}
       {}
-    ~Error~ Code~ ID:<#1>.
+    ~Error~ Code: (#1).
   }
 
 \msg_new:nnnn {starray} {reference / iter}
   {
-    (ID:#1)~invalid~iter~(#3)~from~'#2'
+    (#1)~invalid~iter~(#3)~from~'#2'
     \str_if_empty:nTF {#4}
       {}
       {#4}
@@ -280,21 +287,21 @@
   {
     Invalid~iter~(#3)~from~ '#2'.~You~might~have~tried~to~use/set/reset~an~iter~of
     ~an~ill~instantiated~structured.
-    ~Error~ Code~ ID:<#1>.
+    ~Error~ Code: (#1).
   }
 
 \msg_new:nnnn {starray} {reference / prop} %%%$$
   {
-    (ID:#1)~cannot~get/set~property~'#3'~from~'#2'.
+    (#1)~cannot~get/set~property~'#3'~from~'#2'.
   }
   {
     '#3'~isn't~a~property~of~'#2'.
-    ~Error~ Code~ ID:<#1>.
+    ~Error~ Code: (#1).
   }
 
 \msg_new:nnnn {starray} {info / show}
   {
-    \iow_newline:(ID:#1)\iow_newline:~ #2 \iow_newline:
+    \iow_newline:(#1)\iow_newline:~ #2 \iow_newline:
 
     #3
 
@@ -302,7 +309,7 @@
     definition's~end.
   }
   {
-    \iow_newline:(ID:#1)\iow_newline:~ #2 \iow_newline:
+    \iow_newline:(#1)\iow_newline:~ #2 \iow_newline:
 
     #3
 
@@ -322,7 +329,7 @@
   {
     The ~ command~'#2'~has ~ been ~ deprecated. ~
     Use~'#3'~ instead.
-    ~Error~ Code~ ID:<#1>.
+    ~Error~ Code: (#1).
   }
 
 
@@ -473,9 +480,9 @@
 %%%
 %%%%%%%%%
 %%%
-%%% Regarding the base-code: it will 'get' two extra param BEFORE the ones in #signature#
-%%% NN#signature# (for example, signature:nN... real signature: NNnN #1#2#3#4
-%%% whereas the first two parameters, NN, will (should) always be '...ref_tl' and '...ref_no_idx_ending_tl'
+%%% Regarding the base-code: it will 'get' two extra param BEFORE the ones in the signature
+%%% nn#signature# (for example, signature:nN... real signature: nnnN #1#2#3#4
+%%% whereas the first two parameters, nn, will (should) always be (o-expanded) '...term_st' and '...base_st'
 %%%
 %%% 'if-parser-failed' code shall expect a single parameter: starray-ref
 %%%
@@ -585,8 +592,8 @@
 %%%%%%%%%
 %%%
 %%% Regarding the base-code: it will 'get' two extra param BEFORE the ones in the signature
-%%% NN#signature# (for example, signature:nN... real signature: NNnN #1#2#3#4
-%%% whereas the first two parameters, NN, will (should) always be '...ref_tl' and '...ref_no_idx_ending_tl'
+%%% nn#signature# (for example, signature:nN... real signature: nnnN #1#2#3#4
+%%% whereas the first two parameters, nn, will (should) always be (o-expanded) '...term_st' and '...base_st'
 %%%
 %%% 'if-parser-failed' code shall expect a single parameter: starray-ref
 %%%
@@ -1863,26 +1870,38 @@
   }
 
 
-\int_new:N  \g__starray_istack_int
+
+\RequirePackage{tokglobalstack}
+
+\globalstack_csnew:n    {__starray_istack}
+\cs_generate_variant:Nn \__starray_istack_gpush:n {e}
+
+\cs_new_protected:Npn \__starray_istack_push:
+  {
+    \bool_if:NTF \g__starray_iterate_bool
+      {
+        \__starray_istack_gpush:e
+          {
+            \exp_not:N \tl_gset:Nn   \exp_not:N \g__starray_iterate_base_st { \exp_not:o \g__starray_iterate_base_st }
+            \exp_not:N \tl_gset:Nn   \exp_not:N \g__starray_iterate_term_st { \exp_not:o \g__starray_iterate_term_st }
+            \exp_not:N \bool_gset_true:N \exp_not:N \g__starray_iterate_bool
+          }        
+      }
+      {
+        \__starray_istack_gpush:e
+          {
+            \exp_not:N \tl_gset:Nn   \exp_not:N \g__starray_iterate_base_st { \exp_not:o \g__starray_iterate_base_st }
+            \exp_not:N \tl_gset:Nn   \exp_not:N \g__starray_iterate_term_st { \exp_not:o \g__starray_iterate_term_st }
+            \exp_not:N \bool_gset_false:N \exp_not:N \g__starray_iterate_bool
+          }        
+      }      
+  }
+\cs_set_eq:NN \__starray_istack_pop: \__starray_istack_gpop:
+
 \bool_new:N \g__starray_iterate_bool
 \tl_new:N   \g__starray_iterate_base_st
 \tl_new:N   \g__starray_iterate_term_st
 
-\cs_new_protected:Npn \__starray_istack_push:
-  {
-    \int_gincr:N     \g__starray_istack_int
-    \tl_gset_eq:cN   { g__starray_istack_ \int_to_Alph:n \g__starray_istack_int _base_st} \g__starray_iterate_base_st
-    \tl_gset_eq:cN   { g__starray_istack_ \int_to_Alph:n \g__starray_istack_int _term_st} \g__starray_iterate_term_st
-    \bool_gset_eq:cN { g__starray_istack_ \int_to_Alph:n \g__starray_istack_int _bool}    \g__starray_iterate_bool
-  }
-
-\cs_new_protected:Npn \__starray_istack_pop:
-  {
-    \tl_gset_eq:Nc   \g__starray_iterate_base_st { g__starray_istack_ \int_to_Alph:n \g__starray_istack_int _base_st} 
-    \tl_gset_eq:Nc   \g__starray_iterate_term_st { g__starray_istack_ \int_to_Alph:n \g__starray_istack_int _term_st} 
-    \bool_gset_eq:Nc \g__starray_iterate_bool    { g__starray_istack_ \int_to_Alph:n \g__starray_istack_int _bool} 
-    \int_gdecr:N     \g__starray_istack_int
-  }
 
 %%%%%%%%%%%%%%%
 %%%
@@ -3120,29 +3139,44 @@
 %%%%%%%%%%%%%%%
 \cs_new_protected:Npn \starray_show_def:n #1
   {
-    \tl_clear:N \l__starray_show_tmp_tl
-    \cs_set_eq:NN \__starray_show: \iow_newline:
+    \__starray_if_exist:cTF { c__starray_prfix_.  #1 _ref_st}
+      {
+        \tl_clear:N \l__starray_show_tmp_tl
+        \cs_set_eq:NN \__starray_show: \iow_newline:
+        
+        \__starray_refst_show_def:cnn 
+          { c__starray_prfix_. #1 _ref_st } 
+          { } {#1}
     
-    \__starray_refst_show_def:cnn 
-      { c__starray_prfix_. #1 _ref_st } 
-      { } {#1}
-
-    \msg_show:nnxxx {starray}{info / show}
-      { show~def }
-      { The~ starray~ <#1> ~is~defined~as~follow: }
-      { \l__starray_show_tmp_tl }
+        \msg_show:nnxxx {starray}{info / show}
+          { show~def }
+          { The~ starray~ <#1> ~is~defined~as~follow: }
+          { \l__starray_show_tmp_tl }
+      }
+      {
+        \msg_warning:nnnn {starray}{strict / not defined}
+          { show~def } { #1 }
+      }
+     
   }
 
 \cs_new_protected:Npn \starray_show_def_in_text:n #1
   {
-    \tl_clear:N \l__starray_show_tmp_tl
-    \cs_set_eq:NN \__starray_show: \par
+    \__starray_if_exist:cTF { c__starray_prfix_.  #1 _ref_st}
+      {
+        \tl_clear:N \l__starray_show_tmp_tl
+        \cs_set_eq:NN \__starray_show: \par
+        
+        \__starray_refst_show_def:cnn 
+          { c__starray_prfix_. #1 _ref_st } 
+          { } {#1}
     
-    \__starray_refst_show_def:cnn 
-      { c__starray_prfix_. #1 _ref_st } 
-      { } {#1}
-
-    \l__starray_show_tmp_tl
+        \l__starray_show_tmp_tl
+      }
+      {
+        \msg_warning:nnnn {starray}{strict / not defined}
+          { show~def } { #1 }
+      }
   }
 
 
@@ -3226,30 +3260,44 @@
 %%%%%%%%%%%%%%%
 \cs_new_protected:Npn \starray_show_terms:n #1
   {
-    \tl_clear:N \l__starray_show_tmp_tl
-    \cs_set_eq:NN \__starray_show: \iow_newline:
-       
-    \__starray_basest_show_terms:cnn
-      { c__starray_prfix_. #1 _base_st } 
-      { } {#1}
-
-    \msg_show:nnxxx {starray}{info / show}
-      { show~terms }
-      { The~ starray~ <#1> ~has~the~following~terms: }
-      { \l__starray_show_tmp_tl }
+    \__starray_if_exist:cTF { c__starray_prfix_.  #1 _base_st}
+      {
+        \tl_clear:N \l__starray_show_tmp_tl
+        \cs_set_eq:NN \__starray_show: \iow_newline:
+           
+        \__starray_basest_show_terms:cnn
+          { c__starray_prfix_. #1 _base_st } 
+          { } {#1}
+    
+        \msg_show:nnxxx {starray}{info / show}
+          { show~terms }
+          { The~ starray~ <#1> ~has~the~following~terms: }
+          { \l__starray_show_tmp_tl }
+      }
+      {
+        \msg_warning:nnnn {starray}{strict / not defined}
+          { show~terms } { #1 }
+      }
   }
 
 
 \cs_new_protected:Npn \starray_show_terms_in_text:n #1
   {
-    \tl_clear:N \l__starray_show_tmp_tl
-    \cs_set_eq:NN \__starray_show: \par
-    
-    \__starray_basest_show_terms:cnn
-      { c__starray_prfix_. #1 _base_st } 
-      { } {#1}
-  
-     \l__starray_show_tmp_tl
+    \__starray_if_exist:cTF { c__starray_prfix_.  #1 _base_st}
+      {
+        \tl_clear:N \l__starray_show_tmp_tl
+        \cs_set_eq:NN \__starray_show: \par
+        
+        \__starray_basest_show_terms:cnn
+          { c__starray_prfix_. #1 _base_st } 
+          { } {#1}
+      
+         \l__starray_show_tmp_tl
+      }
+      {
+        \msg_warning:nnnn {starray}{strict / not defined}
+          { show~terms } { #1 }
+      }
   }
 
 

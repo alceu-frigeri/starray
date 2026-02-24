@@ -9,7 +9,7 @@ For more details,  see the documentation,
 --------------
 
 ## Requirements
-* none besides a fairly recent LaTeX distribution as recent as 2025/06/01
+* none besides a fairly recent LaTeX distribution as recent as [2025/06/01](https://ctan.org/pkg/l3kernel)
 (with the new in kernel *\ProcessKeyOptions* and *\NewDocumentCommand* and *\prop_new_linked:*)
 
 ## Installation
@@ -64,6 +64,7 @@ The Current Maintainer of this work is Alceu Frigeri
     - quick introduction
 
 * starray.tex
+* starray.bib
     - package documentation
 
 * starray.pdf
@@ -72,10 +73,14 @@ The Current Maintainer of this work is Alceu Frigeri
 -------------
 ## Change log
 
-* Version 2.0 (this)
+* Version 2.1 (this)
+    - fixing `show_def` and `show_term`, fixing [\#9](https://github.com/alceu-frigeri/starray/issues/9)
+    - using tokglobalstack (while iterating)
+
+* Version 2.0
     - full re-factoring, based on _base_st, _term_st and _ref_st (better context control, lesser use of cs-names)
     - new package option: iter cascade
-    - added series of _iparsed_ commands (alike _uparsed_ ones) for iterate_over
+    - added series of _iparsed commands (alike _uparsed ones) for iterate_over
     - code cleanup: removing redundant tmp variables and no longer need lkernel3 variants.
     - readme fix (hash marks).
     - documentation update
@@ -99,10 +104,13 @@ The Current Maintainer of this work is Alceu Frigeri
 * Version 1.10
     - fixing issue [\#8](https://github.com/alceu-frigeri/starray/issues/8).
     - typos in documentation
-    - an example of use added (finally 'fixing' [\#5](https://github.com/alceu-frigeri/starray/issues/5)), in [demo](https://github.com/alceu-frigeri/starray/tree/main/demo)
+    - an example of use added (finally 'fixing' [\#5](https://github.com/alceu-frigeri/starray/issues/5)),
+      in [demo](https://github.com/alceu-frigeri/starray/tree/main/demo)
     
 * Version 1.9b
-    - fixing issue [\#7](https://github.com/alceu-frigeri/starray/issues/7) (related to https://github.com/latex3/latex3/issues/1189) and removing the (unneeded) ```predicate``` in variant generation of ``` \starray_(g)set_prop:nnn```.
+    - fixing issue [\#7](https://github.com/alceu-frigeri/starray/issues/7) 
+      ( related to [\#1189](https://github.com/latex3/latex3/issues/1189) ) 
+      and removing the (unneeded) ```predicate``` in variant generation of ``` \starray_(g)set_prop:nnn```.
 
 * Version 1.9 
     - Removing some internal structures (_base_prop, _def_prop) deprecated by the last three updates.
@@ -111,12 +119,16 @@ The Current Maintainer of this work is Alceu Frigeri
     - code speedup thanks to 'linked' property lists. Code now relies on a more recent l3kernel.
 
 * Version 1.7
-    - code cleanup. Still related to issues: [\#6](https://github.com/alceu-frigeri/starray/issues/6), https://github.com/latex3/latex3/issues/1460 and https://github.com/latex3/latex3/issues/1466
+    - code cleanup. Still related to issues: [\#6](https://github.com/alceu-frigeri/starray/issues/6), 
+      [\#1460](https://github.com/latex3/latex3/issues/1460) and 
+      [\#1466](https://github.com/latex3/latex3/issues/1466)
     - documented \starray_get_uniqueID (helper function, see documentation)
 
 * Version 1.6
     - removing all V-expansion of property/sequence lists to avoid further issues with l3kernel 
-      issues: [\#6](https://github.com/alceu-frigeri/starray/issues/6), https://github.com/latex3/latex3/issues/1460 and https://github.com/latex3/latex3/issues/1466
+      issues: [\#6](https://github.com/alceu-frigeri/starray/issues/6), 
+      [\#1460](https://github.com/latex3/latex3/issues/1460) and 
+      [\#1466](https://github.com/latex3/latex3/issues/1466)
     - Remarks: code is operational but needs further cleanup!
 
 * Version 1.5

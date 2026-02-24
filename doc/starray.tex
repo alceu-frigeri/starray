@@ -5,7 +5,7 @@
 % !TEX program = pdflatex
 % !PDFTeXify ext =  --enable-etex  --restrict-write18
 % !PDFLaTeX ext  =  --enable-etex  --restrict-write18
-% !BIB program = none
+% !BIB program = biber
 %%%==============================================================================
 %% Copyright 2023-present by Alceu Frigeri
 %%
@@ -20,7 +20,7 @@
 %%
 %% The Current Maintainer of this work is Alceu Frigeri
 %%
-%% This is version {2.0} {2026/02/03}
+%% This is version {2.1} {2026/02/24}
 %%
 %% The list of files that compose this work can be found in the README.md file at
 %% https://ctan.org/pkg/starray
@@ -37,6 +37,15 @@
 \RequirePackage[inline]{enumitem}
 \SetEnumitemKey{miditemsep}{parsep=0ex,itemsep=0.4ex}
 
+%% if needed
+\RequirePackage[backend=biber]{biblatex}
+\addbibresource{starray.bib}
+
+% Just so the kernel reference date [...] can be written as 
+% \Bhack[2026/06/01] 
+% (and the date itself be globally updated)
+%
+\def\Bhack[#1]{#1}
 
 \newcodekey{starray}{
   codeprefix={},resultprefix={},letter={@,_},
@@ -58,7 +67,7 @@
 \RequirePackage[hidelinks,hypertexnames=false]{hyperref}
 \begin{document}
 \tstitle{
-  author={Alceu Frigeri\footnote{\tsverb{https://github.com/alceu-frigeri/starray}}},
+  author={Alceu Frigeri\footnote{\tsfmt{\url{https://github.com/alceu-frigeri/starray}}}},
   date={\tsdate},
   title={The starray Package\break Version \PkgInfo{starray}{version}}
   }
@@ -66,7 +75,7 @@
 \begin{typesetabstract}
 
 This package implements vector like 'structures', alike 'C' and other programming languages. 
-It's based on \tsobj[pkg]{expl3} and aimed at 'package writers', and not end users. The provided commands are similar the ones provided for property (or sequence, or token) lists. Most of the provided functions have a companion ``branching version''.
+It's based on \tsobj[pkg]{expl3}\cite{expl3} and aimed at 'package writers', and not end users. The provided commands are similar the ones provided for property (or sequence, or token) lists. Most of the provided functions have a companion ``branching version''.
 
 \end{typesetabstract}
 
@@ -75,11 +84,11 @@ It's based on \tsobj[pkg]{expl3} and aimed at 'package writers', and not end use
 \section{Introduction}
 The main idea is to have an array like syntax when setting/recovering structured information, e.g. \tsmacro{\starray_get_prop:nn} {student[2].work[3].reviewer[4] , name} where ``student'' is the starray root, ``work'' is a sub-structure (an array in itself), ``reviewer'' is a sub-structure of ``work'' and so on, \tsobj[marg]{name} being a property of ``reviewer''. Moreover one can iterate over the structure, for instance \tsmacro{\starray_get_prop:nn}{student.work.reviewer,name} is also a possible reference in which one is using ``student's'', ``work's'' and ``reviewer's'' iterators.
 
-Internally, a \tsobj[pkg]{starray} is stored as a collection of property lists. Each \tsobj[pkg]{starray} can contain a list of property pairs (key/value as in any \tsobj[pkg]{expl3} property lists) and a list of sub-structures. Each sub-structure, at it's turn, can also contain a list of property pairs and a list of sub-structures. 
+Internally, a \tsobj[pkg]{starray} is stored as a collection of property lists. Each \tsobj[pkg]{starray} can contain a list of property pairs (key/value as in any \tsobj[pkg]{expl3}\cite{expl3} property lists) and a list of sub-structures. Each sub-structure, at it's turn, can also contain a list of property pairs and a list of sub-structures. 
 
 The construction/definition of a \tsobj[pkg]{starray} can be done piecewise (a property/sub-structure a time) or with a keyval interface or both, either way, one has to first ``create a root starray'' (\tsmacro{\starray_new:n}{}), define it's elements (properties and sub-structures), then instantiate them ``as needed''. An instance of a \tsobj[pkg]{starray} (or one of it's sub-structures) is referred, in this text, as a ``term''.
 
-Finally, almost all defined functions have a branching version, as per \tsobj[pkg]{expl3}: \tsobj[code]{T,F,TF} (note: no \tsobj{_p} variants, see below). For simplicity, in the text bellow only the \underline{\textsl{TF}} variant is described, as in \tsobj[code]{\starray_new:nTF}, keep in mind that all 3 variants are defined, e.g. \tsobj[code]{\starray_new:nT,\starray_new:nF,\starray_new:nTF}.
+Finally, almost all defined functions have a branching version, as per \tsobj[pkg]{expl3}\cite{expl3}: \tsobj[code]{T,F,TF} (note: no \tsobj{_p} variants, see below). For simplicity, in the text bellow only the \underline{\textsl{TF}} variant is described, as in \tsobj[code]{\starray_new:nTF}, keep in mind that all 3 variants are defined, e.g. \tsobj[code]{\starray_new:nT,\starray_new:nF,\starray_new:nTF}.
 
 \begin{tsremark}[Note:]
  Could it be implemented with a single property list? It sure could, but at a cost: 
@@ -88,10 +97,12 @@ The current implementation, albeit also complex, tries to reach a balance betwee
 \end{tsremark}
 
 \begin{tsremark}[\color{red}Important:]
- \textsl{Expandability}, unfortunately most/all defined functions are not ``expandable'', in particular, most conditional/branching functions aren't, with just a few exceptions (marked with a star \ding{72}).
+ \textsl{Expandability}, unfortunately most/all defined functions are not expandable, in particular, most conditional/branching functions aren't, with just a few exceptions (marked with a star \ding{72}).
  
 \end{tsremark}
 
+\subsection{Prerequisites}
+Besides a fairly recent kernel (as recent as \Bhack[2025/06/01], see \cite{l3kernel}), the packages \tsobj[pkg]{pkginfograb}\cite{pkginfograb} (for package documentation) and \tsobj[pkg]{tokglobalstack}\cite{tokglobalstack} (stack implementation for the iterate over commands see \ref{iterate-over}) are also used.
 
 \section{Package Options}\label{pack:options}
 The package options (\tsobj[key]{key}\,=\tsobj[value]{value}) are:
@@ -135,7 +146,7 @@ The package options (\tsobj[key]{key}\,=\tsobj[value]{value}) are:
 \end{describelist}
 
 \section{Demo package(s)}
-Given the inherent complexity of this package, one can find at \url{https://github.com/alceu-frigeri/starray/tree/main/demo} an example, \tsobj[pkg]{stdemo.sty}, package with its companion documentation \tsobj[pkg]{stdemo.pdf}. Since the aforementioned package, and documentation, are just an example of use, it doesn't make sense to add them to CTAN.
+Given the inherent complexity of this package, one can find at \tsfmt{\url{https://github.com/alceu-frigeri/starray/tree/main/demo}} an example, \tsobj[pkg]{stdemo.sty}, package and documentation \tsobj[pkg]{stdemo.pdf}. Since the aforementioned package, and documentation, are just an example of use, it doesn't make sense to add them to CTAN.
 
 \section{Creating a starray}\label{pack:new}
 \begin{codedescribe}{\starray_new:n,\starray_new:nTF}
@@ -157,7 +168,7 @@ Creates a new \tsobj[marg]{starray} or raises a warning  if the name is already 
 \tsmacro{\starray_if_valid_p:n}{starray}
 \tsmacro{\starray_if_valid:nTF}{starray,if-true,if-false}
 \end{codesyntax}
-\tsobj{\starray_if_exist:nTF} only tests if \tsobj[marg]{starray} (the base property) is defined. It doesn't verifies if it really is a  \tsobj[pkg]{starray}. \tsobj{\starray_if_valid:nTF} is functionally equivalent, since release 1.9. See \tsobj{\starray_term_parser:nTF}, section \ref{conditionals:terms}, for a more reliable validity test.
+\tsobj{\starray_if_exist:nTF} only tests if \tsobj[marg]{starray} (the base array) is defined. It doesn't verifies if it really is a  \tsobj[pkg]{starray}. \tsobj{\starray_if_valid:nTF} is functionally equivalent, since release 1.9. See \tsobj{\starray_term_parser:nTF}, section \ref{conditionals:terms}, for a more reliable validity test.
 \end{codedescribe}
 \begin{tsremark}
 The predicate versions, \tsobj{_p}, expand to either \tsobj{\c_true_bool} or\break  \tsobj{\c_false_bool}
@@ -170,7 +181,7 @@ The predicate versions, \tsobj{_p}, expand to either \tsobj{\c_true_bool} or\bre
 \tsmacro{\starray_def_prop:nnn}{starray-ref,prop-key,initial-value}
 \tsmacro{\starray_def_prop:nnnTF}{starray-ref,prop-key,initial-value,if-true,if-false}
 \end{codesyntax}
-Adds an entry, \tsobj[marg]{prop-key}, to the \tsobj[marg]{starray-ref} (see \ref{pack:ref}) definition and set its initial value. If \tsobj[marg]{prop-key} is already present its initial value is updated. Both \tsobj[marg]{prop-key} and \tsobj[marg]{initial-value} may contain any \tsobj[marg]{balanced text}. \tsobj[marg]{prop-key} is an (\tsobj[pkg]{expl3}) property list \tsobj[marg]{key} meaning that category codes are ignored.
+Adds an entry, \tsobj[marg]{prop-key}, to the \tsobj[marg]{starray-ref} (see \ref{pack:ref}) definition and set its initial value. If \tsobj[marg]{prop-key} is already present its initial value is updated. Both \tsobj[marg]{prop-key} and \tsobj[marg]{initial-value} may contain any \tsobj[marg]{balanced text}. \tsobj[marg]{prop-key} is an (\tsobj[pkg]{expl3}\cite{expl3}) property list \tsobj[marg]{key} meaning that category codes are ignored.
 
 The definition/assignment of a \tsobj[marg]{prop-key} to a \tsobj[marg]{starray-ref} is global.
 \end{codedescribe}
@@ -523,7 +534,7 @@ A warning is raised (see \ref{pack:options}) in case of a \tsobj[marg]{starray-r
 \tsmacro{\starray_get_iter:nN}{starray-ref,int-var}
 \tsmacro{\starray_get_iter:nNTF}{starray-ref,int-var,if-true,if-false}
 \end{codesyntax}
-\tsmacro{\starray_get_iter:n}{starray-ref} will type in the current value of a given iterator, whilst the other two functions will save it's value in a integer variable (\tsobj[pkg]{expl3}).  The assignment is local.
+\tsmacro{\starray_get_iter:n}{starray-ref} will type in the current value of a given iterator, whilst the other two functions will save it's value in a integer variable (\tsobj[pkg]{expl3}\cite{expl3}).  The assignment is local.
 
 \end{codedescribe}
 \begin{tsremark}
@@ -539,7 +550,7 @@ A warning is raised (see \ref{pack:options}) in case of a \tsobj[marg]{starray-r
 \tsmacro{\starray_get_cnt:nN}{starray-ref,integer}
 \tsmacro{\starray_get_cnt:nNTF}{starray-ref,integer,if-true,if-false}
 \end{codesyntax}
-\tsmacro{\starray_get_cnt:n}{starray-ref} will type in the current number of terms of a given (sub-)structure, whilst the other two functions will save it's value in a integer variable (\tsobj[pkg]{expl3}).  The assignment is local.
+\tsmacro{\starray_get_cnt:n}{starray-ref} will type in the current number of terms of a given (sub-)structure, whilst the other two functions will save it's value in a integer variable (\tsobj[pkg]{expl3}\cite{expl3}).  The assignment is local.
 
 \end{codedescribe}
 \begin{tsremark}
@@ -679,11 +690,11 @@ A warning is raised (see \ref{pack:options}) in case of a \tsobj[marg]{starray-r
 \end{tsremark}
 
 \section{Parsed Commands}\label{pack:parsed}
-Since the parsing of a \tsobj[marg]{starray-ref} is a non-expandable and expensive operation, the commands below allow for some coding speed up (by avoiding parsing the same \tsobj[marg]{starray-ref} repeatedly) and offers expandable alternatives to a few commands.
+Since the parsing of a \tsobj[marg]{starray-ref} is a non-expandable and expensive operation, the commands below allow for some coding speed up (by avoiding parsing the same \tsobj[marg]{starray-ref} repeatedly) and offers expandable alternatives for a few commands.
 
 The use pattern would be (1) to first parse the \tsobj[marg]{starray-ref} with either \tsobj[code,sep=or]{\starray_term_parser:n,\starray_term_parser:nN} and thereafter (2) use the many \tsobj[code,or]{\starray_parsed_,\starray_uparsed_} commands. 
 
-Note that, there are three sets of  commands, one associated with \tsobj[code,sep=or]{\starray_term_parser:n,\starray_term_parser:nTF}{} (which relies on internal variables), another set associated with \tsobj[code,sep=or]{\starray_term_parser:nN,\starray_term_parser:nNTF}  (which allows to save many \tsobj[marg]{starray-ref} parsed terms), and lastly one associated with \tsobj[code,or]{\starray_iterate_over:nn} (see \ref{iterate-over}).
+Note that, there are three sets of  commands, one associated with \tsobj[code,sep=and/or]{\starray_term_parser:n,\starray_term_parser:nTF}{} (which relies on internal variables), another set associated with \tsobj[code,sep=and/or]{\starray_term_parser:nN,\starray_term_parser:nNTF}  (which allows to save more than one \tsobj[marg]{starray-ref} parsed term), and lastly one associated with \tsobj[code,or]{\starray_iterate_over:nn} (see \ref{iterate-over}).
 
 
 \subsection{Parsed Commands Based on Internal Variables}\label{parsed:internal}
@@ -740,7 +751,7 @@ This can only be used after \tsobj{\starray_term_parser:n} and only makes sense 
 \tsmacro{\starray_parsed_get_iter:N}{int-var}
 \tsmacro{\starray_parsed_get_iter:NTF}{int-var,if-true,if-false}
 \end{codesyntax}
-These will save the iterator’s value (of a parsed term) in a integer variable (\tsobj[pkg]{expl3}). The \tsobj[marg]{if-true,if-false} regards the status of the last \tsobj{\starray_term_parser:} command, iff the option \tsobj[option]{parsed check} (see \ref{pack:options}) is enable, otherwise it will always execute the \tsobj[marg]{if-true} branch.
+These will save the iterator’s value (of a parsed term) in a integer variable (\tsobj[pkg]{expl3}\cite{expl3}). The \tsobj[marg]{if-true,if-false} regards the status of the last \tsobj{\starray_term_parser:} command, iff the option \tsobj[option]{parsed check} (see \ref{pack:options}) is enable, otherwise it will always execute the \tsobj[marg]{if-true} branch.
 \end{codedescribe}
 \begin{tsremark}[\color{red}Warning:]
 This can only be used after \tsobj{\starray_term_parser:n} and only makes sense (and returns a reliable/meaningful result) IF the last parser operation was successfully executed.
@@ -761,7 +772,7 @@ This can only be used after \tsobj{\starray_term_parser:n} and only makes sense 
 \tsmacro{\starray_get_cnt:N}{integer}
 \tsmacro{\starray_get_cnt:NTF}{integer,if-true,if-false}
 \end{codesyntax}
-Similarly to \tsobj{\starray_get_cnt:nN,\starray_get_cnt:nNTF} these will save  the number of terms (of the last parsed term) in a integer variable (\tsobj[pkg]{expl3}). The \tsobj[marg]{if-true,if-false} regards the status of the last \tsobj{\starray_term_parser:} command, iff the option \tsobj[option]{parsed check} (see \ref{pack:options}) is enable, otherwise it will always execute the \tsobj[marg]{if-true} branch.
+Similarly to \tsobj{\starray_get_cnt:nN,\starray_get_cnt:nNTF} these will save  the number of terms (of the last parsed term) in a integer variable (\tsobj[pkg]{expl3}\cite{expl3}). The \tsobj[marg]{if-true,if-false} regards the status of the last \tsobj{\starray_term_parser:} command, iff the option \tsobj[option]{parsed check} (see \ref{pack:options}) is enable, otherwise it will always execute the \tsobj[marg]{if-true} branch.
 \end{codedescribe}
 \begin{tsremark}[\color{red}Warning:]
 This can only be used after \tsobj{\starray_term_parser:n} and only makes sense (and returns a reliable/meaningful result) IF the last parser operation was successfully executed.
@@ -990,7 +1001,7 @@ This should only be used in the \tsobj[marg]{code} part of \tsobj[code,or]{\star
 \tsmacro{\starray_iparsed_get_iter:N}{int-var}
 \tsmacro{\starray_iparsed_get_iter:NTF}{int-var,if-true,if-false}
 \end{codesyntax}
-These will save the iterator’s value (of a parsed term) in a integer variable (\tsobj[pkg]{expl3}). The \tsobj[marg]{if-true,if-false} regards the status of the last \tsobj{\starray_term_parser:} command, iff the option \tsobj[option]{parsed check} (see \ref{pack:options}) is enable, otherwise it will always execute the \tsobj[marg]{if-true} branch.
+These will save the iterator’s value (of a parsed term) in a integer variable (\tsobj[pkg]{expl3}\cite{expl3}). The \tsobj[marg]{if-true,if-false} regards the status of the last \tsobj{\starray_term_parser:} command, iff the option \tsobj[option]{parsed check} (see \ref{pack:options}) is enable, otherwise it will always execute the \tsobj[marg]{if-true} branch.
 \end{codedescribe}
 \begin{tsremark}[\color{red}Warning:]
 This should only be used in the \tsobj[marg]{code} part of \tsobj[code,or]{\starray_iterate_over:nn,\starray_iterate_over:nnTF}.
@@ -1011,7 +1022,7 @@ This should only be used in the \tsobj[marg]{code} part of \tsobj[code,or]{\star
 \tsmacro{\starray_get_cnt:N}{integer}
 \tsmacro{\starray_get_cnt:NTF}{integer,if-true,if-false}
 \end{codesyntax}
-Similarly to \tsobj{\starray_get_cnt:nN,\starray_get_cnt:nNTF} these will save  the number of terms (of the current, iterated over, term) in a integer variable (\tsobj[pkg]{expl3}). The \tsobj[marg]{if-true,if-false} regards the status of the last \tsobj{\starray_term_parser:} command, iff the option \tsobj[option]{parsed check} (see \ref{pack:options}) is enable, otherwise it will always execute the \tsobj[marg]{if-true} branch.
+Similarly to \tsobj{\starray_get_cnt:nN,\starray_get_cnt:nNTF} these will save  the number of terms (of the current, iterated over, term) in a integer variable (\tsobj[pkg]{expl3}\cite{expl3}). The \tsobj[marg]{if-true,if-false} regards the status of the last \tsobj{\starray_term_parser:} command, iff the option \tsobj[option]{parsed check} (see \ref{pack:options}) is enable, otherwise it will always execute the \tsobj[marg]{if-true} branch.
 \end{codedescribe}
 \begin{tsremark}[\color{red}Warning:]
 This should only be used in the \tsobj[marg]{code} part of \tsobj[code,or]{\starray_iterate_over:nn,\starray_iterate_over:nnTF}.
@@ -1063,6 +1074,9 @@ This should only be used in the \tsobj[marg]{code} part of \tsobj[code,or]{\star
 \end{codesyntax}
 Displays the \tsobj[marg]{starray} structure definition and initial property values in the terminal or directly in text.
 \end{codedescribe}
+\begin{tsremark}
+A warning is raised (see \ref{pack:options}) in case of a \tsobj[marg]{starray-ref} syntax error or invalid \tsobj[meta]{hash}.
+\end{tsremark}
 
 
 \begin{codedescribe}{\starray_show_terms:n,\starray_show_terms_in_text:n}
@@ -1072,6 +1086,12 @@ Displays the \tsobj[marg]{starray} structure definition and initial property val
 \end{codesyntax}
 Displays the \tsobj[marg]{starray} instantiated terms and current  property values in the terminal or directly in text.
 \end{codedescribe}
+\begin{tsremark}
+A warning is raised (see \ref{pack:options}) in case of a \tsobj[marg]{starray-ref} syntax error or invalid \tsobj[meta]{hash}.
+\end{tsremark}
+
+%% if needed
+\printbibliography
 
 
 \end{document}
