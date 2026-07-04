@@ -9,7 +9,7 @@ For more details,  see the documentation,
 --------------
 
 ## Requirements
-* none besides a fairly recent LaTeX distribution as recent as [2025/06/01](https://ctan.org/pkg/l3kernel)
+* none besides a fairly recent LaTeX distribution as recent as [2026/06/01](https://ctan.org/pkg/l3kernel)
 (with the new in kernel *\ProcessKeyOptions* and *\NewDocumentCommand* and *\prop_new_linked:*)
 
 ## Installation
@@ -73,8 +73,13 @@ The Current Maintainer of this work is Alceu Frigeri
 -------------
 ## Change log
 
-* Version 2.1 (this)
-    - fixing `show_def` and `show_term`, fixing [\#9](https://github.com/alceu-frigeri/starray/issues/9)
+* Version 2.1a (this)
+    - minor comments adjustments.
+    - renaming _st variables as _st_tl 
+    - linter (expltools) adjustments
+    
+* Version 2.1
+    - fixing `show_def` and `show_term`: [\#9](https://github.com/alceu-frigeri/starray/issues/9)
     - using tokglobalstack (while iterating)
 
 * Version 2.0
